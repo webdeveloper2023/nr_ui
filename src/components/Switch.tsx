@@ -1,71 +1,70 @@
-import React, { forwardRef, useState, useId, type ReactNode } from "react";
+import { forwardRef, useId, useState, type ChangeEvent, type ReactNode } from "react";
+import { cn } from "../lib/cn";
 
-type SwitchColor = "default" | "primary" | "secondary" | "success" | "warning" | "danger";
+type SwitchColor = "default" | "accent" | "success" | "warning" | "danger";
 type SwitchSize = "sm" | "md" | "lg";
 
 export interface SwitchProps {
+  /** Yoqilgan holat rangi */
   color?: SwitchColor;
+  /** O'lcham */
   size?: SwitchSize;
+  /** Tanlangan holat (controlled) */
   isSelected?: boolean;
+  /** Boshlang'ich holat (uncontrolled) */
   defaultSelected?: boolean;
+  /** O'chirilgan holat */
   isDisabled?: boolean;
+  /** Holat o'zgarganda chaqiriladi */
   onChange?: (selected: boolean) => void;
+  /** Qiymat o'zgarganda yangi qiymat bilan chaqiriladi */
+  onValueChange?: (selected: boolean) => void;
+  /** Label matni */
   children?: ReactNode;
-  thumbIcon?: ReactNode;
+  /** Label ostidagi izoh */
+  description?: ReactNode;
+  /** Thumb ichidagi ikonka; funksiya joriy holatni qabul qiladi */
+  thumbIcon?: ReactNode | ((state: { isSelected: boolean }) => ReactNode);
+  /** Yoqilganda trekning chap tomonida ko'rinadigan ikonka */
+  startContent?: ReactNode;
+  /** O'chirilganda trekning o'ng tomonida ko'rinadigan ikonka */
+  endContent?: ReactNode;
+  /** Qo'shimcha CSS klasslar */
   className?: string;
+  /** Forma uchun input nomi */
   name?: string;
 }
 
-const sizeMap: Record<SwitchSize, {
-  track: string;
-  thumb: string;
-  thumbTranslate: string;
-  label: string;
-  iconSize: string;
-}> = {
-  sm: {
-    track: "w-8 h-5",
-    thumb: "w-3.5 h-3.5",
-    thumbTranslate: "translate-x-3.5",
-    label: "text-xs",
-    iconSize: "w-2.5 h-2.5",
-  },
-  md: {
-    track: "w-11 h-6",
-    thumb: "w-4.5 h-4.5",
-    thumbTranslate: "translate-x-5",
-    label: "text-sm",
-    iconSize: "w-3 h-3",
-  },
-  lg: {
-    track: "w-14 h-7",
-    thumb: "w-5.5 h-5.5",
-    thumbTranslate: "translate-x-7",
-    label: "text-base",
-    iconSize: "w-3.5 h-3.5",
-  },
+// thumb travel = track width - thumb width - 2 * 2px padding; pressed thumb grows by 4px
+const sizeMap: Record<SwitchSize, { track: string; thumb: string; press: string; on: string; onPressed: string; label: string; icon: string }> = {
+  sm: { track: "w-8 h-5 px-0.5", thumb: "w-4 h-4", press: "group-active:w-5", on: "translate-x-3", onPressed: "group-active:translate-x-2", label: "text-sm", icon: "[&_svg]:w-2.5 [&_svg]:h-2.5" },
+  md: { track: "w-10 h-6 px-0.5", thumb: "w-5 h-5", press: "group-active:w-6", on: "translate-x-4", onPressed: "group-active:translate-x-3", label: "text-sm", icon: "[&_svg]:w-3 [&_svg]:h-3" },
+  lg: { track: "w-12 h-7 px-0.5", thumb: "w-6 h-6", press: "group-active:w-7", on: "translate-x-5", onPressed: "group-active:translate-x-4", label: "text-base", icon: "[&_svg]:w-3.5 [&_svg]:h-3.5" },
 };
 
-const colorMap: Record<SwitchColor, { on: string; ring: string }> = {
-  default: { on: "bg-default-500", ring: "ring-default-400" },
-  primary: { on: "bg-primary-500", ring: "ring-primary-400" },
-  secondary: { on: "bg-primary-300", ring: "ring-primary-300" },
-  success: { on: "bg-success-500", ring: "ring-success-400" },
-  warning: { on: "bg-warning-500", ring: "ring-warning-400" },
-  danger: { on: "bg-danger-500", ring: "ring-danger-400" },
+const colorMap: Record<SwitchColor, { on: string; onText: string; icon: string }> = {
+  default: { on: "bg-foreground", onText: "text-background", icon: "text-foreground" },
+  accent: { on: "bg-accent", onText: "text-accent-foreground", icon: "text-accent" },
+  success: { on: "bg-success", onText: "text-success-foreground", icon: "text-success" },
+  warning: { on: "bg-warning", onText: "text-warning-foreground", icon: "text-warning" },
+  danger: { on: "bg-danger", onText: "text-danger-foreground", icon: "text-danger" },
 };
 
 export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
   (
     {
-      color = "primary",
+      color = "accent",
       size = "md",
       isSelected,
       defaultSelected = false,
       isDisabled = false,
       onChange,
+      onValueChange,
       children,
+      description,
       thumbIcon,
+      startContent,
+      endContent,
       className = "",
       name,
     },
@@ -75,38 +74,21 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
     const [internalSelected, setInternalSelected] = useState(defaultSelected);
     const isControlled = isSelected !== undefined;
     const selected = isControlled ? isSelected : internalSelected;
+    const s = sizeMap[size];
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
       const next = e.target.checked;
       if (!isControlled) setInternalSelected(next);
       onChange?.(next);
+      onValueChange?.(next);
     };
 
-    const trackClasses = [
-      "relative inline-flex items-center shrink-0",
-      "rounded-full transition-colors duration-300 ease-in-out",
-      sizeMap[size].track,
-      selected ? colorMap[color].on : "bg-default-200",
-      isDisabled ? "opacity-50" : "cursor-pointer",
-    ]
-      .filter(Boolean)
-      .join(" ");
-
-    const thumbClasses = [
-      "absolute left-0.5 flex items-center justify-center",
-      "rounded-full bg-white shadow-sm",
-      "transition-transform duration-300 ease-in-out",
-      sizeMap[size].thumb,
-      selected ? sizeMap[size].thumbTranslate : "translate-x-0",
-    ]
-      .filter(Boolean)
-      .join(" ");
+    const icon = typeof thumbIcon === "function" ? thumbIcon({ isSelected: selected }) : thumbIcon;
 
     return (
       <label
-        className={`inline-flex items-center gap-2.5 select-none ${
-          isDisabled ? "opacity-50 pointer-events-none" : "cursor-pointer"
-        } ${className}`}
+        htmlFor={id}
+        className={cn("group inline-flex items-center gap-3 select-none", isDisabled ? "opacity-50 pointer-events-none" : "cursor-pointer", className)}
       >
         <input
           ref={ref}
@@ -117,27 +99,60 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
           checked={selected}
           onChange={handleChange}
           disabled={isDisabled}
-          className="sr-only peer"
           aria-checked={selected}
+          className="peer sr-only"
         />
 
         <span
-          className={`${trackClasses} peer-focus-visible:ring-2 peer-focus-visible:ring-offset-2 ${colorMap[color].ring}`}
+          aria-hidden
+          className={cn(
+            "relative inline-flex items-center shrink-0 rounded-full overflow-hidden",
+            "transition-colors duration-150 ease-out",
+            "peer-focus-visible:ring-2 peer-focus-visible:ring-focus peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-background",
+            s.track,
+            selected ? colorMap[color].on : "bg-default group-hover:bg-default-hover"
+          )}
         >
-          <span className={thumbClasses}>
-            {thumbIcon && (
-              <span
-                className={`${sizeMap[size].iconSize} flex items-center justify-center text-default-500`}
-              >
-                {thumbIcon}
-              </span>
+          {startContent && (
+            <span
+              className={cn(
+                "absolute left-1.5 flex transition-[opacity,transform] duration-150",
+                colorMap[color].onText,
+                s.icon,
+                selected ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2"
+              )}
+            >
+              {startContent}
+            </span>
+          )}
+          {endContent && (
+            <span
+              className={cn(
+                "absolute right-1.5 flex text-muted transition-[opacity,transform] duration-150",
+                s.icon,
+                selected ? "opacity-0 translate-x-2" : "opacity-100 translate-x-0"
+              )}
+            >
+              {endContent}
+            </span>
+          )}
+          <span
+            className={cn(
+              "relative z-10 flex items-center justify-center rounded-full bg-accent-foreground shadow-[0_1px_3px_0_rgb(0_0_0/0.18),0_0_1px_0_rgb(0_0_0/0.2)]",
+              "transition-[transform,width] duration-200 ease-(--ease-out-soft) motion-reduce:transition-none",
+              s.thumb,
+              s.press,
+              selected ? cn(s.on, s.onPressed) : "translate-x-0"
             )}
+          >
+            {icon && <span className={cn("flex", s.icon, selected ? colorMap[color].icon : "text-muted")}>{icon}</span>}
           </span>
         </span>
 
-        {children && (
-          <span className={`${sizeMap[size].label} text-default-700`}>
-            {children}
+        {(children || description) && (
+          <span className="flex flex-col">
+            {children && <span className={cn("text-foreground", s.label)}>{children}</span>}
+            {description && <span className="text-xs text-muted">{description}</span>}
           </span>
         )}
       </label>

@@ -1,0 +1,5 @@
+# Normalize line endings across every operating system (CI)
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.ico binary

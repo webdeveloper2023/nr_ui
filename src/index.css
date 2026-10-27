@@ -1,44 +1,27 @@
 @import "tailwindcss";
+@import "./styles/theme.css";
 
-@theme {
-  --color-primary-50: #f0f0ff;
-  --color-primary-100: #e0e0ff;
-  --color-primary-200: #c7c7fe;
-  --color-primary-300: #a5a5fc;
-  --color-primary-400: #8b7cf8;
-  --color-primary-500: #7c5cf2;
-  --color-primary-600: #6d3de6;
-  --color-primary-700: #5e30cb;
-  --color-primary-800: #4d29a4;
-  --color-primary-900: #412682;
-  --color-primary-950: #271758;
-
-  --color-default-50: #fafafa;
-  --color-default-100: #f4f4f5;
-  --color-default-200: #e4e4e7;
-  --color-default-300: #d4d4d8;
-  --color-default-400: #a1a1aa;
-  --color-default-500: #71717a;
-  --color-default-600: #52525b;
-  --color-default-700: #3f3f46;
-  --color-default-800: #27272a;
-  --color-default-900: #18181b;
-
-  --color-success-500: #17c964;
-  --color-warning-500: #f5a524;
-  --color-danger-500: #f31260;
-
-  --font-sans: "Inter", system-ui, -apricot-system, sans-serif;
+/* ── Docs code highlighting (sugar-high) ── */
+.nr-code {
+  --nr-code-bg: var(--color-surface-secondary);
+  --sh-class: #6f42c1;
+  --sh-identifier: #24292f;
+  --sh-sign: #57606a;
+  --sh-property: #0550ae;
+  --sh-entity: #0a63b8;
+  --sh-jsxliterals: #24292f;
+  --sh-string: #0a3069;
+  --sh-keyword: #cf222e;
+  --sh-comment: #8c959f;
 }
-
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  font-family: var(--font-sans);
-  background: #fafafa;
-  color: #18181b;
-  -webkit-font-smoothing: antialiased;
+.dark .nr-code {
+  --sh-class: #d2a8ff;
+  --sh-identifier: #e6edf3;
+  --sh-sign: #8b949e;
+  --sh-property: #79c0ff;
+  --sh-entity: #79c0ff;
+  --sh-jsxliterals: #e6edf3;
+  --sh-string: #a5d6ff;
+  --sh-keyword: #ff7b72;
+  --sh-comment: #6e7681;
 }

@@ -1,22 +1,35 @@
-import React from "react";
+import type { ReactNode } from "react";
+import { cn } from "../lib/cn";
 
 type DividerOrientation = "horizontal" | "vertical";
 
 export interface DividerProps {
+  /** Yo'nalish: gorizontal yoki vertikal */
   orientation?: DividerOrientation;
+  /** O'rtadagi label (faqat gorizontal) */
+  children?: ReactNode;
+  /** Qo'shimcha klasslar */
   className?: string;
 }
 
-export const Divider: React.FC<DividerProps> = ({
-  orientation = "horizontal",
-  className = "",
-}) => {
-  const classes =
-    orientation === "horizontal"
-      ? `w-full h-px bg-default-200 shrink-0 ${className}`
-      : `h-full w-px bg-default-200 shrink-0 self-stretch ${className}`;
+export const Divider = ({ orientation = "horizontal", children, className = "" }: DividerProps) => {
+  if (orientation === "horizontal" && children) {
+    return (
+      <div className={cn("flex w-full items-center gap-3 text-xs font-medium text-muted", className)} role="separator">
+        <span className="h-px flex-1 bg-separator" />
+        <span className="shrink-0">{children}</span>
+        <span className="h-px flex-1 bg-separator" />
+      </div>
+    );
+  }
 
-  return <div className={classes} role="separator" aria-orientation={orientation} />;
+  return (
+    <div
+      role="separator"
+      aria-orientation={orientation}
+      className={cn("shrink-0 border-none bg-separator", orientation === "horizontal" ? "h-px w-full" : "w-px h-full self-stretch", className)}
+    />
+  );
 };
 
 Divider.displayName = "Divider";

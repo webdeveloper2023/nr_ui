@@ -1,0 +1,4 @@
+/* Standalone stylesheet shipped as nr-ui-kit/styles.css (no Tailwind needed in the consumer app). */
+@import "tailwindcss" source(none);
+@import "./theme.css";
+@source "../components";

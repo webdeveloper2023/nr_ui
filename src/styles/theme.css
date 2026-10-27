@@ -1,0 +1,186 @@
+/* NR UI theme — import after "tailwindcss".
+   Calm, surface-based system: gray canvas, white surfaces, soft hairline shadows,
+   pill buttons, one accent color + status colors with "soft" tints.
+   Dark mode: <html class="dark"> */
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* ── Canvas & text ───────────────────────── */
+  --color-background: #f5f5f5;
+  --color-foreground: #18181b;
+  --color-muted: #71717a;
+
+  /* ── Surfaces (cards, panels) ────────────── */
+  --color-surface: #ffffff;
+  --color-surface-secondary: #efeff0;
+  --color-surface-tertiary: #eaeaeb;
+  --color-overlay: #ffffff; /* popovers, menus, modals */
+
+  /* ── Fields (input, select, checkbox…) ───── */
+  --color-field: #ffffff;
+  --color-field-secondary: #ebebec;
+  --color-field-placeholder: #71717a;
+  --color-segment: #ffffff; /* selected tab / segment thumb */
+
+  /* ── Lines ───────────────────────────────── */
+  --color-border: #dedee0;
+  --color-separator: #e4e4e7;
+
+  /* ── Default (neutral) ───────────────────── */
+  --color-default: #ebebec;
+  --color-default-hover: #e2e2e4;
+  --color-default-foreground: #18181b;
+
+  /* ── Accent ──────────────────────────────── */
+  --color-accent: #0485f7;
+  --color-accent-hover: #1a90f8;
+  --color-accent-foreground: #ffffff;
+  --color-accent-soft: color-mix(in oklab, #0485f7 15%, transparent);
+  --color-accent-soft-hover: color-mix(in oklab, #0485f7 20%, transparent);
+  --color-accent-soft-foreground: #0a63b8;
+
+  /* ── Status ──────────────────────────────── */
+  --color-success: #17c964;
+  --color-success-hover: #2ece74;
+  --color-success-foreground: #18181b;
+  --color-success-soft: color-mix(in oklab, #17c964 15%, transparent);
+  --color-success-soft-hover: color-mix(in oklab, #17c964 20%, transparent);
+  --color-success-soft-foreground: #0f8a45;
+
+  --color-warning: #f5a524;
+  --color-warning-hover: #f6ae3a;
+  --color-warning-foreground: #18181b;
+  --color-warning-soft: color-mix(in oklab, #f5a524 15%, transparent);
+  --color-warning-soft-hover: color-mix(in oklab, #f5a524 20%, transparent);
+  --color-warning-soft-foreground: #a86a0a;
+
+  --color-danger: #ff383c;
+  --color-danger-hover: #ff4c50;
+  --color-danger-foreground: #ffffff;
+  --color-danger-soft: color-mix(in oklab, #ff383c 15%, transparent);
+  --color-danger-soft-hover: color-mix(in oklab, #ff383c 20%, transparent);
+  --color-danger-soft-foreground: #c9252a;
+
+  --color-focus: #0485f7;
+  --color-backdrop: rgb(0 0 0 / 0.4);
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apricot-system, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* ── Motion ──────────────────────────────── */
+  --ease-out-soft: cubic-bezier(0.32, 0.72, 0, 1);
+  --animate-fade-in: fade-in 0.15s ease-out both;
+  --animate-scale-in: scale-in 0.18s var(--ease-out-soft) both;
+  --animate-slide-up: slide-up 0.25s var(--ease-out-soft) both;
+  --animate-shimmer: shimmer 1.8s linear infinite;
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes scale-in {
+    from { opacity: 0; transform: scale(0.96); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  @keyframes slide-up {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes shimmer {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(100%); }
+  }
+}
+
+/* ── Elevation tokens (theme-aware) ─────────── */
+:root {
+  --nr-shadow-surface: 0 2px 4px 0 rgb(0 0 0 / 0.04), 0 1px 2px 0 rgb(0 0 0 / 0.06), 0 0 1px 0 rgb(0 0 0 / 0.06);
+  --nr-shadow-field: 0 2px 4px 0 rgb(0 0 0 / 0.04), 0 1px 2px 0 rgb(0 0 0 / 0.06), 0 0 1px 0 rgb(0 0 0 / 0.06);
+  --nr-shadow-overlay: 0 2px 8px 0 rgb(0 0 0 / 0.06), 0 -6px 12px 0 rgb(0 0 0 / 0.03), 0 14px 28px 0 rgb(0 0 0 / 0.08);
+}
+
+/* ── Dark theme ─────────────────────────────── */
+.dark {
+  --color-background: #060607;
+  --color-foreground: #fcfcfc;
+  --color-muted: #9f9fa9;
+
+  --color-surface: #18181b;
+  --color-surface-secondary: #232325;
+  --color-surface-tertiary: #29292c;
+  --color-overlay: #18181b;
+
+  --color-field: #18181b;
+  --color-field-secondary: #27272a;
+  --color-field-placeholder: #9f9fa9;
+  --color-segment: #46464c;
+
+  --color-border: #2a2a2e;
+  --color-separator: #222225;
+
+  --color-default: #27272a;
+  --color-default-hover: #303034;
+  --color-default-foreground: #fcfcfc;
+
+  --color-accent-soft: color-mix(in oklab, #0485f7 14%, transparent);
+  --color-accent-soft-hover: color-mix(in oklab, #0485f7 18%, transparent);
+  --color-accent-soft-foreground: #5cb1fb;
+
+  --color-success-soft: color-mix(in oklab, #17c964 13%, transparent);
+  --color-success-soft-hover: color-mix(in oklab, #17c964 17%, transparent);
+  --color-success-soft-foreground: #45d483;
+
+  --color-warning: #f7b750;
+  --color-warning-hover: #f8c066;
+  --color-warning-soft: color-mix(in oklab, #f7b750 13%, transparent);
+  --color-warning-soft-hover: color-mix(in oklab, #f7b750 17%, transparent);
+  --color-warning-soft-foreground: #f9c97c;
+
+  --color-danger: #db3b3e;
+  --color-danger-hover: #e04e51;
+  --color-danger-soft: color-mix(in oklab, #db3b3e 16%, transparent);
+  --color-danger-soft-hover: color-mix(in oklab, #db3b3e 22%, transparent);
+  --color-danger-soft-foreground: #f07b7d;
+
+  --color-backdrop: rgb(0 0 0 / 0.6);
+
+  --nr-shadow-surface: 0 0 0 0 transparent;
+  --nr-shadow-field: inset 0 0 0 1px rgb(255 255 255 / 0.08);
+  --nr-shadow-overlay: inset 0 0 0 1px rgb(255 255 255 / 0.1), 0 16px 40px 0 rgb(0 0 0 / 0.5);
+  color-scheme: dark;
+}
+
+/* Elevation utilities compose with Tailwind rings (ring-*, ring-offset-*) like built-in shadow-* */
+@utility shadow-surface {
+  --tw-shadow: var(--nr-shadow-surface);
+  box-shadow: var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000), var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+@utility shadow-field {
+  --tw-shadow: var(--nr-shadow-field);
+  box-shadow: var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000), var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+@utility shadow-overlay {
+  --tw-shadow: var(--nr-shadow-overlay);
+  box-shadow: var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000), var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    margin: 0;
+    font-family: var(--font-sans);
+    background: var(--color-background);
+    color: var(--color-foreground);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  ::selection {
+    background: color-mix(in oklab, var(--color-accent) 22%, transparent);
+  }
+}

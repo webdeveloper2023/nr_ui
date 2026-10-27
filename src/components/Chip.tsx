@@ -1,93 +1,97 @@
-import React, { forwardRef, type ReactNode } from "react";
+import { forwardRef, type ReactNode } from "react";
+import { cn } from "../lib/cn";
 
-type ChipVariant = "solid" | "bordered" | "light" | "flat" | "dot";
-type ChipColor = "default" | "primary" | "secondary" | "success" | "warning" | "danger";
+type ChipVariant = "primary" | "secondary" | "tertiary" | "soft";
+type ChipColor = "default" | "accent" | "success" | "warning" | "danger";
 type ChipSize = "sm" | "md" | "lg";
-type ChipRadius = "none" | "sm" | "md" | "lg" | "full";
 
 export interface ChipProps {
+  /** Ko'rinish: primary (to'liq rang), secondary (kulrang fon), tertiary (fonsiz) yoki soft (yumshoq rangli fon) */
   variant?: ChipVariant;
+  /** Rang */
   color?: ChipColor;
+  /** O'lcham */
   size?: ChipSize;
-  radius?: ChipRadius;
+  /** Matn oldida rangli nuqta ko'rsatadi (status uchun) */
+  dot?: boolean;
+  /** Matn oldidagi kontent (ikonka) */
   startContent?: ReactNode;
+  /** Matn ortidagi kontent */
   endContent?: ReactNode;
+  /** Berilsa, yopish (X) tugmasi chiqadi */
   onClose?: () => void;
+  /** Chap tomondagi avatar */
   avatar?: ReactNode;
+  /** O'chirilgan holat */
   isDisabled?: boolean;
+  /** Chip matni */
   children?: ReactNode;
+  /** Qo'shimcha klasslar */
   className?: string;
 }
 
-const sizeMap: Record<ChipSize, { chip: string; text: string; close: string; dot: string }> = {
-  sm: { chip: "h-6 px-2 gap-1", text: "text-xs", close: "w-3 h-3", dot: "w-1.5 h-1.5" },
-  md: { chip: "h-7 px-2.5 gap-1.5", text: "text-sm", close: "w-3.5 h-3.5", dot: "w-2 h-2" },
-  lg: { chip: "h-8 px-3 gap-2", text: "text-base", close: "w-4 h-4", dot: "w-2.5 h-2.5" },
+const sizeMap: Record<ChipSize, { chip: string; close: string; dot: string; avatar: string; icon: string }> = {
+  sm: { chip: "h-5 px-1.5 gap-1 text-xs", close: "w-3.5 h-3.5", dot: "w-1.5 h-1.5", avatar: "[&_*]:w-3.5 [&_*]:h-3.5 -ml-0.5", icon: "[&_svg]:w-3 [&_svg]:h-3" },
+  md: { chip: "h-6 px-2 gap-1 text-xs", close: "w-4 h-4", dot: "w-1.5 h-1.5", avatar: "[&_*]:w-4 [&_*]:h-4 -ml-1", icon: "[&_svg]:w-3.5 [&_svg]:h-3.5" },
+  lg: { chip: "h-7 px-2.5 gap-1.5 text-sm", close: "w-[18px] h-[18px]", dot: "w-2 h-2", avatar: "[&_*]:w-5 [&_*]:h-5 -ml-1.5", icon: "[&_svg]:w-4 [&_svg]:h-4" },
 };
 
-const radiusMap: Record<ChipRadius, string> = {
-  none: "rounded-none",
-  sm: "rounded-sm",
-  md: "rounded-lg",
-  lg: "rounded-xl",
-  full: "rounded-full",
+const dotColor: Record<ChipColor, string> = {
+  default: "bg-muted",
+  accent: "bg-accent",
+  success: "bg-success",
+  warning: "bg-warning",
+  danger: "bg-danger",
 };
 
-const dotColorMap: Record<ChipColor, string> = {
-  default: "bg-default-500",
-  primary: "bg-primary-500",
-  secondary: "bg-primary-300",
-  success: "bg-success-500",
-  warning: "bg-warning-500",
-  danger: "bg-danger-500",
+const textColor: Record<ChipColor, string> = {
+  default: "text-foreground",
+  accent: "text-accent",
+  success: "text-success-soft-foreground",
+  warning: "text-warning-soft-foreground",
+  danger: "text-danger-soft-foreground",
 };
 
-const colorStyles: Record<ChipColor, Record<Exclude<ChipVariant, "dot">, string>> = {
+const colorStyles: Record<ChipColor, Record<ChipVariant, string>> = {
   default: {
-    solid: "bg-default-200 text-default-800",
-    bordered: "border-2 border-default-300 text-default-700 bg-transparent",
-    light: "text-default-700 bg-transparent",
-    flat: "bg-default-100 text-default-700",
+    primary: "bg-default text-default-foreground",
+    secondary: "bg-default/60 text-foreground",
+    tertiary: "bg-transparent text-foreground",
+    soft: "bg-default/70 text-default-foreground",
   },
-  primary: {
-    solid: "bg-primary-500 text-white",
-    bordered: "border-2 border-primary-500 text-primary-500 bg-transparent",
-    light: "text-primary-500 bg-transparent",
-    flat: "bg-primary-50 text-primary-500",
-  },
-  secondary: {
-    solid: "bg-primary-300 text-white",
-    bordered: "border-2 border-primary-300 text-primary-300 bg-transparent",
-    light: "text-primary-300 bg-transparent",
-    flat: "bg-primary-50 text-primary-400",
+  accent: {
+    primary: "bg-accent text-accent-foreground",
+    secondary: cn("bg-default/60", textColor.accent),
+    tertiary: cn("bg-transparent", textColor.accent),
+    soft: "bg-accent-soft text-accent-soft-foreground",
   },
   success: {
-    solid: "bg-success-500 text-white",
-    bordered: "border-2 border-success-500 text-success-500 bg-transparent",
-    light: "text-success-500 bg-transparent",
-    flat: "bg-success-500/10 text-success-500",
+    primary: "bg-success text-success-foreground",
+    secondary: cn("bg-default/60", textColor.success),
+    tertiary: cn("bg-transparent", textColor.success),
+    soft: "bg-success-soft text-success-soft-foreground",
   },
   warning: {
-    solid: "bg-warning-500 text-white",
-    bordered: "border-2 border-warning-500 text-warning-500 bg-transparent",
-    light: "text-warning-500 bg-transparent",
-    flat: "bg-warning-500/10 text-warning-500",
+    primary: "bg-warning text-warning-foreground",
+    secondary: cn("bg-default/60", textColor.warning),
+    tertiary: cn("bg-transparent", textColor.warning),
+    soft: "bg-warning-soft text-warning-soft-foreground",
   },
   danger: {
-    solid: "bg-danger-500 text-white",
-    bordered: "border-2 border-danger-500 text-danger-500 bg-transparent",
-    light: "text-danger-500 bg-transparent",
-    flat: "bg-danger-500/10 text-danger-500",
+    primary: "bg-danger text-danger-foreground",
+    secondary: cn("bg-default/60", textColor.danger),
+    tertiary: cn("bg-transparent", textColor.danger),
+    soft: "bg-danger-soft text-danger-soft-foreground",
   },
 };
 
-export const Chip = forwardRef<HTMLDivElement, ChipProps>(
+export const Chip = forwardRef<HTMLSpanElement, ChipProps>(
   (
     {
-      variant = "solid",
+      variant = "soft",
       color = "default",
       size = "md",
-      radius = "full",
+      dot = false,
       startContent,
       endContent,
       onClose,
@@ -97,60 +101,45 @@ export const Chip = forwardRef<HTMLDivElement, ChipProps>(
       className = "",
     },
     ref
-  ) => {
-    const isDot = variant === "dot";
-
-    const chipClasses = [
-      "inline-flex items-center justify-center font-medium",
-      "transition-all duration-200 ease-in-out",
-      sizeMap[size].chip,
-      sizeMap[size].text,
-      radiusMap[radius],
-      isDot
-        ? "bg-default-100 text-default-700 border border-default-200"
-        : colorStyles[color][variant as Exclude<ChipVariant, "dot">],
-      isDisabled ? "opacity-50 pointer-events-none" : "",
-      className,
-    ]
-      .filter(Boolean)
-      .join(" ");
-
-    return (
-      <div ref={ref} className={chipClasses}>
-        {avatar && <span className="shrink-0 -ml-0.5">{avatar}</span>}
-
-        {isDot && (
-          <span className={`${sizeMap[size].dot} rounded-full shrink-0 ${dotColorMap[color]}`} />
-        )}
-
-        {!isDot && startContent && <span className="shrink-0">{startContent}</span>}
-
-        <span className="px-0.5 truncate">{children}</span>
-
-        {!isDot && endContent && <span className="shrink-0">{endContent}</span>}
-
-        {onClose && (
-          <button
-            type="button"
-            onClick={onClose}
-            disabled={isDisabled}
-            className={[
-              "shrink-0 flex items-center justify-center rounded-full",
-              "opacity-70 hover:opacity-100 transition-opacity duration-150",
-              "outline-none focus-visible:ring-1 focus-visible:ring-current",
-              sizeMap[size].close,
-            ].join(" ")}
-            aria-label="Close"
-          >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-              <line x1="18" y1="6" x2="6" y2="18" />
-              <line x1="6" y1="6" x2="18" y2="18" />
-            </svg>
-          </button>
-        )}
-      </div>
-    );
-  }
+  ) => (
+    <span
+      ref={ref}
+      className={cn(
+        "relative inline-flex max-w-fit min-w-min items-center rounded-full whitespace-nowrap font-medium leading-none",
+        "transition-colors duration-150",
+        sizeMap[size].chip,
+        sizeMap[size].icon,
+        colorStyles[color][variant],
+        isDisabled && "opacity-50 pointer-events-none",
+        className
+      )}
+    >
+      {avatar && <span className={cn("flex shrink-0 overflow-hidden rounded-full", sizeMap[size].avatar)}>{avatar}</span>}
+      {dot && <span className={cn("shrink-0 rounded-full", sizeMap[size].dot, variant === "primary" ? "bg-current" : dotColor[color])} />}
+      {startContent && <span className="flex shrink-0">{startContent}</span>}
+      <span className="truncate">{children}</span>
+      {endContent && <span className="flex shrink-0">{endContent}</span>}
+      {onClose && (
+        <button
+          type="button"
+          onClick={onClose}
+          disabled={isDisabled}
+          className={cn(
+            "-mr-0.5 shrink-0 flex items-center justify-center rounded-full cursor-pointer",
+            "opacity-60 hover:opacity-100 hover:bg-current/15 transition-[opacity,background-color] duration-150",
+            "outline-none focus-visible:ring-2 focus-visible:ring-focus",
+            sizeMap[size].close
+          )}
+          aria-label="Close"
+        >
+          <svg viewBox="0 0 24 24" className="!w-[70%] !h-[70%]" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      )}
+    </span>
+  )
 );
 
 Chip.displayName = "Chip";

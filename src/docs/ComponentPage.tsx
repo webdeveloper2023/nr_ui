@@ -1,0 +1,177 @@
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { AlignLeft, ChevronLeft, ChevronRight, FileCode2 } from "lucide-react";
+import { cn } from "../lib/cn";
+import { CodeBlock } from "./CodeBlock";
+import { ExampleBlock } from "./ExampleBlock";
+import { PropsTable } from "./PropsTable";
+import { getExamples, loadSource } from "./modules";
+import { findEntry, registry } from "./registry";
+
+function SourceViewer({ files }: { files: string[] }) {
+  const [active, setActive] = useState(files[0]);
+  const [code, setCode] = useState<Record<string, string>>({});
+  const [expanded, setExpanded] = useState(false);
+
+  useEffect(() => {
+    let alive = true;
+    Promise.all(files.map(async (f) => [f, await loadSource(f)] as const)).then((pairs) => {
+      if (alive) setCode(Object.fromEntries(pairs));
+    });
+    return () => {
+      alive = false;
+    };
+  }, [files]);
+
+  const current = files.includes(active) ? active : files[0];
+
+  return (
+    <div className="overflow-hidden rounded-3xl border border-border bg-background">
+      <div className="flex flex-wrap gap-1 border-b border-border p-2">
+        {files.map((f) => (
+          <button
+            key={f}
+            onClick={() => setActive(f)}
+            className={cn(
+              "flex h-8 items-center gap-1.5 rounded-full px-3 font-mono text-xs transition-colors cursor-pointer",
+              f === current ? "bg-segment text-foreground shadow-field" : "text-muted hover:text-foreground"
+            )}
+          >
+            <FileCode2 size={13} />
+            {f}
+          </button>
+        ))}
+      </div>
+      <div className="relative" style={{ ["--nr-code-bg" as string]: "var(--color-background)" }}>
+        <CodeBlock code={code[current] ?? "// loading…"} bare collapsedHeight={expanded ? undefined : 280} maxHeight={expanded ? 720 : undefined} />
+        <div className={expanded ? "flex justify-center pb-4" : "absolute inset-x-0 bottom-3 flex justify-center"}>
+          <button
+            onClick={() => setExpanded(!expanded)}
+            className="h-8 rounded-full bg-overlay px-3.5 text-xs font-medium text-foreground shadow-overlay cursor-pointer"
+          >
+            {expanded ? "Collapse" : "Expand source"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function H2({ id, children }: { id?: string; children: React.ReactNode }) {
+  return (
+    <h2 id={id} className="scroll-mt-28 text-[28px] font-semibold tracking-tight text-foreground">
+      {children}
+    </h2>
+  );
+}
+
+export default function ComponentPage() {
+  const { slug = "" } = useParams();
+  const entry = findEntry(slug);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+  }, [slug]);
+
+  if (!entry) {
+    return (
+      <div className="py-24 text-center">
+        <p className="text-2xl font-semibold text-foreground">Topilmadi</p>
+        <Link to="/" className="mt-3 inline-block text-accent hover:underline">Bosh sahifa</Link>
+      </div>
+    );
+  }
+
+  const examples = getExamples(entry.slug);
+  const index = registry.indexOf(entry);
+  const prev = registry[index - 1];
+  const next = registry[index + 1];
+  const importCode = `import { ${entry.imports.join(", ")} } from "nr-ui-kit";`;
+
+  const toc = [
+    { id: "usage", label: "Usage", depth: 0 },
+    { id: "examples", label: "Examples", depth: 0 },
+    ...examples.map((e) => ({ id: e.id, label: e.title, depth: 1 })),
+    { id: "api", label: "API Reference", depth: 0 },
+    ...entry.props.map((p) => ({ id: `props-${p.toLowerCase()}`, label: p, depth: 1 })),
+    { id: "source", label: "Source code", depth: 0 },
+  ];
+
+  return (
+    <div className="flex gap-12">
+      <article className="min-w-0 flex-1 max-w-[860px]">
+        <h1 className="text-4xl font-semibold tracking-tight text-foreground">{entry.name}</h1>
+        <p className="mt-3 text-lg text-muted">{entry.description}</p>
+
+        <section id="usage" className="scroll-mt-28 mt-10">
+          <H2>Usage</H2>
+          <CodeBlock code={importCode} lineNumbers={false} className="mt-5" />
+        </section>
+
+        <section id="examples" className="scroll-mt-28 mt-14">
+          <H2>Examples</H2>
+          <div className="mt-6 space-y-12">
+            {examples.length ? (
+              examples.map((ex) => <ExampleBlock key={ex.id} example={ex} />)
+            ) : (
+              <p className="text-sm text-muted">Misollar hali qo'shilmagan.</p>
+            )}
+          </div>
+        </section>
+
+        <section id="api" className="scroll-mt-28 mt-16">
+          <H2>API Reference</H2>
+          <p className="mt-2 mb-6 text-[15px] text-muted">
+            Komponentning o'z prop'lari. Standart HTML atributlari (<code className="font-mono text-[13px]">className</code>, <code className="font-mono text-[13px]">onClick</code>, <code className="font-mono text-[13px]">aria-*</code>…) ham uzatiladi.
+          </p>
+          <div className="space-y-10">
+            {entry.props.map((p) => (
+              <PropsTable key={p} component={p} />
+            ))}
+          </div>
+        </section>
+
+        <section id="source" className="scroll-mt-28 mt-16">
+          <H2>Source code</H2>
+          <p className="mt-2 mb-6 text-[15px] text-muted">
+            Paketsiz ishlatish uchun fayllarni loyihangizga ko'chiring. Komponentlar <code className="font-mono text-[13px]">src/lib/cn.ts</code> va theme CSS'ga tayanadi.
+          </p>
+          <SourceViewer key={entry.slug} files={[...entry.sources, "cn.ts"]} />
+        </section>
+
+        <nav className="mt-16 grid grid-cols-2 gap-4 border-t border-separator pt-8">
+          {prev ? (
+            <Link to={`/components/${prev.slug}`} className="group rounded-2xl bg-surface p-4 shadow-surface transition-transform hover:-translate-y-0.5">
+              <span className="flex items-center gap-1 text-xs text-muted"><ChevronLeft size={14} /> Oldingi</span>
+              <span className="mt-1 block font-medium text-foreground">{prev.name}</span>
+            </Link>
+          ) : <span />}
+          {next && (
+            <Link to={`/components/${next.slug}`} className="group rounded-2xl bg-surface p-4 text-right shadow-surface transition-transform hover:-translate-y-0.5">
+              <span className="flex items-center justify-end gap-1 text-xs text-muted">Keyingi <ChevronRight size={14} /></span>
+              <span className="mt-1 block font-medium text-foreground">{next.name}</span>
+            </Link>
+          )}
+        </nav>
+      </article>
+
+      <aside className="hidden xl:block w-56 shrink-0">
+        <div className="sticky top-24">
+          <p className="mb-3 flex items-center gap-2 text-sm text-muted"><AlignLeft size={14} /> On this page</p>
+          <ul className="space-y-1">
+            {toc.map((t) => (
+              <li key={t.id}>
+                <a
+                  href={`#${t.id}`}
+                  className={cn("block truncate py-1 text-sm text-muted hover:text-foreground transition-colors", t.depth ? "pl-6" : "pl-3")}
+                >
+                  {t.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </aside>
+    </div>
+  );
+}

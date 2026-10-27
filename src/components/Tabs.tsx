@@ -1,110 +1,69 @@
-import React, {
-  useState,
-  useRef,
-  useEffect,
-  useCallback,
-  createContext,
-  useContext,
-  type ReactNode,
-  type HTMLAttributes,
-} from "react";
+import { useCallback, useLayoutEffect, useRef, useState, type HTMLAttributes, type KeyboardEvent, type ReactNode } from "react";
+import { cn } from "../lib/cn";
 
-type TabsVariant = "solid" | "bordered" | "light" | "underlined";
-type TabsColor = "default" | "primary" | "secondary" | "success" | "warning" | "danger";
+type TabsVariant = "primary" | "secondary";
 type TabsSize = "sm" | "md" | "lg";
-type TabsRadius = "none" | "sm" | "md" | "lg" | "full";
+type TabsPlacement = "top" | "bottom" | "start" | "end";
 
 export interface TabItem {
+  /** Tab'ning noyob kaliti */
   key: string;
+  /** Tab sarlavhasi */
   title: ReactNode;
+  /** Sarlavha oldidagi ikonka */
   icon?: ReactNode;
+  /** Tab'ni o'chirib qo'yadi */
   isDisabled?: boolean;
 }
 
-export interface TabsProps extends Omit<HTMLAttributes<HTMLDivElement>, "onChange"> {
+export interface TabsProps extends Omit<HTMLAttributes<HTMLDivElement>, "onChange" | "children"> {
+  /** Ko'rinish: primary (kulrang trek + oq segment) yoki secondary (pastki chiziq) */
   variant?: TabsVariant;
-  color?: TabsColor;
+  /** O'lcham */
   size?: TabsSize;
-  radius?: TabsRadius;
+  /** Tablar butun kenglikni egallaydi */
   fullWidth?: boolean;
+  /** Tablar joylashuvi kontentga nisbatan */
+  placement?: TabsPlacement;
+  /** Tablarni vertikal joylashtiradi */
+  isVertical?: boolean;
+  /** Barcha tablarni o'chiradi */
+  isDisabled?: boolean;
+  /** O'chirilgan tablar kalitlari */
+  disabledKeys?: string[];
+  /** Tablar ro'yxati */
   tabs: TabItem[];
+  /** Tanlangan tab (controlled) */
   selectedKey?: string;
+  /** Boshlang'ich tanlangan tab (uncontrolled) */
   defaultSelectedKey?: string;
+  /** Tab almashganda chaqiriladi */
   onSelectionChange?: (key: string) => void;
+  /** Tanlangan tab kalitiga qarab panel kontentini qaytaruvchi funksiya */
   children?: (key: string) => ReactNode;
 }
 
-export interface TabProps extends HTMLAttributes<HTMLButtonElement> {
-  tabKey: string;
-  title: ReactNode;
-  icon?: ReactNode;
-  isDisabled?: boolean;
+const sizeStyles: Record<TabsSize, { tab: string; underline: string }> = {
+  sm: { tab: "h-7 px-3 text-xs gap-1.5", underline: "h-8 text-xs gap-1.5" },
+  md: { tab: "h-8 px-3.5 text-sm gap-2", underline: "h-10 text-sm gap-2" },
+  lg: { tab: "h-10 px-4 text-base gap-2", underline: "h-12 text-base gap-2" },
+};
+
+interface CursorRect {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
 }
 
-interface TabsContextValue {
-  selectedKey: string;
-  variant: TabsVariant;
-  color: TabsColor;
-  size: TabsSize;
-  onSelect: (key: string) => void;
-  registerTab: (key: string, el: HTMLButtonElement | null) => void;
-}
-
-const TabsContext = createContext<TabsContextValue | null>(null);
-
-const sizeStyles: Record<TabsSize, string> = {
-  sm: "text-xs h-8 px-3",
-  md: "text-sm h-10 px-4",
-  lg: "text-base h-12 px-5",
-};
-
-const colorValues: Record<TabsColor, { bg: string; text: string; indicator: string }> = {
-  default: {
-    bg: "bg-default-200",
-    text: "text-default-700",
-    indicator: "bg-default-800",
-  },
-  primary: {
-    bg: "bg-primary-100",
-    text: "text-primary-500",
-    indicator: "bg-primary-500",
-  },
-  secondary: {
-    bg: "bg-primary-50",
-    text: "text-primary-300",
-    indicator: "bg-primary-300",
-  },
-  success: {
-    bg: "bg-success-500/10",
-    text: "text-success-500",
-    indicator: "bg-success-500",
-  },
-  warning: {
-    bg: "bg-warning-500/10",
-    text: "text-warning-500",
-    indicator: "bg-warning-500",
-  },
-  danger: {
-    bg: "bg-danger-500/10",
-    text: "text-danger-500",
-    indicator: "bg-danger-500",
-  },
-};
-
-const radiusStyles: Record<TabsRadius, string> = {
-  none: "rounded-none",
-  sm: "rounded-sm",
-  md: "rounded-lg",
-  lg: "rounded-xl",
-  full: "rounded-full",
-};
-
-export const Tabs: React.FC<TabsProps> = ({
-  variant = "solid",
-  color = "primary",
+export const Tabs = ({
+  variant = "primary",
   size = "md",
-  radius = "md",
   fullWidth = false,
+  placement = "top",
+  isVertical = false,
+  isDisabled = false,
+  disabledKeys = [],
   tabs,
   selectedKey: controlledKey,
   defaultSelectedKey,
@@ -112,172 +71,155 @@ export const Tabs: React.FC<TabsProps> = ({
   children,
   className = "",
   ...props
-}) => {
-  const [internalKey, setInternalKey] = useState(
-    defaultSelectedKey ?? tabs[0]?.key ?? ""
-  );
+}: TabsProps) => {
+  const [internalKey, setInternalKey] = useState(defaultSelectedKey ?? tabs[0]?.key ?? "");
   const selectedKey = controlledKey ?? internalKey;
+  const resolvedPlacement: TabsPlacement = isVertical && (placement === "top" || placement === "bottom") ? "start" : placement;
+  const vertical = resolvedPlacement === "start" || resolvedPlacement === "end";
+  const underline = variant === "secondary";
 
   const tabRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
-  const containerRef = useRef<HTMLDivElement>(null);
-  const indicatorRef = useRef<HTMLDivElement>(null);
+  const [cursor, setCursor] = useState<CursorRect | null>(null);
+  const [animate, setAnimate] = useState(false);
 
-  const registerTab = useCallback(
-    (key: string, el: HTMLButtonElement | null) => {
-      if (el) {
-        tabRefs.current.set(key, el);
-      } else {
-        tabRefs.current.delete(key);
-      }
-    },
-    []
-  );
+  const isKeyDisabled = (tab: TabItem) => isDisabled || tab.isDisabled || disabledKeys.includes(tab.key);
 
   const onSelect = useCallback(
     (key: string) => {
-      if (!controlledKey) setInternalKey(key);
+      if (controlledKey === undefined) setInternalKey(key);
       onSelectionChange?.(key);
     },
     [controlledKey, onSelectionChange]
   );
 
-  useEffect(() => {
-    const updateIndicator = () => {
-      const activeTab = tabRefs.current.get(selectedKey);
-      const container = containerRef.current;
-      const indicator = indicatorRef.current;
-      if (!activeTab || !container || !indicator) return;
-
-      const containerRect = container.getBoundingClientRect();
-      const tabRect = activeTab.getBoundingClientRect();
-
-      indicator.style.width = `${tabRect.width}px`;
-      indicator.style.left = `${tabRect.left - containerRect.left}px`;
-
-      if (variant === "underlined") {
-        indicator.style.height = "2px";
-        indicator.style.top = "auto";
-        indicator.style.bottom = "0px";
-      } else {
-        indicator.style.height = `${tabRect.height}px`;
-        indicator.style.top = `${tabRect.top - containerRect.top}px`;
-      }
+  useLayoutEffect(() => {
+    const update = () => {
+      const el = tabRefs.current.get(selectedKey);
+      if (!el) return setCursor(null);
+      const next = { x: el.offsetLeft, y: el.offsetTop, w: el.offsetWidth, h: el.offsetHeight };
+      setCursor((prev) => (prev && prev.x === next.x && prev.y === next.y && prev.w === next.w && prev.h === next.h ? prev : next));
     };
+    update();
+    const ro = new ResizeObserver(update);
+    tabRefs.current.forEach((el) => ro.observe(el));
+    return () => ro.disconnect();
+  }, [selectedKey, variant, size, tabs]);
 
-    updateIndicator();
-    window.addEventListener("resize", updateIndicator);
-    return () => window.removeEventListener("resize", updateIndicator);
-  }, [selectedKey, variant]);
+  // Slide the thumb only after the first measured paint (no slide-in on mount)
+  useLayoutEffect(() => {
+    if (cursor && !animate) {
+      const id = requestAnimationFrame(() => setAnimate(true));
+      return () => cancelAnimationFrame(id);
+    }
+  }, [cursor, animate]);
 
-  const containerVariantStyles = {
-    solid: `bg-default-100 ${radiusStyles[radius]} p-1`,
-    bordered: `border border-default-200 ${radiusStyles[radius]} p-1`,
-    light: "",
-    underlined: "border-b border-default-200",
+  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    const keys = vertical ? ["ArrowDown", "ArrowUp"] : ["ArrowRight", "ArrowLeft"];
+    if (!keys.includes(e.key) && e.key !== "Home" && e.key !== "End") return;
+    e.preventDefault();
+    const enabled = tabs.filter((t) => !isKeyDisabled(t));
+    const idx = enabled.findIndex((t) => t.key === selectedKey);
+    let target = idx;
+    if (e.key === keys[0]) target = (idx + 1) % enabled.length;
+    else if (e.key === keys[1]) target = (idx - 1 + enabled.length) % enabled.length;
+    else if (e.key === "Home") target = 0;
+    else if (e.key === "End") target = enabled.length - 1;
+    const key = enabled[target]?.key;
+    if (key) {
+      onSelect(key);
+      tabRefs.current.get(key)?.focus();
+    }
   };
 
-  const indicatorVariantStyles = {
-    solid: `${colorValues[color].indicator} ${radiusStyles[radius]} shadow-sm`,
-    bordered: `border-2 border-current ${colorValues[color].text} bg-white ${radiusStyles[radius]}`,
-    light: `${colorValues[color].bg} ${radiusStyles[radius]}`,
-    underlined: `${colorValues[color].indicator}`,
-  };
+  const cursorStyle = (() => {
+    if (!cursor) return { opacity: 0 };
+    if (underline) {
+      return vertical
+        ? { transform: `translate(0px, ${cursor.y}px)`, width: 2, height: cursor.h, right: -1, top: 0 }
+        : { transform: `translate(${cursor.x}px, 0px)`, width: cursor.w, height: 2, bottom: -1, left: 0 };
+    }
+    return { transform: `translate(${cursor.x}px, ${cursor.y}px)`, width: cursor.w, height: cursor.h, top: 0, left: 0 };
+  })();
 
-  return (
-    <div className={className} {...props}>
-      <div
-        ref={containerRef}
-        className={`relative flex ${fullWidth ? "w-full" : "inline-flex"} ${containerVariantStyles[variant]}`}
-        role="tablist"
-      >
-        <div
-          ref={indicatorRef}
-          className={`absolute transition-all duration-300 ease-out ${indicatorVariantStyles[variant]} pointer-events-none z-0`}
-        />
-        {tabs.map((tab) => (
-          <TabButton
-            key={tab.key}
-            tabKey={tab.key}
-            title={tab.title}
-            icon={tab.icon}
-            isDisabled={tab.isDisabled}
-            selectedKey={selectedKey}
-            variant={variant}
-            color={color}
-            size={size}
-            fullWidth={fullWidth}
-            onSelect={onSelect}
-            registerTab={registerTab}
-          />
-        ))}
-      </div>
-      {children && (
-        <div className="pt-4">{children(selectedKey)}</div>
+  const list = (
+    <div
+      role="tablist"
+      aria-orientation={vertical ? "vertical" : "horizontal"}
+      onKeyDown={handleKeyDown}
+      className={cn(
+        "relative flex",
+        vertical ? "flex-col h-fit" : cn("items-center", fullWidth ? "w-full" : "w-fit"),
+        underline
+          ? cn("gap-6", vertical ? "gap-1 border-r border-separator pr-4" : "border-b border-separator")
+          : cn("bg-default p-1 gap-0.5", vertical ? "rounded-3xl" : "rounded-full"),
+        !underline && !vertical && "overflow-x-auto"
       )}
+    >
+      <span
+        aria-hidden
+        className={cn(
+          "absolute z-0 pointer-events-none",
+          animate && "transition-[transform,width,height,opacity] duration-300 ease-(--ease-out-soft)",
+          underline ? "bg-accent rounded-full" : "bg-segment shadow-field rounded-full"
+        )}
+        style={cursorStyle}
+      />
+      {tabs.map((tab) => {
+        const isActive = selectedKey === tab.key;
+        const disabled = isKeyDisabled(tab);
+        return (
+          <button
+            key={tab.key}
+            ref={(el) => {
+              if (el) tabRefs.current.set(tab.key, el);
+              else tabRefs.current.delete(tab.key);
+            }}
+            type="button"
+            role="tab"
+            aria-selected={isActive}
+            tabIndex={isActive ? 0 : -1}
+            disabled={disabled}
+            onClick={() => onSelect(tab.key)}
+            className={cn(
+              "relative z-10 inline-flex items-center font-medium whitespace-nowrap select-none cursor-pointer rounded-full",
+              "outline-none transition-colors duration-150",
+              "focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+              underline ? sizeStyles[size].underline : sizeStyles[size].tab,
+              vertical ? "justify-start" : "justify-center",
+              underline && vertical && "px-2",
+              fullWidth && !vertical && "flex-1",
+              isActive ? "text-foreground" : "text-muted hover:text-foreground",
+              disabled && "opacity-50 pointer-events-none"
+            )}
+          >
+            {tab.icon && <span className="flex shrink-0">{tab.icon}</span>}
+            <span>{tab.title}</span>
+          </button>
+        );
+      })}
     </div>
   );
-};
 
-interface TabButtonProps {
-  tabKey: string;
-  title: ReactNode;
-  icon?: ReactNode;
-  isDisabled?: boolean;
-  selectedKey: string;
-  variant: TabsVariant;
-  color: TabsColor;
-  size: TabsSize;
-  fullWidth: boolean;
-  onSelect: (key: string) => void;
-  registerTab: (key: string, el: HTMLButtonElement | null) => void;
-}
-
-const TabButton: React.FC<TabButtonProps> = ({
-  tabKey,
-  title,
-  icon,
-  isDisabled = false,
-  selectedKey,
-  variant,
-  color,
-  size,
-  fullWidth,
-  onSelect,
-  registerTab,
-}) => {
-  const ref = useRef<HTMLButtonElement>(null);
-  const isActive = selectedKey === tabKey;
-
-  useEffect(() => {
-    registerTab(tabKey, ref.current);
-    return () => registerTab(tabKey, null);
-  }, [tabKey, registerTab]);
-
-  const activeTextColor =
-    variant === "solid" ? "text-white" : colorValues[color].text;
+  const panel = children ? (
+    <div role="tabpanel" key={selectedKey} className={cn("animate-fade-in text-sm", vertical ? "flex-1 min-w-0" : "pt-4")}>
+      {children(selectedKey)}
+    </div>
+  ) : null;
 
   return (
-    <button
-      ref={ref}
-      role="tab"
-      aria-selected={isActive}
-      disabled={isDisabled}
-      onClick={() => onSelect(tabKey)}
-      className={[
-        "relative z-10 inline-flex items-center justify-center gap-2 font-medium",
-        "outline-none transition-colors duration-200 cursor-pointer select-none",
-        "focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-1",
-        sizeStyles[size],
-        fullWidth ? "flex-1" : "",
-        isActive ? activeTextColor : "text-default-500 hover:text-default-700",
-        isDisabled ? "opacity-50 pointer-events-none" : "",
-      ]
-        .filter(Boolean)
-        .join(" ")}
+    <div
+      className={cn(
+        "flex",
+        vertical ? "gap-6" : "flex-col",
+        resolvedPlacement === "bottom" && "flex-col-reverse",
+        resolvedPlacement === "end" && "flex-row-reverse",
+        className
+      )}
+      {...props}
     >
-      {icon && <span className="flex-shrink-0">{icon}</span>}
-      <span>{title}</span>
-    </button>
+      {list}
+      {panel}
+    </div>
   );
 };
 

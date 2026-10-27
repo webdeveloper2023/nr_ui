@@ -2,182 +2,205 @@ import React, {
   useState,
   useRef,
   useEffect,
-  useCallback,
+  isValidElement,
   type ReactNode,
   type ReactElement,
+  type SyntheticEvent,
 } from "react";
 import { createPortal } from "react-dom";
+import { cn } from "../lib/cn";
+import {
+  useFloating,
+  usePresence,
+  getSide,
+  originClass,
+  hiddenShift,
+  arrowPosition,
+  setRef,
+  type Placement,
+} from "./floating";
 
-type TooltipPlacement = "top" | "bottom" | "left" | "right";
-type TooltipColor = "default" | "primary" | "secondary" | "success" | "warning" | "danger";
+type TooltipPlacement = Placement;
+type TooltipColor = "default" | "foreground" | "accent" | "success" | "warning" | "danger";
+type TooltipSize = "sm" | "md" | "lg";
+type TooltipRadius = "sm" | "md" | "lg" | "full";
 
 export interface TooltipProps {
+  /** Tooltip ichidagi kontent */
   content: ReactNode;
+  /** Joylashuv tomoni */
   placement?: TooltipPlacement;
+  /** Rang mavzusi */
   color?: TooltipColor;
+  /** O'lcham */
+  size?: TooltipSize;
+  /** Burchak yumaloqligi */
+  radius?: TooltipRadius;
+  /** Ochilishdan oldingi kechikish (ms) */
   delay?: number;
+  /** Yopilishdan oldingi kechikish (ms) */
   closeDelay?: number;
+  /** Trigger'dan masofa (px) */
+  offset?: number;
+  /** Ko'rsatkich strelkani ko'rsatish */
   showArrow?: boolean;
+  /** O'chirilgan (faol emas) holat */
   isDisabled?: boolean;
+  /** Ochiq holati (boshqariladigan) */
+  isOpen?: boolean;
+  /** Boshlang'ich ochiq holati (boshqarilmaydigan) */
+  defaultOpen?: boolean;
+  /** Ochiq holati o'zgarganda chaqiriladi */
+  onOpenChange?: (open: boolean) => void;
+  /** Qo'shimcha CSS klasslar */
+  className?: string;
+  /** Trigger element (bitta React element) */
   children: ReactElement;
 }
 
 const colorStyles: Record<TooltipColor, string> = {
-  default: "bg-default-800 text-white",
-  primary: "bg-primary-500 text-white",
-  secondary: "bg-primary-300 text-white",
-  success: "bg-success-500 text-white",
-  warning: "bg-warning-500 text-white",
-  danger: "bg-danger-500 text-white",
+  default: "bg-overlay text-foreground shadow-overlay",
+  foreground: "bg-foreground text-background shadow-overlay",
+  accent: "bg-accent text-accent-foreground shadow-overlay",
+  success: "bg-success text-success-foreground shadow-overlay",
+  warning: "bg-warning text-warning-foreground shadow-overlay",
+  danger: "bg-danger text-danger-foreground shadow-overlay",
 };
 
 const arrowColorStyles: Record<TooltipColor, string> = {
-  default: "bg-default-800",
-  primary: "bg-primary-500",
-  secondary: "bg-primary-300",
-  success: "bg-success-500",
-  warning: "bg-warning-500",
-  danger: "bg-danger-500",
+  default: "bg-overlay",
+  foreground: "bg-foreground",
+  accent: "bg-accent",
+  success: "bg-success",
+  warning: "bg-warning",
+  danger: "bg-danger",
+};
+
+const sizeStyles: Record<TooltipSize, string> = {
+  sm: "px-2 py-1 text-xs",
+  md: "px-2.5 py-1.5 text-xs",
+  lg: "px-3 py-2 text-sm",
+};
+
+const radiusStyles: Record<TooltipRadius, string> = {
+  sm: "rounded-lg",
+  md: "rounded-xl",
+  lg: "rounded-2xl",
+  full: "rounded-full",
+};
+
+type ChildProps = {
+  onMouseEnter?: (e: SyntheticEvent) => void;
+  onMouseLeave?: (e: SyntheticEvent) => void;
+  onFocus?: (e: SyntheticEvent) => void;
+  onBlur?: (e: SyntheticEvent) => void;
+  ref?: unknown;
 };
 
 export const Tooltip: React.FC<TooltipProps> = ({
   content,
   placement = "top",
   color = "default",
-  delay = 400,
-  closeDelay = 200,
-  showArrow = true,
+  size = "md",
+  radius = "md",
+  delay = 300,
+  closeDelay = 150,
+  offset = 8,
+  showArrow = false,
   isDisabled = false,
+  isOpen: openProp,
+  defaultOpen = false,
+  onOpenChange,
+  className = "",
   children,
 }) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const [position, setPosition] = useState({ top: 0, left: 0 });
-  const triggerRef = useRef<HTMLElement>(null);
-  const tooltipRef = useRef<HTMLDivElement>(null);
-  const showTimer = useRef<ReturnType<typeof setTimeout>>();
-  const hideTimer = useRef<ReturnType<typeof setTimeout>>();
+  const [openState, setOpenState] = useState(defaultOpen);
+  const isOpen = (openProp ?? openState) && !isDisabled;
+  const triggerRef = useRef<HTMLElement | null>(null);
+  const tooltipRef = useRef<HTMLDivElement | null>(null);
+  const showTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const hideTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const { mounted, visible } = usePresence(isOpen, 120);
+  const floating = useFloating(mounted, triggerRef, tooltipRef, placement, offset);
+  const side = getSide(floating.placement);
 
-  const updatePosition = useCallback(() => {
-    const trigger = triggerRef.current;
-    const tooltip = tooltipRef.current;
-    if (!trigger || !tooltip) return;
-
-    const tRect = trigger.getBoundingClientRect();
-    const ttRect = tooltip.getBoundingClientRect();
-    const gap = 8;
-
-    let top = 0;
-    let left = 0;
-
-    switch (placement) {
-      case "top":
-        top = tRect.top - ttRect.height - gap + window.scrollY;
-        left = tRect.left + tRect.width / 2 - ttRect.width / 2 + window.scrollX;
-        break;
-      case "bottom":
-        top = tRect.bottom + gap + window.scrollY;
-        left = tRect.left + tRect.width / 2 - ttRect.width / 2 + window.scrollX;
-        break;
-      case "left":
-        top = tRect.top + tRect.height / 2 - ttRect.height / 2 + window.scrollY;
-        left = tRect.left - ttRect.width - gap + window.scrollX;
-        break;
-      case "right":
-        top = tRect.top + tRect.height / 2 - ttRect.height / 2 + window.scrollY;
-        left = tRect.right + gap + window.scrollX;
-        break;
-    }
-
-    setPosition({ top, left });
-  }, [placement]);
-
-  useEffect(() => {
-    if (isVisible) {
-      updatePosition();
-      window.addEventListener("scroll", updatePosition, true);
-      window.addEventListener("resize", updatePosition);
-      return () => {
-        window.removeEventListener("scroll", updatePosition, true);
-        window.removeEventListener("resize", updatePosition);
-      };
-    }
-  }, [isVisible, updatePosition]);
+  const setOpen = (open: boolean) => {
+    setOpenState(open);
+    onOpenChange?.(open);
+  };
 
   const show = () => {
     if (isDisabled) return;
     clearTimeout(hideTimer.current);
-    showTimer.current = setTimeout(() => setIsVisible(true), delay);
+    showTimer.current = setTimeout(() => setOpen(true), delay);
   };
 
   const hide = () => {
     clearTimeout(showTimer.current);
-    hideTimer.current = setTimeout(() => setIsVisible(false), closeDelay);
+    hideTimer.current = setTimeout(() => setOpen(false), closeDelay);
   };
 
-  useEffect(() => {
-    return () => {
+  useEffect(
+    () => () => {
       clearTimeout(showTimer.current);
       clearTimeout(hideTimer.current);
-    };
-  }, []);
+    },
+    []
+  );
 
-  const arrowPlacement: Record<TooltipPlacement, string> = {
-    top: "left-1/2 -translate-x-1/2 -bottom-1",
-    bottom: "left-1/2 -translate-x-1/2 -top-1",
-    left: "top-1/2 -translate-y-1/2 -right-1",
-    right: "top-1/2 -translate-y-1/2 -left-1",
-  };
-
-  const originMap: Record<TooltipPlacement, string> = {
-    top: "origin-bottom",
-    bottom: "origin-top",
-    left: "origin-right",
-    right: "origin-left",
-  };
+  if (!isValidElement<ChildProps>(children)) return children;
+  const childProps = children.props;
+  const childRef = (children as unknown as { ref?: unknown }).ref ?? childProps.ref;
 
   const child = React.cloneElement(children, {
-    ref: triggerRef,
-    onMouseEnter: (e: React.MouseEvent) => {
+    ref: (el: HTMLElement | null) => {
+      triggerRef.current = el;
+      setRef(childRef, el);
+    },
+    onMouseEnter: (e: SyntheticEvent) => {
       show();
-      children.props.onMouseEnter?.(e);
+      childProps.onMouseEnter?.(e);
     },
-    onMouseLeave: (e: React.MouseEvent) => {
+    onMouseLeave: (e: SyntheticEvent) => {
       hide();
-      children.props.onMouseLeave?.(e);
+      childProps.onMouseLeave?.(e);
     },
-    onFocus: (e: React.FocusEvent) => {
+    onFocus: (e: SyntheticEvent) => {
       show();
-      children.props.onFocus?.(e);
+      childProps.onFocus?.(e);
     },
-    onBlur: (e: React.FocusEvent) => {
+    onBlur: (e: SyntheticEvent) => {
       hide();
-      children.props.onBlur?.(e);
+      childProps.onBlur?.(e);
     },
-  } as Record<string, unknown>);
+  } as ChildProps);
 
   return (
     <>
       {child}
-      {isVisible &&
+      {mounted &&
         createPortal(
           <div
             ref={tooltipRef}
             role="tooltip"
-            className={[
-              "fixed z-[9999] px-2.5 py-1.5 text-xs font-medium rounded-lg",
-              "transition-all duration-150 ease-out",
-              "animate-in fade-in",
-              originMap[placement],
+            className={cn(
+              "z-[9999] max-w-xs leading-snug pointer-events-auto",
+              "transition-[opacity,transform] duration-150 ease-(--ease-out-soft)",
+              originClass[side],
               colorStyles[color],
-            ].join(" ")}
-            style={{ top: position.top, left: position.left, position: "absolute" }}
+              sizeStyles[size],
+              radiusStyles[radius],
+              visible ? "opacity-100 scale-100 translate-x-0 translate-y-0" : cn("opacity-0 scale-[0.96]", hiddenShift[side]),
+              className
+            )}
+            style={floating.style}
             onMouseEnter={() => clearTimeout(hideTimer.current)}
             onMouseLeave={hide}
           >
-            {content}
+            <span className="relative z-10">{content}</span>
             {showArrow && (
-              <div
-                className={`absolute w-2 h-2 rotate-45 ${arrowColorStyles[color]} ${arrowPlacement[placement]}`}
+              <span
+                className={cn("absolute w-2 h-2 rotate-45", arrowColorStyles[color], arrowPosition(floating.placement))}
               />
             )}
           </div>,

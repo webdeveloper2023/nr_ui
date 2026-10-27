@@ -1,32 +1,127 @@
-# React + TypeScript + Vite
+# NR UI Kit
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Pro darajadagi React komponent kutubxonasi — **React 18/19**, **Tailwind CSS v4**, **TypeScript**, to'liq **dark mode**.
 
-Currently, two official plugins are available:
+45+ komponent: Button, Input, Select, Table, Modal, Dropdown, Toast, Sidebar, Pricing, AI Chat va boshqalar.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## O'rnatish
 
-## React Compiler
+```bash
+# GitHub'dan (private repo — GitHub'ga kirgan bo'lishingiz kerak)
+npm install github:webdeveloper2023/nr_ui
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+# npm'ga publish qilingandan keyin
+npm install nr-ui-kit
+```
 
-## Expanding the Oxlint configuration
+Talablar: `react >= 18`, `react-dom >= 18`. `lucide-react` avtomatik o'rnatiladi.
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+## Stillarni ulash
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
+**A) Loyihada Tailwind v4 bor bo'lsa (tavsiya etiladi):**
+
+```css
+/* src/index.css */
+@import "tailwindcss";
+@import "nr-ui-kit/theme.css";
+```
+
+Shunda o'z kodingizda ham `bg-surface`, `text-muted`, `bg-accent`, `bg-accent-soft`, `shadow-surface` kabi tokenlar ishlaydi.
+
+**B) Tailwind'siz — tayyor CSS:**
+
+```ts
+import "nr-ui-kit/styles.css";
+```
+
+**Shrift (ixtiyoriy):** dizayn Inter shrifti uchun moslangan:
+
+```html
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+```
+
+## Ishlatish
+
+```tsx
+import { ToastProvider, Button, Input, Card, CardBody, useToast } from "nr-ui-kit";
+
+function Form() {
+  const { addToast } = useToast();
+  return (
+    <Card className="max-w-sm">
+      <CardBody className="space-y-3">
+        <Input label="Email" type="email" variant="secondary" />
+        <Button fullWidth onClick={() => addToast({ title: "Yuborildi!", color: "success" })}>
+          Yuborish
+        </Button>
+      </CardBody>
+    </Card>
+  );
+}
+
+export default function App() {
+  return (
+    <ToastProvider>
+      <Form />
+    </ToastProvider>
+  );
 }
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## Dark mode
+
+```ts
+document.documentElement.classList.toggle("dark", isDark);
+```
+
+## Theme
+
+Ranglarni o'zgartirish uchun tokenlarni qayta e'lon qiling:
+
+```css
+@import "tailwindcss";
+@import "nr-ui-kit/theme.css";
+
+@theme {
+  --color-accent: #7c3aed;
+  --color-accent-hover: #8b5cf6;
+  --color-accent-soft-foreground: #6d28d9;
+}
+```
+
+## Hujjatlar (docs sayt)
+
+Har bir komponent sahifasida jonli misollar, **Show code**, props jadvali va to'liq source kod bor:
+
+```bash
+npm install
+npm run dev        # http://localhost:5199
+```
+
+## Skriptlar
+
+| Buyruq | Vazifasi |
+| --- | --- |
+| `npm run dev` | Docs saytini ishga tushirish (props jadvalini qayta generatsiya qiladi) |
+| `npm run build` | Docs saytini `docs-dist/` ga build qilish |
+| `npm run build:lib` | npm paketini `dist/` ga build qilish (JS, CJS, types, CSS) |
+| `npm run gen:props` | `src/docs/props.json` ni komponent type'laridan generatsiya qilish |
+
+## Publish qilish
+
+```bash
+npm run build:lib
+npm publish --access public
+```
+
+## Struktura
+
+```
+src/
+  components/   # kutubxona komponentlari (paketga kiradi)
+  lib/cn.ts     # class helper
+  styles/       # theme.css (tokenlar), prebuilt.css
+  lib.ts        # paket entry
+  docs/         # docs sayt: registry, sahifalar, examples/<slug>/*.tsx
+scripts/        # gen-props.mjs, copy-theme.mjs
+```

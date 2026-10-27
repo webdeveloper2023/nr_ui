@@ -1,18 +1,70 @@
 {
-  "name": "nr_ui",
-  "private": true,
-  "version": "0.0.0",
+  "name": "nr-ui-kit",
+  "version": "1.0.0",
+  "description": "Pro-grade React component library — Tailwind CSS v4, TypeScript, dark mode",
   "type": "module",
+  "license": "MIT",
+  "author": "Nazirov Rafiqjon",
+  "homepage": "https://github.com/webdeveloper2023/nr_ui#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webdeveloper2023/nr_ui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/webdeveloper2023/nr_ui/issues"
+  },
+  "keywords": [
+    "react",
+    "ui",
+    "components",
+    "tailwindcss",
+    "design-system",
+    "dark-mode"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/types/lib.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/lib.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./styles.css": "./dist/styles.css",
+    "./theme.css": "./dist/theme.css",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": [
+    "*.css"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "dev": "node scripts/gen-props.mjs && vite",
+    "build": "node scripts/gen-props.mjs && tsc -b && vite build",
+    "build:lib": "vite build -c vite.lib.config.ts && tsc -p tsconfig.lib.json && node scripts/copy-theme.mjs",
+    "gen:props": "node scripts/gen-props.mjs",
+    "prepare": "npm run build:lib",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "typecheck": "tsc -b",
+    "check": "npm run lint && npm run typecheck && npm run build && npm run build:lib"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
   },
   "dependencies": {
-    "react": "^19.3.1",
-    "react-dom": "^19.3.1",
-    "react-router-dom": "^7.18.4"
+    "lucide-react": "^1.62.0"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.3",
@@ -20,9 +72,13 @@
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.2",
-    "lucide-react": "^1.62.0",
     "oxlint": "^1.89.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-router-dom": "^7.18.4",
+    "sugar-high": "^0.9.3",
     "tailwindcss": "^4.3.3",
+    "ts5": "npm:typescript@^5.9.3",
     "typescript": "~7.0.2",
     "vite": "^8.3.5"
   }
