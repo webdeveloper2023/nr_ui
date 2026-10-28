@@ -55,8 +55,8 @@ export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElemen
   fullWidth?: boolean;
 }
 
-const lineHeight: Record<FieldSize, number> = { sm: 20, md: 20, lg: 24 };
-const padding: Record<FieldSize, string> = { sm: "px-2.5 py-1.5", md: "px-3 py-2", lg: "px-3.5 py-2.5" };
+const lineHeight: Record<FieldSize, number> = { xs: 16, sm: 20, md: 20, lg: 24 };
+const padding: Record<FieldSize, string> = { xs: "px-2 py-1", sm: "px-2.5 py-1.5", md: "px-3 py-2", lg: "px-3.5 py-2.5" };
 const radiusStyles = { sm: "rounded-lg", md: "rounded-xl", lg: "rounded-2xl" } as const;
 
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(

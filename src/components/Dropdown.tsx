@@ -47,6 +47,10 @@ export interface DropdownTriggerProps {
 export interface DropdownMenuProps extends Omit<HTMLAttributes<HTMLDivElement>, "onSelect"> {
   /** DropdownTrigger va DropdownMenu */
   children?: ReactNode;
+  /** Menyuni shisha (blur) material qiladi; false — to'q fon */
+  isBlurred?: boolean;
+  /** Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi */
+  material?: "frosted" | "liquid";
   /** Ekran o'quvchilar uchun nom */
   "aria-label"?: string;
   /** Tanlash rejimi */
@@ -200,6 +204,8 @@ export const DropdownMenu = forwardRef<HTMLDivElement, DropdownMenuProps>(
       onSelectionChange,
       onAction,
       disabledKeys,
+      isBlurred = true,
+      material,
       ...props
     },
     ref
@@ -297,10 +303,12 @@ export const DropdownMenu = forwardRef<HTMLDivElement, DropdownMenuProps>(
           }}
           id={menuId}
           role="menu"
+          data-glass={material}
           tabIndex={-1}
           className={cn(
             "z-50 min-w-[220px] max-h-[min(24rem,calc(100vh-2rem))] overflow-y-auto p-1.5 outline-none",
-            "bg-overlay text-foreground rounded-2xl shadow-overlay",
+            "text-foreground rounded-2xl",
+            isBlurred ? "glass-thick" : "bg-overlay shadow-overlay",
             "transition-[opacity,transform] duration-150 ease-(--ease-out-soft)",
             originClass[side],
             visible ? "opacity-100 scale-100 translate-x-0 translate-y-0" : cn("opacity-0 scale-[0.96]", hiddenShift[side]),
@@ -324,7 +332,7 @@ const itemColorStyles: Record<DropdownColor, string> = {
   accent: "text-foreground hover:bg-accent-soft hover:text-accent-soft-foreground focus:bg-accent-soft focus:text-accent-soft-foreground",
   success: "text-foreground hover:bg-success-soft hover:text-success-soft-foreground focus:bg-success-soft focus:text-success-soft-foreground",
   warning: "text-foreground hover:bg-warning-soft hover:text-warning-soft-foreground focus:bg-warning-soft focus:text-warning-soft-foreground",
-  danger: "text-danger hover:bg-danger-soft focus:bg-danger-soft",
+  danger: "text-danger hover:bg-default focus:bg-default",
 };
 
 const CheckIcon = () => (

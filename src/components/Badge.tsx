@@ -3,7 +3,7 @@ import { cn } from "../lib/cn";
 
 type BadgeColor = "default" | "accent" | "success" | "warning" | "danger";
 type BadgeVariant = "primary" | "soft";
-type BadgeSize = "sm" | "md" | "lg";
+type BadgeSize = "xs" | "sm" | "md" | "lg";
 type BadgePlacement = "top-right" | "top-left" | "bottom-right" | "bottom-left";
 type BadgeShape = "circle" | "rectangle";
 
@@ -58,6 +58,7 @@ const colorStyles: Record<BadgeColor, Record<BadgeVariant, string>> = {
 };
 
 const sizeMap: Record<BadgeSize, { badge: string; oneChar: string; dot: string; text: string }> = {
+  xs: { badge: "min-w-3.5 h-3.5 px-0.5", oneChar: "w-3.5 h-3.5", dot: "w-2 h-2", text: "text-[9px]" },
   sm: { badge: "min-w-4 h-4 px-1", oneChar: "w-4 h-4", dot: "w-2.5 h-2.5", text: "text-[10px]" },
   md: { badge: "min-w-5 h-5 px-1.5", oneChar: "w-5 h-5", dot: "w-3 h-3", text: "text-xs" },
   lg: { badge: "min-w-6 h-6 px-2", oneChar: "w-6 h-6", dot: "w-3.5 h-3.5", text: "text-sm" },

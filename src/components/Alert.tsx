@@ -2,13 +2,15 @@ import { forwardRef, type HTMLAttributes, type ReactNode } from "react";
 import { cn } from "../lib/cn";
 
 type AlertColor = "default" | "accent" | "success" | "warning" | "danger";
-type AlertVariant = "default" | "soft" | "flat";
+type AlertVariant = "default" | "soft" | "flat" | "glass";
 
 export interface AlertProps extends Omit<HTMLAttributes<HTMLDivElement>, "title" | "color"> {
   /** Holat rangi (ikonka va fon tusi) */
   color?: AlertColor;
-  /** Ko'rinish: default — oq surface, soft — rangli yengil tus, flat — to'liq rangli fon */
+  /** Ko'rinish: default — surface (yengil gradient), soft — rangli yengil tus, flat — to'liq rangli fon, glass — shisha */
   variant?: AlertVariant;
+  /** Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi */
+  material?: "frosted" | "liquid";
   /** Sarlavha */
   title?: ReactNode;
   /** Tavsif matni */
@@ -70,6 +72,7 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(
     {
       color = "accent",
       variant = "default",
+      material,
       title,
       description,
       icon,
@@ -88,9 +91,10 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(
       <div
         ref={ref}
         role="alert"
+        data-glass={material}
         className={cn(
           "relative isolate flex w-full items-start gap-3 overflow-hidden rounded-2xl p-4 text-sm",
-          isFlat ? flatTone[color] : "bg-surface shadow-surface",
+          isFlat ? flatTone[color] : variant === "glass" ? "glass" : "bg-surface-gradient shadow-surface",
           className
         )}
         {...props}

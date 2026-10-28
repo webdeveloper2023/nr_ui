@@ -163,3 +163,19 @@ export function setRef<T>(ref: unknown, value: T) {
   if (typeof ref === "function") ref(value);
   else if (ref && typeof ref === "object") (ref as { current: T }).current = value;
 }
+
+/** Background of the `glass-thick` material, for parts that can't carry backdrop-filter (arrows). */
+export const GLASS_THICK_BG = "rgb(var(--nr-glass-tint) / min(1, calc(var(--nr-glass-alpha) + 0.2)))";
+
+/**
+ * Clip a rotate-45 arrow square to its outer triangle, so a translucent arrow
+ * doesn't double-tint the area where it overlaps the panel.
+ */
+export function arrowClipPath(placement: Placement): string {
+  const side = placement.split("-")[0] as Side;
+  // panel above trigger → arrow points down (bottom-right corner of the rotated square), etc.
+  if (side === "top") return "polygon(100% 0, 100% 100%, 0 100%)";
+  if (side === "bottom") return "polygon(0 0, 100% 0, 0 100%)";
+  if (side === "left") return "polygon(0 0, 100% 0, 100% 100%)";
+  return "polygon(0 0, 100% 100%, 0 100%)";
+}

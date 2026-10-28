@@ -2,7 +2,7 @@ import { createContext, forwardRef, useContext, useId, useState, type ReactNode 
 import { cn } from "../lib/cn";
 
 type RadioColor = "default" | "accent" | "success" | "warning" | "danger";
-type RadioSize = "sm" | "md" | "lg";
+type RadioSize = "xs" | "sm" | "md" | "lg";
 type RadioVariant = "primary" | "secondary";
 
 interface RadioGroupContextValue {
@@ -19,6 +19,7 @@ interface RadioGroupContextValue {
 const RadioGroupContext = createContext<RadioGroupContextValue | null>(null);
 
 const sizeMap: Record<RadioSize, { outer: string; dot: string; label: string; gap: string }> = {
+  xs: { outer: "w-3.5 h-3.5", dot: "w-1.5 h-1.5", label: "text-xs", gap: "gap-1.5" },
   sm: { outer: "w-4 h-4", dot: "w-1.5 h-1.5", label: "text-sm", gap: "gap-2" },
   md: { outer: "w-5 h-5", dot: "w-2 h-2", label: "text-sm", gap: "gap-2.5" },
   lg: { outer: "w-6 h-6", dot: "w-2.5 h-2.5", label: "text-base", gap: "gap-3" },

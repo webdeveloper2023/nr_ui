@@ -12,13 +12,15 @@ import {
 } from "react";
 import { cn } from "../lib/cn";
 
-type ButtonVariant = "primary" | "secondary" | "tertiary" | "outline" | "ghost" | "danger" | "danger-soft";
-type ButtonSize = "sm" | "md" | "lg";
+type ButtonVariant = "primary" | "secondary" | "tertiary" | "outline" | "ghost" | "glass" | "danger" | "danger-soft";
+type ButtonSize = "xs" | "sm" | "md" | "lg";
 type ButtonRadius = "none" | "sm" | "md" | "lg" | "full";
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  /** Ko'rinish varianti: primary, secondary, tertiary, outline, ghost, danger, danger-soft */
+  /** Ko'rinish varianti: primary, secondary, tertiary, outline, ghost, glass (shisha), danger, danger-soft */
   variant?: ButtonVariant;
+  /** Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi */
+  material?: "frosted" | "liquid";
   /** O'lcham */
   size?: ButtonSize;
   /** Burchaklar yumaloqligi (default — to'liq dumaloq) */
@@ -44,12 +46,14 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const sizeStyles: Record<ButtonSize, string> = {
+  xs: "h-6 px-2 text-xs gap-1",
   sm: "h-8 px-3 text-sm gap-1.5",
   md: "h-10 px-4 text-sm gap-2",
   lg: "h-12 px-5 text-base gap-2",
 };
 
 const iconOnlySizeStyles: Record<ButtonSize, string> = {
+  xs: "h-6 w-6 min-w-6",
   sm: "h-8 w-8 min-w-8",
   md: "h-10 w-10 min-w-10",
   lg: "h-12 w-12 min-w-12",
@@ -69,11 +73,12 @@ const variantStyles: Record<ButtonVariant, string> = {
   tertiary: "bg-default text-default-foreground hover:bg-default-hover",
   outline: "border border-border bg-transparent text-foreground hover:bg-default/60",
   ghost: "bg-transparent text-foreground hover:bg-default",
+  glass: "glass-thin text-foreground hover:brightness-[1.06] dark:hover:brightness-125 active:brightness-110 dark:active:brightness-150",
   danger: "bg-danger text-danger-foreground hover:bg-danger-hover",
   "danger-soft": "bg-danger-soft text-danger-soft-foreground hover:bg-danger-soft-hover",
 };
 
-const spinnerSize: Record<ButtonSize, string> = { sm: "w-3.5 h-3.5", md: "w-4 h-4", lg: "w-[18px] h-[18px]" };
+const spinnerSize: Record<ButtonSize, string> = { xs: "w-3 h-3", sm: "w-3.5 h-3.5", md: "w-4 h-4", lg: "w-[18px] h-[18px]" };
 
 const LoadingSpinner = ({ size }: { size: ButtonSize }) => (
   <svg className={cn(spinnerSize[size], "animate-spin")} viewBox="0 0 24 24" fill="none" aria-hidden>
@@ -95,6 +100,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) =>
   const group = useContext(ButtonGroupContext);
   const {
     variant = group?.variant ?? "primary",
+    material,
     size = group?.size ?? "md",
     radius = "full",
     startContent,
@@ -120,6 +126,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) =>
       disabled={disabled}
       aria-busy={isLoading || undefined}
       data-loading={isLoading || undefined}
+      data-glass={material}
       className={cn(
         "relative inline-flex items-center justify-center shrink-0 font-medium select-none whitespace-nowrap",
         "outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-background",

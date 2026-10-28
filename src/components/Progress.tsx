@@ -2,7 +2,7 @@ import React, { type ReactNode } from "react";
 import { cn } from "../lib/cn";
 
 type ProgressColor = "default" | "accent" | "success" | "warning" | "danger";
-type ProgressSize = "sm" | "md" | "lg";
+type ProgressSize = "xs" | "sm" | "md" | "lg";
 type ProgressRadius = "none" | "sm" | "md" | "full";
 
 export interface ProgressProps {
@@ -37,6 +37,7 @@ export interface ProgressProps {
 }
 
 const trackSize: Record<ProgressSize, string> = {
+  xs: "h-0.5",
   sm: "h-1",
   md: "h-1.5",
   lg: "h-2.5",
@@ -148,7 +149,7 @@ Progress.displayName = "Progress";
 
 /* ── Circular ─────────────────────────────────── */
 
-type CircularSize = "sm" | "md" | "lg" | "xl";
+type CircularSize = "xs" | "sm" | "md" | "lg" | "xl";
 
 export interface CircularProgressProps {
   /** Joriy qiymat */
@@ -180,6 +181,7 @@ export interface CircularProgressProps {
 }
 
 const circularSizeMap: Record<CircularSize, { px: number; text: string }> = {
+  xs: { px: 24, text: "text-[7px]" },
   sm: { px: 32, text: "text-[9px]" },
   md: { px: 48, text: "text-xs" },
   lg: { px: 64, text: "text-sm" },

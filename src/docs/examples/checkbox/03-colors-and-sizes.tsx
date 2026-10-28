@@ -11,6 +11,7 @@ export default function CheckboxColorsAndSizes() {
         <Checkbox color="danger" defaultSelected>Danger</Checkbox>
       </div>
       <div className="flex flex-col gap-3">
+        <Checkbox size="xs" defaultSelected>Extra small</Checkbox>
         <Checkbox size="sm" defaultSelected>Small</Checkbox>
         <Checkbox size="md" defaultSelected>Medium</Checkbox>
         <Checkbox size="lg" defaultSelected>Large</Checkbox>

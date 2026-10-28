@@ -59,10 +59,11 @@ export default function GettingStarted() {
 
       <h2 id="install" className="scroll-mt-28 mt-20 mb-8 text-[28px] font-semibold tracking-tight text-foreground">O'rnatish</h2>
       <Step n={1} title="Paketni o'rnating">
-        <p>GitHub'dan (private repo uchun GitHub'ga kirgan bo'lishingiz kerak):</p>
+        <p>
+          NR UI Kit private GitHub repo orqali tarqatiladi. <Link to="/pricing" className="text-accent hover:underline">Sotib olganingizdan</Link> keyin
+          GitHub akkauntingizga taklif keladi — uni qabul qiling va o'rnating:
+        </p>
         <CodeBlock language="bash" code="npm install github:webdeveloper2023/nr_ui" />
-        <p>npm'ga publish qilingandan keyin:</p>
-        <CodeBlock language="bash" code="npm install nr-ui-kit" />
         <p>Talablar: {code("react ≥ 18")}, {code("react-dom ≥ 18")}. {code("lucide-react")} avtomatik o'rnatiladi.</p>
       </Step>
       <Step n={2} title="Stillarni ulang">
@@ -123,9 +124,26 @@ export default function App() {
 @import "nr-ui-kit/theme.css";
 
 @theme {
-  --color-accent: #7c3aed;
-  --color-accent-hover: #8b5cf6;
-  --color-accent-soft-foreground: #6d28d9;
+  /* Masalan: accent'ni indigo qilish */
+  --color-accent: #5856d6;
+  --color-accent-hover: #6e6cdf;
+  --color-accent-soft-foreground: #3634a3;
+}`}
+      />
+      <p className="mt-6 mb-4 text-[15px] text-muted">
+        Glass (shisha) va gradientlarni butun ilova bo'yicha sozlash — barcha komponentlar shu o'zgaruvchilarni ishlatadi.
+        Batafsil: <Link to="/colors" className="text-accent hover:underline">Ranglar va materiallar</Link>.
+      </p>
+      <CodeBlock
+        language="css"
+        fileName="src/index.css"
+        code={`:root {
+  --nr-glass-blur: 32px;      /* blur kuchi (default 24px) */
+  --nr-glass-alpha: 0.5;      /* shisha shaffofligi (0–1) */
+  --nr-glass-saturate: 200%;  /* orqadagi ranglar to'yinganligi */
+
+  --nr-gradient-surface: none; /* kartalardagi yengil gradientni o'chirish */
+  --nr-gradient-canvas: none;  /* sahifa fonidagi gradientni o'chirish */
 }`}
       />
 

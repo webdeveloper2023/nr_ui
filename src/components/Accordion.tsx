@@ -76,7 +76,7 @@ const ChevronIcon: React.FC<{ isOpen: boolean }> = ({ isOpen }) => (
 
 const variantContainerStyles: Record<AccordionVariant, string> = {
   default: "",
-  surface: "px-5 rounded-3xl bg-surface shadow-surface",
+  surface: "px-5 rounded-3xl bg-surface-gradient shadow-surface",
   bordered: "px-5 rounded-3xl border border-border",
   splitted: "flex flex-col gap-2",
 };
@@ -85,7 +85,7 @@ const variantItemStyles: Record<AccordionVariant, string> = {
   default: "",
   surface: "",
   bordered: "",
-  splitted: "px-5 rounded-2xl bg-surface shadow-surface",
+  splitted: "px-5 rounded-2xl bg-surface-gradient shadow-surface",
 };
 
 export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(

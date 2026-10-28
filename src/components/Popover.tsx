@@ -21,6 +21,8 @@ import {
   originClass,
   hiddenShift,
   arrowPosition,
+  arrowClipPath,
+  GLASS_THICK_BG,
   setRef,
   type Placement,
 } from "./floating";
@@ -43,6 +45,10 @@ export interface PopoverProps {
   showArrow?: boolean;
   /** Burchak yumaloqligi */
   radius?: PopoverRadius;
+  /** Panelni shisha (blur) material qiladi; false — to'q fon */
+  isBlurred?: boolean;
+  /** Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi */
+  material?: "frosted" | "liquid";
   /** Orqa fon turi */
   backdrop?: PopoverBackdrop;
   /** Fokus chiqib ketganda yopilishi */
@@ -72,6 +78,8 @@ interface PopoverContextValue {
   offset: number;
   showArrow: boolean;
   radius: PopoverRadius;
+  isBlurred: boolean;
+  material?: "frosted" | "liquid";
   backdrop: PopoverBackdrop;
   isDismissable: boolean;
 }
@@ -104,6 +112,8 @@ export const Popover: React.FC<PopoverProps> = ({
   placement = "bottom",
   offset = 8,
   showArrow = false,
+  isBlurred = true,
+  material,
   radius = "lg",
   backdrop = "transparent",
   isDismissable = true,
@@ -124,7 +134,7 @@ export const Popover: React.FC<PopoverProps> = ({
 
   return (
     <PopoverContext.Provider
-      value={{ isOpen, setIsOpen, triggerRef, contentId, placement, offset, showArrow, radius, backdrop, isDismissable }}
+      value={{ isOpen, setIsOpen, triggerRef, contentId, placement, offset, showArrow, radius, isBlurred, material, backdrop, isDismissable }}
     >
       {children}
     </PopoverContext.Provider>
@@ -160,7 +170,7 @@ PopoverTrigger.displayName = "PopoverTrigger";
 
 export const PopoverContent = React.forwardRef<HTMLDivElement, PopoverContentProps>(
   ({ children, className = "", style, ...props }, ref) => {
-    const { isOpen, setIsOpen, triggerRef, contentId, placement, offset, showArrow, radius, backdrop, isDismissable } =
+    const { isOpen, setIsOpen, triggerRef, contentId, placement, offset, showArrow, radius, isBlurred, material, backdrop, isDismissable } =
       usePopoverContext();
     const contentRef = useRef<HTMLDivElement | null>(null);
     const { mounted, visible } = usePresence(isOpen, 150);
@@ -209,8 +219,10 @@ export const PopoverContent = React.forwardRef<HTMLDivElement, PopoverContentPro
           }}
           id={contentId}
           role="dialog"
+          data-glass={material}
           className={cn(
-            "z-50 bg-overlay text-foreground shadow-overlay",
+            "z-50 text-foreground",
+            isBlurred ? "glass-thick" : "bg-overlay shadow-overlay",
             "transition-[opacity,transform] duration-150 ease-(--ease-out-soft)",
             radiusStyles[radius],
             originClass[side],
@@ -222,7 +234,10 @@ export const PopoverContent = React.forwardRef<HTMLDivElement, PopoverContentPro
         >
           <div className="relative z-10">{typeof children === "function" ? children(close) : children}</div>
           {showArrow && (
-            <span className={cn("absolute w-2.5 h-2.5 rotate-45 bg-overlay", arrowPosition(floating.placement))} />
+            <span
+              className={cn("absolute w-2.5 h-2.5 rotate-45", !isBlurred && "bg-overlay", arrowPosition(floating.placement))}
+              style={isBlurred ? { backgroundColor: GLASS_THICK_BG, clipPath: arrowClipPath(floating.placement) } : undefined}
+            />
           )}
         </div>
       </>,

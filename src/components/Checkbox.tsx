@@ -13,7 +13,7 @@ import {
 import { cn } from "../lib/cn";
 
 type CheckboxColor = "default" | "accent" | "success" | "warning" | "danger";
-type CheckboxSize = "sm" | "md" | "lg";
+type CheckboxSize = "xs" | "sm" | "md" | "lg";
 type CheckboxRadius = "none" | "sm" | "md" | "full";
 
 export interface CheckboxProps {
@@ -54,6 +54,7 @@ export interface CheckboxProps {
 }
 
 const sizeMap: Record<CheckboxSize, { box: string; icon: string; label: string; gap: string }> = {
+  xs: { box: "w-3.5 h-3.5", icon: "w-2 h-2", label: "text-xs", gap: "gap-1.5" },
   sm: { box: "w-4 h-4", icon: "w-2.5 h-2.5", label: "text-sm", gap: "gap-2" },
   md: { box: "w-5 h-5", icon: "w-3 h-3", label: "text-sm", gap: "gap-2.5" },
   lg: { box: "w-6 h-6", icon: "w-3.5 h-3.5", label: "text-base", gap: "gap-3" },

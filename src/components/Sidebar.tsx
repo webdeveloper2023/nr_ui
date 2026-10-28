@@ -34,6 +34,10 @@ export interface SidebarProps {
   footer?: ReactNode;
   /** Yig'ish tugmasini yashirish */
   hideToggle?: boolean;
+  /** Panelni shisha (glass) qiladi — rangli fon yoki rasm ustida */
+  isBlurred?: boolean;
+  /** Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi */
+  material?: "frosted" | "liquid";
   /** Ichki elementlar */
   children?: ReactNode;
   /** Qo'shimcha CSS klasslar */
@@ -53,6 +57,8 @@ export function Sidebar({
   header,
   footer,
   hideToggle = false,
+  isBlurred = false,
+  material,
   children,
   className = "",
 }: SidebarProps) {
@@ -74,10 +80,11 @@ export function Sidebar({
   return (
     <SidebarContext.Provider value={{ isCollapsed, variant, selectedKey, onSelect: select }}>
       <aside
+        data-glass={material}
         className={cn(
           "flex flex-col h-full text-foreground",
           "transition-[width] duration-300 ease-(--ease-out-soft)",
-          variant === "surface" ? "bg-surface shadow-surface rounded-3xl" : "bg-transparent",
+          isBlurred ? "glass rounded-3xl" : variant === "surface" ? "bg-surface-gradient shadow-surface rounded-3xl" : "bg-transparent",
           isCollapsed ? "w-16" : "w-64",
           className
         )}

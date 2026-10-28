@@ -30,6 +30,10 @@ export interface ToastOptions {
   action?: ReactNode;
   /** Toast yopilganda chaqiriladi */
   onClose?: () => void;
+  /** Shu toast uchun shisha (blur) fon; berilmasa ToastProvider qiymati ishlatiladi */
+  isBlurred?: boolean;
+  /** Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi */
+  material?: "frosted" | "liquid";
 }
 
 interface ToastItem extends ToastOptions {
@@ -48,6 +52,10 @@ export interface ToastProviderProps {
   placement?: ToastPlacement;
   /** Bir vaqtda ko'rinadigan maksimal toastlar soni */
   maxVisible?: number;
+  /** Barcha toastlar uchun shisha (blur) fon (default true) */
+  isBlurred?: boolean;
+  /** Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi */
+  material?: "frosted" | "liquid";
   /** Ilova kontenti */
   children?: ReactNode;
 }
@@ -89,10 +97,12 @@ const progressKeyframes = `@keyframes nr-toast-progress { from { transform: scal
 
 const EXIT_MS = 200;
 
-const ToastCard: React.FC<{ toast: ToastItem; isTop: boolean; fromTop: boolean; onClose: (id: string) => void }> = ({
+const ToastCard: React.FC<{ toast: ToastItem; isTop: boolean; fromTop: boolean; isBlurred: boolean; material?: "frosted" | "liquid"; onClose: (id: string) => void }> = ({
   toast,
   isTop,
   fromTop,
+  isBlurred,
+  material,
   onClose,
 }) => {
   const { id, title, description, color = "default", icon, timeout = 5000, hideIcon, action, isClosing } = toast;
@@ -121,12 +131,14 @@ const ToastCard: React.FC<{ toast: ToastItem; isTop: boolean; fromTop: boolean; 
   return (
     <div
       role="status"
+      data-glass={toast.material ?? material}
       aria-live="polite"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       className={cn(
         "pointer-events-auto relative w-[360px] max-w-[calc(100vw-2rem)] overflow-hidden",
-        "flex items-start gap-3 rounded-2xl bg-overlay p-3.5 pr-10 text-foreground shadow-overlay",
+        "flex items-start gap-3 rounded-2xl p-3.5 pr-10 text-foreground",
+        (toast.isBlurred ?? isBlurred) ? "glass-thick" : "bg-overlay shadow-overlay",
         "transition-[opacity,transform] duration-200 ease-(--ease-out-soft)",
         shown ? "opacity-100 translate-y-0 scale-100" : cn("opacity-0 scale-95", fromTop ? "-translate-y-3" : "translate-y-3"),
         !isTop && "max-sm:hidden"
@@ -171,7 +183,7 @@ const ToastCard: React.FC<{ toast: ToastItem; isTop: boolean; fromTop: boolean; 
 
 let toastCounter = 0;
 
-export const ToastProvider: React.FC<ToastProviderProps> = ({ placement = "bottom-right", maxVisible = 5, children }) => {
+export const ToastProvider: React.FC<ToastProviderProps> = ({ placement = "bottom-right", maxVisible = 5, isBlurred = true, material, children }) => {
   const [toasts, setToasts] = useState<ToastItem[]>([]);
   const toastsRef = useRef<ToastItem[]>([]);
   useEffect(() => {
@@ -220,6 +232,8 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({ placement = "botto
                 toast={t}
                 isTop={i === toasts.length - 1}
                 fromTop={placement.startsWith("top")}
+                isBlurred={isBlurred}
+                material={material}
                 onClose={closeToast}
               />
             ))}

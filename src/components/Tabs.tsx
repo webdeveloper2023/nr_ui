@@ -2,7 +2,7 @@ import { useCallback, useLayoutEffect, useRef, useState, type HTMLAttributes, ty
 import { cn } from "../lib/cn";
 
 type TabsVariant = "primary" | "secondary";
-type TabsSize = "sm" | "md" | "lg";
+type TabsSize = "xs" | "sm" | "md" | "lg";
 type TabsPlacement = "top" | "bottom" | "start" | "end";
 
 export interface TabItem {
@@ -27,6 +27,10 @@ export interface TabsProps extends Omit<HTMLAttributes<HTMLDivElement>, "onChang
   placement?: TabsPlacement;
   /** Tablarni vertikal joylashtiradi */
   isVertical?: boolean;
+  /** Trekni shisha (glass) qiladi — rangli fon yoki rasm ustida chiroyli */
+  isBlurred?: boolean;
+  /** Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi */
+  material?: "frosted" | "liquid";
   /** Barcha tablarni o'chiradi */
   isDisabled?: boolean;
   /** O'chirilgan tablar kalitlari */
@@ -44,6 +48,7 @@ export interface TabsProps extends Omit<HTMLAttributes<HTMLDivElement>, "onChang
 }
 
 const sizeStyles: Record<TabsSize, { tab: string; underline: string }> = {
+  xs: { tab: "h-6 px-2.5 text-[11px] gap-1", underline: "h-7 text-[11px] gap-1" },
   sm: { tab: "h-7 px-3 text-xs gap-1.5", underline: "h-8 text-xs gap-1.5" },
   md: { tab: "h-8 px-3.5 text-sm gap-2", underline: "h-10 text-sm gap-2" },
   lg: { tab: "h-10 px-4 text-base gap-2", underline: "h-12 text-base gap-2" },
@@ -62,6 +67,8 @@ export const Tabs = ({
   fullWidth = false,
   placement = "top",
   isVertical = false,
+  isBlurred = false,
+  material,
   isDisabled = false,
   disabledKeys = [],
   tabs,
@@ -146,12 +153,13 @@ export const Tabs = ({
       role="tablist"
       aria-orientation={vertical ? "vertical" : "horizontal"}
       onKeyDown={handleKeyDown}
+      data-glass={material}
       className={cn(
         "relative flex",
         vertical ? "flex-col h-fit" : cn("items-center", fullWidth ? "w-full" : "w-fit"),
         underline
           ? cn("gap-6", vertical ? "gap-1 border-r border-separator pr-4" : "border-b border-separator")
-          : cn("bg-default p-1 gap-0.5", vertical ? "rounded-3xl" : "rounded-full"),
+          : cn(isBlurred ? "glass-thin" : "bg-default", "p-1 gap-0.5", vertical ? "rounded-3xl" : "rounded-full"),
         !underline && !vertical && "overflow-x-auto"
       )}
     >

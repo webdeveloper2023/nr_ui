@@ -3,7 +3,7 @@ import { ArrowDown, ArrowUp } from "lucide-react";
 import { cn } from "../lib/cn";
 
 type StatColor = "default" | "accent" | "success" | "warning" | "danger";
-type StatVariant = "default" | "secondary";
+type StatVariant = "default" | "secondary" | "glass" | "gradient";
 
 const strokeColors: Record<StatColor, string> = {
   default: "var(--color-muted)",
@@ -86,8 +86,10 @@ export interface StatCardProps {
   icon?: ReactNode;
   /** Ikonka, progress va grafik rangi */
   color?: StatColor;
-  /** Ko'rinish: oq surface yoki kulrang (surface ichida) */
+  /** Ko'rinish: default (yengil gradient), secondary (kulrang), glass (shisha) yoki gradient (accent → indigo) */
   variant?: StatVariant;
+  /** Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi */
+  material?: "frosted" | "liquid";
   /** O'ng yuqoridagi amallar (menyu tugmasi va h.k.) */
   actions?: ReactNode;
   /** Progress chizig'i qiymati (0–100) */
@@ -125,6 +127,7 @@ export function StatCard({
   icon,
   color = "accent",
   variant = "default",
+  material,
   actions,
   progress,
   chartData,
@@ -133,20 +136,30 @@ export function StatCard({
 }: StatCardProps) {
   const trend = change === undefined ? null : change > 0 ? "up" : change < 0 ? "down" : "flat";
   const isGood = trend === "flat" ? null : (trend === "up") !== isInverted;
-  const trendStyle =
-    isGood === null ? "bg-default text-muted" : isGood ? "bg-success-soft text-success-soft-foreground" : "bg-danger-soft text-danger-soft-foreground";
+  const isGradient = variant === "gradient";
+  const trendStyle = isGradient
+    ? "bg-white/20 text-white"
+    : isGood === null
+      ? "bg-default text-muted"
+      : isGood
+        ? "bg-success-soft text-success-soft-foreground"
+        : "bg-danger-soft text-danger-soft-foreground";
 
   return (
     <div
+      data-glass={material}
       className={cn(
         "flex flex-col rounded-3xl overflow-hidden text-foreground",
-        variant === "secondary" ? "bg-surface-secondary" : "bg-surface shadow-surface",
+        variant === "secondary" && "bg-surface-secondary",
+        variant === "default" && "bg-surface-gradient shadow-surface",
+        variant === "glass" && "glass",
+        isGradient && "bg-linear-to-br from-accent to-indigo text-white shadow-surface [&_.text-muted]:text-white/75",
         className
       )}
     >
       <div className="p-4">
         <div className="flex items-center gap-2.5 min-h-8">
-          {icon && <span className={cn("flex items-center justify-center w-8 h-8 shrink-0 rounded-lg [&_svg]:size-4", iconStyles[color])}>{icon}</span>}
+          {icon && <span className={cn("flex items-center justify-center w-8 h-8 shrink-0 rounded-lg [&_svg]:size-4", isGradient ? "bg-white/20 text-white" : iconStyles[color])}>{icon}</span>}
           <p className="flex-1 min-w-0 truncate text-sm text-muted">{title}</p>
           {actions && <div className="shrink-0 -mr-1.5 text-muted">{actions}</div>}
         </div>
@@ -165,19 +178,19 @@ export function StatCard({
         {changeLabel && <p className="mt-2 text-xs text-muted">{changeLabel}</p>}
 
         {progress !== undefined && (
-          <div className="mt-4 h-1.5 w-full rounded-full bg-default overflow-hidden" role="progressbar" aria-valuenow={progress} aria-valuemin={0} aria-valuemax={100}>
-            <div className={cn("h-full rounded-full transition-[width] duration-500 ease-(--ease-out-soft)", fillStyles[color])} style={{ width: `${Math.min(100, Math.max(0, progress))}%` }} />
+          <div className={cn("mt-4 h-1.5 w-full rounded-full overflow-hidden", isGradient ? "bg-white/25" : "bg-default")} role="progressbar" aria-valuenow={progress} aria-valuemin={0} aria-valuemax={100}>
+            <div className={cn("h-full rounded-full transition-[width] duration-500 ease-(--ease-out-soft)", isGradient ? "bg-white" : fillStyles[color])} style={{ width: `${Math.min(100, Math.max(0, progress))}%` }} />
           </div>
         )}
       </div>
 
       {chartData && (
         <div className="-mt-1 px-4 pb-4">
-          <Sparkline data={chartData} color={isGood === false ? "danger" : color} height={48} />
+          <Sparkline data={chartData} color={isGood === false ? "danger" : color} stroke={isGradient ? "#ffffff" : undefined} height={48} />
         </div>
       )}
 
-      {footer && <div className="mt-auto border-t border-separator px-4 py-3 text-sm">{footer}</div>}
+      {footer && <div className={cn("mt-auto border-t px-4 py-3 text-sm", isGradient ? "border-white/20" : "border-separator")}>{footer}</div>}
     </div>
   );
 }

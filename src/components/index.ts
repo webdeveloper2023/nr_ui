@@ -1,6 +1,10 @@
 // Forms
 export { Button, ButtonGroup } from "./Button";
 export { Input } from "./Input";
+export { PhoneInput } from "./PhoneInput";
+export type { PhoneInputProps, PhoneValueInfo } from "./PhoneInput";
+export { PHONE_COUNTRIES, formatPhone, getPhoneCountry, detectPhoneCountry, isPhoneComplete } from "./phoneMask";
+export type { PhoneCountry } from "./phoneMask";
 export { Textarea } from "./Textarea";
 export { Checkbox, CheckboxGroup } from "./Checkbox";
 export { RadioGroup, Radio } from "./Radio";

@@ -6,12 +6,11 @@ Pro darajadagi React komponent kutubxonasi — **React 18/19**, **Tailwind CSS v
 
 ## O'rnatish
 
-```bash
-# GitHub'dan (private repo — GitHub'ga kirgan bo'lishingiz kerak)
-npm install github:webdeveloper2023/nr_ui
+NR UI Kit pullik: **$10, bir martalik to'lov, umrbod yangilanishlar**. Kutubxona private GitHub repo orqali beriladi:
+to'lovdan keyin GitHub akkauntingizga taklif (invite) keladi, uni qabul qilganingizdan so'ng:
 
-# npm'ga publish qilingandan keyin
-npm install nr-ui-kit
+```bash
+npm install github:webdeveloper2023/nr_ui
 ```
 
 Talablar: `react >= 18`, `react-dom >= 18`. `lucide-react` avtomatik o'rnatiladi.
@@ -107,12 +106,19 @@ npm run dev        # http://localhost:5199
 | `npm run build:lib` | npm paketini `dist/` ga build qilish (JS, CJS, types, CSS) |
 | `npm run gen:props` | `src/docs/props.json` ni komponent type'laridan generatsiya qilish |
 
-## Publish qilish
+## Xaridorga kirish berish
+
+To'lovdan keyin xaridorning GitHub akkauntini repo'ga **Read** huquqi bilan qo'shing:
 
 ```bash
-npm run build:lib
-npm publish --access public
+gh api -X PUT repos/webdeveloper2023/nr_ui/collaborators/<github-username> -f permission=pull
 ```
+
+> Paketni ochiq npm registry'ga publish qilmang — u holda har kim uni tekin o'rnatib oladi.
+
+## Litsenziya
+
+Tijoriy (proprietary) — `package.json` da `"license": "UNLICENSED"`. Kodni qayta tarqatish taqiqlanadi.
 
 ## Struktura
 

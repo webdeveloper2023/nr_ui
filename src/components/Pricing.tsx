@@ -76,8 +76,12 @@ export interface PricingCardProps {
   isPopular?: boolean;
   /** Mashhur tarif belgisi matni */
   popularLabel?: string;
-  /** Ko'rinish: oq surface yoki teskari (qora) karta */
-  variant?: "default" | "inverse";
+  /** Ko'rinish: default (yengil gradient), inverse (teskari, qora) yoki gradient (accent → indigo) */
+  variant?: "default" | "inverse" | "gradient";
+  /** Kartani shisha (glass) qiladi — rangli fon ustida */
+  isBlurred?: boolean;
+  /** Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi */
+  material?: "frosted" | "liquid";
   /** Sarlavha yonidagi ikonka */
   icon?: ReactNode;
   /** Qo'shimcha CSS klasslar */
@@ -97,19 +101,30 @@ export function PricingCard({
   isPopular = false,
   popularLabel = "Most popular",
   variant = "default",
+  isBlurred = false,
+  material,
   icon,
   className = "",
 }: PricingCardProps) {
   const amount = typeof price === "string" ? price : price[period];
   const isInverse = variant === "inverse";
-  const muted = isInverse ? "text-background/60" : "text-muted";
+  const isGradient = variant === "gradient";
+  // Classes for dark-on-light (default), inverse and gradient surfaces
+  const tone = (base: string, inverse: string, gradient: string) => (isGradient ? gradient : isInverse ? inverse : base);
+  const muted = tone("text-muted", "text-background/60", "text-white/75");
 
   return (
     <div
+      data-glass={material}
       className={cn(
         "relative flex flex-col rounded-3xl p-6",
-        isInverse ? "bg-foreground text-background" : "bg-surface text-foreground shadow-surface",
-        isPopular && !isInverse && "outline-2 outline-accent",
+        tone(
+          isBlurred ? "glass text-foreground" : "bg-surface-gradient text-foreground shadow-surface",
+          "bg-foreground text-background",
+          "bg-linear-to-br from-accent to-indigo text-white shadow-overlay"
+        ),
+        isPopular && variant === "default" && "outline-2 outline-accent",
+        isPopular && variant === "default" && !isBlurred && "[background-image:linear-gradient(160deg,color-mix(in_oklab,var(--color-accent)_6%,var(--color-surface)),var(--color-surface)_45%,color-mix(in_oklab,var(--color-indigo)_6%,var(--color-surface)))]",
         className
       )}
     >
@@ -118,7 +133,7 @@ export function PricingCard({
           <span
             className={cn(
               "flex items-center justify-center w-8 h-8 rounded-lg [&_svg]:size-4",
-              isInverse ? "bg-background/10 text-background" : "bg-accent-soft text-accent-soft-foreground"
+              tone("bg-accent-soft text-accent-soft-foreground", "bg-background/10 text-background", "bg-white/20 text-white")
             )}
           >
             {icon}
@@ -129,7 +144,7 @@ export function PricingCard({
           <span
             className={cn(
               "rounded-full px-2.5 h-6 inline-flex items-center text-xs font-medium",
-              isInverse ? "bg-background/10 text-background" : "bg-accent-soft text-accent-soft-foreground"
+              tone("bg-accent-soft text-accent-soft-foreground", "bg-background/10 text-background", "bg-white/20 text-white")
             )}
           >
             {popularLabel}
@@ -152,11 +167,16 @@ export function PricingCard({
         )}
       </div>
 
-      <Button className="mt-6" variant={isPopular || isInverse ? "primary" : "tertiary"} fullWidth onClick={onSelect}>
+      <Button
+        className={cn("mt-6", isGradient && "!bg-white !text-accent hover:!bg-white/90")}
+        variant={isPopular || isInverse || isGradient ? "primary" : "tertiary"}
+        fullWidth
+        onClick={onSelect}
+      >
         {ctaLabel}
       </Button>
 
-      <div className={cn("my-6 h-px", isInverse ? "bg-background/15" : "bg-separator")} />
+      <div className={cn("my-6 h-px", tone("bg-separator", "bg-background/15", "bg-white/20"))} />
 
       {featuresTitle && <p className={cn("mb-3 text-xs font-medium", muted)}>{featuresTitle}</p>}
       <ul className="space-y-3 text-sm">
@@ -169,17 +189,13 @@ export function PricingCard({
                 className={cn(
                   "mt-0.5 flex items-center justify-center w-4 h-4 rounded-full shrink-0",
                   included
-                    ? isInverse
-                      ? "bg-background/15 text-background"
-                      : "bg-accent-soft text-accent-soft-foreground"
-                    : isInverse
-                      ? "bg-background/10 text-background/50"
-                      : "bg-default text-muted"
+                    ? tone("bg-accent-soft text-accent-soft-foreground", "bg-background/15 text-background", "bg-white/25 text-white")
+                    : tone("bg-default text-muted", "bg-background/10 text-background/50", "bg-white/10 text-white/50")
                 )}
               >
                 {included ? <Check size={10} strokeWidth={3} /> : <X size={9} strokeWidth={3} />}
               </span>
-              <span className={cn(included ? (isInverse ? "text-background/90" : "text-foreground") : cn(muted, "line-through"))}>{label}</span>
+              <span className={cn(included ? tone("text-foreground", "text-background/90", "text-white/90") : cn(muted, "line-through"))}>{label}</span>
             </li>
           );
         })}

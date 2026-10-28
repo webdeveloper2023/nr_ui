@@ -2,7 +2,7 @@ import React from "react";
 import { cn } from "../lib/cn";
 
 type SpinnerColor = "default" | "accent" | "success" | "warning" | "danger" | "current";
-type SpinnerSize = "sm" | "md" | "lg";
+type SpinnerSize = "xs" | "sm" | "md" | "lg";
 type SpinnerVariant = "default" | "dots" | "wave" | "spinner";
 type SpinnerLabelColor = "foreground" | "muted";
 
@@ -22,6 +22,7 @@ export interface SpinnerProps {
 }
 
 const sizeMap: Record<SpinnerSize, { box: string; stroke: number; dot: string; bar: string; label: string }> = {
+  xs: { box: "w-3 h-3", stroke: 3, dot: "w-0.5 h-0.5", bar: "w-px h-2", label: "text-[11px]" },
   sm: { box: "w-4 h-4", stroke: 2.5, dot: "w-1 h-1", bar: "w-0.5 h-2.5", label: "text-xs" },
   md: { box: "w-6 h-6", stroke: 2.5, dot: "w-1.5 h-1.5", bar: "w-[3px] h-4", label: "text-sm" },
   lg: { box: "w-8 h-8", stroke: 2.5, dot: "w-2 h-2", bar: "w-1 h-5", label: "text-sm" },

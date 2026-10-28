@@ -3,7 +3,7 @@ import { cn } from "../lib/cn";
 
 /** primary — white field with a soft shadow (on the gray canvas); secondary — gray fill, no shadow (inside surfaces). */
 export type FieldVariant = "primary" | "secondary";
-export type FieldSize = "sm" | "md" | "lg";
+export type FieldSize = "xs" | "sm" | "md" | "lg";
 export type FieldRadius = "sm" | "md" | "lg" | "full";
 export type LabelPlacement = "outside" | "outside-left";
 
@@ -15,18 +15,21 @@ export const fieldRadius: Record<FieldRadius, string> = {
 };
 
 export const fieldHeight: Record<FieldSize, string> = {
+  xs: "h-7 min-h-7",
   sm: "h-8 min-h-8",
   md: "h-10 min-h-10",
   lg: "h-12 min-h-12",
 };
 
 export const fieldText: Record<FieldSize, string> = {
+  xs: "text-xs",
   sm: "text-sm",
   md: "text-sm",
   lg: "text-base",
 };
 
 export const fieldPadding: Record<FieldSize, string> = {
+  xs: "px-2 gap-1",
   sm: "px-2.5 gap-1.5",
   md: "px-3 gap-2",
   lg: "px-3.5 gap-2.5",

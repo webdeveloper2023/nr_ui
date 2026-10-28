@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Star } from "lucide-react";
 import { cn } from "../lib/cn";
 
-type RatingSize = "sm" | "md" | "lg";
+type RatingSize = "xs" | "sm" | "md" | "lg";
 type RatingColor = "warning" | "accent" | "danger" | "success" | "default";
 
 export interface RatingProps {
@@ -28,7 +28,7 @@ export interface RatingProps {
   className?: string;
 }
 
-const sizes: Record<RatingSize, number> = { sm: 16, md: 20, lg: 26 };
+const sizes: Record<RatingSize, number> = { xs: 12, sm: 16, md: 20, lg: 26 };
 const fills: Record<RatingColor, string> = {
   warning: "text-warning fill-warning",
   accent: "text-accent fill-accent",

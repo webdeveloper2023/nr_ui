@@ -1,0 +1,310 @@
+import {
+  forwardRef,
+  useImperativeHandle,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ChangeEvent,
+  type ClipboardEvent,
+  type FocusEvent,
+  type KeyboardEvent,
+  type ReactNode,
+} from "react";
+import { cn } from "../lib/cn";
+import { Input, type InputProps } from "./Input";
+import {
+  PHONE_COUNTRIES,
+  applyPhoneMask,
+  caretAfterDigit,
+  detectPhoneCountry,
+  flagEmoji,
+  getPhoneCountry,
+  isPhoneComplete,
+  maskDigits,
+  onlyDigits,
+  toNationalDigits,
+  type PhoneCountry,
+} from "./phoneMask";
+
+export interface PhoneValueInfo {
+  /** Formatlangan to'liq ko'rinish: "+998 90 123 45 67" */
+  formatted: string;
+  /** Faqat milliy raqamlar: "901234567" */
+  national: string;
+  /** Tanlangan davlat */
+  country: PhoneCountry;
+  /** Raqam to'liq kiritilganmi */
+  isComplete: boolean;
+}
+
+export interface PhoneInputProps
+  extends Omit<InputProps, "value" | "defaultValue" | "onValueChange" | "type" | "inputOverlay" | "startContent"> {
+  /** Davlat: ISO qisqartmasi — 2 harfli ("UZ") yoki 3 harfli ("UZB"), katta-kichik harf farqi yo'q */
+  country?: string;
+  /** Qiymat (E.164 "+998901234567" yoki faqat raqamlar) — boshqariladigan rejim */
+  value?: string;
+  /** Boshlang'ich qiymat (boshqarilmaydigan rejim) */
+  defaultValue?: string;
+  /** O'zgarganda: E.164 qiymat ("+998901234567", bo'sh bo'lsa "") va qo'shimcha ma'lumot */
+  onValueChange?: (value: string, info: PhoneValueInfo) => void;
+  /** Davlatni ro'yxatdan tanlash imkoniyati (bayroq + kod tugmasi) */
+  isCountrySelectable?: boolean;
+  /** Davlat o'zgarganda (ISO alpha-2) chaqiriladi */
+  onCountryChange?: (iso2: string) => void;
+  /** Tanlash ro'yxatini shu davlatlar bilan cheklash (ISO kodlari) */
+  countries?: string[];
+  /** Maskaning bo'sh joylari belgisi */
+  placeholderChar?: string;
+  /** Kiritilmagan qismni kulrang mask bilan ko'rsatish */
+  showMaskGuide?: boolean;
+  /** Bayroq: emoji, ISO kod, ko'rsatmaslik yoki o'z render funksiyangiz */
+  flag?: "emoji" | "code" | "none" | ((country: PhoneCountry) => ReactNode);
+  /** Raqam to'liq bo'lmasa, maydondan chiqqanda xato holatini avtomatik ko'rsatish */
+  autoValidate?: boolean;
+  /** autoValidate xato matni */
+  incompleteMessage?: ReactNode;
+  /** Boshidagi qo'shimcha kontent (bayroq/kod oldidan) */
+  startContent?: ReactNode;
+}
+
+const FALLBACK = getPhoneCountry("UZ") ?? PHONE_COUNTRIES[0];
+
+export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
+  (
+    {
+      country: countryProp = "UZ",
+      value,
+      defaultValue,
+      onValueChange,
+      isCountrySelectable = false,
+      onCountryChange,
+      countries,
+      placeholderChar = "_",
+      showMaskGuide = true,
+      flag = "emoji",
+      autoValidate = false,
+      incompleteMessage = "Telefon raqam to'liq kiritilmagan",
+      startContent,
+      isInvalid,
+      errorMessage,
+      isDisabled,
+      size = "md",
+      onBlur,
+      onKeyDown,
+      onPaste,
+      placeholder,
+      ...props
+    },
+    ref
+  ) => {
+    const inputRef = useRef<HTMLInputElement>(null);
+    useImperativeHandle(ref, () => inputRef.current as HTMLInputElement);
+
+    const [iso2, setIso2] = useState(() => (getPhoneCountry(countryProp) ?? FALLBACK).iso2);
+    // Follow `country` prop changes (adjust state during render instead of an effect)
+    const [prevCountryProp, setPrevCountryProp] = useState(countryProp);
+    if (countryProp !== prevCountryProp) {
+      setPrevCountryProp(countryProp);
+      const c = getPhoneCountry(countryProp);
+      if (c) setIso2(c.iso2);
+    }
+    const country = getPhoneCountry(iso2) ?? FALLBACK;
+    const max = maskDigits(country.mask);
+
+    const isControlled = value !== undefined;
+    const [internal, setInternal] = useState(() => toNationalDigits(defaultValue ?? "", country));
+    const national = isControlled ? toNationalDigits(value ?? "", country) : internal;
+    const { typed, guide } = applyPhoneMask(country.mask, national, placeholderChar);
+    const complete = isPhoneComplete(national, country);
+
+    const [blurred, setBlurred] = useState(false);
+    const autoInvalid = autoValidate && blurred && national.length > 0 && !complete;
+
+    // Caret to restore after a re-format (n-th digit)
+    const pendingCaret = useRef<number | null>(null);
+    useLayoutEffect(() => {
+      const el = inputRef.current;
+      if (pendingCaret.current === null || !el || document.activeElement !== el) return;
+      const pos = caretAfterDigit(typed, pendingCaret.current);
+      el.setSelectionRange(pos, pos);
+      pendingCaret.current = null;
+    });
+
+    const emit = (digits: string, c: PhoneCountry) => {
+      const d = digits.slice(0, maskDigits(c.mask));
+      if (!isControlled) setInternal(d);
+      const masked = applyPhoneMask(c.mask, d).typed;
+      onValueChange?.(d ? `+${c.dial}${d}` : "", {
+        formatted: d ? `+${c.dial} ${masked}` : "",
+        national: d,
+        country: c,
+        isComplete: isPhoneComplete(d, c),
+      });
+    };
+
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+      const raw = e.target.value;
+      const caret = e.target.selectionStart ?? raw.length;
+      const digits = onlyDigits(raw).slice(0, max);
+      pendingCaret.current = Math.min(onlyDigits(raw.slice(0, caret)).length, digits.length);
+      emit(digits, country);
+    };
+
+    // Backspace/Delete over a separator removes the neighbouring digit instead of getting stuck
+    const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+      onKeyDown?.(e);
+      const el = e.currentTarget;
+      const start = el.selectionStart ?? 0;
+      const end = el.selectionEnd ?? 0;
+      if (start !== end || e.defaultPrevented) return;
+      if (e.key === "Backspace" && start > 0 && !/\d/.test(el.value[start - 1])) {
+        e.preventDefault();
+        const n = onlyDigits(el.value.slice(0, start)).length;
+        if (n === 0) return;
+        pendingCaret.current = n - 1;
+        emit(national.slice(0, n - 1) + national.slice(n), country);
+      } else if (e.key === "Delete" && start < el.value.length && !/\d/.test(el.value[start])) {
+        e.preventDefault();
+        const n = onlyDigits(el.value.slice(0, start)).length;
+        pendingCaret.current = n;
+        emit(national.slice(0, n) + national.slice(n + 1), country);
+      }
+    };
+
+    // Pasting "+7 999 …" / "00998…" switches country (when selectable) and strips the dial code
+    const handlePaste = (e: ClipboardEvent<HTMLInputElement>) => {
+      onPaste?.(e);
+      const text = e.clipboardData.getData("text").trim();
+      if (!/^(\+|00)/.test(text)) return;
+      e.preventDefault();
+      const intl = onlyDigits(text).replace(/^00/, "");
+      let target = country;
+      if (isCountrySelectable) {
+        const detected = detectPhoneCountry(intl, country.iso2);
+        if (detected && detected.iso2 !== country.iso2) {
+          target = detected;
+          setIso2(detected.iso2);
+          onCountryChange?.(detected.iso2);
+        }
+      }
+      const digits = intl.startsWith(target.dial) ? intl.slice(target.dial.length) : intl;
+      pendingCaret.current = Math.min(digits.length, maskDigits(target.mask));
+      emit(digits, target);
+    };
+
+    const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
+      setBlurred(true);
+      onBlur?.(e);
+    };
+
+    const selectCountry = (code: string) => {
+      const next = getPhoneCountry(code);
+      if (!next) return;
+      setIso2(next.iso2);
+      onCountryChange?.(next.iso2);
+      emit(national, next);
+      inputRef.current?.focus();
+    };
+
+    const options = useMemo(() => {
+      const list = countries?.length
+        ? countries.map((c) => getPhoneCountry(c)).filter((c): c is PhoneCountry => Boolean(c))
+        : PHONE_COUNTRIES;
+      return [...list].sort((a, b) => a.name.localeCompare(b.name));
+    }, [countries]);
+
+    const flagNode =
+      flag === "none" ? null : flag === "code" ? (
+        <span className="rounded bg-default px-1 py-px text-[10px] font-semibold text-muted">{country.iso2}</span>
+      ) : flag === "emoji" ? (
+        <span className="text-[1.15em] leading-none">{flagEmoji(country.iso2)}</span>
+      ) : (
+        flag(country)
+      );
+
+    const prefix = (
+      <span className="relative flex items-center gap-1.5 text-foreground">
+        {flagNode}
+        <span className="font-medium tabular-nums">+{country.dial}</span>
+        {isCountrySelectable && (
+          <>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-muted" aria-hidden>
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+            <select
+              aria-label="Davlat kodi"
+              value={country.iso2}
+              disabled={isDisabled}
+              onChange={(e) => selectCountry(e.target.value)}
+              onClick={(e) => e.stopPropagation()}
+              className="absolute inset-0 w-full cursor-pointer opacity-0"
+            >
+              {options.map((c) => (
+                <option key={c.iso2} value={c.iso2}>
+                  {flagEmoji(c.iso2)} {c.name} (+{c.dial})
+                </option>
+              ))}
+            </select>
+          </>
+        )}
+        <span className="ml-1 h-4 w-px bg-separator" />
+      </span>
+    );
+
+    return (
+      <Input
+        {...props}
+        ref={inputRef}
+        size={size}
+        type="tel"
+        inputMode="tel"
+        autoComplete="tel-national"
+        isDisabled={isDisabled}
+        value={typed}
+        onChange={handleChange}
+        onKeyDown={handleKeyDown}
+        onPaste={handlePaste}
+        onBlur={handleBlur}
+        onClear={() => {
+          emit("", country);
+          props.onClear?.();
+        }}
+        placeholder={showMaskGuide ? undefined : placeholder}
+        isInvalid={Boolean(isInvalid) || autoInvalid}
+        errorMessage={autoInvalid && !errorMessage ? incompleteMessage : errorMessage}
+        startContent={
+          <span className="flex items-center gap-2">
+            {startContent}
+            {prefix}
+          </span>
+        }
+        inputOverlay={
+          showMaskGuide ? (
+            <span className="tabular-nums">
+              <span className="invisible">{typed}</span>
+              <span className="text-field-placeholder">
+                {guide.split("").map((ch, i) =>
+                  ch !== placeholderChar ? (
+                    ch
+                  ) : placeholderChar === "_" ? (
+                    // one digit-wide slot with a short bar, so groups stay visually separated
+                    <span key={i} className="inline-flex w-[1ch] justify-center align-baseline">
+                      <span className="h-[1.5px] w-[0.62ch] translate-y-[0.2em] rounded-full bg-current opacity-70" />
+                    </span>
+                  ) : (
+                    <span key={i} className="inline-block w-[1ch] text-center">{ch}</span>
+                  )
+                )}
+              </span>
+            </span>
+          ) : undefined
+        }
+        classNames={{ ...props.classNames, input: cn("tabular-nums", props.classNames?.input) }}
+      />
+    );
+  }
+);
+
+PhoneInput.displayName = "PhoneInput";
+export default PhoneInput;

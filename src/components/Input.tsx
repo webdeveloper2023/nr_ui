@@ -59,6 +59,8 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
   endContent?: ReactNode;
   /** Konteyner kengligini to'liq egallaydi */
   fullWidth?: boolean;
+  /** Input matni orqasida chiziladigan qatlam — masalan, mask yo'riqnomasi (PhoneInput ishlatadi) */
+  inputOverlay?: ReactNode;
   /** Ichki qismlar uchun qo'shimcha klasslar */
   classNames?: Partial<Record<"base" | "label" | "inputWrapper" | "input" | "description" | "errorMessage", string>>;
 }
@@ -91,6 +93,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       fullWidth = true,
       className = "",
       classNames = {},
+      inputOverlay,
       value,
       defaultValue,
       onChange,
@@ -127,6 +130,28 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     const errId = `${id}-err`;
     const isLeft = labelPlacement === "outside-left";
 
+    const inputEl = (
+      <input
+        ref={inputRef}
+        id={id}
+        type={type}
+        value={currentValue}
+        disabled={isDisabled}
+        readOnly={isReadOnly}
+        required={isRequired}
+        onChange={handleChange}
+        aria-invalid={isInvalid || undefined}
+        aria-describedby={showError ? errId : description ? descId : undefined}
+        className={cn(
+          "relative w-full min-w-0 h-full bg-transparent outline-none text-foreground placeholder:text-field-placeholder",
+          "file:mr-3 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground",
+          fieldText[size],
+          classNames.input
+        )}
+        {...props}
+      />
+    );
+
     return (
       <div
         data-disabled={isDisabled || undefined}
@@ -158,25 +183,16 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             )}
           >
             {startContent && <span className="flex items-center shrink-0 text-muted">{startContent}</span>}
-            <input
-              ref={inputRef}
-              id={id}
-              type={type}
-              value={currentValue}
-              disabled={isDisabled}
-              readOnly={isReadOnly}
-              required={isRequired}
-              onChange={handleChange}
-              aria-invalid={isInvalid || undefined}
-              aria-describedby={showError ? errId : description ? descId : undefined}
-              className={cn(
-                "w-full min-w-0 h-full bg-transparent outline-none text-foreground placeholder:text-field-placeholder",
-                "file:mr-3 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground",
-                fieldText[size],
-                classNames.input
-              )}
-              {...props}
-            />
+            {inputOverlay !== undefined ? (
+              <div className="relative flex flex-1 min-w-0 h-full items-center">
+                <span aria-hidden className={cn("pointer-events-none absolute inset-0 flex items-center whitespace-pre overflow-hidden", fieldText[size])}>
+                  {inputOverlay}
+                </span>
+                {inputEl}
+              </div>
+            ) : (
+              inputEl
+            )}
             {isClearable && hasValue && !isReadOnly && (
               <button
                 type="button"

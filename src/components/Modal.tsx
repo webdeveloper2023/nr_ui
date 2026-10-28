@@ -26,6 +26,10 @@ export interface ModalProps {
   radius?: ModalRadius;
   /** Orqa fon turi */
   backdrop?: ModalBackdrop;
+  /** Oynani shisha (blur) material qiladi; false — to'q fon */
+  isBlurred?: boolean;
+  /** Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi */
+  material?: "frosted" | "liquid";
   /** Ekrandagi joylashuv (auto — mobilda pastdan) */
   placement?: ModalPlacement;
   /** Tashqariga bosilganda yopilishi */
@@ -91,7 +95,7 @@ const placementStyles: Record<ModalPlacement, string> = {
 
 const backdropStyles: Record<ModalBackdrop, string> = {
   opaque: "bg-backdrop",
-  blur: "bg-backdrop backdrop-blur-sm",
+  blur: "bg-backdrop backdrop-blur-md",
   transparent: "bg-transparent",
 };
 
@@ -117,6 +121,8 @@ export const Modal: React.FC<ModalProps> = ({
   size = "md",
   radius = "lg",
   backdrop = "opaque",
+  isBlurred = true,
+  material,
   placement = "auto",
   isDismissable = true,
   isKeyboardDismissDisabled = false,
@@ -219,9 +225,11 @@ export const Modal: React.FC<ModalProps> = ({
           ref={dialogRef}
           role="dialog"
           aria-modal="true"
+          data-glass={material}
           tabIndex={-1}
           className={cn(
-            "relative w-full flex flex-col bg-overlay text-foreground shadow-overlay outline-none",
+            "relative w-full flex flex-col text-foreground outline-none",
+            isBlurred ? "glass-thick" : "bg-overlay shadow-overlay",
             "transition-[opacity,transform] duration-200 ease-(--ease-out-soft)",
             radiusStyles[radius],
             fromBottom && !isFull && "max-sm:rounded-b-none",

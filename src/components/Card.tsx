@@ -1,12 +1,14 @@
 import { forwardRef, type HTMLAttributes, type KeyboardEvent, type MouseEvent, type ReactNode } from "react";
 import { cn } from "../lib/cn";
 
-type CardVariant = "default" | "secondary" | "tertiary" | "transparent";
+type CardVariant = "default" | "flat" | "glass" | "secondary" | "tertiary" | "transparent";
 type CardRadius = "none" | "md" | "lg" | "xl";
 
 export interface CardProps extends HTMLAttributes<HTMLDivElement> {
-  /** Ko'rinish darajasi: default (oq surface), secondary, tertiary yoki transparent */
+  /** Ko'rinish: default (yengil gradient), flat (gradientsiz), glass (shisha), secondary, tertiary yoki transparent */
   variant?: CardVariant;
+  /** Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi */
+  material?: "frosted" | "liquid";
   /** Burchaklar yumaloqligi */
   radius?: CardRadius;
   /** Hover'da biroz ko'tarilish effekti */
@@ -51,7 +53,9 @@ export interface CardFooterProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const variantStyles: Record<CardVariant, string> = {
-  default: "bg-surface shadow-surface",
+  default: "bg-surface-gradient shadow-surface",
+  flat: "bg-surface shadow-surface",
+  glass: "glass",
   secondary: "bg-surface-secondary",
   tertiary: "bg-surface-tertiary",
   transparent: "bg-transparent",
@@ -68,6 +72,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
   (
     {
       variant = "default",
+      material,
       radius = "xl",
       isHoverable = false,
       isPressable = false,
@@ -99,6 +104,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
     return (
       <div
         ref={ref}
+        data-glass={material}
         className={cn(
           "group/card relative flex flex-col overflow-hidden text-foreground",
           "transition-[transform,box-shadow,background-color] duration-200 ease-(--ease-out-soft)",
@@ -110,7 +116,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
             "cursor-pointer select-none active:scale-[0.98] outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-background",
           isDisabled && "opacity-50 pointer-events-none",
           isFooterBlurred &&
-            "[&>[data-slot=footer]]:absolute [&>[data-slot=footer]]:bottom-0 [&>[data-slot=footer]]:inset-x-0 [&>[data-slot=footer]]:z-10 [&>[data-slot=footer]]:bg-surface/60 [&>[data-slot=footer]]:backdrop-blur-lg",
+            "[&>[data-slot=footer]]:absolute [&>[data-slot=footer]]:bottom-0 [&>[data-slot=footer]]:inset-x-0 [&>[data-slot=footer]]:z-10 [&>[data-slot=footer]]:glass-thin",
           className
         )}
         role={isPressable ? "button" : undefined}
@@ -161,7 +167,7 @@ export const CardFooter = forwardRef<HTMLDivElement, CardFooterProps>(
       className={cn(
         "flex w-full shrink-0 items-center gap-2 px-4 pt-2 pb-4",
         showDivider && "mt-2 pt-4 border-t border-separator",
-        isBlurred && "bg-surface/60 backdrop-blur-lg pt-3 pb-3",
+        isBlurred && "glass-thin pt-3 pb-3",
         className
       )}
       {...props}

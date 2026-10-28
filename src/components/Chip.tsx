@@ -1,13 +1,15 @@
 import { forwardRef, type ReactNode } from "react";
 import { cn } from "../lib/cn";
 
-type ChipVariant = "primary" | "secondary" | "tertiary" | "soft";
+type ChipVariant = "primary" | "secondary" | "tertiary" | "soft" | "glass";
 type ChipColor = "default" | "accent" | "success" | "warning" | "danger";
-type ChipSize = "sm" | "md" | "lg";
+type ChipSize = "xs" | "sm" | "md" | "lg";
 
 export interface ChipProps {
-  /** Ko'rinish: primary (to'liq rang), secondary (kulrang fon), tertiary (fonsiz) yoki soft (yumshoq rangli fon) */
+  /** Ko'rinish: primary (to'liq rang), secondary (kulrang fon), tertiary (fonsiz) soft (yumshoq rangli fon) yoki glass (shisha fon) */
   variant?: ChipVariant;
+  /** Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi */
+  material?: "frosted" | "liquid";
   /** Rang */
   color?: ChipColor;
   /** O'lcham */
@@ -31,6 +33,7 @@ export interface ChipProps {
 }
 
 const sizeMap: Record<ChipSize, { chip: string; close: string; dot: string; avatar: string; icon: string }> = {
+  xs: { chip: "h-4 px-1 gap-0.5 text-[10px]", close: "w-3 h-3", dot: "w-1 h-1", avatar: "[&_*]:w-3 [&_*]:h-3 -ml-0.5", icon: "[&_svg]:w-2.5 [&_svg]:h-2.5" },
   sm: { chip: "h-5 px-1.5 gap-1 text-xs", close: "w-3.5 h-3.5", dot: "w-1.5 h-1.5", avatar: "[&_*]:w-3.5 [&_*]:h-3.5 -ml-0.5", icon: "[&_svg]:w-3 [&_svg]:h-3" },
   md: { chip: "h-6 px-2 gap-1 text-xs", close: "w-4 h-4", dot: "w-1.5 h-1.5", avatar: "[&_*]:w-4 [&_*]:h-4 -ml-1", icon: "[&_svg]:w-3.5 [&_svg]:h-3.5" },
   lg: { chip: "h-7 px-2.5 gap-1.5 text-sm", close: "w-[18px] h-[18px]", dot: "w-2 h-2", avatar: "[&_*]:w-5 [&_*]:h-5 -ml-1.5", icon: "[&_svg]:w-4 [&_svg]:h-4" },
@@ -58,30 +61,35 @@ const colorStyles: Record<ChipColor, Record<ChipVariant, string>> = {
     secondary: "bg-default/60 text-foreground",
     tertiary: "bg-transparent text-foreground",
     soft: "bg-default/70 text-default-foreground",
+    glass: "glass-thin text-foreground",
   },
   accent: {
     primary: "bg-accent text-accent-foreground",
     secondary: cn("bg-default/60", textColor.accent),
     tertiary: cn("bg-transparent", textColor.accent),
     soft: "bg-accent-soft text-accent-soft-foreground",
+    glass: cn("glass-thin", textColor.accent),
   },
   success: {
     primary: "bg-success text-success-foreground",
     secondary: cn("bg-default/60", textColor.success),
     tertiary: cn("bg-transparent", textColor.success),
     soft: "bg-success-soft text-success-soft-foreground",
+    glass: cn("glass-thin", textColor.success),
   },
   warning: {
     primary: "bg-warning text-warning-foreground",
     secondary: cn("bg-default/60", textColor.warning),
     tertiary: cn("bg-transparent", textColor.warning),
     soft: "bg-warning-soft text-warning-soft-foreground",
+    glass: cn("glass-thin", textColor.warning),
   },
   danger: {
     primary: "bg-danger text-danger-foreground",
     secondary: cn("bg-default/60", textColor.danger),
     tertiary: cn("bg-transparent", textColor.danger),
     soft: "bg-danger-soft text-danger-soft-foreground",
+    glass: cn("glass-thin", textColor.danger),
   },
 };
 
@@ -89,6 +97,7 @@ export const Chip = forwardRef<HTMLSpanElement, ChipProps>(
   (
     {
       variant = "soft",
+      material,
       color = "default",
       size = "md",
       dot = false,
@@ -104,6 +113,7 @@ export const Chip = forwardRef<HTMLSpanElement, ChipProps>(
   ) => (
     <span
       ref={ref}
+      data-glass={material}
       className={cn(
         "relative inline-flex max-w-fit min-w-min items-center rounded-full whitespace-nowrap font-medium leading-none",
         "transition-colors duration-150",

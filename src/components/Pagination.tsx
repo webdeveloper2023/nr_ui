@@ -2,7 +2,7 @@ import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
 import { cn } from "../lib/cn";
 
 type PaginationColor = "default" | "accent";
-type PaginationSize = "sm" | "md" | "lg";
+type PaginationSize = "xs" | "sm" | "md" | "lg";
 type PaginationVariant = "ghost" | "tertiary" | "surface";
 
 export interface PaginationProps {
@@ -31,6 +31,7 @@ export interface PaginationProps {
 }
 
 const sizes: Record<PaginationSize, string> = {
+  xs: "min-w-6 h-6 text-[11px]",
   sm: "min-w-8 h-8 text-xs",
   md: "min-w-9 h-9 text-sm",
   lg: "min-w-10 h-10 text-sm",

@@ -3,6 +3,8 @@ import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { Menu, Monitor, Moon, Search, Sun, X, Zap } from "lucide-react";
 import { cn } from "../lib/cn";
 import { GROUPS, registry } from "./registry";
+import { useDesignStyle } from "./designStyle";
+import { DesignStyleSwitch } from "./DesignStyleSwitch";
 
 type ThemeMode = "light" | "dark" | "system";
 
@@ -69,6 +71,7 @@ function SideNav({ query, onNavigate }: { query: string; onNavigate?: () => void
         <div>
           <p className="mb-1 px-3 text-sm font-medium text-foreground">Boshlash</p>
           <NavLink to="/" end className={link} onClick={onNavigate}>O'rnatish va sozlash</NavLink>
+          <NavLink to="/colors" className={link} onClick={onNavigate}>Ranglar va materiallar</NavLink>
           <NavLink to="/dashboard" className={link} onClick={onNavigate}>Dashboard namunasi</NavLink>
         </div>
       )}
@@ -115,6 +118,7 @@ function SearchField({ value, onChange, inputRef, className = "" }: { value: str
 
 export default function DocsLayout() {
   const [mode, setMode] = useTheme();
+  const [designStyle, setDesignStyle] = useDesignStyle();
   const [query, setQuery] = useState("");
   const [mobileOpen, setMobileOpen] = useState(false);
   const searchRef = useRef<HTMLInputElement>(null);
@@ -136,8 +140,8 @@ export default function DocsLayout() {
   }, [location]);
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-40 border-b border-separator bg-background/85 backdrop-blur-xl">
+    <div className="min-h-screen">
+      <header className="sticky top-0 z-40 border-b border-separator glass">
         <div className="mx-auto flex h-16 max-w-[1440px] items-center gap-4 px-5 sm:px-8">
           <button className="lg:hidden flex h-9 w-9 items-center justify-center rounded-full text-muted hover:bg-default cursor-pointer" onClick={() => setMobileOpen(true)} aria-label="Menu">
             <Menu size={18} />
@@ -153,7 +157,9 @@ export default function DocsLayout() {
             <SearchField value={query} onChange={setQuery} inputRef={searchRef} className="w-full max-w-md" />
           </div>
           <NavLink to="/dashboard" className="hidden sm:inline-flex h-9 items-center rounded-full px-3.5 text-sm font-medium text-muted hover:text-foreground transition-colors">Dashboard</NavLink>
-          <div className="ml-auto md:ml-0">
+          <NavLink to="/pricing" className="hidden sm:inline-flex h-9 items-center rounded-full px-3.5 text-sm font-medium text-muted hover:text-foreground transition-colors">Narx</NavLink>
+          <div className="ml-auto md:ml-0 flex items-center gap-2">
+            <DesignStyleSwitch style={designStyle} onChange={setDesignStyle} />
             <ThemeSwitch mode={mode} onChange={setMode} />
           </div>
         </div>
@@ -162,7 +168,7 @@ export default function DocsLayout() {
       {mobileOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
           <div className="absolute inset-0 bg-backdrop animate-fade-in" onClick={() => setMobileOpen(false)} />
-          <div className="absolute inset-y-0 left-0 w-72 overflow-y-auto bg-background p-4 shadow-overlay animate-slide-up">
+          <div className="absolute inset-y-0 left-0 w-72 overflow-y-auto glass-thick p-4 animate-slide-up">
             <div className="mb-4 flex items-center justify-between">
               <span className="font-bold text-foreground">nr ui</span>
               <button className="flex h-8 w-8 items-center justify-center rounded-full text-muted hover:bg-default cursor-pointer" onClick={() => setMobileOpen(false)} aria-label="Close">

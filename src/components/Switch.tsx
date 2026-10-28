@@ -2,7 +2,7 @@ import { forwardRef, useId, useState, type ChangeEvent, type ReactNode } from "r
 import { cn } from "../lib/cn";
 
 type SwitchColor = "default" | "accent" | "success" | "warning" | "danger";
-type SwitchSize = "sm" | "md" | "lg";
+type SwitchSize = "xs" | "sm" | "md" | "lg";
 
 export interface SwitchProps {
   /** Yoqilgan holat rangi */
@@ -37,6 +37,7 @@ export interface SwitchProps {
 
 // thumb travel = track width - thumb width - 2 * 2px padding; pressed thumb grows by 4px
 const sizeMap: Record<SwitchSize, { track: string; thumb: string; press: string; on: string; onPressed: string; label: string; icon: string }> = {
+  xs: { track: "w-6 h-4 px-0.5", thumb: "w-3 h-3", press: "group-active:w-3.5", on: "translate-x-2", onPressed: "group-active:translate-x-1.5", label: "text-xs", icon: "[&_svg]:w-2 [&_svg]:h-2" },
   sm: { track: "w-8 h-5 px-0.5", thumb: "w-4 h-4", press: "group-active:w-5", on: "translate-x-3", onPressed: "group-active:translate-x-2", label: "text-sm", icon: "[&_svg]:w-2.5 [&_svg]:h-2.5" },
   md: { track: "w-10 h-6 px-0.5", thumb: "w-5 h-5", press: "group-active:w-6", on: "translate-x-4", onPressed: "group-active:translate-x-3", label: "text-sm", icon: "[&_svg]:w-3 [&_svg]:h-3" },
   lg: { track: "w-12 h-7 px-0.5", thumb: "w-6 h-6", press: "group-active:w-7", on: "translate-x-5", onPressed: "group-active:translate-x-4", label: "text-base", icon: "[&_svg]:w-3.5 [&_svg]:h-3.5" },

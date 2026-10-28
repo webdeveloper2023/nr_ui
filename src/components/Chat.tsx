@@ -86,7 +86,7 @@ export function ChatMessage({
   if (isUser) {
     return (
       <div className="flex flex-col items-end animate-slide-up">
-        <div className="max-w-[80%] rounded-3xl bg-default px-4 py-2.5 text-sm leading-relaxed text-foreground break-words">{children}</div>
+        <div className="max-w-[80%] rounded-[20px] rounded-br-md bg-accent px-4 py-2.5 text-sm leading-relaxed text-accent-foreground break-words">{children}</div>
         {time && <span className="mt-1 px-2 text-xs text-muted">{time}</span>}
       </div>
     );
@@ -103,7 +103,7 @@ export function ChatMessage({
       )}
       <div className="min-w-0 flex-1 pt-1">
         {time && <p className="mb-1 text-xs text-muted">{time}</p>}
-        <div className="text-sm leading-relaxed text-foreground break-words">
+        <div className="w-fit max-w-full rounded-[20px] rounded-bl-md bg-default px-4 py-2.5 text-sm leading-relaxed text-foreground break-words">
           {isTyping ? (
             <span className="flex items-center gap-1 h-6" aria-label="Typing">
               {[0, 150, 300].map((d) => (
@@ -164,6 +164,10 @@ export interface PromptInputProps {
   startContent?: ReactNode;
   /** Input ostidagi izoh matni */
   footer?: ReactNode;
+  /** Kompozerni shisha (glass) qiladi — kontent ustida suzuvchi ko'rinish */
+  isBlurred?: boolean;
+  /** Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi */
+  material?: "frosted" | "liquid";
   /** Qo'shimcha CSS klasslar */
   className?: string;
 }
@@ -182,6 +186,8 @@ export function PromptInput({
   maxRows = 8,
   startContent,
   footer,
+  isBlurred = false,
+  material,
   className = "",
 }: PromptInputProps) {
   const [valueState, setValueState] = useState("");
@@ -237,9 +243,11 @@ export function PromptInput({
         </div>
       )}
       <div
+        data-glass={material}
         onClick={() => ref.current?.focus()}
         className={cn(
-          "flex flex-col gap-2 rounded-3xl bg-field p-3 shadow-field cursor-text",
+          "flex flex-col gap-2 rounded-3xl p-3 cursor-text",
+          isBlurred ? "glass" : "bg-field shadow-field",
           "outline-1 outline-transparent transition-[outline-color] duration-150 focus-within:outline-border",
           isDisabled && "opacity-50 pointer-events-none"
         )}

@@ -53,6 +53,10 @@ export interface TableProps<T = Record<string, unknown>> {
   loadingRows?: number;
   /** Tashqi karta (wrapper) ni olib tashlaydi */
   removeWrapper?: boolean;
+  /** Wrapper'ni shisha (glass) qiladi — rangli fon ustida */
+  isBlurred?: boolean;
+  /** Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi */
+  material?: "frosted" | "liquid";
   /** Sarlavha qatorini yashiradi */
   hideHeader?: boolean;
   /** Qatorlarni tanlash rejimi */
@@ -138,6 +142,8 @@ export function Table<T extends Record<string, unknown>>({
   isLoading = false,
   loadingRows = 5,
   removeWrapper = false,
+  isBlurred = false,
+  material,
   hideHeader = false,
   selectionMode = "none",
   selectedKeys: controlledKeys,
@@ -206,7 +212,7 @@ export function Table<T extends Record<string, unknown>>({
 
   const thBase = cn(
     "group/th h-10 px-3 text-xs font-medium text-muted whitespace-nowrap align-middle first:rounded-l-xl last:rounded-r-xl",
-    variant === "primary" ? "bg-surface-secondary" : "bg-default/70"
+    isBlurred ? "bg-default/60" : variant === "primary" ? "bg-surface-secondary" : "bg-default/70"
   );
   const tdBase = cn(cellPad, "text-sm text-foreground align-middle whitespace-normal relative");
 
@@ -390,7 +396,8 @@ export function Table<T extends Record<string, unknown>>({
     <div className={cn("flex flex-col gap-4 w-full", className)}>
       {topContent}
       <div
-        className={cn("relative w-full overflow-auto rounded-3xl", variant === "primary" ? "bg-surface shadow-surface p-2" : "bg-transparent")}
+        data-glass={material}
+        className={cn("relative w-full overflow-auto rounded-3xl", variant === "primary" ? cn(isBlurred ? "glass" : "bg-surface-gradient shadow-surface", "p-2") : "bg-transparent")}
         style={maxHeight ? { maxHeight } : undefined}
       >
         {table}

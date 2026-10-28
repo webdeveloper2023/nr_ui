@@ -22,6 +22,8 @@ export interface NavbarProps extends HTMLAttributes<HTMLElement> {
   isBordered?: boolean;
   /** Shaffof blur fon */
   isBlurred?: boolean;
+  /** Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi */
+  material?: "frosted" | "liquid";
   /** Joylashuv turi */
   position?: "static" | "sticky" | "floating";
   /** Pastga scroll qilganda yashirish */
@@ -106,6 +108,7 @@ export const Navbar = forwardRef<HTMLElement, NavbarProps>(
       height = "4rem",
       isBordered = false,
       isBlurred = true,
+      material,
       position = "sticky",
       shouldHideOnScroll = false,
       isMenuOpen: menuProp,
@@ -158,6 +161,7 @@ export const Navbar = forwardRef<HTMLElement, NavbarProps>(
       <NavbarContext.Provider value={{ isMenuOpen, setIsMenuOpen, height }}>
         <nav
           ref={ref}
+          data-glass={material}
           className={cn(
             "z-40 flex w-full items-center justify-center",
             "transition-transform duration-300 ease-(--ease-out-soft)",
@@ -166,7 +170,8 @@ export const Navbar = forwardRef<HTMLElement, NavbarProps>(
             isHidden && !isMenuOpen && "-translate-y-[calc(100%+1rem)]",
             !isFloating &&
               (isBlurred
-                ? "bg-background/80 backdrop-blur-lg backdrop-saturate-150"
+                ? // glass material without drop shadow — a hairline separator reads cleaner on full-width bars
+                  "bg-[rgb(var(--nr-glass-tint)/var(--nr-glass-alpha))] [background-image:var(--nr-glass-image)] [-webkit-backdrop-filter:blur(var(--nr-glass-blur))_saturate(var(--nr-glass-saturate))_var(--nr-glass-filter)] [backdrop-filter:blur(var(--nr-glass-blur))_saturate(var(--nr-glass-saturate))_var(--nr-glass-filter)]"
                 : "bg-background"),
             !isFloating && (isBordered || isBlurred) && "border-b border-separator",
             className
@@ -180,8 +185,9 @@ export const Navbar = forwardRef<HTMLElement, NavbarProps>(
               maxWidthMap[maxWidth],
               isFloating &&
                 cn(
-                  "rounded-full shadow-surface pl-5 pr-2",
-                  isBlurred ? "bg-surface/80 backdrop-blur-lg backdrop-saturate-150" : "bg-surface"
+                  "rounded-full pl-5 pr-2",
+                  !isBlurred && "shadow-surface",
+                  isBlurred ? "glass" : "bg-surface"
                 )
             )}
             style={{ height }}
@@ -324,7 +330,7 @@ export const NavbarMenu = forwardRef<HTMLDivElement, NavbarMenuProps>(
         aria-hidden={!isMenuOpen}
         className={cn(
           "fixed left-0 right-0 bottom-0 z-40 md:hidden",
-          "bg-background/95 backdrop-blur-xl backdrop-saturate-150",
+          "glass-thick",
           "flex flex-col gap-1 px-6 py-4 overflow-y-auto",
           "transition-[opacity,transform] duration-300 ease-(--ease-out-soft)",
           isMenuOpen ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 -translate-y-3 pointer-events-none",

@@ -58,6 +58,10 @@ export interface SelectProps extends Omit<HTMLAttributes<HTMLDivElement>, "onCha
   isInvalid?: boolean;
   /** Xato holatida ko'rsatiladigan matn */
   errorMessage?: ReactNode;
+  /** Ochiladigan ro'yxatni shisha (blur) material qiladi; false — to'q fon */
+  isBlurred?: boolean;
+  /** Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi */
+  material?: "frosted" | "liquid";
   /** Maydon ostidagi yordamchi matn */
   description?: ReactNode;
   /** Boshidagi kontent (masalan, ikonka) */
@@ -130,6 +134,8 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
       defaultSelectedKey,
       onSelectionChange,
       emptyContent = "Variantlar yo'q",
+      isBlurred = true,
+      material,
       className = "",
       ...props
     },
@@ -370,11 +376,13 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
               ref={listRef}
               id={listId}
               role="listbox"
+              data-glass={material}
               aria-labelledby={id}
               onMouseDown={(e) => e.preventDefault()}
               className={cn(
                 "fixed z-50 p-1.5 overflow-y-auto overscroll-contain",
-                "bg-overlay rounded-2xl shadow-overlay",
+                "rounded-2xl",
+                isBlurred ? "glass-thick" : "bg-overlay shadow-overlay",
                 "transition-[opacity,transform] duration-150 ease-out",
                 pos.placement === "bottom" ? "origin-top" : "origin-bottom",
                 visible ? "opacity-100 scale-100 translate-y-0" : cn("opacity-0 scale-95", pos.placement === "bottom" ? "-translate-y-1" : "translate-y-1")

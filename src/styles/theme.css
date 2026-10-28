@@ -1,72 +1,103 @@
 /* NR UI theme — import after "tailwindcss".
-   Calm, surface-based system: gray canvas, white surfaces, soft hairline shadows,
-   pill buttons, one accent color + status colors with "soft" tints.
-   Dark mode: <html class="dark"> */
+   Vivid system palette, grouped-background surfaces, translucent
+   "glass" materials and very soft surface/canvas gradients.
+   Dark mode: <html class="dark">
+
+   Materials: frosted glass (default), Liquid (clear glass) or solid (no glass):
+     <html data-glass="liquid">              whole app ("frosted" | "liquid" | "solid")
+     <Card variant="glass" material="liquid"> one component (sets data-glass on it)
+
+   Global knobs (override in your own CSS):
+     --nr-glass-blur, --nr-glass-saturate, --nr-glass-alpha   glass strength
+     --nr-gradient-surface: none;                             flat cards
+     --nr-gradient-canvas: none;                              flat page background */
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
+  /* ── System colors ─────────────────── */
+  --color-blue: #007aff;
+  --color-green: #34c759;
+  --color-indigo: #5856d6;
+  --color-orange: #ff9500;
+  --color-pink: #ff2d55;
+  --color-purple: #af52de;
+  --color-red: #ff3b30;
+  --color-teal: #30b0c7;
+  --color-mint: #00c7be;
+  --color-cyan: #32ade6;
+  --color-yellow: #ffcc00;
+  --color-brown: #a2845e;
+
+  /* Gray scale, darkest to lightest */
+  --color-gray: #8e8e93;
+  --color-gray-2: #aeaeb2;
+  --color-gray-3: #c7c7cc;
+  --color-gray-4: #d1d1d6;
+  --color-gray-5: #e5e5ea;
+  --color-gray-6: #f2f2f7;
+
   /* ── Canvas & text ───────────────────────── */
-  --color-background: #f5f5f5;
-  --color-foreground: #18181b;
-  --color-muted: #71717a;
+  --color-background: #f2f2f7; /* page canvas */
+  --color-foreground: #1d1d1f; /* main text */
+  --color-muted: #6e6e73; /* secondary text */
 
   /* ── Surfaces (cards, panels) ────────────── */
-  --color-surface: #ffffff;
-  --color-surface-secondary: #efeff0;
-  --color-surface-tertiary: #eaeaeb;
-  --color-overlay: #ffffff; /* popovers, menus, modals */
+  --color-surface: #ffffff; /* cards and panels */
+  --color-surface-secondary: #f2f2f7;
+  --color-surface-tertiary: #e5e5ea;
+  --color-overlay: #ffffff; /* popovers, menus, modals (solid fallback for glass) */
 
   /* ── Fields (input, select, checkbox…) ───── */
   --color-field: #ffffff;
-  --color-field-secondary: #ebebec;
-  --color-field-placeholder: #71717a;
+  --color-field-secondary: rgb(118 118 128 / 0.12); /* soft field fill */
+  --color-field-placeholder: #8e8e93;
   --color-segment: #ffffff; /* selected tab / segment thumb */
 
   /* ── Lines ───────────────────────────────── */
-  --color-border: #dedee0;
-  --color-separator: #e4e4e7;
+  --color-border: #d1d1d6;
+  --color-separator: rgb(60 60 67 / 0.14);
 
-  /* ── Default (neutral) ───────────────────── */
-  --color-default: #ebebec;
-  --color-default-hover: #e2e2e4;
-  --color-default-foreground: #18181b;
+  /* ── Default (neutral fill) ──────────────── */
+  --color-default: rgb(118 118 128 / 0.12);
+  --color-default-hover: rgb(118 118 128 / 0.18);
+  --color-default-foreground: #1d1d1f;
 
-  /* ── Accent ──────────────────────────────── */
-  --color-accent: #0485f7;
-  --color-accent-hover: #1a90f8;
+  /* ── Accent (systemBlue) ─────────────────── */
+  --color-accent: #007aff;
+  --color-accent-hover: #1a88ff;
   --color-accent-foreground: #ffffff;
-  --color-accent-soft: color-mix(in oklab, #0485f7 15%, transparent);
-  --color-accent-soft-hover: color-mix(in oklab, #0485f7 20%, transparent);
-  --color-accent-soft-foreground: #0a63b8;
+  --color-accent-soft: color-mix(in oklab, #007aff 12%, transparent);
+  --color-accent-soft-hover: color-mix(in oklab, #007aff 18%, transparent);
+  --color-accent-soft-foreground: #0062cc;
 
-  /* ── Status ──────────────────────────────── */
-  --color-success: #17c964;
-  --color-success-hover: #2ece74;
-  --color-success-foreground: #18181b;
-  --color-success-soft: color-mix(in oklab, #17c964 15%, transparent);
-  --color-success-soft-hover: color-mix(in oklab, #17c964 20%, transparent);
-  --color-success-soft-foreground: #0f8a45;
+  /* ── Status (systemGreen / Orange / Red) ─── */
+  --color-success: #34c759;
+  --color-success-hover: #4cd06d;
+  --color-success-foreground: #ffffff;
+  --color-success-soft: color-mix(in oklab, #34c759 14%, transparent);
+  --color-success-soft-hover: color-mix(in oklab, #34c759 20%, transparent);
+  --color-success-soft-foreground: #248a3d;
 
-  --color-warning: #f5a524;
-  --color-warning-hover: #f6ae3a;
-  --color-warning-foreground: #18181b;
-  --color-warning-soft: color-mix(in oklab, #f5a524 15%, transparent);
-  --color-warning-soft-hover: color-mix(in oklab, #f5a524 20%, transparent);
-  --color-warning-soft-foreground: #a86a0a;
+  --color-warning: #ff9500;
+  --color-warning-hover: #ffa31f;
+  --color-warning-foreground: #ffffff;
+  --color-warning-soft: color-mix(in oklab, #ff9500 14%, transparent);
+  --color-warning-soft-hover: color-mix(in oklab, #ff9500 20%, transparent);
+  --color-warning-soft-foreground: #c93400;
 
-  --color-danger: #ff383c;
-  --color-danger-hover: #ff4c50;
+  --color-danger: #ff3b30;
+  --color-danger-hover: #ff5249;
   --color-danger-foreground: #ffffff;
-  --color-danger-soft: color-mix(in oklab, #ff383c 15%, transparent);
-  --color-danger-soft-hover: color-mix(in oklab, #ff383c 20%, transparent);
-  --color-danger-soft-foreground: #c9252a;
+  --color-danger-soft: color-mix(in oklab, #ff3b30 12%, transparent);
+  --color-danger-soft-hover: color-mix(in oklab, #ff3b30 18%, transparent);
+  --color-danger-soft-foreground: #d70015;
 
-  --color-focus: #0485f7;
-  --color-backdrop: rgb(0 0 0 / 0.4);
+  --color-focus: #007aff;
+  --color-backdrop: rgb(0 0 0 / 0.25);
 
-  --font-sans: "Inter", ui-sans-serif, system-ui, -apricot-system, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-sans: "Inter", "Segoe UI", system-ui, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
   /* ── Motion ──────────────────────────────── */
   --ease-out-soft: cubic-bezier(0.32, 0.72, 0, 1);
@@ -93,65 +124,201 @@
   }
 }
 
-/* ── Elevation tokens (theme-aware) ─────────── */
+/* ── Elevation, glass & gradient tokens (light) ─ */
 :root {
-  --nr-shadow-surface: 0 2px 4px 0 rgb(0 0 0 / 0.04), 0 1px 2px 0 rgb(0 0 0 / 0.06), 0 0 1px 0 rgb(0 0 0 / 0.06);
-  --nr-shadow-field: 0 2px 4px 0 rgb(0 0 0 / 0.04), 0 1px 2px 0 rgb(0 0 0 / 0.06), 0 0 1px 0 rgb(0 0 0 / 0.06);
-  --nr-shadow-overlay: 0 2px 8px 0 rgb(0 0 0 / 0.06), 0 -6px 12px 0 rgb(0 0 0 / 0.03), 0 14px 28px 0 rgb(0 0 0 / 0.08);
+  --nr-shadow-surface: 0 0 0 0.5px rgb(0 0 0 / 0.05), 0 1px 2px 0 rgb(0 0 0 / 0.04), 0 4px 16px -2px rgb(0 0 0 / 0.05);
+  --nr-shadow-field: 0 0 0 0.5px rgb(0 0 0 / 0.06), 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --nr-shadow-overlay: 0 0 0 0.5px rgb(0 0 0 / 0.08), 0 2px 6px 0 rgb(0 0 0 / 0.05), 0 12px 40px -4px rgb(0 0 0 / 0.14);
+
+  /* Glass material */
+  --nr-glass-tint: 255 255 255;
+  --nr-glass-alpha: 0.62;
+  --nr-glass-blur: 24px;
+  --nr-glass-saturate: 180%;
+  --nr-glass-edge: inset 0 1px 0 0 rgb(255 255 255 / 0.75), inset 0 0 0 0.5px rgb(255 255 255 / 0.45);
+  --nr-glass-shadow: 0 0 0 0.5px rgb(0 0 0 / 0.06), 0 8px 32px -4px rgb(0 0 0 / 0.1);
+  --nr-glass-image: none; /* specular sheen layer (Liquid) */
+  --nr-glass-filter: brightness(1);
+
+  /* Soft gradients */
+  --nr-gradient-surface: linear-gradient(160deg, #ffffff 0%, #fcfcfd 55%, color-mix(in oklab, var(--color-accent) 3%, #fcfcfd) 100%);
+  --nr-gradient-canvas:
+    radial-gradient(1100px 650px at 0% -10%, color-mix(in oklab, var(--color-blue) 7%, transparent), transparent 62%),
+    radial-gradient(900px 600px at 100% 0%, color-mix(in oklab, var(--color-purple) 5%, transparent), transparent 58%),
+    radial-gradient(1000px 700px at 50% 115%, color-mix(in oklab, var(--color-teal) 5%, transparent), transparent 60%);
 }
 
 /* ── Dark theme ─────────────────────────────── */
 .dark {
-  --color-background: #060607;
-  --color-foreground: #fcfcfc;
-  --color-muted: #9f9fa9;
+  --color-blue: #0a84ff;
+  --color-green: #30d158;
+  --color-indigo: #5e5ce6;
+  --color-orange: #ff9f0a;
+  --color-pink: #ff375f;
+  --color-purple: #bf5af2;
+  --color-red: #ff453a;
+  --color-teal: #40c8e0;
+  --color-mint: #63e6e2;
+  --color-cyan: #64d2ff;
+  --color-yellow: #ffd60a;
+  --color-brown: #ac8e68;
 
-  --color-surface: #18181b;
-  --color-surface-secondary: #232325;
-  --color-surface-tertiary: #29292c;
-  --color-overlay: #18181b;
+  --color-gray: #8e8e93;
+  --color-gray-2: #636366;
+  --color-gray-3: #48484a;
+  --color-gray-4: #3a3a3c;
+  --color-gray-5: #2c2c2e;
+  --color-gray-6: #1c1c1e;
 
-  --color-field: #18181b;
-  --color-field-secondary: #27272a;
-  --color-field-placeholder: #9f9fa9;
-  --color-segment: #46464c;
+  --color-background: #000000;
+  --color-foreground: #f5f5f7;
+  --color-muted: #98989f;
 
-  --color-border: #2a2a2e;
-  --color-separator: #222225;
+  --color-surface: #1c1c1e;
+  --color-surface-secondary: #2c2c2e;
+  --color-surface-tertiary: #3a3a3c;
+  --color-overlay: #2c2c2e;
 
-  --color-default: #27272a;
-  --color-default-hover: #303034;
-  --color-default-foreground: #fcfcfc;
+  --color-field: #1c1c1e;
+  --color-field-secondary: rgb(118 118 128 / 0.24);
+  --color-field-placeholder: #8e8e93;
+  --color-segment: #636366;
 
-  --color-accent-soft: color-mix(in oklab, #0485f7 14%, transparent);
-  --color-accent-soft-hover: color-mix(in oklab, #0485f7 18%, transparent);
-  --color-accent-soft-foreground: #5cb1fb;
+  --color-border: #38383a;
+  --color-separator: rgb(84 84 88 / 0.45);
 
-  --color-success-soft: color-mix(in oklab, #17c964 13%, transparent);
-  --color-success-soft-hover: color-mix(in oklab, #17c964 17%, transparent);
-  --color-success-soft-foreground: #45d483;
+  --color-default: rgb(118 118 128 / 0.24);
+  --color-default-hover: rgb(118 118 128 / 0.32);
+  --color-default-foreground: #f5f5f7;
 
-  --color-warning: #f7b750;
-  --color-warning-hover: #f8c066;
-  --color-warning-soft: color-mix(in oklab, #f7b750 13%, transparent);
-  --color-warning-soft-hover: color-mix(in oklab, #f7b750 17%, transparent);
-  --color-warning-soft-foreground: #f9c97c;
+  --color-accent: #0a84ff;
+  --color-accent-hover: #409cff;
+  --color-accent-soft: color-mix(in oklab, #0a84ff 18%, transparent);
+  --color-accent-soft-hover: color-mix(in oklab, #0a84ff 24%, transparent);
+  --color-accent-soft-foreground: #64afff;
 
-  --color-danger: #db3b3e;
-  --color-danger-hover: #e04e51;
-  --color-danger-soft: color-mix(in oklab, #db3b3e 16%, transparent);
-  --color-danger-soft-hover: color-mix(in oklab, #db3b3e 22%, transparent);
-  --color-danger-soft-foreground: #f07b7d;
+  --color-success: #30d158;
+  --color-success-hover: #4ad66d;
+  --color-success-soft: color-mix(in oklab, #30d158 16%, transparent);
+  --color-success-soft-hover: color-mix(in oklab, #30d158 22%, transparent);
+  --color-success-soft-foreground: #30db5b;
 
-  --color-backdrop: rgb(0 0 0 / 0.6);
+  --color-warning: #ff9f0a;
+  --color-warning-hover: #ffb340;
+  --color-warning-soft: color-mix(in oklab, #ff9f0a 16%, transparent);
+  --color-warning-soft-hover: color-mix(in oklab, #ff9f0a 22%, transparent);
+  --color-warning-soft-foreground: #ffb340;
 
-  --nr-shadow-surface: 0 0 0 0 transparent;
-  --nr-shadow-field: inset 0 0 0 1px rgb(255 255 255 / 0.08);
-  --nr-shadow-overlay: inset 0 0 0 1px rgb(255 255 255 / 0.1), 0 16px 40px 0 rgb(0 0 0 / 0.5);
+  --color-danger: #ff453a;
+  --color-danger-hover: #ff6961;
+  --color-danger-soft: color-mix(in oklab, #ff453a 18%, transparent);
+  --color-danger-soft-hover: color-mix(in oklab, #ff453a 24%, transparent);
+  --color-danger-soft-foreground: #ff6961;
+
+  --color-focus: #0a84ff;
+  --color-backdrop: rgb(0 0 0 / 0.5);
+
+  --nr-shadow-surface: inset 0 0 0 0.5px rgb(255 255 255 / 0.08), inset 0 1px 0 0 rgb(255 255 255 / 0.04);
+  --nr-shadow-field: inset 0 0 0 0.5px rgb(255 255 255 / 0.1);
+  --nr-shadow-overlay: inset 0 0 0 0.5px rgb(255 255 255 / 0.12), 0 16px 48px 0 rgb(0 0 0 / 0.55);
+
+  --nr-glass-tint: 30 30 32;
+  --nr-glass-alpha: 0.58;
+  --nr-glass-edge: inset 0 1px 0 0 rgb(255 255 255 / 0.1), inset 0 0 0 0.5px rgb(255 255 255 / 0.12);
+  --nr-glass-shadow: 0 8px 32px -4px rgb(0 0 0 / 0.45);
+
+  --nr-gradient-surface: linear-gradient(160deg, #222224 0%, #1c1c1e 55%, color-mix(in oklab, var(--color-accent) 5%, #1c1c1e) 100%);
+  --nr-gradient-canvas:
+    radial-gradient(1100px 650px at 0% -10%, color-mix(in oklab, var(--color-blue) 12%, transparent), transparent 62%),
+    radial-gradient(900px 600px at 100% 0%, color-mix(in oklab, var(--color-purple) 9%, transparent), transparent 58%),
+    radial-gradient(1000px 700px at 50% 115%, color-mix(in oklab, var(--color-teal) 6%, transparent), transparent 60%);
   color-scheme: dark;
 }
 
-/* Elevation utilities compose with Tailwind rings (ring-*, ring-offset-*) like built-in shadow-* */
+/* ── Liquid (clear glass) ───── */
+/* Clearer tint, lighter blur, bright specular rim, inner glow and a top sheen —
+   the material reads like a lens over the content instead of frosted paper. */
+[data-glass="liquid"] {
+  --nr-glass-tint: 255 255 255;
+  --nr-glass-alpha: 0.3;
+  --nr-glass-blur: 14px;
+  --nr-glass-saturate: 190%;
+  --nr-glass-filter: brightness(1.06) contrast(1.02);
+  --nr-glass-image:
+    linear-gradient(180deg, rgb(255 255 255 / 0.42) 0%, rgb(255 255 255 / 0.08) 42%, rgb(255 255 255 / 0) 58%, rgb(255 255 255 / 0.14) 100%);
+  --nr-glass-edge:
+    inset 0 1px 0.5px 0 rgb(255 255 255 / 0.9),
+    inset 0 -1px 0.5px 0 rgb(255 255 255 / 0.35),
+    inset 1px 0 0 0 rgb(255 255 255 / 0.28),
+    inset -1px 0 0 0 rgb(255 255 255 / 0.28),
+    inset 0 0 0 0.5px rgb(255 255 255 / 0.55),
+    inset 0 0 18px 2px rgb(255 255 255 / 0.14);
+  --nr-glass-shadow: 0 2px 6px 0 rgb(0 0 0 / 0.06), 0 10px 28px -6px rgb(0 0 0 / 0.18);
+}
+.dark[data-glass="liquid"],
+.dark [data-glass="liquid"] {
+  --nr-glass-tint: 44 44 48;
+  --nr-glass-alpha: 0.34;
+  --nr-glass-filter: brightness(1.1) contrast(1.02);
+  --nr-glass-image:
+    linear-gradient(180deg, rgb(255 255 255 / 0.14) 0%, rgb(255 255 255 / 0.03) 42%, rgb(255 255 255 / 0) 58%, rgb(255 255 255 / 0.06) 100%);
+  --nr-glass-edge:
+    inset 0 1px 0.5px 0 rgb(255 255 255 / 0.32),
+    inset 0 -1px 0.5px 0 rgb(255 255 255 / 0.1),
+    inset 1px 0 0 0 rgb(255 255 255 / 0.1),
+    inset -1px 0 0 0 rgb(255 255 255 / 0.1),
+    inset 0 0 0 0.5px rgb(255 255 255 / 0.18),
+    inset 0 0 18px 2px rgb(255 255 255 / 0.05);
+  --nr-glass-shadow: 0 2px 6px 0 rgb(0 0 0 / 0.3), 0 12px 32px -6px rgb(0 0 0 / 0.6);
+}
+
+/* Opt back into frosted inside a liquid app */
+[data-glass="frosted"] {
+  --nr-glass-tint: 255 255 255;
+  --nr-glass-alpha: 0.62;
+  --nr-glass-blur: 24px;
+  --nr-glass-saturate: 180%;
+  --nr-glass-filter: brightness(1);
+  --nr-glass-image: none;
+  --nr-glass-edge: inset 0 1px 0 0 rgb(255 255 255 / 0.75), inset 0 0 0 0.5px rgb(255 255 255 / 0.45);
+  --nr-glass-shadow: 0 0 0 0.5px rgb(0 0 0 / 0.06), 0 8px 32px -4px rgb(0 0 0 / 0.1);
+}
+.dark[data-glass="frosted"],
+.dark [data-glass="frosted"] {
+  --nr-glass-tint: 30 30 32;
+  --nr-glass-alpha: 0.58;
+  --nr-glass-image: none;
+  --nr-glass-edge: inset 0 1px 0 0 rgb(255 255 255 / 0.1), inset 0 0 0 0.5px rgb(255 255 255 / 0.12);
+  --nr-glass-shadow: 0 8px 32px -4px rgb(0 0 0 / 0.45);
+}
+
+/* Solid: every glass utility becomes an opaque surface (no blur, no translucency) */
+[data-glass="solid"] {
+  --nr-glass-tint: 255 255 255;
+  --nr-glass-alpha: 1;
+  --nr-glass-blur: 0px;
+  --nr-glass-saturate: 100%;
+  --nr-glass-filter: brightness(1);
+  --nr-glass-image: none;
+  --nr-glass-edge: inset 0 0 0 0.5px rgb(0 0 0 / 0.06);
+  --nr-glass-shadow: var(--nr-shadow-surface);
+}
+.dark[data-glass="solid"],
+.dark [data-glass="solid"] {
+  --nr-glass-tint: 28 28 30;
+  --nr-glass-edge: inset 0 0 0 0.5px rgb(255 255 255 / 0.08);
+}
+
+/* No backdrop-filter support → glass falls back to solid overlay */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  :root,
+  .dark,
+  [data-glass] {
+    --nr-glass-alpha: 1;
+  }
+}
+
+/* ── Elevation utilities (compose with ring-*) ─ */
 @utility shadow-surface {
   --tw-shadow: var(--nr-shadow-surface);
   box-shadow: var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000), var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
@@ -165,6 +332,46 @@
   box-shadow: var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000), var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
+/* ── Glass materials ───────────────────────── */
+/* glass: regular material (navbars, sidebars, cards on images)
+   glass-thin: lighter, more see-through (chips, hover layers)
+   glass-thick: menus, popovers, modals, toasts — readable text over busy content */
+@utility glass {
+  background-color: rgb(var(--nr-glass-tint) / var(--nr-glass-alpha));
+  background-image: var(--nr-glass-image);
+  -webkit-backdrop-filter: blur(var(--nr-glass-blur)) saturate(var(--nr-glass-saturate)) var(--nr-glass-filter);
+  backdrop-filter: blur(var(--nr-glass-blur)) saturate(var(--nr-glass-saturate)) var(--nr-glass-filter);
+  --tw-shadow: var(--nr-glass-edge), var(--nr-glass-shadow);
+  box-shadow: var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000), var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+@utility glass-thin {
+  background-color: rgb(var(--nr-glass-tint) / calc(var(--nr-glass-alpha) * 0.6));
+  background-image: var(--nr-glass-image);
+  -webkit-backdrop-filter: blur(calc(var(--nr-glass-blur) * 0.66)) saturate(var(--nr-glass-saturate)) var(--nr-glass-filter);
+  backdrop-filter: blur(calc(var(--nr-glass-blur) * 0.66)) saturate(var(--nr-glass-saturate)) var(--nr-glass-filter);
+  --tw-shadow: var(--nr-glass-edge);
+  box-shadow: var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000), var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+@utility glass-thick {
+  background-color: rgb(var(--nr-glass-tint) / min(1, calc(var(--nr-glass-alpha) + 0.2)));
+  background-image: var(--nr-glass-image);
+  -webkit-backdrop-filter: blur(calc(var(--nr-glass-blur) * 1.6)) saturate(var(--nr-glass-saturate)) var(--nr-glass-filter);
+  backdrop-filter: blur(calc(var(--nr-glass-blur) * 1.6)) saturate(var(--nr-glass-saturate)) var(--nr-glass-filter);
+  --tw-shadow: var(--nr-glass-edge), var(--nr-shadow-overlay);
+  box-shadow: var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000), var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+/* ── Soft gradients ────────────────────────── */
+@utility bg-surface-gradient {
+  background-color: var(--color-surface);
+  background-image: var(--nr-gradient-surface);
+}
+@utility bg-canvas-gradient {
+  background-color: var(--color-background);
+  background-image: var(--nr-gradient-canvas);
+  background-attachment: fixed;
+}
+
 @layer base {
   * {
     box-sizing: border-box;
@@ -175,7 +382,9 @@
   body {
     margin: 0;
     font-family: var(--font-sans);
-    background: var(--color-background);
+    background-color: var(--color-background);
+    background-image: var(--nr-gradient-canvas);
+    background-attachment: fixed;
     color: var(--color-foreground);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;

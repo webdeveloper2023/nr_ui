@@ -132,10 +132,17 @@
     },
     {
       "name": "variant",
-      "type": "'default' | 'soft' | 'flat'",
+      "type": "'default' | 'soft' | 'flat' | 'glass'",
       "required": false,
       "default": "\"default\"",
-      "description": "Ko'rinish: default — oq surface, soft — rangli yengil tus, flat — to'liq rangli fon"
+      "description": "Ko'rinish: default — surface (yengil gradient), soft — rangli yengil tus, flat — to'liq rangli fon, glass — shisha"
+    },
+    {
+      "name": "material",
+      "type": "\"frosted\" | \"liquid\"",
+      "required": false,
+      "default": null,
+      "description": "Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi"
     },
     {
       "name": "title",
@@ -369,7 +376,7 @@
     },
     {
       "name": "size",
-      "type": "'sm' | 'md' | 'lg'",
+      "type": "'xs' | 'sm' | 'md' | 'lg'",
       "required": false,
       "default": "\"md\"",
       "description": "O'lcham"
@@ -434,14 +441,21 @@
   "Button": [
     {
       "name": "variant",
-      "type": "'danger' | 'primary' | 'secondary' | 'tertiary' | 'outline' | 'ghost' | 'danger-soft'",
+      "type": "'danger' | 'glass' | 'primary' | 'secondary' | 'tertiary' | 'outline' | 'ghost' | 'danger-soft'",
       "required": false,
       "default": "\"primary\"",
-      "description": "Ko'rinish varianti: primary, secondary, tertiary, outline, ghost, danger, danger-soft"
+      "description": "Ko'rinish varianti: primary, secondary, tertiary, outline, ghost, glass (shisha), danger, danger-soft"
+    },
+    {
+      "name": "material",
+      "type": "\"frosted\" | \"liquid\"",
+      "required": false,
+      "default": null,
+      "description": "Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi"
     },
     {
       "name": "size",
-      "type": "'sm' | 'md' | 'lg'",
+      "type": "'xs' | 'sm' | 'md' | 'lg'",
       "required": false,
       "default": "\"md\"",
       "description": "O'lcham"
@@ -520,14 +534,14 @@
   "ButtonGroup": [
     {
       "name": "variant",
-      "type": "'danger' | 'primary' | 'secondary' | 'tertiary' | 'outline' | 'ghost' | 'danger-soft'",
+      "type": "'danger' | 'glass' | 'primary' | 'secondary' | 'tertiary' | 'outline' | 'ghost' | 'danger-soft'",
       "required": false,
       "default": "\"tertiary\"",
       "description": "Guruhdagi barcha tugmalar varianti"
     },
     {
       "name": "size",
-      "type": "'sm' | 'md' | 'lg'",
+      "type": "'xs' | 'sm' | 'md' | 'lg'",
       "required": false,
       "default": null,
       "description": "Guruhdagi barcha tugmalar o'lchami"
@@ -564,10 +578,17 @@
   "Card": [
     {
       "name": "variant",
-      "type": "'default' | 'secondary' | 'tertiary' | 'transparent'",
+      "type": "'default' | 'flat' | 'glass' | 'secondary' | 'tertiary' | 'transparent'",
       "required": false,
       "default": "\"default\"",
-      "description": "Ko'rinish darajasi: default (oq surface), secondary, tertiary yoki transparent"
+      "description": "Ko'rinish: default (yengil gradient), flat (gradientsiz), glass (shisha), secondary, tertiary yoki transparent"
+    },
+    {
+      "name": "material",
+      "type": "\"frosted\" | \"liquid\"",
+      "required": false,
+      "default": null,
+      "description": "Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi"
     },
     {
       "name": "radius",
@@ -869,6 +890,20 @@
       "description": "Input ostidagi izoh matni"
     },
     {
+      "name": "isBlurred",
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Kompozerni shisha (glass) qiladi — kontent ustida suzuvchi ko'rinish"
+    },
+    {
+      "name": "material",
+      "type": "\"frosted\" | \"liquid\"",
+      "required": false,
+      "default": null,
+      "description": "Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi"
+    },
+    {
       "name": "className",
       "type": "string",
       "required": false,
@@ -893,7 +928,7 @@
     },
     {
       "name": "size",
-      "type": "'sm' | 'md' | 'lg'",
+      "type": "'xs' | 'sm' | 'md' | 'lg'",
       "required": false,
       "default": "\"md\"",
       "description": "O'lcham"
@@ -1063,7 +1098,7 @@
     },
     {
       "name": "size",
-      "type": "'sm' | 'md' | 'lg'",
+      "type": "'xs' | 'sm' | 'md' | 'lg'",
       "required": false,
       "default": null,
       "description": "O'lcham"
@@ -1121,10 +1156,17 @@
   "Chip": [
     {
       "name": "variant",
-      "type": "'soft' | 'primary' | 'secondary' | 'tertiary'",
+      "type": "'soft' | 'glass' | 'primary' | 'secondary' | 'tertiary'",
       "required": false,
       "default": "\"soft\"",
-      "description": "Ko'rinish: primary (to'liq rang), secondary (kulrang fon), tertiary (fonsiz) yoki soft (yumshoq rangli fon)"
+      "description": "Ko'rinish: primary (to'liq rang), secondary (kulrang fon), tertiary (fonsiz) soft (yumshoq rangli fon) yoki glass (shisha fon)"
+    },
+    {
+      "name": "material",
+      "type": "\"frosted\" | \"liquid\"",
+      "required": false,
+      "default": null,
+      "description": "Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi"
     },
     {
       "name": "color",
@@ -1135,7 +1177,7 @@
     },
     {
       "name": "size",
-      "type": "'sm' | 'md' | 'lg'",
+      "type": "'xs' | 'sm' | 'md' | 'lg'",
       "required": false,
       "default": "\"md\"",
       "description": "O'lcham"
@@ -1294,6 +1336,20 @@
       "required": false,
       "default": null,
       "description": "DropdownTrigger va DropdownMenu"
+    },
+    {
+      "name": "isBlurred",
+      "type": "boolean",
+      "required": false,
+      "default": "true",
+      "description": "Menyuni shisha (blur) material qiladi; false — to'q fon"
+    },
+    {
+      "name": "material",
+      "type": "\"frosted\" | \"liquid\"",
+      "required": false,
+      "default": null,
+      "description": "Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi"
     },
     {
       "name": "aria-label",
@@ -1529,7 +1585,7 @@
     },
     {
       "name": "size",
-      "type": "'sm' | 'md' | 'lg'",
+      "type": "'xs' | 'sm' | 'md' | 'lg'",
       "required": false,
       "default": "\"md\"",
       "description": "O'lcham"
@@ -1640,6 +1696,13 @@
       "description": "Konteyner kengligini to'liq egallaydi"
     },
     {
+      "name": "inputOverlay",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Input matni orqasida chiziladigan qatlam — masalan, mask yo'riqnomasi (PhoneInput ishlatadi)"
+    },
+    {
       "name": "classNames",
       "type": "Partial<Record<\"base\" | \"label\" | \"inputWrapper\" | \"input\" | \"description\" | \"errorMessage\", string>>",
       "required": false,
@@ -1698,6 +1761,20 @@
       "required": false,
       "default": "\"opaque\"",
       "description": "Orqa fon turi"
+    },
+    {
+      "name": "isBlurred",
+      "type": "boolean",
+      "required": false,
+      "default": "true",
+      "description": "Oynani shisha (blur) material qiladi; false — to'q fon"
+    },
+    {
+      "name": "material",
+      "type": "\"frosted\" | \"liquid\"",
+      "required": false,
+      "default": null,
+      "description": "Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi"
     },
     {
       "name": "placement",
@@ -1813,6 +1890,13 @@
       "required": false,
       "default": "true",
       "description": "Shaffof blur fon"
+    },
+    {
+      "name": "material",
+      "type": "\"frosted\" | \"liquid\"",
+      "required": false,
+      "default": null,
+      "description": "Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi"
     },
     {
       "name": "position",
@@ -1984,7 +2068,7 @@
     },
     {
       "name": "size",
-      "type": "'sm' | 'md' | 'lg'",
+      "type": "'xs' | 'sm' | 'md' | 'lg'",
       "required": false,
       "default": "\"md\"",
       "description": "O'lcham"
@@ -2023,6 +2107,211 @@
       "required": false,
       "default": "\"\"",
       "description": "Qo'shimcha CSS klasslar"
+    }
+  ],
+  "PhoneInput": [
+    {
+      "name": "country",
+      "type": "string",
+      "required": false,
+      "default": "\"UZ\"",
+      "description": "Davlat: ISO qisqartmasi — 2 harfli (\"UZ\") yoki 3 harfli (\"UZB\"), katta-kichik harf farqi yo'q"
+    },
+    {
+      "name": "value",
+      "type": "string",
+      "required": false,
+      "default": null,
+      "description": "Qiymat (E.164 \"+998901234567\" yoki faqat raqamlar) — boshqariladigan rejim"
+    },
+    {
+      "name": "defaultValue",
+      "type": "string",
+      "required": false,
+      "default": null,
+      "description": "Boshlang'ich qiymat (boshqarilmaydigan rejim)"
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value: string, info: PhoneValueInfo) => void",
+      "required": false,
+      "default": null,
+      "description": "O'zgarganda: E.164 qiymat (\"+998901234567\", bo'sh bo'lsa \"\") va qo'shimcha ma'lumot"
+    },
+    {
+      "name": "isCountrySelectable",
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Davlatni ro'yxatdan tanlash imkoniyati (bayroq + kod tugmasi)"
+    },
+    {
+      "name": "onCountryChange",
+      "type": "(iso2: string) => void",
+      "required": false,
+      "default": null,
+      "description": "Davlat o'zgarganda (ISO alpha-2) chaqiriladi"
+    },
+    {
+      "name": "countries",
+      "type": "string[]",
+      "required": false,
+      "default": null,
+      "description": "Tanlash ro'yxatini shu davlatlar bilan cheklash (ISO kodlari)"
+    },
+    {
+      "name": "placeholderChar",
+      "type": "string",
+      "required": false,
+      "default": "\"_\"",
+      "description": "Maskaning bo'sh joylari belgisi"
+    },
+    {
+      "name": "showMaskGuide",
+      "type": "boolean",
+      "required": false,
+      "default": "true",
+      "description": "Kiritilmagan qismni kulrang mask bilan ko'rsatish"
+    },
+    {
+      "name": "flag",
+      "type": "\"emoji\" | \"code\" | \"none\" | ((country: PhoneCountry) => ReactNode)",
+      "required": false,
+      "default": "\"emoji\"",
+      "description": "Bayroq: emoji, ISO kod, ko'rsatmaslik yoki o'z render funksiyangiz"
+    },
+    {
+      "name": "autoValidate",
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Raqam to'liq bo'lmasa, maydondan chiqqanda xato holatini avtomatik ko'rsatish"
+    },
+    {
+      "name": "incompleteMessage",
+      "type": "ReactNode",
+      "required": false,
+      "default": "\"Telefon raqam to'liq kiritilmagan\"",
+      "description": "autoValidate xato matni"
+    },
+    {
+      "name": "startContent",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Boshidagi qo'shimcha kontent (bayroq/kod oldidan)"
+    },
+    {
+      "name": "size",
+      "type": "'xs' | 'sm' | 'md' | 'lg'",
+      "required": false,
+      "default": "\"md\"",
+      "description": "O'lcham"
+    },
+    {
+      "name": "label",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Maydon sarlavhasi (label) — maydon tepasida"
+    },
+    {
+      "name": "description",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Maydon ostidagi yordamchi matn"
+    },
+    {
+      "name": "errorMessage",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Xato holatida ko'rsatiladigan matn"
+    },
+    {
+      "name": "variant",
+      "type": "'primary' | 'secondary'",
+      "required": false,
+      "default": null,
+      "description": "Ko'rinish: primary — oq maydon soyali (kulrang fonda), secondary — kulrang maydon (oq karta ichida)"
+    },
+    {
+      "name": "radius",
+      "type": "'sm' | 'md' | 'lg' | 'full'",
+      "required": false,
+      "default": null,
+      "description": "Burchaklar yumaloqligi"
+    },
+    {
+      "name": "labelPlacement",
+      "type": "'outside' | 'outside-left'",
+      "required": false,
+      "default": null,
+      "description": "Label joylashuvi: tepada yoki chap tomonda"
+    },
+    {
+      "name": "isInvalid",
+      "type": "boolean",
+      "required": false,
+      "default": null,
+      "description": "Xato (invalid) holat"
+    },
+    {
+      "name": "isDisabled",
+      "type": "boolean",
+      "required": false,
+      "default": null,
+      "description": "O'chirilgan holat"
+    },
+    {
+      "name": "isReadOnly",
+      "type": "boolean",
+      "required": false,
+      "default": null,
+      "description": "Faqat o'qish uchun"
+    },
+    {
+      "name": "isRequired",
+      "type": "boolean",
+      "required": false,
+      "default": null,
+      "description": "Majburiy maydon (* belgisi)"
+    },
+    {
+      "name": "isClearable",
+      "type": "boolean",
+      "required": false,
+      "default": null,
+      "description": "Qiymatni tozalash (X) tugmasini ko'rsatadi"
+    },
+    {
+      "name": "onClear",
+      "type": "() => void",
+      "required": false,
+      "default": null,
+      "description": "Tozalash tugmasi bosilganda chaqiriladi"
+    },
+    {
+      "name": "endContent",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Oxiridagi kontent (masalan, ikonka)"
+    },
+    {
+      "name": "fullWidth",
+      "type": "boolean",
+      "required": false,
+      "default": null,
+      "description": "Konteyner kengligini to'liq egallaydi"
+    },
+    {
+      "name": "classNames",
+      "type": "Partial<Record<\"base\" | \"label\" | \"inputWrapper\" | \"input\" | \"description\" | \"errorMessage\", string>>",
+      "required": false,
+      "default": null,
+      "description": "Ichki qismlar uchun qo'shimcha klasslar"
     }
   ],
   "Popover": [
@@ -2074,6 +2363,20 @@
       "required": false,
       "default": "\"lg\"",
       "description": "Burchak yumaloqligi"
+    },
+    {
+      "name": "isBlurred",
+      "type": "boolean",
+      "required": false,
+      "default": "true",
+      "description": "Panelni shisha (blur) material qiladi; false — to'q fon"
+    },
+    {
+      "name": "material",
+      "type": "\"frosted\" | \"liquid\"",
+      "required": false,
+      "default": null,
+      "description": "Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi"
     },
     {
       "name": "backdrop",
@@ -2239,10 +2542,24 @@
     },
     {
       "name": "variant",
-      "type": "\"default\" | \"inverse\"",
+      "type": "\"default\" | \"inverse\" | \"gradient\"",
       "required": false,
       "default": "\"default\"",
-      "description": "Ko'rinish: oq surface yoki teskari (qora) karta"
+      "description": "Ko'rinish: default (yengil gradient), inverse (teskari, qora) yoki gradient (accent → indigo)"
+    },
+    {
+      "name": "isBlurred",
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Kartani shisha (glass) qiladi — rangli fon ustida"
+    },
+    {
+      "name": "material",
+      "type": "\"frosted\" | \"liquid\"",
+      "required": false,
+      "default": null,
+      "description": "Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi"
     },
     {
       "name": "icon",
@@ -2290,7 +2607,7 @@
     },
     {
       "name": "size",
-      "type": "'sm' | 'md' | 'lg'",
+      "type": "'xs' | 'sm' | 'md' | 'lg'",
       "required": false,
       "default": "\"md\"",
       "description": "O'lcham (chiziq qalinligi)"
@@ -2390,7 +2707,7 @@
     },
     {
       "name": "size",
-      "type": "'sm' | 'md' | 'lg' | 'xl'",
+      "type": "'xs' | 'sm' | 'md' | 'lg' | 'xl'",
       "required": false,
       "default": "\"md\"",
       "description": "O'lcham"
@@ -2518,7 +2835,7 @@
     },
     {
       "name": "size",
-      "type": "'sm' | 'md' | 'lg'",
+      "type": "'xs' | 'sm' | 'md' | 'lg'",
       "required": false,
       "default": "\"md\"",
       "description": "O'lcham"
@@ -2634,7 +2951,7 @@
     },
     {
       "name": "size",
-      "type": "'sm' | 'md' | 'lg'",
+      "type": "'xs' | 'sm' | 'md' | 'lg'",
       "required": false,
       "default": "\"md\"",
       "description": "O'lcham"
@@ -2706,7 +3023,7 @@
     },
     {
       "name": "size",
-      "type": "'sm' | 'md' | 'lg'",
+      "type": "'xs' | 'sm' | 'md' | 'lg'",
       "required": false,
       "default": "\"md\"",
       "description": "O'lcham"
@@ -2745,6 +3062,20 @@
       "required": false,
       "default": null,
       "description": "Xato holatida ko'rsatiladigan matn"
+    },
+    {
+      "name": "isBlurred",
+      "type": "boolean",
+      "required": false,
+      "default": "true",
+      "description": "Ochiladigan ro'yxatni shisha (blur) material qiladi; false — to'q fon"
+    },
+    {
+      "name": "material",
+      "type": "\"frosted\" | \"liquid\"",
+      "required": false,
+      "default": null,
+      "description": "Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi"
     },
     {
       "name": "description",
@@ -2905,6 +3236,20 @@
       "description": "Yig'ish tugmasini yashirish"
     },
     {
+      "name": "isBlurred",
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Panelni shisha (glass) qiladi — rangli fon yoki rasm ustida"
+    },
+    {
+      "name": "material",
+      "type": "\"frosted\" | \"liquid\"",
+      "required": false,
+      "default": null,
+      "description": "Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi"
+    },
+    {
       "name": "children",
       "type": "ReactNode",
       "required": false,
@@ -3005,7 +3350,7 @@
   "Spinner": [
     {
       "name": "size",
-      "type": "'sm' | 'md' | 'lg'",
+      "type": "'xs' | 'sm' | 'md' | 'lg'",
       "required": false,
       "default": "\"md\"",
       "description": "O'lcham"
@@ -3149,10 +3494,17 @@
     },
     {
       "name": "variant",
-      "type": "'default' | 'secondary'",
+      "type": "'default' | 'glass' | 'secondary' | 'gradient'",
       "required": false,
       "default": "\"default\"",
-      "description": "Ko'rinish: oq surface yoki kulrang (surface ichida)"
+      "description": "Ko'rinish: default (yengil gradient), secondary (kulrang), glass (shisha) yoki gradient (accent → indigo)"
+    },
+    {
+      "name": "material",
+      "type": "\"frosted\" | \"liquid\"",
+      "required": false,
+      "default": null,
+      "description": "Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi"
     },
     {
       "name": "actions",
@@ -3244,7 +3596,7 @@
     },
     {
       "name": "size",
-      "type": "'sm' | 'md' | 'lg'",
+      "type": "'xs' | 'sm' | 'md' | 'lg'",
       "required": false,
       "default": "\"md\"",
       "description": "O'lcham"
@@ -3420,6 +3772,20 @@
       "description": "Tashqi karta (wrapper) ni olib tashlaydi"
     },
     {
+      "name": "isBlurred",
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Wrapper'ni shisha (glass) qiladi — rangli fon ustida"
+    },
+    {
+      "name": "material",
+      "type": "\"frosted\" | \"liquid\"",
+      "required": false,
+      "default": null,
+      "description": "Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi"
+    },
+    {
       "name": "hideHeader",
       "type": "boolean",
       "required": false,
@@ -3528,7 +3894,7 @@
     },
     {
       "name": "size",
-      "type": "'sm' | 'md' | 'lg'",
+      "type": "'xs' | 'sm' | 'md' | 'lg'",
       "required": false,
       "default": "\"md\"",
       "description": "O'lcham"
@@ -3553,6 +3919,20 @@
       "required": false,
       "default": "false",
       "description": "Tablarni vertikal joylashtiradi"
+    },
+    {
+      "name": "isBlurred",
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Trekni shisha (glass) qiladi — rangli fon yoki rasm ustida chiroyli"
+    },
+    {
+      "name": "material",
+      "type": "\"frosted\" | \"liquid\"",
+      "required": false,
+      "default": null,
+      "description": "Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi"
     },
     {
       "name": "isDisabled",
@@ -3614,7 +3994,7 @@
     },
     {
       "name": "size",
-      "type": "'sm' | 'md' | 'lg'",
+      "type": "'xs' | 'sm' | 'md' | 'lg'",
       "required": false,
       "default": "\"md\"",
       "description": "O'lcham"
@@ -3790,6 +4170,20 @@
       "required": false,
       "default": null,
       "description": "Toast yopilganda chaqiriladi"
+    },
+    {
+      "name": "isBlurred",
+      "type": "boolean",
+      "required": false,
+      "default": null,
+      "description": "Shu toast uchun shisha (blur) fon; berilmasa ToastProvider qiymati ishlatiladi"
+    },
+    {
+      "name": "material",
+      "type": "\"frosted\" | \"liquid\"",
+      "required": false,
+      "default": null,
+      "description": "Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi"
     }
   ],
   "ToastProvider": [
@@ -3806,6 +4200,20 @@
       "required": false,
       "default": "5",
       "description": "Bir vaqtda ko'rinadigan maksimal toastlar soni"
+    },
+    {
+      "name": "isBlurred",
+      "type": "boolean",
+      "required": false,
+      "default": "true",
+      "description": "Barcha toastlar uchun shisha (blur) fon (default true)"
+    },
+    {
+      "name": "material",
+      "type": "\"frosted\" | \"liquid\"",
+      "required": false,
+      "default": null,
+      "description": "Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi"
     },
     {
       "name": "children",
@@ -3839,7 +4247,7 @@
     },
     {
       "name": "size",
-      "type": "'sm' | 'md' | 'lg'",
+      "type": "'xs' | 'sm' | 'md' | 'lg'",
       "required": false,
       "default": "\"md\"",
       "description": "O'lcham"
@@ -3878,6 +4286,20 @@
       "required": false,
       "default": "false",
       "description": "Ko'rsatkich strelkani ko'rsatish"
+    },
+    {
+      "name": "isBlurred",
+      "type": "boolean",
+      "required": false,
+      "default": "true",
+      "description": "Shisha (blur) fon — faqat default rang uchun; rangli tooltip doim to'q"
+    },
+    {
+      "name": "material",
+      "type": "\"frosted\" | \"liquid\"",
+      "required": false,
+      "default": null,
+      "description": "Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi"
     },
     {
       "name": "isDisabled",

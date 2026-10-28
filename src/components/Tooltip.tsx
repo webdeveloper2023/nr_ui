@@ -16,13 +16,15 @@ import {
   originClass,
   hiddenShift,
   arrowPosition,
+  arrowClipPath,
+  GLASS_THICK_BG,
   setRef,
   type Placement,
 } from "./floating";
 
 type TooltipPlacement = Placement;
 type TooltipColor = "default" | "foreground" | "accent" | "success" | "warning" | "danger";
-type TooltipSize = "sm" | "md" | "lg";
+type TooltipSize = "xs" | "sm" | "md" | "lg";
 type TooltipRadius = "sm" | "md" | "lg" | "full";
 
 export interface TooltipProps {
@@ -44,6 +46,10 @@ export interface TooltipProps {
   offset?: number;
   /** Ko'rsatkich strelkani ko'rsatish */
   showArrow?: boolean;
+  /** Shisha (blur) fon — faqat default rang uchun; rangli tooltip doim to'q */
+  isBlurred?: boolean;
+  /** Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi */
+  material?: "frosted" | "liquid";
   /** O'chirilgan (faol emas) holat */
   isDisabled?: boolean;
   /** Ochiq holati (boshqariladigan) */
@@ -77,6 +83,7 @@ const arrowColorStyles: Record<TooltipColor, string> = {
 };
 
 const sizeStyles: Record<TooltipSize, string> = {
+  xs: "px-1.5 py-0.5 text-[11px]",
   sm: "px-2 py-1 text-xs",
   md: "px-2.5 py-1.5 text-xs",
   lg: "px-3 py-2 text-sm",
@@ -107,6 +114,8 @@ export const Tooltip: React.FC<TooltipProps> = ({
   closeDelay = 150,
   offset = 8,
   showArrow = false,
+  isBlurred = true,
+  material,
   isDisabled = false,
   isOpen: openProp,
   defaultOpen = false,
@@ -123,6 +132,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
   const { mounted, visible } = usePresence(isOpen, 120);
   const floating = useFloating(mounted, triggerRef, tooltipRef, placement, offset);
   const side = getSide(floating.placement);
+  const isGlass = isBlurred && color === "default";
 
   const setOpen = (open: boolean) => {
     setOpenState(open);
@@ -183,11 +193,12 @@ export const Tooltip: React.FC<TooltipProps> = ({
           <div
             ref={tooltipRef}
             role="tooltip"
+            data-glass={material}
             className={cn(
               "z-[9999] max-w-xs leading-snug pointer-events-auto",
               "transition-[opacity,transform] duration-150 ease-(--ease-out-soft)",
               originClass[side],
-              colorStyles[color],
+              isGlass ? "glass-thick text-foreground" : colorStyles[color],
               sizeStyles[size],
               radiusStyles[radius],
               visible ? "opacity-100 scale-100 translate-x-0 translate-y-0" : cn("opacity-0 scale-[0.96]", hiddenShift[side]),
@@ -200,7 +211,8 @@ export const Tooltip: React.FC<TooltipProps> = ({
             <span className="relative z-10">{content}</span>
             {showArrow && (
               <span
-                className={cn("absolute w-2 h-2 rotate-45", arrowColorStyles[color], arrowPosition(floating.placement))}
+                className={cn("absolute w-2 h-2 rotate-45", !isGlass && arrowColorStyles[color], arrowPosition(floating.placement))}
+                style={isGlass ? { backgroundColor: GLASS_THICK_BG, clipPath: arrowClipPath(floating.placement) } : undefined}
               />
             )}
           </div>,
