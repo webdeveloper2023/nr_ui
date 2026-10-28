@@ -2,7 +2,7 @@
 
 Pro darajadagi React komponent kutubxonasi — **React 18/19**, **Tailwind CSS v4**, **TypeScript**, to'liq **dark mode**.
 
-36 ta komponent (ichki qismlari — `ModalHeader`, `CardBody`, `SidebarItem` va h.k. — bilan birga 68 ta): Button, Input, Select, Table, Modal, Dropdown, Toast, Sidebar, Pricing, AI Chat va boshqalar.
+37 ta komponent (ichki qismlari — `ModalHeader`, `CardBody`, `SidebarItem` va h.k. — bilan birga 69 ta): Button, Input, AmountInput (summa so'z bilan), Select, Table, Modal, Dropdown, Toast, Sidebar, Pricing, AI Chat va boshqalar.
 
 ## O'rnatish
 

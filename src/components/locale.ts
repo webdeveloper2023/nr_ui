@@ -64,6 +64,11 @@ export interface NRMessages {
   rating: {
     star: (n: number) => string;
   };
+  amountInput: {
+    min: (amount: string) => string;
+    max: (amount: string) => string;
+    presets: string;
+  };
 }
 
 const ruPlural = (n: number, one: string, few: string, many: string) => {
@@ -103,6 +108,7 @@ export const NR_MESSAGES: Record<NRLocale, NRMessages> = {
     billing: { monthly: "Monthly", yearly: "Yearly" },
     pricing: { popular: "Most popular", cta: "Get started" },
     rating: { star: (n) => (n === 1 ? "1 star" : `${n} stars`) },
+    amountInput: { min: (a) => `Minimum amount is ${a}`, max: (a) => `Maximum amount is ${a}`, presets: "Quick amounts" },
   },
   uz: {
     common: { close: "Yopish", clear: "Tozalash", loading: "Yuklanmoqda", avatar: "Avatar" },
@@ -132,6 +138,7 @@ export const NR_MESSAGES: Record<NRLocale, NRMessages> = {
     billing: { monthly: "Oylik", yearly: "Yillik" },
     pricing: { popular: "Eng mashhur", cta: "Boshlash" },
     rating: { star: (n) => `${n} yulduz` },
+    amountInput: { min: (a) => `Eng kam summa: ${a}`, max: (a) => `Eng ko'p summa: ${a}`, presets: "Tezkor summalar" },
   },
   ru: {
     common: { close: "Закрыть", clear: "Очистить", loading: "Загрузка", avatar: "Аватар" },
@@ -161,6 +168,7 @@ export const NR_MESSAGES: Record<NRLocale, NRMessages> = {
     billing: { monthly: "Ежемесячно", yearly: "Ежегодно" },
     pricing: { popular: "Популярный", cta: "Начать" },
     rating: { star: (n) => `${n} ${ruPlural(n, "звезда", "звезды", "звёзд")}` },
+    amountInput: { min: (a) => `Минимальная сумма: ${a}`, max: (a) => `Максимальная сумма: ${a}`, presets: "Быстрые суммы" },
   },
 };
 

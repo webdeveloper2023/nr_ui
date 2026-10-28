@@ -194,6 +194,376 @@
       "description": "Extra content (below the description)"
     }
   ],
+  "Input": [
+    {
+      "name": "variant",
+      "type": "'primary' | 'secondary'",
+      "required": false,
+      "default": "\"primary\"",
+      "description": "Style: primary — white field with a shadow (on the gray canvas), secondary — gray field (inside white cards)"
+    },
+    {
+      "name": "size",
+      "type": "'xs' | 'sm' | 'md' | 'lg'",
+      "required": false,
+      "default": "\"md\"",
+      "description": "Size"
+    },
+    {
+      "name": "radius",
+      "type": "'sm' | 'md' | 'lg' | 'full'",
+      "required": false,
+      "default": "\"md\"",
+      "description": "Corner radius"
+    },
+    {
+      "name": "label",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Field label, shown above the field"
+    },
+    {
+      "name": "labelPlacement",
+      "type": "'outside' | 'outside-left'",
+      "required": false,
+      "default": "\"outside\"",
+      "description": "Label placement: above or to the left"
+    },
+    {
+      "name": "description",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Helper text below the field"
+    },
+    {
+      "name": "errorMessage",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Text shown in the invalid state"
+    },
+    {
+      "name": "isInvalid",
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Invalid state"
+    },
+    {
+      "name": "isDisabled",
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Disabled state"
+    },
+    {
+      "name": "isReadOnly",
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Read-only"
+    },
+    {
+      "name": "isRequired",
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Required field (shows *)"
+    },
+    {
+      "name": "isClearable",
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Shows a clear (X) button"
+    },
+    {
+      "name": "onClear",
+      "type": "() => void",
+      "required": false,
+      "default": null,
+      "description": "Called when the clear button is pressed"
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value: string) => void",
+      "required": false,
+      "default": null,
+      "description": "Called with the new value when it changes"
+    },
+    {
+      "name": "startContent",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Leading content (e.g. an icon)"
+    },
+    {
+      "name": "endContent",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Trailing content (e.g. an icon)"
+    },
+    {
+      "name": "fullWidth",
+      "type": "boolean",
+      "required": false,
+      "default": "true",
+      "description": "Fills the container width"
+    },
+    {
+      "name": "inputOverlay",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Layer drawn behind the input text — e.g. a mask guide (used by PhoneInput)"
+    },
+    {
+      "name": "classNames",
+      "type": "Partial<Record<\"base\" | \"label\" | \"inputWrapper\" | \"input\" | \"description\" | \"errorMessage\", string>>",
+      "required": false,
+      "default": "{}",
+      "description": "Extra classes for inner slots"
+    }
+  ],
+  "AmountWordsOptions": [
+    {
+      "name": "locale",
+      "type": "'en' | 'uz' | 'ru'",
+      "required": false,
+      "default": null,
+      "description": "Language of the words"
+    },
+    {
+      "name": "currency",
+      "type": "AmountCurrency | null",
+      "required": false,
+      "default": null,
+      "description": "Currency to name after the number; null spells out the whole part only"
+    },
+    {
+      "name": "decimals",
+      "type": "number",
+      "required": false,
+      "default": null,
+      "description": "Minor-unit digits (defaults to the currency's)"
+    },
+    {
+      "name": "capitalize",
+      "type": "boolean",
+      "required": false,
+      "default": null,
+      "description": "Capitalizes the first letter (default true)"
+    }
+  ],
+  "AmountInput": [
+    {
+      "name": "value",
+      "type": "number | null",
+      "required": false,
+      "default": null,
+      "description": "Amount (controlled); null when empty"
+    },
+    {
+      "name": "defaultValue",
+      "type": "number | null",
+      "required": false,
+      "default": null,
+      "description": "Initial amount (uncontrolled)"
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value: number | null, info: AmountValueInfo) => void",
+      "required": false,
+      "default": null,
+      "description": "Called with the numeric amount (null when empty) and extra info"
+    },
+    {
+      "name": "currency",
+      "type": "AmountCurrency | null",
+      "required": false,
+      "default": "\"UZS\"",
+      "description": "Currency: sets the symbol, default decimals and the currency words; null for a plain number"
+    },
+    {
+      "name": "decimals",
+      "type": "number",
+      "required": false,
+      "default": null,
+      "description": "Number of decimal digits allowed (defaults to the currency's: UZS 0, others 2)"
+    },
+    {
+      "name": "showWords",
+      "type": "boolean",
+      "required": false,
+      "default": "true",
+      "description": "Shows the amount spelled out in words under the field"
+    },
+    {
+      "name": "wordsLocale",
+      "type": "'en' | 'uz' | 'ru'",
+      "required": false,
+      "default": null,
+      "description": "Language of the words and separators (defaults to the LocaleProvider language)"
+    },
+    {
+      "name": "min",
+      "type": "number",
+      "required": false,
+      "default": null,
+      "description": "Smallest allowed amount (checked after the field is left)"
+    },
+    {
+      "name": "max",
+      "type": "number",
+      "required": false,
+      "default": null,
+      "description": "Largest allowed amount (checked after the field is left)"
+    },
+    {
+      "name": "presets",
+      "type": "number[]",
+      "required": false,
+      "default": null,
+      "description": "Quick-pick amounts shown as buttons under the field"
+    },
+    {
+      "name": "currencySymbol",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Replaces the currency symbol shown at the end of the field"
+    },
+    {
+      "name": "maxDigits",
+      "type": "number",
+      "required": false,
+      "default": "15",
+      "description": "Maximum digits before the decimal separator"
+    },
+    {
+      "name": "size",
+      "type": "'xs' | 'sm' | 'md' | 'lg'",
+      "required": false,
+      "default": null,
+      "description": "Size"
+    },
+    {
+      "name": "label",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Field label, shown above the field"
+    },
+    {
+      "name": "description",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Helper text below the field"
+    },
+    {
+      "name": "errorMessage",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Text shown in the invalid state"
+    },
+    {
+      "name": "variant",
+      "type": "'primary' | 'secondary'",
+      "required": false,
+      "default": null,
+      "description": "Style: primary — white field with a shadow (on the gray canvas), secondary — gray field (inside white cards)"
+    },
+    {
+      "name": "radius",
+      "type": "'sm' | 'md' | 'lg' | 'full'",
+      "required": false,
+      "default": null,
+      "description": "Corner radius"
+    },
+    {
+      "name": "labelPlacement",
+      "type": "'outside' | 'outside-left'",
+      "required": false,
+      "default": null,
+      "description": "Label placement: above or to the left"
+    },
+    {
+      "name": "isInvalid",
+      "type": "boolean",
+      "required": false,
+      "default": null,
+      "description": "Invalid state"
+    },
+    {
+      "name": "isDisabled",
+      "type": "boolean",
+      "required": false,
+      "default": null,
+      "description": "Disabled state"
+    },
+    {
+      "name": "isReadOnly",
+      "type": "boolean",
+      "required": false,
+      "default": null,
+      "description": "Read-only"
+    },
+    {
+      "name": "isRequired",
+      "type": "boolean",
+      "required": false,
+      "default": null,
+      "description": "Required field (shows *)"
+    },
+    {
+      "name": "isClearable",
+      "type": "boolean",
+      "required": false,
+      "default": null,
+      "description": "Shows a clear (X) button"
+    },
+    {
+      "name": "onClear",
+      "type": "() => void",
+      "required": false,
+      "default": null,
+      "description": "Called when the clear button is pressed"
+    },
+    {
+      "name": "startContent",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Leading content (e.g. an icon)"
+    },
+    {
+      "name": "endContent",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Trailing content (e.g. an icon)"
+    },
+    {
+      "name": "fullWidth",
+      "type": "boolean",
+      "required": false,
+      "default": "true",
+      "description": "Fills the container width"
+    },
+    {
+      "name": "classNames",
+      "type": "Partial<Record<\"base\" | \"label\" | \"inputWrapper\" | \"input\" | \"description\" | \"errorMessage\", string>>",
+      "required": false,
+      "default": null,
+      "description": "Extra classes for inner slots"
+    }
+  ],
   "Avatar": [
     {
       "name": "src",
@@ -225,7 +595,7 @@
     },
     {
       "name": "radius",
-      "type": "'sm' | 'md' | 'lg' | 'none' | 'full'",
+      "type": "'sm' | 'md' | 'lg' | 'full' | 'none'",
       "required": false,
       "default": "\"full\"",
       "description": "Corner radius"
@@ -318,7 +688,7 @@
     },
     {
       "name": "radius",
-      "type": "'sm' | 'md' | 'lg' | 'none' | 'full'",
+      "type": "'sm' | 'md' | 'lg' | 'full' | 'none'",
       "required": false,
       "default": null,
       "description": "Radius of every avatar"
@@ -462,7 +832,7 @@
     },
     {
       "name": "radius",
-      "type": "'sm' | 'md' | 'lg' | 'none' | 'full'",
+      "type": "'sm' | 'md' | 'lg' | 'full' | 'none'",
       "required": false,
       "default": "\"full\"",
       "description": "Corner radius (default: fully rounded)"
@@ -548,7 +918,7 @@
     },
     {
       "name": "radius",
-      "type": "'sm' | 'md' | 'lg' | 'none' | 'full'",
+      "type": "'sm' | 'md' | 'lg' | 'full' | 'none'",
       "required": false,
       "default": "\"full\"",
       "description": "Corner radius of the group"
@@ -935,7 +1305,7 @@
     },
     {
       "name": "radius",
-      "type": "'sm' | 'md' | 'none' | 'full'",
+      "type": "'sm' | 'md' | 'full' | 'none'",
       "required": false,
       "default": "\"sm\"",
       "description": "Corner radius"
@@ -1112,7 +1482,7 @@
     },
     {
       "name": "radius",
-      "type": "'sm' | 'md' | 'none' | 'full'",
+      "type": "'sm' | 'md' | 'full' | 'none'",
       "required": false,
       "default": null,
       "description": "Corner radius"
@@ -1582,141 +1952,6 @@
       "description": "Extra CSS classes"
     }
   ],
-  "Input": [
-    {
-      "name": "variant",
-      "type": "'primary' | 'secondary'",
-      "required": false,
-      "default": "\"primary\"",
-      "description": "Style: primary — white field with a shadow (on the gray canvas), secondary — gray field (inside white cards)"
-    },
-    {
-      "name": "size",
-      "type": "'xs' | 'sm' | 'md' | 'lg'",
-      "required": false,
-      "default": "\"md\"",
-      "description": "Size"
-    },
-    {
-      "name": "radius",
-      "type": "'sm' | 'md' | 'lg' | 'full'",
-      "required": false,
-      "default": "\"md\"",
-      "description": "Corner radius"
-    },
-    {
-      "name": "label",
-      "type": "ReactNode",
-      "required": false,
-      "default": null,
-      "description": "Field label, shown above the field"
-    },
-    {
-      "name": "labelPlacement",
-      "type": "'outside' | 'outside-left'",
-      "required": false,
-      "default": "\"outside\"",
-      "description": "Label placement: above or to the left"
-    },
-    {
-      "name": "description",
-      "type": "ReactNode",
-      "required": false,
-      "default": null,
-      "description": "Helper text below the field"
-    },
-    {
-      "name": "errorMessage",
-      "type": "ReactNode",
-      "required": false,
-      "default": null,
-      "description": "Text shown in the invalid state"
-    },
-    {
-      "name": "isInvalid",
-      "type": "boolean",
-      "required": false,
-      "default": "false",
-      "description": "Invalid state"
-    },
-    {
-      "name": "isDisabled",
-      "type": "boolean",
-      "required": false,
-      "default": "false",
-      "description": "Disabled state"
-    },
-    {
-      "name": "isReadOnly",
-      "type": "boolean",
-      "required": false,
-      "default": "false",
-      "description": "Read-only"
-    },
-    {
-      "name": "isRequired",
-      "type": "boolean",
-      "required": false,
-      "default": "false",
-      "description": "Required field (shows *)"
-    },
-    {
-      "name": "isClearable",
-      "type": "boolean",
-      "required": false,
-      "default": "false",
-      "description": "Shows a clear (X) button"
-    },
-    {
-      "name": "onClear",
-      "type": "() => void",
-      "required": false,
-      "default": null,
-      "description": "Called when the clear button is pressed"
-    },
-    {
-      "name": "onValueChange",
-      "type": "(value: string) => void",
-      "required": false,
-      "default": null,
-      "description": "Called with the new value when it changes"
-    },
-    {
-      "name": "startContent",
-      "type": "ReactNode",
-      "required": false,
-      "default": null,
-      "description": "Leading content (e.g. an icon)"
-    },
-    {
-      "name": "endContent",
-      "type": "ReactNode",
-      "required": false,
-      "default": null,
-      "description": "Trailing content (e.g. an icon)"
-    },
-    {
-      "name": "fullWidth",
-      "type": "boolean",
-      "required": false,
-      "default": "true",
-      "description": "Fills the container width"
-    },
-    {
-      "name": "inputOverlay",
-      "type": "ReactNode",
-      "required": false,
-      "default": null,
-      "description": "Layer drawn behind the input text — e.g. a mask guide (used by PhoneInput)"
-    },
-    {
-      "name": "classNames",
-      "type": "Partial<Record<\"base\" | \"label\" | \"inputWrapper\" | \"input\" | \"description\" | \"errorMessage\", string>>",
-      "required": false,
-      "default": "{}",
-      "description": "Extra classes for inner slots"
-    }
-  ],
   "Kbd": [
     {
       "name": "keys",
@@ -1773,7 +2008,7 @@
     },
     {
       "name": "size",
-      "type": "'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'full' | '2xl' | '3xl' | '4xl' | '5xl'",
+      "type": "'xs' | 'sm' | 'md' | 'lg' | 'full' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl'",
       "required": false,
       "default": "\"md\"",
       "description": "Modal width"
@@ -1916,7 +2151,7 @@
   "Navbar": [
     {
       "name": "maxWidth",
-      "type": "'sm' | 'md' | 'lg' | 'xl' | 'full' | '2xl'",
+      "type": "'sm' | 'md' | 'lg' | 'full' | 'xl' | '2xl'",
       "required": false,
       "default": "\"lg\"",
       "description": "Maximum width of the inner content"
@@ -2665,7 +2900,7 @@
     },
     {
       "name": "radius",
-      "type": "'sm' | 'md' | 'none' | 'full'",
+      "type": "'sm' | 'md' | 'full' | 'none'",
       "required": false,
       "default": "\"full\"",
       "description": "Corner radius"
