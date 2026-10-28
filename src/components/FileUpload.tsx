@@ -1,33 +1,34 @@
 import { useEffect, useMemo, useRef, useState, type DragEvent } from "react";
 import { UploadCloud, FileText, X, CheckCircle2 } from "lucide-react";
 import { cn } from "../lib/cn";
+import { useLocale } from "./locale";
 
 type FileUploadVariant = "default" | "secondary";
 
 export interface FileUploadProps {
-  /** Ko'rinish: oq surface yoki kulrang (surface ichida) */
+  /** Style: white surface or gray (inside a surface) */
   variant?: FileUploadVariant;
-  /** Qabul qilinadigan fayl turlari (masalan, image/*) */
+  /** Accepted file types (e.g. image/*) */
   accept?: string;
-  /** Bir nechta fayl tanlashga ruxsat */
+  /** Allows selecting multiple files */
   multiple?: boolean;
-  /** Fayl hajmining maksimal chegarasi (MB) */
+  /** Maximum file size (MB) */
   maxSizeMB?: number;
-  /** Fayllar ro'yxati (boshqariladigan) */
+  /** Files (controlled) */
   files?: File[];
-  /** Fayllar ro'yxati o'zgarganda chaqiriladi */
+  /** Called when the file list changes */
   onFilesChange?: (files: File[]) => void;
-  /** Fayl nomi bo'yicha yuklash progressi (0–100) */
+  /** Upload progress per file name (0–100) */
   progress?: Record<string, number>;
-  /** Rasmlar uchun thumbnail ko'rsatadi */
+  /** Shows thumbnails for images */
   showPreview?: boolean;
-  /** Drop zona sarlavhasi */
+  /** Drop zone title */
   label?: string;
-  /** Drop zona ostidagi izoh */
+  /** Hint below the drop zone */
   description?: string;
-  /** Yuklashni o'chiradi */
+  /** Disables uploading */
   isDisabled?: boolean;
-  /** Qo'shimcha CSS klasslar */
+  /** Extra CSS classes */
   className?: string;
 }
 
@@ -54,11 +55,12 @@ export function FileUpload({
   onFilesChange,
   progress,
   showPreview = true,
-  label = "Click to upload or drag and drop",
+  label,
   description,
   isDisabled = false,
   className = "",
 }: FileUploadProps) {
+  const t = useLocale();
   const inputRef = useRef<HTMLInputElement>(null);
   const [filesState, setFilesState] = useState<File[]>([]);
   const [isDragging, setIsDragging] = useState(false);
@@ -76,7 +78,7 @@ export function FileUpload({
     if (!list) return;
     const incoming = Array.from(list);
     const tooBig = incoming.filter((f) => f.size > maxSizeMB * 1024 ** 2);
-    setError(tooBig.length ? `${tooBig.map((f) => f.name).join(", ")} — ${maxSizeMB} MB dan katta` : null);
+    setError(tooBig.length ? t.fileUpload.tooLarge(tooBig.map((f) => f.name).join(", "), maxSizeMB) : null);
     const valid = incoming.filter((f) => f.size <= maxSizeMB * 1024 ** 2);
     update(multiple ? [...files, ...valid] : valid.slice(0, 1));
   };
@@ -125,8 +127,8 @@ export function FileUpload({
           <UploadCloud size={20} />
         </div>
         <div>
-          <p className="text-sm font-medium text-foreground">{label}</p>
-          <p className="mt-1 text-xs text-muted">{description ?? `Maksimal hajm: ${maxSizeMB} MB`}</p>
+          <p className="text-sm font-medium text-foreground">{label ?? t.fileUpload.label}</p>
+          <p className="mt-1 text-xs text-muted">{description ?? t.fileUpload.description(maxSizeMB)}</p>
         </div>
         <input
           ref={inputRef}
@@ -186,7 +188,7 @@ export function FileUpload({
                     "hover:bg-danger-soft hover:text-danger transition-colors duration-150",
                     "outline-none focus-visible:ring-2 focus-visible:ring-focus"
                   )}
-                  aria-label={`Remove ${f.name}`}
+                  aria-label={t.fileUpload.remove(f.name)}
                 >
                   <X size={15} />
                 </button>

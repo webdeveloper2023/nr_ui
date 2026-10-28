@@ -13,13 +13,13 @@ export default function ButtonLoadingAndDisabled() {
   return (
     <div className="flex flex-wrap items-center justify-center gap-3">
       <Button isLoading={isLoading} onClick={send} startContent={<Send size={16} />}>
-        {isLoading ? "Yuborilmoqda" : "Yuborish"}
+        {isLoading ? "Sending" : "Send"}
       </Button>
       <Button variant="secondary" isLoading>
-        Yuklanmoqda
+        Loading
       </Button>
       <Button variant="tertiary" isDisabled>
-        O'chirilgan
+        Disabled
       </Button>
     </div>
   );

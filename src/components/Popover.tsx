@@ -31,41 +31,41 @@ type PopoverRadius = "none" | "sm" | "md" | "lg";
 type PopoverBackdrop = "transparent" | "opaque" | "blur";
 
 export interface PopoverProps {
-  /** Ochiq holati (boshqariladigan) */
+  /** Open state (controlled) */
   isOpen?: boolean;
-  /** Boshlang'ich ochiq holati (boshqarilmaydigan) */
+  /** Initial open state (uncontrolled) */
   defaultOpen?: boolean;
-  /** Ochiq holati o'zgarganda chaqiriladi */
+  /** Called when the open state changes */
   onOpenChange?: (open: boolean) => void;
-  /** Joylashuv tomoni */
+  /** Placement side */
   placement?: Placement;
-  /** Trigger'dan masofa (px) */
+  /** Distance from the trigger (px) */
   offset?: number;
-  /** Ko'rsatkich strelkani ko'rsatish */
+  /** Shows the pointer arrow */
   showArrow?: boolean;
-  /** Burchak yumaloqligi */
+  /** Corner radius */
   radius?: PopoverRadius;
-  /** Panelni shisha (blur) material qiladi; false — to'q fon */
+  /** Glass (blur) panel material; false gives a solid background */
   isBlurred?: boolean;
-  /** Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi */
+  /** Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass) */
   material?: "frosted" | "liquid";
-  /** Orqa fon turi */
+  /** Backdrop style */
   backdrop?: PopoverBackdrop;
-  /** Fokus chiqib ketganda yopilishi */
+  /** Close when focus leaves */
   shouldCloseOnBlur?: boolean;
-  /** Tashqariga bosilganda yopilishi */
+  /** Closes on outside click */
   isDismissable?: boolean;
-  /** PopoverTrigger va PopoverContent */
+  /** PopoverTrigger and PopoverContent */
   children: ReactNode;
 }
 
 export interface PopoverTriggerProps {
-  /** PopoverTrigger va PopoverContent */
+  /** PopoverTrigger and PopoverContent */
   children: ReactElement;
 }
 
 export interface PopoverContentProps extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
-  /** PopoverTrigger va PopoverContent */
+  /** PopoverTrigger and PopoverContent */
   children?: ReactNode | ((onClose: () => void) => ReactNode);
 }
 

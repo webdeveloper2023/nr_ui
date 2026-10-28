@@ -9,6 +9,7 @@ import {
   type ReactNode,
 } from "react";
 import { cn } from "../lib/cn";
+import { useLocale } from "./locale";
 import {
   fieldBoxClasses,
   fieldDescriptionClasses,
@@ -25,43 +26,43 @@ import {
 } from "./fieldStyles";
 
 export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "size"> {
-  /** Ko'rinish: primary — oq maydon soyali (kulrang fonda), secondary — kulrang maydon (oq karta ichida) */
+  /** Style: primary — white field with a shadow (on the gray canvas), secondary — gray field (inside white cards) */
   variant?: FieldVariant;
-  /** O'lcham */
+  /** Size */
   size?: FieldSize;
-  /** Burchaklar yumaloqligi */
+  /** Corner radius */
   radius?: FieldRadius;
-  /** Maydon sarlavhasi (label) — maydon tepasida */
+  /** Field label, shown above the field */
   label?: ReactNode;
-  /** Label joylashuvi: tepada yoki chap tomonda */
+  /** Label placement: above or to the left */
   labelPlacement?: LabelPlacement;
-  /** Maydon ostidagi yordamchi matn */
+  /** Helper text below the field */
   description?: ReactNode;
-  /** Xato holatida ko'rsatiladigan matn */
+  /** Text shown in the invalid state */
   errorMessage?: ReactNode;
-  /** Xato (invalid) holat */
+  /** Invalid state */
   isInvalid?: boolean;
-  /** O'chirilgan holat */
+  /** Disabled state */
   isDisabled?: boolean;
-  /** Faqat o'qish uchun */
+  /** Read-only */
   isReadOnly?: boolean;
-  /** Majburiy maydon (* belgisi) */
+  /** Required field (shows *) */
   isRequired?: boolean;
-  /** Qiymatni tozalash (X) tugmasini ko'rsatadi */
+  /** Shows a clear (X) button */
   isClearable?: boolean;
-  /** Tozalash tugmasi bosilganda chaqiriladi */
+  /** Called when the clear button is pressed */
   onClear?: () => void;
-  /** Qiymat o'zgarganda yangi qiymat bilan chaqiriladi */
+  /** Called with the new value when it changes */
   onValueChange?: (value: string) => void;
-  /** Boshidagi kontent (masalan, ikonka) */
+  /** Leading content (e.g. an icon) */
   startContent?: ReactNode;
-  /** Oxiridagi kontent (masalan, ikonka) */
+  /** Trailing content (e.g. an icon) */
   endContent?: ReactNode;
-  /** Konteyner kengligini to'liq egallaydi */
+  /** Fills the container width */
   fullWidth?: boolean;
-  /** Input matni orqasida chiziladigan qatlam — masalan, mask yo'riqnomasi (PhoneInput ishlatadi) */
+  /** Layer drawn behind the input text — e.g. a mask guide (used by PhoneInput) */
   inputOverlay?: ReactNode;
-  /** Ichki qismlar uchun qo'shimcha klasslar */
+  /** Extra classes for inner slots */
   classNames?: Partial<Record<"base" | "label" | "inputWrapper" | "input" | "description" | "errorMessage", string>>;
 }
 
@@ -103,6 +104,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     },
     ref
   ) => {
+    const t = useLocale();
     const autoId = useId();
     const id = idProp ?? autoId;
     const inputRef = useRef<HTMLInputElement>(null);
@@ -118,11 +120,19 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       onChange?.(e);
       onValueChange?.(e.target.value);
     };
+    // Clear through a native input event so it flows through handleChange like typing does:
+    // onChange and onValueChange both fire, and value + onChange inputs update too.
     const handleClear = () => {
-      if (!isControlled) setInternalValue("");
-      onValueChange?.("");
+      const el = inputRef.current;
+      if (el) {
+        Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")?.set?.call(el, "");
+        el.dispatchEvent(new Event("input", { bubbles: true }));
+        el.focus();
+      } else {
+        if (!isControlled) setInternalValue("");
+        onValueChange?.("");
+      }
       onClear?.();
-      inputRef.current?.focus();
     };
 
     const showError = isInvalid && Boolean(errorMessage);
@@ -197,7 +207,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               <button
                 type="button"
                 tabIndex={-1}
-                aria-label="Clear"
+                aria-label={t.common.clear}
                 onClick={(e) => {
                   e.stopPropagation();
                   handleClear();

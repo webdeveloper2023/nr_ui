@@ -6,9 +6,9 @@ export default function InputControlled() {
 
   return (
     <div className="mx-auto flex w-full max-w-xs flex-col gap-2">
-      <Input label="Ism" value={name} onValueChange={setName} isClearable />
+      <Input label="Name" value={name} onValueChange={setName} isClearable />
       <p className="text-sm text-muted">
-        Qiymat: <span className="font-medium text-foreground">{name || "—"}</span>
+        Value: <span className="font-medium text-foreground">{name || "—"}</span>
       </p>
     </div>
   );

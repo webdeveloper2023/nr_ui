@@ -10,11 +10,11 @@ export default function ChatLiquidGlass() {
       <div aria-hidden className="absolute bottom-6 right-1/4 size-32 rounded-full bg-mint opacity-70 blur-xl" />
       <div className="relative">
         <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-foreground/70">frosted</p>
-        <PromptInput isBlurred material="frosted" minRows={1} placeholder="Xabar yozing..." />
+        <PromptInput isBlurred material="frosted" minRows={1} placeholder="Type a message..." />
       </div>
       <div className="relative">
         <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-foreground/70">liquid</p>
-        <PromptInput isBlurred material="liquid" minRows={1} placeholder="Liquid kompozer..." />
+        <PromptInput isBlurred material="liquid" minRows={1} placeholder="Liquid composer..." />
       </div>
     </div>
   );

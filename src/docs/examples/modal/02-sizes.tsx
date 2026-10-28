@@ -19,10 +19,10 @@ export default function ModalSizes() {
             <>
               <ModalHeader>size="{size}"</ModalHeader>
               <ModalBody>
-                <p>Modal kengligi size prop orqali boshqariladi: xs dan 5xl gacha va full.</p>
+                <p>The modal width is controlled by the size prop: from xs to 5xl, plus full.</p>
               </ModalBody>
               <ModalFooter>
-                <Button onClick={onClose}>Yopish</Button>
+                <Button onClick={onClose}>Close</Button>
               </ModalFooter>
             </>
           )}

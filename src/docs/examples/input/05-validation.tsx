@@ -14,11 +14,11 @@ export default function InputValidation() {
         value={email}
         onValueChange={setEmail}
         isInvalid={isInvalid}
-        errorMessage="To'g'ri email manzil kiriting"
-        description="Biz emailingizni hech kimga bermaymiz"
+        errorMessage="Enter a valid email address"
+        description="We never share your email"
       />
-      <Input label="O'chirilgan" defaultValue="Tahrirlab bo'lmaydi" isDisabled />
-      <Input label="Faqat o'qish" defaultValue="ID-48213" isReadOnly />
+      <Input label="Disabled" defaultValue="Not editable" isDisabled />
+      <Input label="Read only" defaultValue="ID-48213" isReadOnly />
     </div>
   );
 }

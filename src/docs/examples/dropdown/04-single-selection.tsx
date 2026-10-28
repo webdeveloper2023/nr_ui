@@ -3,10 +3,10 @@ import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "n
 import { ChevronDown } from "lucide-react";
 
 const options = [
-  { key: "newest", label: "Eng yangi" },
-  { key: "oldest", label: "Eng eski" },
-  { key: "popular", label: "Mashhur" },
-  { key: "price", label: "Narx bo'yicha" },
+  { key: "newest", label: "Newest" },
+  { key: "oldest", label: "Oldest" },
+  { key: "popular", label: "Popular" },
+  { key: "price", label: "By price" },
 ];
 
 export default function DropdownSingleSelection() {
@@ -18,10 +18,10 @@ export default function DropdownSingleSelection() {
       <Dropdown>
         <DropdownTrigger>
           <Button variant="outline" endContent={<ChevronDown size={16} />}>
-            Saralash: {label}
+            Sort: {label}
           </Button>
         </DropdownTrigger>
-        <DropdownMenu aria-label="Saralash" selectionMode="single" selectedKeys={selected} onSelectionChange={setSelected}>
+        <DropdownMenu aria-label="Sort" selectionMode="single" selectedKeys={selected} onSelectionChange={setSelected}>
           {options.map((o) => (
             <DropdownItem key={o.key} itemKey={o.key}>
               {o.label}

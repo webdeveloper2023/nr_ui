@@ -1,17 +1,17 @@
 import { Select } from "nr-ui-kit";
 
 const animals = [
-  { key: "cat", label: "Mushuk" },
-  { key: "dog", label: "It" },
-  { key: "parrot", label: "To'tiqush" },
-  { key: "rabbit", label: "Quyon" },
-  { key: "turtle", label: "Toshbaqa" },
+  { key: "cat", label: "Cat" },
+  { key: "dog", label: "Dog" },
+  { key: "parrot", label: "Parrot" },
+  { key: "rabbit", label: "Rabbit" },
+  { key: "turtle", label: "Turtle" },
 ];
 
 export default function SelectBasic() {
   return (
     <div className="mx-auto w-full max-w-xs">
-      <Select label="Sevimli hayvon" placeholder="Tanlang" items={animals} />
+      <Select label="Favorite animal" placeholder="Select" items={animals} />
     </div>
   );
 }

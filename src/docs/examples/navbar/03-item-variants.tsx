@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem } from "nr-ui-kit";
 
-const links = ["Umumiy", "Analitika", "Hisobotlar"];
+const links = ["Overview", "Analytics", "Reports"];
 const variants = ["underline", "pill", "text"] as const;
 
 export default function NavbarItemVariants() {
-  const [active, setActive] = useState("Umumiy");
+  const [active, setActive] = useState("Overview");
 
   return (
     <div className="flex flex-col gap-4">

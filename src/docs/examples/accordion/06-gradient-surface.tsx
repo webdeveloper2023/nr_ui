@@ -1,9 +1,9 @@
 import { Accordion, AccordionItem } from "nr-ui-kit";
 
 const faq = [
-  { key: "1", title: "Gradient qanchalik kuchli?", text: "Juda yengil — surface rangidan accent tomon bir necha foiz farq. Ko'z sezadi, lekin e'tiborni tortmaydi." },
-  { key: "2", title: "O'chirsa bo'ladimi?", text: "Ha: CSS'da --nr-gradient-surface: none; deb yozing — barcha kartalar tekis bo'ladi." },
-  { key: "3", title: "Dark mode'da-chi?", text: "Dark mode uchun alohida, biroz kuchliroq gradient tokeni ishlatiladi." },
+  { key: "1", title: "How strong is the gradient?", text: "Very subtle — a few percent shift from the surface color toward the accent. You notice it, but it never grabs attention." },
+  { key: "2", title: "Can I turn it off?", text: "Yes: set --nr-gradient-surface: none; in your CSS and every card becomes flat." },
+  { key: "3", title: "What about dark mode?", text: "Dark mode uses its own, slightly stronger gradient token." },
 ];
 
 export default function AccordionGradientSurface() {

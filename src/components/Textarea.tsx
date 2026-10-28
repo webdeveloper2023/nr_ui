@@ -21,37 +21,37 @@ import {
 } from "./fieldStyles";
 
 export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
-  /** Ko'rinish: primary — oq maydon soyali, secondary — kulrang maydon (karta ichida) */
+  /** Style: primary — white field with a shadow, secondary — gray field (inside cards) */
   variant?: FieldVariant;
-  /** O'lcham */
+  /** Size */
   size?: FieldSize;
-  /** Burchaklar yumaloqligi */
+  /** Corner radius */
   radius?: "sm" | "md" | "lg";
-  /** Maydon sarlavhasi (label) — maydon tepasida */
+  /** Field label, shown above the field */
   label?: ReactNode;
-  /** Maydon ostidagi yordamchi matn */
+  /** Helper text below the field */
   description?: ReactNode;
-  /** Xato holatida ko'rsatiladigan matn */
+  /** Text shown in the invalid state */
   errorMessage?: ReactNode;
-  /** Xato (invalid) holat */
+  /** Invalid state */
   isInvalid?: boolean;
-  /** O'chirilgan holat */
+  /** Disabled state */
   isDisabled?: boolean;
-  /** Faqat o'qish uchun */
+  /** Read-only */
   isReadOnly?: boolean;
-  /** Majburiy maydon (* belgisi) */
+  /** Required field (shows *) */
   isRequired?: boolean;
-  /** Minimal qatorlar soni */
+  /** Minimum rows */
   minRows?: number;
-  /** Avtomatik o'sishdagi maksimal qatorlar soni */
+  /** Maximum rows while auto-growing */
   maxRows?: number;
-  /** Avtomatik balandlikni o'chiradi */
+  /** Disables auto-resizing */
   disableAutosize?: boolean;
-  /** Belgilar sonini ko'rsatadi (maxLength bilan) */
+  /** Shows the character count (with maxLength) */
   showCount?: boolean;
-  /** Qiymat o'zgarganda yangi qiymat bilan chaqiriladi */
+  /** Called with the new value when it changes */
   onValueChange?: (value: string) => void;
-  /** Konteyner kengligini to'liq egallaydi */
+  /** Fills the container width */
   fullWidth?: boolean;
 }
 

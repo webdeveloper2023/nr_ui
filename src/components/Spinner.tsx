@@ -1,5 +1,6 @@
 import React from "react";
 import { cn } from "../lib/cn";
+import { useLocale } from "./locale";
 
 type SpinnerColor = "default" | "accent" | "success" | "warning" | "danger" | "current";
 type SpinnerSize = "xs" | "sm" | "md" | "lg";
@@ -7,17 +8,17 @@ type SpinnerVariant = "default" | "dots" | "wave" | "spinner";
 type SpinnerLabelColor = "foreground" | "muted";
 
 export interface SpinnerProps {
-  /** O'lcham */
+  /** Size */
   size?: SpinnerSize;
-  /** Rang */
+  /** Color */
   color?: SpinnerColor;
-  /** Animatsiya turi */
+  /** Animation style */
   variant?: SpinnerVariant;
-  /** Yorliq matni */
+  /** Label text */
   label?: string;
-  /** Yorliq rangi */
+  /** Label color */
   labelColor?: SpinnerLabelColor;
-  /** Qo'shimcha CSS klasslar */
+  /** Extra CSS classes */
   className?: string;
 }
 
@@ -56,6 +57,7 @@ export const Spinner: React.FC<SpinnerProps> = ({
   labelColor = "muted",
   className = "",
 }) => {
+  const t = useLocale();
   const s = sizeMap[size];
 
   const renderIndicator = () => {
@@ -115,7 +117,7 @@ export const Spinner: React.FC<SpinnerProps> = ({
     <div
       className={cn("inline-flex flex-col items-center justify-center gap-2", className)}
       role="status"
-      aria-label={label || "Loading"}
+      aria-label={label || t.common.loading}
     >
       {variant !== "default" && <style>{keyframes}</style>}
       <span className={textColor[color]}>{renderIndicator()}</span>

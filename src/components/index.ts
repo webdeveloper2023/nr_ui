@@ -56,3 +56,9 @@ export type { StepItem } from "./Stepper";
 export { PricingCard, BillingToggle } from "./Pricing";
 export type { BillingPeriod, PricingFeature } from "./Pricing";
 export { ChatContainer, ChatMessage, PromptInput } from "./Chat";
+
+// Localization
+export { LocaleProvider } from "./LocaleProvider";
+export type { LocaleProviderProps } from "./LocaleProvider";
+export { useLocale, NR_MESSAGES } from "./locale";
+export type { NRLocale, NRMessages } from "./locale";

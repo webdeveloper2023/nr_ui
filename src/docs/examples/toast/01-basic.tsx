@@ -7,9 +7,9 @@ export default function ToastBasic() {
     <div className="flex justify-center">
       <Button
         variant="tertiary"
-        onClick={() => addToast({ title: "Fayl saqlandi", description: "hisobot.pdf papkaga qo'shildi." })}
+        onClick={() => addToast({ title: "File saved", description: "report.pdf was added to the folder." })}
       >
-        Toast ko'rsatish
+        Show toast
       </Button>
     </div>
   );

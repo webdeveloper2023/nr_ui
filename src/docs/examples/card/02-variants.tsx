@@ -1,10 +1,10 @@
 import { Card, CardHeader, CardBody } from "nr-ui-kit";
 
 const variants = [
-  { variant: "transparent", title: "Transparent", text: "Fonsiz — ichma-ich kartalar uchun" },
-  { variant: "default", title: "Default", text: "Oq surface — ko'p holatlar uchun" },
-  { variant: "secondary", title: "Secondary", text: "O'rtacha e'tibor talab qiladigan kontent" },
-  { variant: "tertiary", title: "Tertiary", text: "Muhim yoki ajratilgan kontent" },
+  { variant: "transparent", title: "Transparent", text: "No background — for nested cards" },
+  { variant: "default", title: "Default", text: "White surface — for most cases" },
+  { variant: "secondary", title: "Secondary", text: "Content that needs moderate emphasis" },
+  { variant: "tertiary", title: "Tertiary", text: "Important or highlighted content" },
 ] as const;
 
 export default function CardVariants() {

@@ -1,32 +1,33 @@
 import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
 import { cn } from "../lib/cn";
+import { useLocale } from "./locale";
 
 type PaginationColor = "default" | "accent";
 type PaginationSize = "xs" | "sm" | "md" | "lg";
 type PaginationVariant = "ghost" | "tertiary" | "surface";
 
 export interface PaginationProps {
-  /** Jami sahifalar soni */
+  /** Total number of pages */
   total: number;
-  /** Joriy sahifa */
+  /** Current page */
   page: number;
-  /** Sahifa o'zgarganda chaqiriladi */
+  /** Called when the page changes */
   onChange: (page: number) => void;
-  /** Joriy sahifa yonida ko'rinadigan sahifalar soni */
+  /** Pages shown on each side of the current page */
   siblings?: number;
-  /** Faol sahifa rangi: default (qora) yoki accent (ko'k) */
+  /** Active page color: default (black) or accent (blue) */
   color?: PaginationColor;
-  /** O'lcham */
+  /** Size */
   size?: PaginationSize;
-  /** Ko'rinish: ghost (shaffof), tertiary (kulrang), surface (oq panel ichida) */
+  /** Style: ghost (transparent), tertiary (gray), surface (inside a white panel) */
   variant?: PaginationVariant;
-  /** Oldingi/keyingi tugmalarini ko'rsatish */
+  /** Shows previous / next buttons */
   showControls?: boolean;
-  /** Tugmalarni bitta pill ichida zich joylashtirish */
+  /** Packs the buttons tightly into one pill */
   isCompact?: boolean;
-  /** O'chirilgan (faol emas) holat */
+  /** Disabled (inactive) state */
   isDisabled?: boolean;
-  /** Qo'shimcha CSS klasslar */
+  /** Extra CSS classes */
   className?: string;
 }
 
@@ -67,6 +68,7 @@ export function Pagination({
   isDisabled = false,
   className = "",
 }: PaginationProps) {
+  const t = useLocale();
   const base = cn(
     "flex items-center justify-center px-2 rounded-full font-medium tabular-nums select-none cursor-pointer",
     "transition-colors duration-150 active:scale-[0.96]",
@@ -82,7 +84,7 @@ export function Pagination({
 
   return (
     <nav
-      aria-label="Pagination"
+      aria-label={t.pagination.label}
       className={cn(
         "inline-flex items-center",
         grouped ? "gap-0.5 rounded-full p-1" : "gap-1",
@@ -93,7 +95,7 @@ export function Pagination({
       )}
     >
       {showControls && (
-        <button className={control} disabled={page <= 1} onClick={() => onChange(page - 1)} aria-label="Previous">
+        <button className={control} disabled={page <= 1} onClick={() => onChange(page - 1)} aria-label={t.pagination.previous}>
           <ChevronLeft size={16} />
         </button>
       )}
@@ -114,7 +116,7 @@ export function Pagination({
         )
       )}
       {showControls && (
-        <button className={control} disabled={page >= total} onClick={() => onChange(page + 1)} aria-label="Next">
+        <button className={control} disabled={page >= total} onClick={() => onChange(page + 1)} aria-label={t.pagination.next}>
           <ChevronRight size={16} />
         </button>
       )}

@@ -6,20 +6,20 @@ export default function DropdownWithDescriptions() {
     <div className="flex justify-center">
       <Dropdown>
         <DropdownTrigger>
-          <Button variant="secondary">Amallar</Button>
+          <Button variant="secondary">Actions</Button>
         </DropdownTrigger>
-        <DropdownMenu aria-label="Hujjat amallari" className="w-72">
-          <DropdownItem itemKey="edit" startContent={<Pencil size={16} />} description="Hujjatni tahrirlash">
-            Tahrirlash
+        <DropdownMenu aria-label="Document actions" className="w-72">
+          <DropdownItem itemKey="edit" startContent={<Pencil size={16} />} description="Edit the document">
+            Edit
           </DropdownItem>
-          <DropdownItem itemKey="copy" startContent={<Copy size={16} />} description="Nusxa yaratish">
-            Nusxalash
+          <DropdownItem itemKey="copy" startContent={<Copy size={16} />} description="Create a copy">
+            Duplicate
           </DropdownItem>
-          <DropdownItem itemKey="share" startContent={<Share2 size={16} />} description="Jamoa bilan ulashish" showDivider>
-            Ulashish
+          <DropdownItem itemKey="share" startContent={<Share2 size={16} />} description="Share with your team" showDivider>
+            Share
           </DropdownItem>
-          <DropdownItem itemKey="delete" color="danger" startContent={<Trash2 size={16} />} description="Butunlay o'chirish">
-            O'chirish
+          <DropdownItem itemKey="delete" color="danger" startContent={<Trash2 size={16} />} description="Delete permanently">
+            Delete
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>

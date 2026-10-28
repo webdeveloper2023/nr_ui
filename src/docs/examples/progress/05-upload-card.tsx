@@ -18,14 +18,14 @@ export default function ProgressUploadCard() {
           <FileText size={18} />
         </span>
         <div className="min-w-0 flex-1">
-          <p className="truncate text-sm font-medium text-foreground">hisobot-2026.pdf</p>
-          <p className="text-xs text-muted">{value < 100 ? `${(value * 0.24).toFixed(1)} / 24 MB` : "Yuklandi"}</p>
+          <p className="truncate text-sm font-medium text-foreground">report-2026.pdf</p>
+          <p className="text-xs text-muted">{value < 100 ? `${(value * 0.24).toFixed(1)} / 24 MB` : "Uploaded"}</p>
         </div>
         <span className="text-sm tabular-nums text-muted">{value}%</span>
       </div>
       <Progress className="mt-4" value={value} color={value < 100 ? "accent" : "success"} size="sm" />
       <Button className="mt-4" size="sm" variant="tertiary" fullWidth onClick={() => setValue(0)}>
-        Qayta yuklash
+        Upload again
       </Button>
     </div>
   );

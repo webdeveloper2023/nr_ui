@@ -9,8 +9,8 @@ export default function ChipGlass() {
       <Chip variant="glass" className="relative">Default</Chip>
       <Chip variant="glass" color="accent" dot className="relative">Accent</Chip>
       <Chip variant="glass" color="success" dot className="relative">Online</Chip>
-      <Chip variant="glass" color="warning" className="relative">Kutilmoqda</Chip>
-      <Chip variant="glass" color="danger" className="relative">Xato</Chip>
+      <Chip variant="glass" color="warning" className="relative">Pending</Chip>
+      <Chip variant="glass" color="danger" className="relative">Error</Chip>
     </div>
   );
 }

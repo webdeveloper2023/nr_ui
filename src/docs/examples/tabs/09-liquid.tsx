@@ -1,10 +1,10 @@
 import { Tabs } from "nr-ui-kit";
 
 const tabs = [
-  { key: "day", title: "Kun" },
-  { key: "week", title: "Hafta" },
-  { key: "month", title: "Oy" },
-  { key: "year", title: "Yil" },
+  { key: "day", title: "Day" },
+  { key: "week", title: "Week" },
+  { key: "month", title: "Month" },
+  { key: "year", title: "Year" },
 ];
 
 export default function TabsLiquidGlass() {

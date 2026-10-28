@@ -13,11 +13,11 @@ export default function ButtonLiquidGlass() {
         <div key={material} className="relative flex flex-col items-center gap-4">
           <p className="text-xs font-semibold uppercase tracking-wider text-foreground/70">{material}</p>
           <div className="flex flex-wrap justify-center gap-3">
-            <Button variant="glass" material={material} startContent={<Plus size={16} />}>Qo'shish</Button>
-            <Button variant="glass" material={material} isIconOnly aria-label="Yoqdi"><Heart size={18} /></Button>
-            <Button variant="glass" material={material} isIconOnly aria-label="Ulashish"><Share size={18} /></Button>
+            <Button variant="glass" material={material} startContent={<Plus size={16} />}>Add</Button>
+            <Button variant="glass" material={material} isIconOnly aria-label="Like"><Heart size={18} /></Button>
+            <Button variant="glass" material={material} isIconOnly aria-label="Share"><Share size={18} /></Button>
           </div>
-          <Button variant="glass" material={material} size="lg" isIconOnly aria-label="Pauza"><Pause size={22} /></Button>
+          <Button variant="glass" material={material} size="lg" isIconOnly aria-label="Pause"><Pause size={22} /></Button>
         </div>
       ))}
     </div>

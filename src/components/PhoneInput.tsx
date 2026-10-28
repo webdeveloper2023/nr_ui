@@ -12,6 +12,7 @@ import {
   type ReactNode,
 } from "react";
 import { cn } from "../lib/cn";
+import { useLocale } from "./locale";
 import { Input, type InputProps } from "./Input";
 import {
   PHONE_COUNTRIES,
@@ -28,43 +29,43 @@ import {
 } from "./phoneMask";
 
 export interface PhoneValueInfo {
-  /** Formatlangan to'liq ko'rinish: "+998 90 123 45 67" */
+  /** Fully formatted: "+998 90 123 45 67" */
   formatted: string;
-  /** Faqat milliy raqamlar: "901234567" */
+  /** National digits only: "901234567" */
   national: string;
-  /** Tanlangan davlat */
+  /** Selected country */
   country: PhoneCountry;
-  /** Raqam to'liq kiritilganmi */
+  /** Whether the number is complete */
   isComplete: boolean;
 }
 
 export interface PhoneInputProps
   extends Omit<InputProps, "value" | "defaultValue" | "onValueChange" | "type" | "inputOverlay" | "startContent"> {
-  /** Davlat: ISO qisqartmasi — 2 harfli ("UZ") yoki 3 harfli ("UZB"), katta-kichik harf farqi yo'q */
+  /** Country as an ISO code — 2 letters ("UZ") or 3 letters ("UZB"), case-insensitive */
   country?: string;
-  /** Qiymat (E.164 "+998901234567" yoki faqat raqamlar) — boshqariladigan rejim */
+  /** Value (E.164 "+998901234567" or digits only) — controlled */
   value?: string;
-  /** Boshlang'ich qiymat (boshqarilmaydigan rejim) */
+  /** Initial value (uncontrolled) */
   defaultValue?: string;
-  /** O'zgarganda: E.164 qiymat ("+998901234567", bo'sh bo'lsa "") va qo'shimcha ma'lumot */
+  /** Called with the E.164 value ("+998901234567", or "" when empty) and extra info */
   onValueChange?: (value: string, info: PhoneValueInfo) => void;
-  /** Davlatni ro'yxatdan tanlash imkoniyati (bayroq + kod tugmasi) */
+  /** Lets the user pick the country from a list (flag + dial code button) */
   isCountrySelectable?: boolean;
-  /** Davlat o'zgarganda (ISO alpha-2) chaqiriladi */
+  /** Called with the ISO alpha-2 code when the country changes */
   onCountryChange?: (iso2: string) => void;
-  /** Tanlash ro'yxatini shu davlatlar bilan cheklash (ISO kodlari) */
+  /** Limits the picker to these countries (ISO codes) */
   countries?: string[];
-  /** Maskaning bo'sh joylari belgisi */
+  /** Character used for empty mask slots */
   placeholderChar?: string;
-  /** Kiritilmagan qismni kulrang mask bilan ko'rsatish */
+  /** Shows the remaining part as a gray mask guide */
   showMaskGuide?: boolean;
-  /** Bayroq: emoji, ISO kod, ko'rsatmaslik yoki o'z render funksiyangiz */
+  /** Flag: emoji, ISO code, none, or your own render function */
   flag?: "emoji" | "code" | "none" | ((country: PhoneCountry) => ReactNode);
-  /** Raqam to'liq bo'lmasa, maydondan chiqqanda xato holatini avtomatik ko'rsatish */
+  /** Automatically shows an error on blur when the number is incomplete */
   autoValidate?: boolean;
-  /** autoValidate xato matni */
+  /** Error text used by autoValidate */
   incompleteMessage?: ReactNode;
-  /** Boshidagi qo'shimcha kontent (bayroq/kod oldidan) */
+  /** Extra leading content (before the flag and dial code) */
   startContent?: ReactNode;
 }
 
@@ -84,7 +85,7 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
       showMaskGuide = true,
       flag = "emoji",
       autoValidate = false,
-      incompleteMessage = "Telefon raqam to'liq kiritilmagan",
+      incompleteMessage,
       startContent,
       isInvalid,
       errorMessage,
@@ -98,6 +99,7 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
     },
     ref
   ) => {
+    const t = useLocale();
     const inputRef = useRef<HTMLInputElement>(null);
     useImperativeHandle(ref, () => inputRef.current as HTMLInputElement);
 
@@ -233,7 +235,7 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
               <path d="m6 9 6 6 6-6" />
             </svg>
             <select
-              aria-label="Davlat kodi"
+              aria-label={t.phoneInput.countryLabel}
               value={country.iso2}
               disabled={isDisabled}
               onChange={(e) => selectCountry(e.target.value)}
@@ -272,7 +274,7 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
         }}
         placeholder={showMaskGuide ? undefined : placeholder}
         isInvalid={Boolean(isInvalid) || autoInvalid}
-        errorMessage={autoInvalid && !errorMessage ? incompleteMessage : errorMessage}
+        errorMessage={autoInvalid && !errorMessage ? incompleteMessage ?? t.phoneInput.incomplete : errorMessage}
         startContent={
           <span className="flex items-center gap-2">
             {startContent}

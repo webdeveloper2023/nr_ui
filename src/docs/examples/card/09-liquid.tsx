@@ -10,16 +10,16 @@ export default function CardLiquidGlass() {
       <div aria-hidden className="absolute -bottom-16 left-1/3 size-56 rounded-full bg-orange opacity-60 blur-2xl" />
       <div aria-hidden className="absolute bottom-6 right-1/4 size-32 rounded-full bg-mint opacity-70 blur-xl" />
       <Card variant="glass" material="frosted" className="relative">
-        <CardHeader title="Frosted" description="Klassik xira shisha" endContent={<Snowflake size={18} className="text-muted" />} />
+        <CardHeader title="Frosted" description="Classic frosted glass" endContent={<Snowflake size={18} className="text-muted" />} />
         <CardBody>
-          <p className="text-foreground/75">Kuchli blur, oq tus — matn har qanday fonda o'qiladi.</p>
+          <p className="text-foreground/75">Strong blur and a white tint — text stays readable on any background.</p>
           <Chip variant="glass" material="frosted" className="mt-1">material="frosted"</Chip>
         </CardBody>
       </Card>
       <Card variant="glass" material="liquid" className="relative">
         <CardHeader title="Liquid" description="Clear glass, shining edges" endContent={<Droplets size={18} className="text-muted" />} />
         <CardBody>
-          <p className="text-foreground/75">Shaffofroq, chetlarida yorug'lik aksi va ichki nur — linza kabi.</p>
+          <p className="text-foreground/75">Clearer, with light-catching edges and an inner glow — like a lens.</p>
           <Chip variant="glass" material="liquid" className="mt-1">material="liquid"</Chip>
         </CardBody>
       </Card>

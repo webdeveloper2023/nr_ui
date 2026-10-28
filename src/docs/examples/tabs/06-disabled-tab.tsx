@@ -6,10 +6,10 @@ export default function TabsDisabled() {
       <Tabs
         disabledKeys={["reports"]}
         tabs={[
-          { key: "overview", title: "Umumiy" },
-          { key: "analytics", title: "Analitika" },
-          { key: "reports", title: "Hisobotlar" },
-          { key: "settings", title: "Sozlamalar" },
+          { key: "overview", title: "Overview" },
+          { key: "analytics", title: "Analytics" },
+          { key: "reports", title: "Reports" },
+          { key: "settings", title: "Settings" },
         ]}
       />
     </div>

@@ -16,15 +16,15 @@ const members: Member[] = [
 ];
 
 const statusMap = {
-  active: { color: "success", label: "Faol" },
-  invited: { color: "accent", label: "Taklif qilingan" },
-  inactive: { color: "default", label: "Nofaol" },
+  active: { color: "success", label: "Active" },
+  invited: { color: "accent", label: "Invited" },
+  inactive: { color: "default", label: "Inactive" },
 } as const;
 
 const columns: TableColumn<Member>[] = [
   {
     key: "name",
-    label: "A'zo",
+    label: "Member",
     sortable: true,
     render: (_v, m) => (
       <div className="flex items-center gap-3">
@@ -36,10 +36,10 @@ const columns: TableColumn<Member>[] = [
       </div>
     ),
   },
-  { key: "role", label: "Rol", sortable: true },
+  { key: "role", label: "Role", sortable: true },
   {
     key: "status",
-    label: "Holat",
+    label: "Status",
     render: (_v, m) => (
       <Chip size="sm" color={statusMap[m.status].color} dot>
         {statusMap[m.status].label}
@@ -64,19 +64,19 @@ export default function UsersTable() {
 
   return (
     <Table
-      aria-label="Jamoa a'zolari"
+      aria-label="Team members"
       columns={columns}
       rows={visible}
       keyField="id"
       selectionMode="multiple"
       selectedKeys={selected}
       onSelectionChange={setSelected}
-      emptyContent="Hech kim topilmadi"
+      emptyContent="No one found"
       topContent={
         <div className="flex items-center justify-between gap-3">
           <Input
             className="max-w-xs"
-            placeholder="Ism yoki email..."
+            placeholder="Name or email..."
             startContent={<Search size={16} />}
             value={query}
             onChange={(e) => {
@@ -84,12 +84,12 @@ export default function UsersTable() {
               setPage(1);
             }}
           />
-          <Button startContent={<Plus size={16} />}>Taklif qilish</Button>
+          <Button startContent={<Plus size={16} />}>Invite</Button>
         </div>
       }
       bottomContent={
         <div className="flex items-center justify-between px-1 text-sm text-muted">
-          <span>{selected.size > 0 ? `${selected.size} ta tanlandi` : `Jami ${filtered.length} ta a'zo`}</span>
+          <span>{selected.size > 0 ? `${selected.size} selected` : `${filtered.length} members total`}</span>
           <Pagination total={pages} page={page} onChange={setPage} size="sm" />
         </div>
       }

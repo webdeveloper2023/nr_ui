@@ -1,4 +1,4 @@
-import { useCallback, useLayoutEffect, useRef, useState, type HTMLAttributes, type KeyboardEvent, type ReactNode } from "react";
+import { useCallback, useId, useLayoutEffect, useRef, useState, type HTMLAttributes, type KeyboardEvent, type ReactNode } from "react";
 import { cn } from "../lib/cn";
 
 type TabsVariant = "primary" | "secondary";
@@ -6,44 +6,44 @@ type TabsSize = "xs" | "sm" | "md" | "lg";
 type TabsPlacement = "top" | "bottom" | "start" | "end";
 
 export interface TabItem {
-  /** Tab'ning noyob kaliti */
+  /** Unique tab key */
   key: string;
-  /** Tab sarlavhasi */
+  /** Tab title */
   title: ReactNode;
-  /** Sarlavha oldidagi ikonka */
+  /** Icon before the title */
   icon?: ReactNode;
-  /** Tab'ni o'chirib qo'yadi */
+  /** Disables the tab */
   isDisabled?: boolean;
 }
 
 export interface TabsProps extends Omit<HTMLAttributes<HTMLDivElement>, "onChange" | "children"> {
-  /** Ko'rinish: primary (kulrang trek + oq segment) yoki secondary (pastki chiziq) */
+  /** Style: primary (gray track + white segment) or secondary (underline) */
   variant?: TabsVariant;
-  /** O'lcham */
+  /** Size */
   size?: TabsSize;
-  /** Tablar butun kenglikni egallaydi */
+  /** Tabs fill the full width */
   fullWidth?: boolean;
-  /** Tablar joylashuvi kontentga nisbatan */
+  /** Tab list position relative to the content */
   placement?: TabsPlacement;
-  /** Tablarni vertikal joylashtiradi */
+  /** Lays the tabs out vertically */
   isVertical?: boolean;
-  /** Trekni shisha (glass) qiladi — rangli fon yoki rasm ustida chiroyli */
+  /** Makes the track glass — looks best over colorful backgrounds or images */
   isBlurred?: boolean;
-  /** Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi */
+  /** Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass) */
   material?: "frosted" | "liquid";
-  /** Barcha tablarni o'chiradi */
+  /** Disables all tabs */
   isDisabled?: boolean;
-  /** O'chirilgan tablar kalitlari */
+  /** Keys of disabled tabs */
   disabledKeys?: string[];
-  /** Tablar ro'yxati */
+  /** List of tabs */
   tabs: TabItem[];
-  /** Tanlangan tab (controlled) */
+  /** Selected tab (controlled) */
   selectedKey?: string;
-  /** Boshlang'ich tanlangan tab (uncontrolled) */
+  /** Initially selected tab (uncontrolled) */
   defaultSelectedKey?: string;
-  /** Tab almashganda chaqiriladi */
+  /** Called when the tab changes */
   onSelectionChange?: (key: string) => void;
-  /** Tanlangan tab kalitiga qarab panel kontentini qaytaruvchi funksiya */
+  /** Function that returns the panel content for the selected tab key */
   children?: (key: string) => ReactNode;
 }
 
@@ -79,8 +79,16 @@ export const Tabs = ({
   className = "",
   ...props
 }: TabsProps) => {
-  const [internalKey, setInternalKey] = useState(defaultSelectedKey ?? tabs[0]?.key ?? "");
+  const isKeyDisabled = (tab: TabItem) => isDisabled || tab.isDisabled || disabledKeys.includes(tab.key);
+  const [internalKey, setInternalKey] = useState(defaultSelectedKey ?? (tabs.find((t) => !isKeyDisabled(t)) ?? tabs[0])?.key ?? "");
   const selectedKey = controlledKey ?? internalKey;
+  const baseId = useId();
+  const tabId = (index: number) => `${baseId}-tab-${index}`;
+  const panelId = `${baseId}-panel`;
+  const selectedIndex = tabs.findIndex((t) => t.key === selectedKey);
+  // Roving tabindex: the selected tab, or the first enabled one when the selected tab is disabled
+  const enabledTabs = tabs.filter((t) => !isKeyDisabled(t));
+  const focusKey = enabledTabs.some((t) => t.key === selectedKey) ? selectedKey : enabledTabs[0]?.key;
   const resolvedPlacement: TabsPlacement = isVertical && (placement === "top" || placement === "bottom") ? "start" : placement;
   const vertical = resolvedPlacement === "start" || resolvedPlacement === "end";
   const underline = variant === "secondary";
@@ -88,8 +96,6 @@ export const Tabs = ({
   const tabRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
   const [cursor, setCursor] = useState<CursorRect | null>(null);
   const [animate, setAnimate] = useState(false);
-
-  const isKeyDisabled = (tab: TabItem) => isDisabled || tab.isDisabled || disabledKeys.includes(tab.key);
 
   const onSelect = useCallback(
     (key: string) => {
@@ -124,11 +130,13 @@ export const Tabs = ({
     const keys = vertical ? ["ArrowDown", "ArrowUp"] : ["ArrowRight", "ArrowLeft"];
     if (!keys.includes(e.key) && e.key !== "Home" && e.key !== "End") return;
     e.preventDefault();
-    const enabled = tabs.filter((t) => !isKeyDisabled(t));
-    const idx = enabled.findIndex((t) => t.key === selectedKey);
+    const enabled = enabledTabs;
+    if (!enabled.length) return;
+    // Move from the focused tab (the selected one may be disabled and unfocusable)
+    const idx = enabled.findIndex((t) => tabRefs.current.get(t.key) === document.activeElement);
     let target = idx;
-    if (e.key === keys[0]) target = (idx + 1) % enabled.length;
-    else if (e.key === keys[1]) target = (idx - 1 + enabled.length) % enabled.length;
+    if (e.key === keys[0]) target = idx < 0 ? 0 : (idx + 1) % enabled.length;
+    else if (e.key === keys[1]) target = idx < 0 ? enabled.length - 1 : (idx - 1 + enabled.length) % enabled.length;
     else if (e.key === "Home") target = 0;
     else if (e.key === "End") target = enabled.length - 1;
     const key = enabled[target]?.key;
@@ -172,7 +180,7 @@ export const Tabs = ({
         )}
         style={cursorStyle}
       />
-      {tabs.map((tab) => {
+      {tabs.map((tab, index) => {
         const isActive = selectedKey === tab.key;
         const disabled = isKeyDisabled(tab);
         return (
@@ -184,8 +192,10 @@ export const Tabs = ({
             }}
             type="button"
             role="tab"
+            id={tabId(index)}
             aria-selected={isActive}
-            tabIndex={isActive ? 0 : -1}
+            aria-controls={isActive && children ? panelId : undefined}
+            tabIndex={tab.key === focusKey ? 0 : -1}
             disabled={disabled}
             onClick={() => onSelect(tab.key)}
             className={cn(
@@ -209,7 +219,14 @@ export const Tabs = ({
   );
 
   const panel = children ? (
-    <div role="tabpanel" key={selectedKey} className={cn("animate-fade-in text-sm", vertical ? "flex-1 min-w-0" : "pt-4")}>
+    <div
+      role="tabpanel"
+      id={panelId}
+      aria-labelledby={selectedIndex >= 0 ? tabId(selectedIndex) : undefined}
+      tabIndex={0}
+      key={selectedKey}
+      className={cn("animate-fade-in text-sm rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-focus", vertical ? "flex-1 min-w-0" : "pt-4")}
+    >
       {children(selectedKey)}
     </div>
   ) : null;

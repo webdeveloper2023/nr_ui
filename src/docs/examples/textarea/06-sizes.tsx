@@ -6,7 +6,7 @@ export default function TextareaSizes() {
   return (
     <div className="grid max-w-2xl gap-4 sm:grid-cols-2">
       {sizes.map((size) => (
-        <Textarea key={size} size={size} label={`size="${size}"`} placeholder="Izoh yozing..." minRows={2} />
+        <Textarea key={size} size={size} label={`size="${size}"`} placeholder="Write a comment..." minRows={2} />
       ))}
     </div>
   );

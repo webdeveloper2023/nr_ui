@@ -2,7 +2,7 @@ import { Fragment } from "react";
 import { ChevronRight } from "lucide-react";
 import { Card, Divider } from "nr-ui-kit";
 
-const items = ["Profil", "Xavfsizlik", "Bildirishnomalar", "To'lovlar"];
+const items = ["Profile", "Security", "Notifications", "Billing"];
 
 export default function DividerInList() {
   return (

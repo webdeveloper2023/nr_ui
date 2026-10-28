@@ -2,9 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { Menu, Monitor, Moon, Search, Sun, X, Zap } from "lucide-react";
 import { cn } from "../lib/cn";
-import { GROUPS, registry } from "./registry";
-import { useDesignStyle } from "./designStyle";
-import { DesignStyleSwitch } from "./DesignStyleSwitch";
+import { GROUPS, GROUP_LABELS, registry } from "./registry";
+import { useLang, useT } from "./i18n/lang";
+import { LanguageSwitch } from "./LanguageSwitch";
+import { Donate } from "./Donate";
 
 type ThemeMode = "light" | "dark" | "system";
 
@@ -32,10 +33,11 @@ function useTheme() {
 }
 
 function ThemeSwitch({ mode, onChange }: { mode: ThemeMode; onChange: (m: ThemeMode) => void }) {
+  const t = useT();
   const items: { key: ThemeMode; icon: typeof Sun; label: string }[] = [
-    { key: "light", icon: Sun, label: "Light" },
-    { key: "dark", icon: Moon, label: "Dark" },
-    { key: "system", icon: Monitor, label: "System" },
+    { key: "light", icon: Sun, label: t({ en: "Light", uz: "Yorug'", ru: "Светлая" }) },
+    { key: "dark", icon: Moon, label: t({ en: "Dark", uz: "Qorong'i", ru: "Тёмная" }) },
+    { key: "system", icon: Monitor, label: t({ en: "System", uz: "Tizim", ru: "Системная" }) },
   ];
   return (
     <div className="flex items-center gap-0.5 rounded-full bg-default p-0.5">
@@ -58,6 +60,7 @@ function ThemeSwitch({ mode, onChange }: { mode: ThemeMode; onChange: (m: ThemeM
 }
 
 function SideNav({ query, onNavigate }: { query: string; onNavigate?: () => void }) {
+  const t = useT();
   const q = query.trim().toLowerCase();
   const link = ({ isActive }: { isActive: boolean }) =>
     cn(
@@ -69,10 +72,10 @@ function SideNav({ query, onNavigate }: { query: string; onNavigate?: () => void
     <nav className="space-y-6">
       {!q && (
         <div>
-          <p className="mb-1 px-3 text-sm font-medium text-foreground">Boshlash</p>
-          <NavLink to="/" end className={link} onClick={onNavigate}>O'rnatish va sozlash</NavLink>
-          <NavLink to="/colors" className={link} onClick={onNavigate}>Ranglar va materiallar</NavLink>
-          <NavLink to="/dashboard" className={link} onClick={onNavigate}>Dashboard namunasi</NavLink>
+          <p className="mb-1 px-3 text-sm font-medium text-foreground">{t({ en: "Getting started", uz: "Boshlash", ru: "Начало работы" })}</p>
+          <NavLink to="/" end className={link} onClick={onNavigate}>{t({ en: "Installation & setup", uz: "O'rnatish va sozlash", ru: "Установка и настройка" })}</NavLink>
+          <NavLink to="/colors" className={link} onClick={onNavigate}>{t({ en: "Colors & materials", uz: "Ranglar va materiallar", ru: "Цвета и материалы" })}</NavLink>
+          <NavLink to="/dashboard" className={link} onClick={onNavigate}>{t({ en: "Dashboard template", uz: "Dashboard namunasi", ru: "Шаблон дашборда" })}</NavLink>
         </div>
       )}
       {GROUPS.map((g) => {
@@ -80,7 +83,7 @@ function SideNav({ query, onNavigate }: { query: string; onNavigate?: () => void
         if (!items.length) return null;
         return (
           <div key={g}>
-            <p className="mb-1 px-3 text-sm font-medium text-foreground">{g}</p>
+            <p className="mb-1 px-3 text-sm font-medium text-foreground">{t(GROUP_LABELS[g])}</p>
             <ul className="space-y-0.5">
               {items.map((e) => (
                 <li key={e.slug}>
@@ -98,6 +101,7 @@ function SideNav({ query, onNavigate }: { query: string; onNavigate?: () => void
 }
 
 function SearchField({ value, onChange, inputRef, className = "" }: { value: string; onChange: (v: string) => void; inputRef?: React.Ref<HTMLInputElement>; className?: string }) {
+  const t = useT();
   return (
     <label className={cn("flex h-9 items-center gap-2 rounded-full bg-field px-3.5 text-sm shadow-field focus-within:ring-2 focus-within:ring-focus/40", className)}>
       <Search size={15} className="text-muted" />
@@ -105,7 +109,7 @@ function SearchField({ value, onChange, inputRef, className = "" }: { value: str
         ref={inputRef}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        placeholder="Search"
+        placeholder={t({ en: "Search", uz: "Qidirish", ru: "Поиск" })}
         className="min-w-0 flex-1 bg-transparent text-foreground outline-none placeholder:text-field-placeholder"
       />
       <span className="flex items-center gap-1 text-[11px] text-muted">
@@ -117,8 +121,13 @@ function SearchField({ value, onChange, inputRef, className = "" }: { value: str
 }
 
 export default function DocsLayout() {
+  const [lang, setLang] = useLang();
   const [mode, setMode] = useTheme();
-  const [designStyle, setDesignStyle] = useDesignStyle();
+  // Docs pages always use the default frosted material; the Solid / Frosted / Liquid
+  // switch lives only in the dashboard templates.
+  useEffect(() => {
+    document.documentElement.dataset.glass = "frosted";
+  }, []);
   const [query, setQuery] = useState("");
   const [mobileOpen, setMobileOpen] = useState(false);
   const searchRef = useRef<HTMLInputElement>(null);
@@ -157,9 +166,9 @@ export default function DocsLayout() {
             <SearchField value={query} onChange={setQuery} inputRef={searchRef} className="w-full max-w-md" />
           </div>
           <NavLink to="/dashboard" className="hidden sm:inline-flex h-9 items-center rounded-full px-3.5 text-sm font-medium text-muted hover:text-foreground transition-colors">Dashboard</NavLink>
-          <NavLink to="/pricing" className="hidden sm:inline-flex h-9 items-center rounded-full px-3.5 text-sm font-medium text-muted hover:text-foreground transition-colors">Narx</NavLink>
+          <Donate />
           <div className="ml-auto md:ml-0 flex items-center gap-2">
-            <DesignStyleSwitch style={designStyle} onChange={setDesignStyle} />
+            <LanguageSwitch lang={lang} onChange={setLang} />
             <ThemeSwitch mode={mode} onChange={setMode} />
           </div>
         </div>

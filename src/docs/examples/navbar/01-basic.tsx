@@ -12,18 +12,18 @@ export default function NavbarBasic() {
           Acme
         </NavbarBrand>
         <NavbarContent justify="center">
-          <NavbarItem isActive>Mahsulotlar</NavbarItem>
-          <NavbarItem>Narxlar</NavbarItem>
+          <NavbarItem isActive>Products</NavbarItem>
+          <NavbarItem>Pricing</NavbarItem>
           <NavbarItem>Blog</NavbarItem>
         </NavbarContent>
         <NavbarContent justify="end" isAlwaysVisible>
           <NavbarItem>
             <Button size="sm" variant="ghost">
-              Kirish
+              Log in
             </Button>
           </NavbarItem>
           <NavbarItem>
-            <Button size="sm">Boshlash</Button>
+            <Button size="sm">Get started</Button>
           </NavbarItem>
         </NavbarContent>
       </Navbar>

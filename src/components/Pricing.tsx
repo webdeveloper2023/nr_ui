@@ -2,23 +2,26 @@ import type { ReactNode } from "react";
 import { Check, X } from "lucide-react";
 import { Button } from "./Button";
 import { cn } from "../lib/cn";
+import { useLocale } from "./locale";
 
 export type BillingPeriod = "monthly" | "yearly";
 
 export interface BillingToggleProps {
-  /** Tanlangan davr */
+  /** Selected period */
   value: BillingPeriod;
-  /** Davr o'zgarganda chaqiriladi */
+  /** Called when the billing period changes */
   onChange: (value: BillingPeriod) => void;
-  /** Yillik variant yonidagi chegirma belgisi */
+  /** Discount badge next to the yearly option */
   yearlyBadge?: string;
-  /** Tugma matnlari */
+  /** Button labels */
   labels?: { monthly: string; yearly: string };
-  /** Qo'shimcha CSS klasslar */
+  /** Extra CSS classes */
   className?: string;
 }
 
-export function BillingToggle({ value, onChange, yearlyBadge = "-20%", labels = { monthly: "Monthly", yearly: "Yearly" }, className = "" }: BillingToggleProps) {
+export function BillingToggle({ value, onChange, yearlyBadge = "-20%", labels: labelsProp, className = "" }: BillingToggleProps) {
+  const t = useLocale();
+  const labels = labelsProp ?? t.billing;
   const options: BillingPeriod[] = ["monthly", "yearly"];
   return (
     <div role="radiogroup" className={cn("relative inline-flex p-1 rounded-full bg-default", className)}>
@@ -54,37 +57,37 @@ export function BillingToggle({ value, onChange, yearlyBadge = "-20%", labels = 
 export type PricingFeature = string | { label: string; included: boolean };
 
 export interface PricingCardProps {
-  /** Tarif nomi */
+  /** Plan name */
   name: string;
-  /** Tarif tavsifi */
+  /** Plan description */
   description?: string;
-  /** Narx: { monthly, yearly } yoki matn (masalan, "Custom") */
+  /** Price: { monthly, yearly } or text (e.g. "Custom") */
   price: { monthly: number; yearly: number } | string;
-  /** Joriy to'lov davri */
+  /** Current billing period */
   period: BillingPeriod;
-  /** Valyuta belgisi */
+  /** Currency symbol */
   currency?: string;
-  /** Imkoniyatlar ro'yxati (string yoki { label, included }) */
+  /** Feature list (string or { label, included }) */
   features: PricingFeature[];
-  /** Imkoniyatlar ro'yxati sarlavhasi */
+  /** Feature list heading */
   featuresTitle?: string;
-  /** Asosiy tugma matni */
+  /** Primary button text */
   ctaLabel?: string;
-  /** Tarif tugmasi bosilganda chaqiriladi */
+  /** Called when the plan button is pressed */
   onSelect?: () => void;
-  /** Mashhur tarif sifatida ajratib ko'rsatadi (accent ramka + belgi) */
+  /** Highlights the plan as popular (accent border + badge) */
   isPopular?: boolean;
-  /** Mashhur tarif belgisi matni */
+  /** Text of the popular plan badge */
   popularLabel?: string;
-  /** Ko'rinish: default (yengil gradient), inverse (teskari, qora) yoki gradient (accent → indigo) */
+  /** Style: default (soft gradient), inverse (dark) or gradient (accent → indigo) */
   variant?: "default" | "inverse" | "gradient";
-  /** Kartani shisha (glass) qiladi — rangli fon ustida */
+  /** Makes the card glass — for colorful backgrounds */
   isBlurred?: boolean;
-  /** Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi */
+  /** Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass) */
   material?: "frosted" | "liquid";
-  /** Sarlavha yonidagi ikonka */
+  /** Icon next to the title */
   icon?: ReactNode;
-  /** Qo'shimcha CSS klasslar */
+  /** Extra CSS classes */
   className?: string;
 }
 
@@ -96,16 +99,17 @@ export function PricingCard({
   currency = "$",
   features,
   featuresTitle,
-  ctaLabel = "Get started",
+  ctaLabel,
   onSelect,
   isPopular = false,
-  popularLabel = "Most popular",
+  popularLabel,
   variant = "default",
   isBlurred = false,
   material,
   icon,
   className = "",
 }: PricingCardProps) {
+  const t = useLocale();
   const amount = typeof price === "string" ? price : price[period];
   const isInverse = variant === "inverse";
   const isGradient = variant === "gradient";
@@ -147,7 +151,7 @@ export function PricingCard({
               tone("bg-accent-soft text-accent-soft-foreground", "bg-background/10 text-background", "bg-white/20 text-white")
             )}
           >
-            {popularLabel}
+            {popularLabel ?? t.pricing.popular}
           </span>
         )}
       </div>
@@ -173,7 +177,7 @@ export function PricingCard({
         fullWidth
         onClick={onSelect}
       >
-        {ctaLabel}
+        {ctaLabel ?? t.pricing.cta}
       </Button>
 
       <div className={cn("my-6 h-px", tone("bg-separator", "bg-background/15", "bg-white/20"))} />

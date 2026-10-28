@@ -2,9 +2,9 @@ import { useState } from "react";
 import { Switch } from "nr-ui-kit";
 
 const settings = [
-  { key: "email", title: "Email xabarlar", description: "Hisobingizdagi faollik haqida" },
-  { key: "push", title: "Push bildirishnomalar", description: "Telefon va brauzerda" },
-  { key: "weekly", title: "Haftalik hisobot", description: "Har dushanba ertalab" },
+  { key: "email", title: "Email notifications", description: "About activity on your account" },
+  { key: "push", title: "Push notifications", description: "On your phone and browser" },
+  { key: "weekly", title: "Weekly report", description: "Every Monday morning" },
 ];
 
 export default function SwitchSettingsList() {

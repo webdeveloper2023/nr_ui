@@ -1,9 +1,9 @@
 import { Chip, Table } from "nr-ui-kit";
 
 const rows = [
-  { id: "1", name: "Laptop Pro 14", status: "Yetkazildi", total: "$1,999" },
-  { id: "2", name: "Phone X Pro", status: "Yo'lda", total: "$1,099" },
-  { id: "3", name: "Wireless earbuds", status: "Yetkazildi", total: "$249" },
+  { id: "1", name: "Laptop Pro 14", status: "Delivered", total: "$1,999" },
+  { id: "2", name: "Phone X Pro", status: "In transit", total: "$1,099" },
+  { id: "3", name: "Wireless earbuds", status: "Delivered", total: "$249" },
 ];
 
 export default function TableGlass() {
@@ -14,18 +14,18 @@ export default function TableGlass() {
       <div aria-hidden className="absolute -bottom-16 left-1/3 size-56 rounded-full bg-mint opacity-60 blur-3xl" />
       <div className="relative">
         <Table
-          aria-label="Buyurtmalar"
+          aria-label="Orders"
           isBlurred
           keyField="id"
           rows={rows}
           columns={[
-            { key: "name", label: "Mahsulot" },
+            { key: "name", label: "Product" },
             {
               key: "status",
-              label: "Holat",
-              render: (v) => <Chip size="sm" color={v === "Yetkazildi" ? "success" : "warning"}>{String(v)}</Chip>,
+              label: "Status",
+              render: (v) => <Chip size="sm" color={v === "Delivered" ? "success" : "warning"}>{String(v)}</Chip>,
             },
-            { key: "total", label: "Summa", align: "end" },
+            { key: "total", label: "Total", align: "end" },
           ]}
         />
       </div>

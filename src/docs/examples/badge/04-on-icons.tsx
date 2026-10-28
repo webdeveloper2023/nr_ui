@@ -5,17 +5,17 @@ export default function BadgeOnIcons() {
   return (
     <div className="flex items-center justify-center gap-6">
       <Badge content="4" shape="rectangle">
-        <Button isIconOnly variant="tertiary" aria-label="Bildirishnomalar">
+        <Button isIconOnly variant="tertiary" aria-label="Notifications">
           <Bell size={18} />
         </Button>
       </Badge>
       <Badge content="12" color="accent" shape="rectangle">
-        <Button isIconOnly variant="tertiary" aria-label="Xabarlar">
+        <Button isIconOnly variant="tertiary" aria-label="Messages">
           <MessageCircle size={18} />
         </Button>
       </Badge>
       <Badge isDot shape="rectangle">
-        <Button isIconOnly variant="tertiary" aria-label="Savat">
+        <Button isIconOnly variant="tertiary" aria-label="Cart">
           <ShoppingCart size={18} />
         </Button>
       </Badge>

@@ -1,10 +1,10 @@
 import { Tabs } from "nr-ui-kit";
 
 const tabs = [
-  { key: "day", title: "Kun" },
-  { key: "week", title: "Hafta" },
-  { key: "month", title: "Oy" },
-  { key: "year", title: "Yil" },
+  { key: "day", title: "Day" },
+  { key: "week", title: "Week" },
+  { key: "month", title: "Month" },
+  { key: "year", title: "Year" },
 ];
 
 export default function TabsGlass() {
@@ -15,7 +15,7 @@ export default function TabsGlass() {
       <div aria-hidden className="absolute -bottom-16 left-1/3 size-56 rounded-full bg-mint opacity-60 blur-3xl" />
       <div className="relative">
         <Tabs tabs={tabs} isBlurred defaultSelectedKey="week">
-          {(key) => <p className="pt-3 text-center text-sm text-foreground/80">{tabs.find((t) => t.key === key)?.title} bo'yicha hisobot</p>}
+          {(key) => <p className="pt-3 text-center text-sm text-foreground/80">{tabs.find((t) => t.key === key)?.title} report</p>}
         </Tabs>
       </div>
     </div>

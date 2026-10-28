@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Rating } from "nr-ui-kit";
 
-const labels = ["Baholanmagan", "Yomon", "O'rtacha", "Yaxshi", "Juda yaxshi", "A'lo"];
+const labels = ["Not rated", "Poor", "Fair", "Good", "Very good", "Excellent"];
 
 export default function RatingControlled() {
   const [value, setValue] = useState(3);

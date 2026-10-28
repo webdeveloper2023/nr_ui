@@ -23,17 +23,17 @@ export default function ModalGlassAndSolid() {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader>{mode === "solid" ? "To'q oyna" : "Shisha oyna"}</ModalHeader>
+              <ModalHeader>{mode === "solid" ? "Solid dialog" : "Glass dialog"}</ModalHeader>
               <ModalBody>
                 <p className="text-sm text-muted">
                   {mode === "solid"
-                    ? "isBlurred={false} — oddiy to'q fon."
-                    : "Oyna orqasidagi sahifa xira ko'rinadi — Vivid sheet uslubi."}
+                    ? "isBlurred={false} — a plain solid background."
+                    : "The page behind the dialog is blurred — sheet style."}
                 </p>
               </ModalBody>
               <ModalFooter>
-                <Button variant="tertiary" onClick={onClose}>Bekor qilish</Button>
-                <Button onClick={onClose}>Davom etish</Button>
+                <Button variant="tertiary" onClick={onClose}>Cancel</Button>
+                <Button onClick={onClose}>Continue</Button>
               </ModalFooter>
             </>
           )}

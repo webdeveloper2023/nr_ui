@@ -7,15 +7,15 @@ type Message = { role: "user" | "assistant"; text: string };
 export default function ChatWindow() {
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: "user", text: "Dashboard uchun qaysi komponentlar kerak?" },
-    { role: "assistant", text: "Sidebar, StatCard (KPI), Table va Pagination yetarli. Yuqoriga Navbar qo'shsangiz, to'liq ilova ko'rinishi hosil bo'ladi." },
+    { role: "user", text: "Which components do I need for a dashboard?" },
+    { role: "assistant", text: "Sidebar, StatCard (KPIs), Table and Pagination are enough. Add a Navbar on top and it looks like a complete app." },
   ]);
 
   const send = (text: string) => {
     setMessages((m) => [...m, { role: "user", text }]);
     setLoading(true);
     setTimeout(() => {
-      setMessages((m) => [...m, { role: "assistant", text: `"${text}" — yaxshi savol! Bu demo javob, haqiqiy ilovada API'dan keladi.` }]);
+      setMessages((m) => [...m, { role: "assistant", text: `"${text}" — great question! This is a demo reply; in a real app it comes from your API.` }]);
       setLoading(false);
     }, 1400);
   };
@@ -28,7 +28,7 @@ export default function ChatWindow() {
       </div>
       <ChatContainer>
         {messages.map((m, i) => (
-          <ChatMessage key={i} role={m.role} onRegenerate={m.role === "assistant" ? () => send("Qayta yoz") : undefined}>
+          <ChatMessage key={i} role={m.role} onRegenerate={m.role === "assistant" ? () => send("Rewrite that") : undefined}>
             {m.text}
           </ChatMessage>
         ))}

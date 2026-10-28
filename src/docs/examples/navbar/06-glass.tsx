@@ -13,20 +13,20 @@ export default function NavbarGlass() {
           Acme
         </NavbarBrand>
         <NavbarContent justify="center">
-          <NavbarItem variant="pill" isActive>Bosh sahifa</NavbarItem>
-          <NavbarItem variant="pill">Mahsulotlar</NavbarItem>
-          <NavbarItem variant="pill">Narxlar</NavbarItem>
+          <NavbarItem variant="pill" isActive>Home</NavbarItem>
+          <NavbarItem variant="pill">Products</NavbarItem>
+          <NavbarItem variant="pill">Pricing</NavbarItem>
         </NavbarContent>
         <NavbarContent justify="end" isAlwaysVisible>
           <NavbarItem>
-            <Button variant="ghost" isIconOnly size="sm" aria-label="Qidirish"><Search size={16} /></Button>
+            <Button variant="ghost" isIconOnly size="sm" aria-label="Search"><Search size={16} /></Button>
           </NavbarItem>
           <NavbarItem>
             <Avatar size="sm" name="Rafiqjon" />
           </NavbarItem>
         </NavbarContent>
       </Navbar>
-      <p className="relative mt-16 text-center text-sm text-foreground/70">Navbar ostidagi kontent shisha orqali xira ko'rinadi</p>
+      <p className="relative mt-16 text-center text-sm text-foreground/70">Content under the navbar shows blurred through the glass</p>
     </div>
   );
 }

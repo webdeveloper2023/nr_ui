@@ -10,8 +10,8 @@ const link = (label: string) => (
 export default function StatCardWithFooter() {
   return (
     <div className="grid w-full max-w-2xl gap-4 sm:grid-cols-2">
-      <StatCard title="Faol obunalar" value="2,350" change={18} icon={<CreditCard />} footer={link("Obunalarni ko'rish")} />
-      <StatCard title="Server uptime" value="99.98%" change={0} color="success" icon={<Server />} footer={link("Status sahifasi")} />
+      <StatCard title="Active subscriptions" value="2,350" change={18} icon={<CreditCard />} footer={link("View subscriptions")} />
+      <StatCard title="Server uptime" value="99.98%" change={0} color="success" icon={<Server />} footer={link("Status page")} />
     </div>
   );
 }

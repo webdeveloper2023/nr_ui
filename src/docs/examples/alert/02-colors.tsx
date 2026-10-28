@@ -1,11 +1,11 @@
 import { Alert } from "nr-ui-kit";
 
 const items = [
-  { color: "default", title: "Eslatma", description: "Profilingiz 80% to'ldirilgan." },
-  { color: "accent", title: "Ma'lumot", description: "Yakshanba kuni 02:00 da texnik ishlar o'tkaziladi." },
-  { color: "success", title: "Saqlandi", description: "Barcha o'zgarishlar muvaffaqiyatli saqlandi." },
-  { color: "warning", title: "Diqqat", description: "Xotiraning 90% qismi band." },
-  { color: "danger", title: "Xatolik", description: "To'lovni amalga oshirib bo'lmadi. Kartani tekshiring." },
+  { color: "default", title: "Note", description: "Your profile is 80% complete." },
+  { color: "accent", title: "Info", description: "Scheduled maintenance on Sunday at 02:00." },
+  { color: "success", title: "Saved", description: "All changes were saved successfully." },
+  { color: "warning", title: "Heads up", description: "90% of your storage is used." },
+  { color: "danger", title: "Error", description: "The payment could not be processed. Please check your card." },
 ] as const;
 
 export default function AlertColors() {

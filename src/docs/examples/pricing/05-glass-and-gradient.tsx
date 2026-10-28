@@ -12,34 +12,34 @@ export default function PricingGlassAndGradient() {
         isBlurred
         name="Starter"
         icon={<Sparkles />}
-        description="Shaxsiy loyihalar"
+        description="Personal projects"
         price={{ monthly: 0, yearly: 0 }}
         period="monthly"
-        features={["3 ta loyiha", "1 GB xotira", { label: "Analitika", included: false }]}
-        ctaLabel="Bepul boshlash"
+        features={["3 projects", "1 GB storage", { label: "Analytics", included: false }]}
+        ctaLabel="Start for free"
       />
       <PricingCard
         className="relative"
         variant="gradient"
         isPopular
-        popularLabel="Mashhur"
+        popularLabel="Popular"
         name="Pro"
         icon={<Rocket />}
-        description="O'sayotgan jamoalar"
+        description="Growing teams"
         price={{ monthly: 29, yearly: 279 }}
         period="monthly"
-        features={["Cheksiz loyiha", "100 GB xotira", "Analitika", "Prioritet yordam"]}
+        features={["Unlimited projects", "100 GB storage", "Analytics", "Priority support"]}
       />
       <PricingCard
         className="relative"
         isBlurred
         name="Enterprise"
         icon={<Building2 />}
-        description="Katta kompaniyalar"
+        description="Large companies"
         price="Custom"
         period="monthly"
-        features={["SSO & SAML", "SLA 99.99%", "Shaxsiy menejer"]}
-        ctaLabel="Bog'lanish"
+        features={["SSO & SAML", "SLA 99.99%", "Dedicated manager"]}
+        ctaLabel="Contact sales"
       />
     </div>
   );

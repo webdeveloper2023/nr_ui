@@ -1,10 +1,10 @@
 import { Card, Kbd, type KbdKey } from "nr-ui-kit";
 
 const shortcuts: { label: string; keys: KbdKey[]; key: string }[] = [
-  { label: "Qidirish", keys: ["command"], key: "K" },
-  { label: "Yangi fayl", keys: ["command"], key: "N" },
-  { label: "Saqlash", keys: ["command"], key: "S" },
-  { label: "Buyruqlar paneli", keys: ["command", "shift"], key: "P" },
+  { label: "Search", keys: ["command"], key: "K" },
+  { label: "New file", keys: ["command"], key: "N" },
+  { label: "Save", keys: ["command"], key: "S" },
+  { label: "Command palette", keys: ["command", "shift"], key: "P" },
 ];
 
 export default function KbdShortcutList() {

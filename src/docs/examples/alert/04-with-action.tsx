@@ -8,7 +8,7 @@ export default function AlertWithAction() {
     return (
       <div className="flex justify-center">
         <Button variant="tertiary" onClick={() => setVisible(true)}>
-          Alertni qaytarish
+          Show alert again
         </Button>
       </div>
     );
@@ -19,11 +19,11 @@ export default function AlertWithAction() {
       <Alert
         color="warning"
         variant="soft"
-        title="To'lov kartasi muddati tugayapti"
-        description="4242 bilan tugaydigan Visa kartangiz 28-mart kuni tugaydi. Pro obunani to'xtatmaslik uchun ma'lumotni yangilang."
+        title="Your payment card is expiring"
+        description="Your Visa ending in 4242 expires on March 28. Update your details to keep your Pro subscription active."
         action={
           <Button size="sm" variant="tertiary">
-            Yangilash
+            Update
           </Button>
         }
         onClose={() => setVisible(false)}

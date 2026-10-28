@@ -1,0 +1,192 @@
+import { createContext, useContext } from "react";
+
+/** Built-in languages for the library's default texts and aria-labels. */
+export type NRLocale = "en" | "uz" | "ru";
+
+/** Every user-visible default string and screen-reader label used inside the library. */
+export interface NRMessages {
+  common: {
+    close: string;
+    clear: string;
+    loading: string;
+    avatar: string;
+  };
+  select: {
+    placeholder: string;
+    empty: string;
+  };
+  phoneInput: {
+    incomplete: string;
+    countryLabel: string;
+  };
+  chat: {
+    placeholder: string;
+    typing: string;
+    copy: string;
+    regenerate: string;
+    like: string;
+    dislike: string;
+    attach: string;
+    send: string;
+    stop: string;
+  };
+  fileUpload: {
+    label: string;
+    description: (maxSizeMB: number) => string;
+    tooLarge: (fileNames: string, maxSizeMB: number) => string;
+    remove: (fileName: string) => string;
+  };
+  pagination: {
+    label: string;
+    previous: string;
+    next: string;
+  };
+  table: {
+    empty: string;
+    selectAll: string;
+    selectRow: string;
+  };
+  sidebar: {
+    expand: string;
+    collapse: string;
+  };
+  navbar: {
+    toggleMenu: string;
+  };
+  billing: {
+    monthly: string;
+    yearly: string;
+  };
+  pricing: {
+    popular: string;
+    cta: string;
+  };
+  rating: {
+    star: (n: number) => string;
+  };
+}
+
+const ruPlural = (n: number, one: string, few: string, many: string) => {
+  const m10 = n % 10;
+  const m100 = n % 100;
+  if (m10 === 1 && m100 !== 11) return one;
+  if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return few;
+  return many;
+};
+
+export const NR_MESSAGES: Record<NRLocale, NRMessages> = {
+  en: {
+    common: { close: "Close", clear: "Clear", loading: "Loading", avatar: "Avatar" },
+    select: { placeholder: "Select…", empty: "No options" },
+    phoneInput: { incomplete: "Phone number is incomplete", countryLabel: "Country code" },
+    chat: {
+      placeholder: "Ask anything…",
+      typing: "Typing",
+      copy: "Copy",
+      regenerate: "Regenerate",
+      like: "Like",
+      dislike: "Dislike",
+      attach: "Attach",
+      send: "Send",
+      stop: "Stop",
+    },
+    fileUpload: {
+      label: "Click to upload or drag and drop",
+      description: (mb) => `Max size: ${mb} MB`,
+      tooLarge: (names, mb) => `${names} — larger than ${mb} MB`,
+      remove: (name) => `Remove ${name}`,
+    },
+    pagination: { label: "Pagination", previous: "Previous page", next: "Next page" },
+    table: { empty: "No rows to display.", selectAll: "Select all rows", selectRow: "Select row" },
+    sidebar: { expand: "Expand sidebar", collapse: "Collapse sidebar" },
+    navbar: { toggleMenu: "Toggle menu" },
+    billing: { monthly: "Monthly", yearly: "Yearly" },
+    pricing: { popular: "Most popular", cta: "Get started" },
+    rating: { star: (n) => (n === 1 ? "1 star" : `${n} stars`) },
+  },
+  uz: {
+    common: { close: "Yopish", clear: "Tozalash", loading: "Yuklanmoqda", avatar: "Avatar" },
+    select: { placeholder: "Tanlang", empty: "Variantlar yo'q" },
+    phoneInput: { incomplete: "Telefon raqam to'liq kiritilmagan", countryLabel: "Davlat kodi" },
+    chat: {
+      placeholder: "Nimani bilmoqchisiz?",
+      typing: "Yozmoqda",
+      copy: "Nusxa olish",
+      regenerate: "Qayta yaratish",
+      like: "Yoqdi",
+      dislike: "Yoqmadi",
+      attach: "Fayl biriktirish",
+      send: "Yuborish",
+      stop: "To'xtatish",
+    },
+    fileUpload: {
+      label: "Yuklash uchun bosing yoki faylni shu yerga tashlang",
+      description: (mb) => `Maksimal hajm: ${mb} MB`,
+      tooLarge: (names, mb) => `${names} — ${mb} MB dan katta`,
+      remove: (name) => `${name} faylini o'chirish`,
+    },
+    pagination: { label: "Sahifalar", previous: "Oldingi sahifa", next: "Keyingi sahifa" },
+    table: { empty: "Ko'rsatish uchun ma'lumot yo'q.", selectAll: "Barcha qatorlarni tanlash", selectRow: "Qatorni tanlash" },
+    sidebar: { expand: "Yon panelni ochish", collapse: "Yon panelni yig'ish" },
+    navbar: { toggleMenu: "Menyuni ochish/yopish" },
+    billing: { monthly: "Oylik", yearly: "Yillik" },
+    pricing: { popular: "Eng mashhur", cta: "Boshlash" },
+    rating: { star: (n) => `${n} yulduz` },
+  },
+  ru: {
+    common: { close: "Закрыть", clear: "Очистить", loading: "Загрузка", avatar: "Аватар" },
+    select: { placeholder: "Выберите…", empty: "Нет вариантов" },
+    phoneInput: { incomplete: "Номер телефона введён не полностью", countryLabel: "Код страны" },
+    chat: {
+      placeholder: "Спросите что угодно…",
+      typing: "Печатает",
+      copy: "Копировать",
+      regenerate: "Сгенерировать заново",
+      like: "Нравится",
+      dislike: "Не нравится",
+      attach: "Прикрепить файл",
+      send: "Отправить",
+      stop: "Остановить",
+    },
+    fileUpload: {
+      label: "Нажмите для загрузки или перетащите файл сюда",
+      description: (mb) => `Максимальный размер: ${mb} МБ`,
+      tooLarge: (names, mb) => `${names} — больше ${mb} МБ`,
+      remove: (name) => `Удалить ${name}`,
+    },
+    pagination: { label: "Пагинация", previous: "Предыдущая страница", next: "Следующая страница" },
+    table: { empty: "Нет данных для отображения.", selectAll: "Выбрать все строки", selectRow: "Выбрать строку" },
+    sidebar: { expand: "Развернуть боковую панель", collapse: "Свернуть боковую панель" },
+    navbar: { toggleMenu: "Открыть/закрыть меню" },
+    billing: { monthly: "Ежемесячно", yearly: "Ежегодно" },
+    pricing: { popular: "Популярный", cta: "Начать" },
+    rating: { star: (n) => `${n} ${ruPlural(n, "звезда", "звезды", "звёзд")}` },
+  },
+};
+
+export type DeepPartial<T> = {
+  [K in keyof T]?: T[K] extends (...args: never[]) => unknown ? T[K] : T[K] extends object ? DeepPartial<T[K]> : T[K];
+};
+
+export interface LocaleContextValue {
+  locale: NRLocale;
+  messages: NRMessages;
+}
+
+export const LocaleContext = createContext<LocaleContextValue>({ locale: "en", messages: NR_MESSAGES.en });
+
+/** Merge user overrides into the built-in messages of a locale. */
+export function mergeMessages(base: NRMessages, overrides?: DeepPartial<NRMessages>): NRMessages {
+  if (!overrides) return base;
+  const out = { ...base } as Record<string, Record<string, unknown>>;
+  for (const [section, values] of Object.entries(overrides)) {
+    if (values) out[section] = { ...out[section], ...(values as Record<string, unknown>) };
+  }
+  return out as unknown as NRMessages;
+}
+
+/** Current locale messages (English when no LocaleProvider is mounted). */
+export function useLocale(): NRMessages & { locale: NRLocale } {
+  const { locale, messages } = useContext(LocaleContext);
+  return { ...messages, locale };
+}

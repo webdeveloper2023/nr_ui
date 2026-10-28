@@ -4,14 +4,14 @@ export default function AccordionCompactDisabled() {
   return (
     <div className="mx-auto max-w-md">
       <Accordion variant="surface" isCompact disabledKeys={new Set(["3"])}>
-        <AccordionItem itemKey="1" title="Yetkazib berish">
-          Toshkent bo'ylab 1 kunda, viloyatlarga 2–3 kunda.
+        <AccordionItem itemKey="1" title="Shipping">
+          1 day within Tashkent, 2–3 days to other regions.
         </AccordionItem>
-        <AccordionItem itemKey="2" title="Qaytarish">
-          14 kun ichida sababsiz qaytarish mumkin.
+        <AccordionItem itemKey="2" title="Returns">
+          Return any item within 14 days, no questions asked.
         </AccordionItem>
-        <AccordionItem itemKey="3" title="Kafolat (tez orada)">
-          Bu bo'lim hali faol emas.
+        <AccordionItem itemKey="3" title="Warranty (coming soon)">
+          This section isn't available yet.
         </AccordionItem>
       </Accordion>
     </div>

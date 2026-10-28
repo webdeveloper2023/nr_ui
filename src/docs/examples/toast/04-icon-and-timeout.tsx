@@ -10,21 +10,21 @@ export default function ToastIconAndTimeout() {
         variant="tertiary"
         onClick={() =>
           addToast({
-            title: "Zaxira nusxa yaratildi",
-            description: "Bulutga 2 soniyada yuklandi.",
+            title: "Backup created",
+            description: "Uploaded to the cloud in 2 seconds.",
             icon: <CloudUpload size={16} />,
             color: "accent",
             timeout: 2000,
           })
         }
       >
-        Maxsus ikonka (2s)
+        Custom icon (2s)
       </Button>
-      <Button variant="tertiary" onClick={() => addToast({ title: "Ikonkasiz toast", hideIcon: true, timeout: 8000 })}>
-        Ikonkasiz (8s)
+      <Button variant="tertiary" onClick={() => addToast({ title: "Toast without an icon", hideIcon: true, timeout: 8000 })}>
+        No icon (8s)
       </Button>
       <Button variant="ghost" onClick={closeAll}>
-        Hammasini yopish
+        Close all
       </Button>
     </div>
   );

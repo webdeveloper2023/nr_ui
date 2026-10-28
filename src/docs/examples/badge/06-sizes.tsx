@@ -8,7 +8,7 @@ export default function BadgeSizes() {
     <div className="flex flex-wrap items-center gap-8">
       {sizes.map((size) => (
         <Badge key={size} content="5" color="danger" size={size}>
-          <Button isIconOnly variant="secondary" aria-label={`Bildirishnoma (${size})`}>
+          <Button isIconOnly variant="secondary" aria-label={`Notifications (${size})`}>
             <Bell size={18} />
           </Button>
         </Badge>

@@ -40,37 +40,37 @@ const uncheckedMap: Record<RadioVariant, string> = {
 
 // ─── RadioGroup ─────────────────────────────
 export interface RadioGroupProps {
-  /** Guruh sarlavhasi */
+  /** Group label */
   label?: ReactNode;
-  /** Maydon ostidagi yordamchi matn */
+  /** Helper text below the field */
   description?: ReactNode;
-  /** Xato holatida ko'rsatiladigan matn */
+  /** Text shown in the invalid state */
   errorMessage?: ReactNode;
-  /** Elementlar yo'nalishi */
+  /** Items orientation */
   orientation?: "vertical" | "horizontal";
-  /** Tanlangan qiymat (controlled) */
+  /** Selected value (controlled) */
   value?: string;
-  /** Boshlang'ich qiymat (uncontrolled) */
+  /** Initial value (uncontrolled) */
   defaultValue?: string;
-  /** Qiymat o'zgarganda yangi qiymat bilan chaqiriladi */
+  /** Called with the new value when it changes */
   onValueChange?: (value: string) => void;
-  /** Ko'rinish: primary — oq doiracha soyali, secondary — kulrang (karta ichida) */
+  /** Style: primary — white circle with a shadow, secondary — gray (inside cards) */
   variant?: RadioVariant;
-  /** Tanlangan holat rangi */
+  /** Color of the selected state */
   color?: RadioColor;
-  /** O'lcham */
+  /** Size */
   size?: RadioSize;
-  /** O'chirilgan holat */
+  /** Disabled state */
   isDisabled?: boolean;
-  /** Xato (invalid) holat */
+  /** Invalid state */
   isInvalid?: boolean;
-  /** Majburiy maydon (* belgisi) */
+  /** Required field (shows *) */
   isRequired?: boolean;
-  /** Forma uchun input nomi */
+  /** Input name for forms */
   name?: string;
-  /** Radio elementlari */
+  /** Radio items */
   children?: ReactNode;
-  /** Qo'shimcha CSS klasslar */
+  /** Extra CSS classes */
   className?: string;
 }
 
@@ -138,15 +138,15 @@ RadioGroup.displayName = "RadioGroup";
 
 // ─── Radio ──────────────────────────────────
 export interface RadioProps {
-  /** Variant qiymati */
+  /** Option value */
   value: string;
-  /** Variant ostidagi izoh */
+  /** Description below the option */
   description?: ReactNode;
-  /** O'chirilgan holat */
+  /** Disabled state */
   isDisabled?: boolean;
-  /** Label matni */
+  /** Label text */
   children?: ReactNode;
-  /** Qo'shimcha CSS klasslar */
+  /** Extra CSS classes */
   className?: string;
 }
 

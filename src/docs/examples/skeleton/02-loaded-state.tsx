@@ -15,12 +15,12 @@ export default function SkeletonLoaded() {
             <p className="text-sm font-medium text-foreground">Rafiqjon Nazirov</p>
           </Skeleton>
           <Skeleton isLoaded={loaded} className="h-3 w-4/5 rounded-full">
-            <p className="text-xs text-muted">Frontend developer · Toshkent</p>
+            <p className="text-xs text-muted">Frontend developer · Tashkent</p>
           </Skeleton>
         </div>
       </Card>
       <Button size="sm" variant="tertiary" onClick={() => setLoaded(!loaded)}>
-        {loaded ? "Skeleton'ni ko'rsatish" : "Yuklash"}
+        {loaded ? "Show skeleton" : "Load"}
       </Button>
     </div>
   );

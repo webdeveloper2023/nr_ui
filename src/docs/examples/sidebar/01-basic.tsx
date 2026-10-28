@@ -20,18 +20,18 @@ export default function SidebarBasic() {
         }
       >
         <SidebarSection>
-          <SidebarItem itemKey="home" icon={<Home size={17} />} title="Bosh sahifa" />
-          <SidebarItem itemKey="inbox" icon={<Inbox size={17} />} title="Xabarlar" endContent={<span className="text-xs text-muted">12</span>} />
-          <SidebarItem itemKey="analytics" icon={<BarChart3 size={17} />} title="Analitika" />
+          <SidebarItem itemKey="home" icon={<Home size={17} />} title="Home" />
+          <SidebarItem itemKey="inbox" icon={<Inbox size={17} />} title="Inbox" endContent={<span className="text-xs text-muted">12</span>} />
+          <SidebarItem itemKey="analytics" icon={<BarChart3 size={17} />} title="Analytics" />
         </SidebarSection>
-        <SidebarSection title="Ish joyi">
-          <SidebarItem itemKey="team" icon={<Users size={17} />} title="Jamoa" />
-          <SidebarItem itemKey="files" icon={<FolderOpen size={17} />} title="Fayllar" />
-          <SidebarItem itemKey="settings" icon={<Settings size={17} />} title="Sozlamalar" />
+        <SidebarSection title="Workspace">
+          <SidebarItem itemKey="team" icon={<Users size={17} />} title="Team" />
+          <SidebarItem itemKey="files" icon={<FolderOpen size={17} />} title="Files" />
+          <SidebarItem itemKey="settings" icon={<Settings size={17} />} title="Settings" />
         </SidebarSection>
       </Sidebar>
       <main className="m-2 ml-0 flex-1 rounded-3xl bg-surface p-6 shadow-surface">
-        <p className="text-sm text-muted">Tanlangan sahifa</p>
+        <p className="text-sm text-muted">Current page</p>
         <p className="mt-1 text-xl font-semibold text-foreground">{selected}</p>
       </main>
     </div>

@@ -1,29 +1,30 @@
 import { forwardRef, type HTMLAttributes, type ReactNode } from "react";
 import { cn } from "../lib/cn";
+import { useLocale } from "./locale";
 
 type AlertColor = "default" | "accent" | "success" | "warning" | "danger";
 type AlertVariant = "default" | "soft" | "flat" | "glass";
 
 export interface AlertProps extends Omit<HTMLAttributes<HTMLDivElement>, "title" | "color"> {
-  /** Holat rangi (ikonka va fon tusi) */
+  /** Status color (icon and background tint) */
   color?: AlertColor;
-  /** Ko'rinish: default — surface (yengil gradient), soft — rangli yengil tus, flat — to'liq rangli fon, glass — shisha */
+  /** Style: default — surface (soft gradient), soft — light color tint, flat — solid color, glass */
   variant?: AlertVariant;
-  /** Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi */
+  /** Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass) */
   material?: "frosted" | "liquid";
-  /** Sarlavha */
+  /** Title */
   title?: ReactNode;
-  /** Tavsif matni */
+  /** Description text */
   description?: ReactNode;
-  /** Maxsus ikonka (standart holat ikonkasi o'rniga) */
+  /** Custom icon (replaces the default status icon) */
   icon?: ReactNode;
-  /** Ikonkani yashirish */
+  /** Hides the icon */
   hideIcon?: boolean;
-  /** O'ng tomondagi amal (masalan, tugma) */
+  /** Action on the right (e.g. a button) */
   action?: ReactNode;
-  /** Yopish tugmasi bosilganda chaqiriladi (berilsa X tugmasi ko'rinadi) */
+  /** Called when the close button is pressed (the X shows only when set) */
   onClose?: () => void;
-  /** Qo'shimcha kontent (tavsif ostida) */
+  /** Extra content (below the description) */
   children?: ReactNode;
 }
 
@@ -85,6 +86,7 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(
     },
     ref
   ) => {
+    const t = useLocale();
     const isFlat = variant === "flat";
 
     return (
@@ -128,7 +130,7 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(
           <button
             type="button"
             onClick={onClose}
-            aria-label="Close"
+            aria-label={t.common.close}
             className={cn(
               "-m-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full cursor-pointer",
               "text-muted hover:bg-default hover:text-foreground transition-colors",

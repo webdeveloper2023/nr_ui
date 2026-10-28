@@ -7,7 +7,7 @@ export default function SidebarSurfaceVariant() {
       <Sidebar
         variant="surface"
         defaultSelectedKey="billing"
-        header={<span className="text-sm font-semibold text-foreground">Sozlamalar</span>}
+        header={<span className="text-sm font-semibold text-foreground">Settings</span>}
         footer={
           <div className="flex items-center gap-2.5 overflow-hidden">
             <Avatar name="Rafiqjon Nazirov" size="sm" />
@@ -19,13 +19,13 @@ export default function SidebarSurfaceVariant() {
         }
       >
         <SidebarSection>
-          <SidebarItem itemKey="general" icon={<Home size={17} />} title="Umumiy" />
-          <SidebarItem itemKey="members" icon={<Users size={17} />} title="A'zolar" />
-          <SidebarItem itemKey="billing" icon={<CreditCard size={17} />} title="To'lovlar" />
-          <SidebarItem itemKey="advanced" icon={<Settings size={17} />} title="Kengaytirilgan" />
+          <SidebarItem itemKey="general" icon={<Home size={17} />} title="General" />
+          <SidebarItem itemKey="members" icon={<Users size={17} />} title="Members" />
+          <SidebarItem itemKey="billing" icon={<CreditCard size={17} />} title="Billing" />
+          <SidebarItem itemKey="advanced" icon={<Settings size={17} />} title="Advanced" />
         </SidebarSection>
-        <SidebarSection title="Yordam">
-          <SidebarItem itemKey="support" icon={<LifeBuoy size={17} />} title="Qo'llab-quvvatlash" />
+        <SidebarSection title="Help">
+          <SidebarItem itemKey="support" icon={<LifeBuoy size={17} />} title="Support" />
         </SidebarSection>
       </Sidebar>
     </div>

@@ -5,11 +5,11 @@ export default function PopoverBasic() {
     <div className="flex justify-center">
       <Popover placement="bottom">
         <PopoverTrigger>
-          <Button variant="tertiary">Popoverni ochish</Button>
+          <Button variant="tertiary">Open popover</Button>
         </PopoverTrigger>
         <PopoverContent className="w-64 p-4">
-          <p className="text-sm font-medium text-foreground">Popover sarlavhasi</p>
-          <p className="mt-1 text-sm text-muted">Bosilganda ochiladigan panel. Tashqariga bosing yoki Escape — yopiladi.</p>
+          <p className="text-sm font-medium text-foreground">Popover title</p>
+          <p className="mt-1 text-sm text-muted">A panel that opens on click. Click outside or press Escape to close it.</p>
         </PopoverContent>
       </Popover>
     </div>

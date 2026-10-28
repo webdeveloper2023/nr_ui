@@ -7,8 +7,8 @@ export default function RadioSizes() {
     <div className="flex flex-wrap gap-10">
       {sizes.map((size) => (
         <RadioGroup key={size} label={`size="${size}"`} size={size} defaultValue="a">
-          <Radio value="a">Birinchi</Radio>
-          <Radio value="b">Ikkinchi</Radio>
+          <Radio value="a">First</Radio>
+          <Radio value="b">Second</Radio>
         </RadioGroup>
       ))}
     </div>

@@ -32,9 +32,9 @@ const kbdKeySymbols: Record<KbdKey, string> = {
 };
 
 export interface KbdProps extends HTMLAttributes<HTMLElement> {
-  /** Modifikator tugma(lar): command, shift, ctrl va h.k. */
+  /** Modifier key(s): command, shift, ctrl, etc. */
   keys?: KbdKey | KbdKey[];
-  /** Asosiy tugma matni */
+  /** Primary button text */
   children?: ReactNode;
 }
 

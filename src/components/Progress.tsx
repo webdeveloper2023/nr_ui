@@ -6,33 +6,33 @@ type ProgressSize = "xs" | "sm" | "md" | "lg";
 type ProgressRadius = "none" | "sm" | "md" | "full";
 
 export interface ProgressProps {
-  /** Joriy qiymat */
+  /** Current value */
   value?: number;
-  /** Minimal qiymat */
+  /** Minimum value */
   minValue?: number;
-  /** Maksimal qiymat */
+  /** Maximum value */
   maxValue?: number;
-  /** Rang */
+  /** Color */
   color?: ProgressColor;
-  /** O'lcham (chiziq qalinligi) */
+  /** Size (bar thickness) */
   size?: ProgressSize;
-  /** Burchak yumaloqligi */
+  /** Corner radius */
   radius?: ProgressRadius;
-  /** Qiymat yorlig'ini ko'rsatish */
+  /** Shows the value label */
   showValueLabel?: boolean;
-  /** Qiymat o'rniga ko'rsatiladigan maxsus matn */
+  /** Custom text shown instead of the value */
   valueLabel?: ReactNode;
-  /** Yorliq matni */
+  /** Label text */
   label?: ReactNode;
-  /** Qiymatni formatlash (Intl.NumberFormat) sozlamalari */
+  /** Value formatting options (Intl.NumberFormat) */
   formatOptions?: Intl.NumberFormatOptions;
-  /** Noma'lum davomiylikdagi (cheksiz) animatsiya */
+  /** Indeterminate (endless) animation */
   isIndeterminate?: boolean;
-  /** Chiziqli (striped) animatsiyali to'ldirish */
+  /** Animated striped fill */
   isStriped?: boolean;
-  /** O'chirilgan (faol emas) holat */
+  /** Disabled (inactive) state */
   isDisabled?: boolean;
-  /** Qo'shimcha CSS klasslar */
+  /** Extra CSS classes */
   className?: string;
 }
 
@@ -152,31 +152,31 @@ Progress.displayName = "Progress";
 type CircularSize = "xs" | "sm" | "md" | "lg" | "xl";
 
 export interface CircularProgressProps {
-  /** Joriy qiymat */
+  /** Current value */
   value?: number;
-  /** Minimal qiymat */
+  /** Minimum value */
   minValue?: number;
-  /** Maksimal qiymat */
+  /** Maximum value */
   maxValue?: number;
-  /** Rang */
+  /** Color */
   color?: ProgressColor;
-  /** O'lcham */
+  /** Size */
   size?: CircularSize;
-  /** Doira chizig'i qalinligi */
+  /** Ring stroke width */
   strokeWidth?: number;
-  /** Qiymat yorlig'ini markazda ko'rsatish */
+  /** Shows the value label in the center */
   showValueLabel?: boolean;
-  /** Qiymat o'rniga ko'rsatiladigan maxsus matn */
+  /** Custom text shown instead of the value */
   valueLabel?: ReactNode;
-  /** Pastdagi yorliq matni */
+  /** Label text below */
   label?: ReactNode;
-  /** Qiymatni formatlash (Intl.NumberFormat) sozlamalari */
+  /** Value formatting options (Intl.NumberFormat) */
   formatOptions?: Intl.NumberFormatOptions;
-  /** Noma'lum davomiylikdagi (cheksiz) animatsiya */
+  /** Indeterminate (endless) animation */
   isIndeterminate?: boolean;
-  /** O'chirilgan (faol emas) holat */
+  /** Disabled (inactive) state */
   isDisabled?: boolean;
-  /** Qo'shimcha CSS klasslar */
+  /** Extra CSS classes */
   className?: string;
 }
 

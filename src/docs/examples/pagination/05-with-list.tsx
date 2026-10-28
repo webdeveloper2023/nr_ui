@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Pagination } from "nr-ui-kit";
 
-const items = Array.from({ length: 23 }, (_, i) => `Hisob-faktura #${1040 + i}`);
+const items = Array.from({ length: 23 }, (_, i) => `Invoice #${1040 + i}`);
 const perPage = 5;
 
 export default function PaginationWithList() {
@@ -20,7 +20,7 @@ export default function PaginationWithList() {
         ))}
       </ul>
       <div className="flex items-center justify-between px-3 py-2">
-        <span className="text-xs text-muted">{items.length} ta yozuv</span>
+        <span className="text-xs text-muted">{items.length} records</span>
         <Pagination size="sm" total={total} page={page} onChange={setPage} />
       </div>
     </div>

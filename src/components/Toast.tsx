@@ -9,30 +9,31 @@ import React, {
 } from "react";
 import { createPortal } from "react-dom";
 import { cn } from "../lib/cn";
+import { useLocale } from "./locale";
 
 type ToastColor = "default" | "accent" | "success" | "warning" | "danger";
 type ToastPlacement = "top-left" | "top-center" | "top-right" | "bottom-left" | "bottom-center" | "bottom-right";
 
 export interface ToastOptions {
-  /** Bildirishnoma sarlavhasi */
+  /** Notification title */
   title: ReactNode;
-  /** Qo'shimcha tavsif matni */
+  /** Extra description text */
   description?: ReactNode;
-  /** Holat rangi (ikonka va progress chizig'i) */
+  /** Status color (icon and progress bar) */
   color?: ToastColor;
-  /** Ikonka */
+  /** Icon */
   icon?: ReactNode;
-  /** Avtomatik yopilish vaqti (ms); 0 — yopilmaydi. Default 5000 */
+  /** Auto-dismiss delay in ms; 0 keeps it open. Default 5000 */
   timeout?: number;
-  /** Ikonkani yashirish */
+  /** Hides the icon */
   hideIcon?: boolean;
-  /** Amal tugmasi (masalan, "Qayta urinish") */
+  /** Action button (e.g. "Retry") */
   action?: ReactNode;
-  /** Toast yopilganda chaqiriladi */
+  /** Called when the toast closes */
   onClose?: () => void;
-  /** Shu toast uchun shisha (blur) fon; berilmasa ToastProvider qiymati ishlatiladi */
+  /** Glass (blur) background for this toast; defaults to the ToastProvider value */
   isBlurred?: boolean;
-  /** Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi */
+  /** Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass) */
   material?: "frosted" | "liquid";
 }
 
@@ -48,15 +49,15 @@ interface ToastContextValue {
 }
 
 export interface ToastProviderProps {
-  /** Ekrandagi joylashuv */
+  /** Position on screen */
   placement?: ToastPlacement;
-  /** Bir vaqtda ko'rinadigan maksimal toastlar soni */
+  /** Maximum number of toasts visible at once */
   maxVisible?: number;
-  /** Barcha toastlar uchun shisha (blur) fon (default true) */
+  /** Glass (blur) background for all toasts (default true) */
   isBlurred?: boolean;
-  /** Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi */
+  /** Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass) */
   material?: "frosted" | "liquid";
-  /** Ilova kontenti */
+  /** App content */
   children?: ReactNode;
 }
 
@@ -105,6 +106,7 @@ const ToastCard: React.FC<{ toast: ToastItem; isTop: boolean; fromTop: boolean; 
   material,
   onClose,
 }) => {
+  const t = useLocale();
   const { id, title, description, color = "default", icon, timeout = 5000, hideIcon, action, isClosing } = toast;
   const [entered, setEntered] = useState(false);
   const [paused, setPaused] = useState(false);
@@ -161,7 +163,7 @@ const ToastCard: React.FC<{ toast: ToastItem; isTop: boolean; fromTop: boolean; 
       <button
         type="button"
         onClick={() => onClose(id)}
-        aria-label="Close"
+        aria-label={t.common.close}
         className="absolute top-3 right-3 flex items-center justify-center w-7 h-7 rounded-full text-muted hover:bg-default hover:text-foreground transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-focus"
       >
         <svg width="12" height="12" viewBox="0 0 18 18" fill="none">

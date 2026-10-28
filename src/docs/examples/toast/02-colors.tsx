@@ -1,11 +1,11 @@
 import { Button, useToast } from "nr-ui-kit";
 
 const items = [
-  { color: "default", title: "Eslatma", description: "Uchrashuv 15 daqiqadan keyin." },
-  { color: "accent", title: "Yangilanish", description: "Yangi versiya mavjud." },
-  { color: "success", title: "To'lov qabul qilindi", description: "$29 — Pro tarif." },
-  { color: "warning", title: "Diqqat", description: "Xotira 90% to'ldi." },
-  { color: "danger", title: "Xatolik", description: "Server bilan aloqa yo'q." },
+  { color: "default", title: "Reminder", description: "Your meeting starts in 15 minutes." },
+  { color: "accent", title: "Update", description: "A new version is available." },
+  { color: "success", title: "Payment received", description: "$29 — Pro plan." },
+  { color: "warning", title: "Heads up", description: "Storage is 90% full." },
+  { color: "danger", title: "Error", description: "Lost connection to the server." },
 ] as const;
 
 export default function ToastColors() {

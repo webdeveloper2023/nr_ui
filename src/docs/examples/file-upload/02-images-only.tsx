@@ -6,8 +6,8 @@ export default function FileUploadImagesOnly() {
 
   return (
     <div className="mx-auto w-full max-w-lg space-y-2">
-      <FileUpload accept="image/*" files={files} onFilesChange={setFiles} label="Rasmlarni shu yerga tashlang" description="Faqat rasm fayllari, preview bilan" />
-      <p className="px-1 text-xs text-muted">{files.length} ta rasm tanlandi</p>
+      <FileUpload accept="image/*" files={files} onFilesChange={setFiles} label="Drop images here" description="Image files only, with previews" />
+      <p className="px-1 text-xs text-muted">{files.length} image(s) selected</p>
     </div>
   );
 }

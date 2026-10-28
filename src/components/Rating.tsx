@@ -1,30 +1,31 @@
 import { useState } from "react";
 import { Star } from "lucide-react";
 import { cn } from "../lib/cn";
+import { useLocale } from "./locale";
 
 type RatingSize = "xs" | "sm" | "md" | "lg";
 type RatingColor = "warning" | "accent" | "danger" | "success" | "default";
 
 export interface RatingProps {
-  /** Baho (boshqariladigan) */
+  /** Rating value (controlled) */
   value?: number;
-  /** Boshlang'ich baho */
+  /** Initial rating */
   defaultValue?: number;
-  /** Baho o'zgarganda chaqiriladi */
+  /** Called when the rating changes */
   onChange?: (value: number) => void;
-  /** Yulduzlar soni */
+  /** Number of stars */
   max?: number;
-  /** O'lcham */
+  /** Size */
   size?: RatingSize;
-  /** To'ldirilgan yulduz rangi */
+  /** Color of filled stars */
   color?: RatingColor;
-  /** Faqat ko'rsatish, o'zgartirib bo'lmaydi */
+  /** Display only, cannot be changed */
   isReadOnly?: boolean;
-  /** O'chirilgan holat */
+  /** Disabled state */
   isDisabled?: boolean;
-  /** Raqamli qiymatni yonida ko'rsatadi */
+  /** Shows the numeric value next to it */
   showValue?: boolean;
-  /** Qo'shimcha CSS klasslar */
+  /** Extra CSS classes */
   className?: string;
 }
 
@@ -49,6 +50,7 @@ export function Rating({
   showValue = false,
   className = "",
 }: RatingProps) {
+  const t = useLocale();
   const [valueState, setValueState] = useState(defaultValue);
   const [hover, setHover] = useState<number | null>(null);
   const value = valueProp ?? valueState;
@@ -74,7 +76,7 @@ export function Rating({
               type="button"
               role="radio"
               aria-checked={value === n}
-              aria-label={`${n} star`}
+              aria-label={t.rating.star(n)}
               disabled={isStatic}
               onClick={() => set(n)}
               onMouseEnter={() => !isStatic && setHover(n)}

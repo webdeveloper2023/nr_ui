@@ -1,11 +1,11 @@
 import { PhoneInput } from "nr-ui-kit";
 
-// Tanlash ro'yxatini faqat kerakli davlatlar bilan cheklash
+// Limit the picker to the countries you need
 export default function PhoneInputCentralAsia() {
   return (
     <div className="max-w-sm">
       <PhoneInput
-        label="Markaziy Osiyo"
+        label="Central Asia"
         country="UZ"
         isCountrySelectable
         countries={["UZ", "KZ", "KG", "TJ", "TM", "AF", "RU"]}

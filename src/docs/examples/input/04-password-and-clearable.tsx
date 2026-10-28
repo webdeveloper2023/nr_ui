@@ -8,7 +8,7 @@ export default function InputPasswordAndClearable() {
   return (
     <div className="mx-auto grid w-full max-w-xl gap-4 sm:grid-cols-2">
       <Input
-        label="Parol"
+        label="Password"
         type={visible ? "text" : "password"}
         defaultValue="supersecret"
         startContent={<Lock size={16} />}
@@ -16,14 +16,14 @@ export default function InputPasswordAndClearable() {
           <button
             type="button"
             onClick={() => setVisible(!visible)}
-            aria-label={visible ? "Yashirish" : "Ko'rsatish"}
+            aria-label={visible ? "Hide" : "Show"}
             className="cursor-pointer hover:text-foreground"
           >
             {visible ? <EyeOff size={16} /> : <Eye size={16} />}
           </button>
         }
       />
-      <Input label="Qidiruv" defaultValue="NR UI" isClearable startContent={<Search size={16} />} />
+      <Input label="Search" defaultValue="NR UI" isClearable startContent={<Search size={16} />} />
     </div>
   );
 }

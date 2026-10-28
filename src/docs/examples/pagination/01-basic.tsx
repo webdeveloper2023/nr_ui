@@ -7,7 +7,7 @@ export default function PaginationBasic() {
   return (
     <div className="flex flex-col items-center gap-3">
       <Pagination total={12} page={page} onChange={setPage} />
-      <p className="text-sm text-muted">Sahifa {page} / 12</p>
+      <p className="text-sm text-muted">Page {page} of 12</p>
     </div>
   );
 }

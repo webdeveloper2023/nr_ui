@@ -8,14 +8,14 @@ export default function PhoneInputCountrySelect() {
   return (
     <div className="max-w-sm space-y-3">
       <PhoneInput
-        label="Telefon"
+        label="Phone"
         country={country}
         onCountryChange={setCountry}
         isCountrySelectable
-        description="Bayroqni bosib davlatni tanlang yoki +7… kabi raqamni paste qiling"
+        description="Click the flag to pick a country, or paste a number like +7…"
       />
       <p className="text-sm text-muted">
-        Tanlangan: <b className="text-foreground">{info?.name}</b> (+{info?.dial})
+        Selected: <b className="text-foreground">{info?.name}</b> (+{info?.dial})
       </p>
     </div>
   );

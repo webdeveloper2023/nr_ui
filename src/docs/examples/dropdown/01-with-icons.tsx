@@ -8,20 +8,20 @@ export default function DropdownWithIcons() {
     <div className="flex justify-center">
       <Dropdown>
         <DropdownTrigger>
-          <Button variant="secondary">Amallar</Button>
+          <Button variant="secondary">Actions</Button>
         </DropdownTrigger>
-        <DropdownMenu aria-label="Fayl amallari" onAction={(key) => addToast({ title: `Tanlandi: ${key}` })}>
+        <DropdownMenu aria-label="File actions" onAction={(key) => addToast({ title: `Selected: ${key}` })}>
           <DropdownItem itemKey="new" startContent={<FilePlus size={16} />}>
-            Yangi fayl
+            New file
           </DropdownItem>
           <DropdownItem itemKey="open" startContent={<FolderOpen size={16} />}>
-            Ochish
+            Open
           </DropdownItem>
           <DropdownItem itemKey="save" startContent={<Save size={16} />}>
-            Saqlash
+            Save
           </DropdownItem>
           <DropdownItem itemKey="delete" color="danger" startContent={<Trash2 size={16} />}>
-            O'chirish
+            Delete
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>

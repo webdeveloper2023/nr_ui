@@ -1,7 +1,7 @@
 import { Button, useToast } from "nr-ui-kit";
 
-// Barcha toastlar uchun global sozlama: <ToastProvider material="liquid">
-// Yoki butun ilova uchun: <html data-glass="liquid">
+// Global setting for all toasts: <ToastProvider material="liquid">
+// Or for the whole app: <html data-glass="liquid">
 export default function ToastLiquidGlass() {
   const { addToast } = useToast();
 
@@ -16,14 +16,14 @@ export default function ToastLiquidGlass() {
         <Button
           variant="glass"
           material="frosted"
-          onClick={() => addToast({ title: "Frosted toast", description: "Klassik xira shisha.", material: "frosted" })}
+          onClick={() => addToast({ title: "Frosted toast", description: "Classic frosted glass.", material: "frosted" })}
         >
           Frosted
         </Button>
         <Button
           variant="glass"
           material="liquid"
-          onClick={() => addToast({ title: "Liquid", description: "mobile 26 uslubidagi bildirishnoma.", color: "accent", material: "liquid" })}
+          onClick={() => addToast({ title: "Liquid", description: "A notification in the Modern style.", color: "accent", material: "liquid" })}
         >
           Liquid
         </Button>

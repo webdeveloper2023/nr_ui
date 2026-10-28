@@ -1,9 +1,9 @@
 import { Accordion, AccordionItem } from "nr-ui-kit";
 
 const faq = [
-  { key: "1", title: "NR UI nima?", text: "Shaxsiy React komponent kutubxonasi — Tailwind v4, TypeScript va dark mode bilan." },
-  { key: "2", title: "Dark mode qanday yoqiladi?", text: "<html> elementiga dark klassini qo'shing — barcha ranglar tokenlar orqali almashadi." },
-  { key: "3", title: "Ranglarni o'zgartirsa bo'ladimi?", text: "Ha, theme.css dagi --color-accent va boshqa tokenlarni qayta e'lon qiling." },
+  { key: "1", title: "What is NR UI?", text: "A personal React component library built with Tailwind v4, TypeScript and dark mode." },
+  { key: "2", title: "How do I turn on dark mode?", text: "Add the dark class to the <html> element — every color switches through tokens." },
+  { key: "3", title: "Can I change the colors?", text: "Yes — redeclare --color-accent and the other tokens from theme.css." },
 ];
 
 const variants = ["default", "surface", "bordered", "splitted"] as const;

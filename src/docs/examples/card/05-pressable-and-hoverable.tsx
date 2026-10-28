@@ -3,9 +3,9 @@ import { FileText, Image, Music } from "lucide-react";
 import { Card, CardBody } from "nr-ui-kit";
 
 const items = [
-  { key: "docs", icon: <FileText size={18} />, title: "Hujjatlar", count: "128 fayl" },
-  { key: "photos", icon: <Image size={18} />, title: "Rasmlar", count: "2 340 fayl" },
-  { key: "music", icon: <Music size={18} />, title: "Musiqa", count: "86 fayl" },
+  { key: "docs", icon: <FileText size={18} />, title: "Documents", count: "128 files" },
+  { key: "photos", icon: <Image size={18} />, title: "Photos", count: "2,340 files" },
+  { key: "music", icon: <Music size={18} />, title: "Music", count: "86 files" },
 ];
 
 export default function CardPressable() {
@@ -26,7 +26,7 @@ export default function CardPressable() {
           </Card>
         ))}
       </div>
-      <p className="mt-4 text-center text-sm text-muted">{opened ? `Ochildi: ${opened}` : "Kartani bosing"}</p>
+      <p className="mt-4 text-center text-sm text-muted">{opened ? `Opened: ${opened}` : "Click a card"}</p>
     </div>
   );
 }

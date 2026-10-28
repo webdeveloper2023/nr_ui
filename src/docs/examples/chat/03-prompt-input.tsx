@@ -13,16 +13,16 @@ export default function ChatPromptInput() {
         startContent={
           <>
             <Button size="sm" variant="ghost" startContent={<Globe size={15} />}>
-              Qidiruv
+              Search
             </Button>
-            <Button size="sm" variant="ghost" isIconOnly aria-label="Ovoz">
+            <Button size="sm" variant="ghost" isIconOnly aria-label="Voice">
               <Mic size={15} />
             </Button>
           </>
         }
-        footer="AI xato qilishi mumkin. Muhim ma'lumotlarni tekshiring."
+        footer="AI can make mistakes. Check important info."
       />
-      {sent && <p className="mt-3 text-center text-sm text-muted">Yuborildi: "{sent}"</p>}
+      {sent && <p className="mt-3 text-center text-sm text-muted">Sent: "{sent}"</p>}
     </div>
   );
 }

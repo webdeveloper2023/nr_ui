@@ -7,7 +7,7 @@ export default function InputSizesAndLabelPlacement() {
       <Input size="sm" placeholder="Small" />
       <Input size="md" placeholder="Medium" />
       <Input size="lg" placeholder="Large" />
-      <Input label="Telefon" labelPlacement="outside-left" placeholder="+998 90 123 45 67" />
+      <Input label="Phone" labelPlacement="outside-left" placeholder="+998 90 123 45 67" />
     </div>
   );
 }

@@ -4,14 +4,14 @@ import { Avatar } from "nr-ui-kit";
 export default function AvatarFallbacks() {
   return (
     <div className="flex items-center justify-center gap-4">
-      {/* rasm yuklanmasa — initsiallar */}
+      {/* image fails to load — initials */}
       <Avatar src="https://broken.link/avatar.png" name="Madina Usmonova" />
-      {/* faqat ism */}
+      {/* name only */}
       <Avatar name="Bekzod" color="accent" />
-      {/* maxsus ikonka */}
+      {/* custom icon */}
       <Avatar icon={<User size={18} />} />
       <Avatar radius="lg" color="success" icon={<Building2 size={18} />} />
-      {/* initsiallarni o'zingiz hosil qiling */}
+      {/* build your own initials */}
       <Avatar name="Nazirov Rafiqjon" getInitials={(n) => n.split(" ")[1][0]} color="warning" />
     </div>
   );

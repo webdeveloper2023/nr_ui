@@ -5,7 +5,7 @@ export default function FileUploadProgress() {
   const [files, setFiles] = useState<File[]>([]);
   const [progress, setProgress] = useState<Record<string, number>>({});
 
-  // Soxta yuklash: har bir yangi fayl uchun progressni oshirib boradi
+  // Fake upload: keeps increasing progress for every new file
   useEffect(() => {
     const timer = setInterval(() => {
       setProgress((prev) => {
@@ -19,7 +19,7 @@ export default function FileUploadProgress() {
 
   return (
     <div className="mx-auto w-full max-w-lg">
-      <FileUpload files={files} onFilesChange={setFiles} progress={progress} description="Fayl tanlang — yuklash jarayoni ko'rinadi" />
+      <FileUpload files={files} onFilesChange={setFiles} progress={progress} description="Pick a file to see the upload progress" />
     </div>
   );
 }

@@ -1,34 +1,35 @@
 import { Children, cloneElement, forwardRef, isValidElement, useState, type ImgHTMLAttributes, type ReactNode } from "react";
 import { cn } from "../lib/cn";
+import { useLocale } from "./locale";
 
 type AvatarColor = "default" | "accent" | "success" | "warning" | "danger";
 type AvatarSize = "xs" | "sm" | "md" | "lg" | "xl";
 type AvatarRadius = "none" | "sm" | "md" | "lg" | "full";
 
 export interface AvatarProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, "color" | "size"> {
-  /** Rasm manzili */
+  /** Image URL */
   src?: string;
-  /** Ism - rasm bo'lmasa initsiallar shundan olinadi */
+  /** Name — initials are derived from it when there is no image */
   name?: string;
-  /** O'lcham */
+  /** Size */
   size?: AvatarSize;
-  /** Fallback (initsial) rangi va halqa rangi */
+  /** Fallback (initials) color and ring color */
   color?: AvatarColor;
-  /** Burchaklar yumaloqligi */
+  /** Corner radius */
   radius?: AvatarRadius;
-  /** Atrofida rangli halqa (ring) chizadi */
+  /** Draws a colored ring around the avatar */
   isBordered?: boolean;
-  /** Xira, o'chirilgan ko'rinish */
+  /** Dimmed, disabled look */
   isDisabled?: boolean;
-  /** Rasm yuklanmasa fallback ko'rsatish */
+  /** Shows the fallback when the image fails to load */
   showFallback?: boolean;
-  /** Rasm o'rniga ko'rsatiladigan maxsus kontent */
+  /** Custom content shown instead of the image */
   fallback?: ReactNode;
-  /** Ismdan initsiallarni hosil qiluvchi funksiya */
+  /** Function that builds initials from the name */
   getInitials?: (name: string) => string;
-  /** Qo'shimcha klasslar */
+  /** Extra classes */
   className?: string;
-  /** Rasm va ism bo'lmasa ko'rsatiladigan ikonka */
+  /** Icon shown when there is no image or name */
   icon?: ReactNode;
 }
 
@@ -88,6 +89,7 @@ export const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
     },
     ref
   ) => {
+    const t = useLocale();
     const [imgError, setImgError] = useState(false);
     const [loaded, setLoaded] = useState(false);
     const hasImage = Boolean(src) && !imgError;
@@ -97,7 +99,7 @@ export const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
       <div
         ref={ref}
         role="img"
-        aria-label={name || alt || "avatar"}
+        aria-label={name || alt || t.common.avatar}
         className={cn(
           "relative inline-flex items-center justify-center overflow-hidden shrink-0 align-middle box-border",
           "outline-none transition-transform duration-200 ease-(--ease-out-soft)",
@@ -137,25 +139,25 @@ Avatar.displayName = "Avatar";
 // --- AvatarGroup ---
 
 export interface AvatarGroupProps {
-  /** Ko'rsatiladigan maksimal avatarlar soni */
+  /** Maximum number of avatars shown */
   max?: number;
-  /** Umumiy son (+N hisoblash uchun) */
+  /** Total count (used to compute +N) */
   total?: number;
-  /** Avatar elementlari */
+  /** Avatar elements */
   children: ReactNode;
-  /** Barcha avatarlar o'lchami */
+  /** Size of every avatar */
   size?: AvatarSize;
-  /** Barcha avatarlar rangi */
+  /** Color of every avatar */
   color?: AvatarColor;
-  /** Barcha avatarlar burchagi */
+  /** Radius of every avatar */
   radius?: AvatarRadius;
-  /** Avatarlarga halqa qo'shadi */
+  /** Adds a ring to every avatar */
   isBordered?: boolean;
-  /** Ustma-ust emas, setka ko'rinishida joylashtiradi */
+  /** Lays avatars out in a grid instead of stacking */
   isGrid?: boolean;
-  /** +N elementini maxsus chizish funksiyasi */
+  /** Custom renderer for the +N item */
   renderCount?: (count: number) => ReactNode;
-  /** Qo'shimcha klasslar */
+  /** Extra classes */
   className?: string;
 }
 

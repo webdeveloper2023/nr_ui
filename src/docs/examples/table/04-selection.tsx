@@ -2,16 +2,16 @@ import { useState } from "react";
 import { Table } from "nr-ui-kit";
 
 const columns = [
-  { key: "product", label: "Mahsulot" },
-  { key: "category", label: "Kategoriya" },
-  { key: "price", label: "Narx", align: "end" as const },
+  { key: "product", label: "Product" },
+  { key: "category", label: "Category" },
+  { key: "price", label: "Price", align: "end" as const },
 ];
 
 const rows = [
-  { id: "mbp", product: "Laptop Pro 14", category: "Noutbuk", price: "$1 999" },
-  { id: "iph", product: "Phone X", category: "Telefon", price: "$999" },
-  { id: "ipd", product: "Tablet Air 11", category: "Planshet", price: "$599" },
-  { id: "aw", product: "Smartwatch S", category: "Soat", price: "$399" },
+  { id: "mbp", product: "Laptop Pro 14", category: "Laptop", price: "$1,999" },
+  { id: "iph", product: "Phone X", category: "Phone", price: "$999" },
+  { id: "ipd", product: "Tablet Air 11", category: "Tablet", price: "$599" },
+  { id: "aw", product: "Smartwatch S", category: "Watch", price: "$399" },
 ];
 
 export default function TableSelection() {
@@ -20,7 +20,7 @@ export default function TableSelection() {
   return (
     <div className="space-y-3">
       <Table
-        aria-label="Mahsulotlar"
+        aria-label="Products"
         columns={columns}
         rows={rows}
         keyField="id"
@@ -30,7 +30,7 @@ export default function TableSelection() {
         disabledKeys={["aw"]}
       />
       <p className="text-sm text-muted">
-        Tanlangan: <span className="font-medium text-foreground">{selected.size}</span> ta
+        Selected: <span className="font-medium text-foreground">{selected.size}</span>
         {selected.size > 0 && ` (${[...selected].join(", ")})`}
       </p>
     </div>

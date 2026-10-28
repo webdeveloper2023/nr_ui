@@ -12,6 +12,7 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import { cn } from "../lib/cn";
+import { useLocale } from "./locale";
 import {
   fieldBoxClasses,
   fieldDescriptionClasses,
@@ -30,7 +31,7 @@ import {
 export interface SelectItemData {
   key: string;
   label: ReactNode;
-  /** Harf bosib qidirish uchun matn; berilmasa label ishlatiladi */
+  /** Text used for type-ahead search; defaults to the label */
   textValue?: string;
   startContent?: ReactNode;
   description?: string;
@@ -38,56 +39,56 @@ export interface SelectItemData {
 }
 
 export interface SelectProps extends Omit<HTMLAttributes<HTMLDivElement>, "onChange"> {
-  /** Maydon sarlavhasi (label) — maydon tepasida */
+  /** Field label, shown above the field */
   label?: ReactNode;
-  /** Label joylashuvi: tepada yoki chap tomonda */
+  /** Label placement: above or to the left */
   labelPlacement?: LabelPlacement;
-  /** Qiymat tanlanmaganda ko'rinadigan matn */
+  /** Text shown when nothing is selected */
   placeholder?: string;
-  /** Ko'rinish: primary — oq maydon soyali, secondary — kulrang maydon (karta ichida) */
+  /** Style: primary — white field with a shadow, secondary — gray field (inside cards) */
   variant?: FieldVariant;
-  /** O'lcham */
+  /** Size */
   size?: FieldSize;
-  /** Burchaklar yumaloqligi */
+  /** Corner radius */
   radius?: FieldRadius;
-  /** O'chirilgan holat */
+  /** Disabled state */
   isDisabled?: boolean;
-  /** Majburiy maydon (* belgisi) */
+  /** Required field (shows *) */
   isRequired?: boolean;
-  /** Xato (invalid) holat */
+  /** Invalid state */
   isInvalid?: boolean;
-  /** Xato holatida ko'rsatiladigan matn */
+  /** Text shown in the invalid state */
   errorMessage?: ReactNode;
-  /** Ochiladigan ro'yxatni shisha (blur) material qiladi; false — to'q fon */
+  /** Glass (blur) listbox material; false gives a solid background */
   isBlurred?: boolean;
-  /** Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi */
+  /** Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass) */
   material?: "frosted" | "liquid";
-  /** Maydon ostidagi yordamchi matn */
+  /** Helper text below the field */
   description?: ReactNode;
-  /** Boshidagi kontent (masalan, ikonka) */
+  /** Leading content (e.g. an icon) */
   startContent?: ReactNode;
-  /** Variantlar ro'yxati */
+  /** List of options */
   items: SelectItemData[];
-  /** Tanlangan element kaliti (controlled) */
+  /** Selected item key (controlled) */
   selectedKey?: string;
-  /** Boshlang'ich tanlangan kalit (uncontrolled) */
+  /** Initially selected key (uncontrolled) */
   defaultSelectedKey?: string;
-  /** Tanlov o'zgarganda chaqiriladi */
+  /** Called when the selection changes */
   onSelectionChange?: (key: string) => void;
-  /** Ro'yxat bo'sh bo'lganda ko'rsatiladi */
+  /** Shown when the list is empty */
   emptyContent?: ReactNode;
 }
 
 export interface SelectItemProps extends Omit<HTMLAttributes<HTMLButtonElement>, "color"> {
-  /** Elementning noyob kaliti */
+  /** Unique item key */
   itemKey: string;
-  /** Boshidagi kontent (masalan, ikonka) */
+  /** Leading content (e.g. an icon) */
   startContent?: ReactNode;
-  /** Element ostidagi izoh */
+  /** Description below the item */
   description?: string;
-  /** O'chirilgan holat */
+  /** Disabled state */
   isDisabled?: boolean;
-  /** Ichki kontent */
+  /** Inner content */
   children?: ReactNode;
 }
 
@@ -119,7 +120,7 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
     {
       label,
       labelPlacement = "outside",
-      placeholder = "Tanlang",
+      placeholder,
       variant = "primary",
       size = "md",
       radius = "md",
@@ -133,7 +134,7 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
       selectedKey: controlledKey,
       defaultSelectedKey,
       onSelectionChange,
-      emptyContent = "Variantlar yo'q",
+      emptyContent,
       isBlurred = true,
       material,
       className = "",
@@ -141,6 +142,7 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
     },
     ref
   ) => {
+    const t = useLocale();
     const id = useId();
     const listId = `${id}-listbox`;
     const [internalKey, setInternalKey] = useState(defaultSelectedKey ?? "");
@@ -355,7 +357,7 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
                   <span className="truncate">{selectedItem?.label}</span>
                 </span>
               ) : (
-                <span className="truncate text-field-placeholder">{placeholder}</span>
+                <span className="truncate text-field-placeholder">{placeholder ?? t.select.placeholder}</span>
               )}
             </span>
             <span className="shrink-0 text-muted">
@@ -395,7 +397,7 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
                 maxHeight: pos.maxHeight,
               }}
             >
-              {items.length === 0 && <div className="px-2.5 py-3 text-center text-sm text-muted">{emptyContent}</div>}
+              {items.length === 0 && <div className="px-2.5 py-3 text-center text-sm text-muted">{emptyContent ?? t.select.empty}</div>}
               {items.map((item, i) => {
                 const isSelected = item.key === selectedKey;
                 const isActive = i === activeIndex;

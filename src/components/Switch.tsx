@@ -5,33 +5,33 @@ type SwitchColor = "default" | "accent" | "success" | "warning" | "danger";
 type SwitchSize = "xs" | "sm" | "md" | "lg";
 
 export interface SwitchProps {
-  /** Yoqilgan holat rangi */
+  /** Color of the on state */
   color?: SwitchColor;
-  /** O'lcham */
+  /** Size */
   size?: SwitchSize;
-  /** Tanlangan holat (controlled) */
+  /** Selected state (controlled) */
   isSelected?: boolean;
-  /** Boshlang'ich holat (uncontrolled) */
+  /** Initial state (uncontrolled) */
   defaultSelected?: boolean;
-  /** O'chirilgan holat */
+  /** Disabled state */
   isDisabled?: boolean;
-  /** Holat o'zgarganda chaqiriladi */
+  /** Called when the state changes */
   onChange?: (selected: boolean) => void;
-  /** Qiymat o'zgarganda yangi qiymat bilan chaqiriladi */
+  /** Called with the new value when it changes */
   onValueChange?: (selected: boolean) => void;
-  /** Label matni */
+  /** Label text */
   children?: ReactNode;
-  /** Label ostidagi izoh */
+  /** Description below the label */
   description?: ReactNode;
-  /** Thumb ichidagi ikonka; funksiya joriy holatni qabul qiladi */
+  /** Icon inside the thumb; a function receives the current state */
   thumbIcon?: ReactNode | ((state: { isSelected: boolean }) => ReactNode);
-  /** Yoqilganda trekning chap tomonida ko'rinadigan ikonka */
+  /** Icon shown on the left of the track when on */
   startContent?: ReactNode;
-  /** O'chirilganda trekning o'ng tomonida ko'rinadigan ikonka */
+  /** Icon shown on the right of the track when off */
   endContent?: ReactNode;
-  /** Qo'shimcha CSS klasslar */
+  /** Extra CSS classes */
   className?: string;
-  /** Forma uchun input nomi */
+  /** Input name for forms */
   name?: string;
 }
 

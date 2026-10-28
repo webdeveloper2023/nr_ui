@@ -17,31 +17,31 @@ type ButtonSize = "xs" | "sm" | "md" | "lg";
 type ButtonRadius = "none" | "sm" | "md" | "lg" | "full";
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  /** Ko'rinish varianti: primary, secondary, tertiary, outline, ghost, glass (shisha), danger, danger-soft */
+  /** Visual variant: primary, secondary, tertiary, outline, ghost, glass, danger, danger-soft */
   variant?: ButtonVariant;
-  /** Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi */
+  /** Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass) */
   material?: "frosted" | "liquid";
-  /** O'lcham */
+  /** Size */
   size?: ButtonSize;
-  /** Burchaklar yumaloqligi (default — to'liq dumaloq) */
+  /** Corner radius (default: fully rounded) */
   radius?: ButtonRadius;
-  /** Boshidagi kontent (masalan, ikonka) */
+  /** Leading content (e.g. an icon) */
   startContent?: ReactNode;
-  /** Oxiridagi kontent (masalan, ikonka) */
+  /** Trailing content (e.g. an icon) */
   endContent?: ReactNode;
-  /** Loading paytida ko'rsatiladigan maxsus spinner */
+  /** Custom spinner shown while loading */
   spinner?: ReactNode;
-  /** Yuklanish holati: spinner chiqadi va bosib bo'lmaydi */
+  /** Loading state: shows a spinner and blocks presses */
   isLoading?: boolean;
-  /** O'chirilgan holat */
+  /** Disabled state */
   isDisabled?: boolean;
-  /** Faqat ikonka uchun kvadrat (dumaloq) tugma */
+  /** Square (round) icon-only button */
   isIconOnly?: boolean;
-  /** Konteyner kengligini to'liq egallaydi */
+  /** Fills the container width */
   fullWidth?: boolean;
-  /** Bosilish animatsiyasini o'chiradi */
+  /** Disables the press animation */
   disableAnimation?: boolean;
-  /** Ichki kontent */
+  /** Inner content */
   children?: ReactNode;
 }
 
@@ -153,17 +153,17 @@ Button.displayName = "Button";
 
 // ─── ButtonGroup ────────────────────────────
 export interface ButtonGroupProps extends HTMLAttributes<HTMLDivElement> {
-  /** Guruhdagi barcha tugmalar varianti */
+  /** Variant of every button in the group */
   variant?: ButtonVariant;
-  /** Guruhdagi barcha tugmalar o'lchami */
+  /** Size of every button in the group */
   size?: ButtonSize;
-  /** Guruh chetlarining yumaloqligi */
+  /** Corner radius of the group */
   radius?: ButtonRadius;
-  /** Guruhdagi barcha tugmalarni o'chiradi */
+  /** Disables every button in the group */
   isDisabled?: boolean;
-  /** Konteyner kengligini to'liq egallaydi */
+  /** Fills the container width */
   fullWidth?: boolean;
-  /** Button elementlari */
+  /** Button elements */
   children?: ReactNode;
 }
 

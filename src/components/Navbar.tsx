@@ -10,71 +10,72 @@ import {
   type HTMLAttributes,
 } from "react";
 import { cn } from "../lib/cn";
+import { useLocale } from "./locale";
 
 type NavbarMaxWidth = "sm" | "md" | "lg" | "xl" | "2xl" | "full";
 
 export interface NavbarProps extends HTMLAttributes<HTMLElement> {
-  /** Ichki kontentning maksimal kengligi */
+  /** Maximum width of the inner content */
   maxWidth?: NavbarMaxWidth;
-  /** Navbar balandligi (CSS qiymat) */
+  /** Navbar height (CSS value) */
   height?: string;
-  /** Pastki chegara chizig'i */
+  /** Bottom border */
   isBordered?: boolean;
-  /** Shaffof blur fon */
+  /** Translucent blur background */
   isBlurred?: boolean;
-  /** Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi */
+  /** Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass) */
   material?: "frosted" | "liquid";
-  /** Joylashuv turi */
+  /** Positioning mode */
   position?: "static" | "sticky" | "floating";
-  /** Pastga scroll qilganda yashirish */
+  /** Hides on scroll down */
   shouldHideOnScroll?: boolean;
-  /** Mobil menyu ochiqmi (boshqariladigan) */
+  /** Whether the mobile menu is open (controlled) */
   isMenuOpen?: boolean;
-  /** Mobil menyu holati o'zgarganda chaqiriladi */
+  /** Called when the mobile menu opens or closes */
   onMenuOpenChange?: (open: boolean) => void;
-  /** Ichki kontent */
+  /** Inner content */
   children?: ReactNode;
 }
 
 export interface NavbarBrandProps extends HTMLAttributes<HTMLDivElement> {
-  /** Ichki kontent */
+  /** Inner content */
   children?: ReactNode;
 }
 
 export interface NavbarContentProps extends HTMLAttributes<HTMLDivElement> {
-  /** Gorizontal tekislash */
+  /** Horizontal alignment */
   justify?: "start" | "center" | "end";
-  /** Mobilda ham ko'rinib turish (default md'dan kichikda yashiriladi) */
+  /** Stays visible on mobile (hidden below md by default) */
   isAlwaysVisible?: boolean;
-  /** Ichki kontent */
+  /** Inner content */
   children?: ReactNode;
 }
 
 export interface NavbarItemProps extends HTMLAttributes<HTMLDivElement> {
-  /** Faol (tanlangan) holat */
+  /** Active (selected) state */
   isActive?: boolean;
-  /** Faol element ko'rinishi */
+  /** Active item style */
   variant?: "underline" | "pill" | "text";
-  /** Ichki kontent */
+  /** Inner content */
   children?: ReactNode;
 }
 
 export interface NavbarMenuToggleProps extends HTMLAttributes<HTMLButtonElement> {
-  /** Ekran o'quvchilar uchun matn */
+  /** Text for screen readers */
   srOnlyText?: string;
 }
 
 export interface NavbarMenuProps extends HTMLAttributes<HTMLDivElement> {
-  /** Ichki kontent */
+  /** Inner content */
   children?: ReactNode;
 }
 
 export interface NavbarMenuItemProps extends HTMLAttributes<HTMLDivElement> {
-  /** Faol (tanlangan) holat */
+  /** Active (selected) state */
   isActive?: boolean;
-  /** Animatsiya kechikishi uchun tartib raqami */
+  /** Index used to stagger the enter animation */
   index?: number;
-  /** Ichki kontent */
+  /** Inner content */
   children?: ReactNode;
 }
 
@@ -289,15 +290,16 @@ export const NavbarItem = forwardRef<HTMLDivElement, NavbarItemProps>(
 NavbarItem.displayName = "NavbarItem";
 
 export const NavbarMenuToggle = forwardRef<HTMLButtonElement, NavbarMenuToggleProps>(
-  ({ srOnlyText = "Toggle menu", className = "", ...props }, ref) => {
+  ({ srOnlyText, className = "", ...props }, ref) => {
     const { isMenuOpen, setIsMenuOpen } = useNavbarContext();
+    const t = useLocale();
     const bar = "absolute left-0 block h-[1.5px] w-full rounded-full bg-foreground transition-all duration-300 ease-(--ease-out-soft)";
 
     return (
       <button
         ref={ref}
         type="button"
-        aria-label={srOnlyText}
+        aria-label={srOnlyText ?? t.navbar.toggleMenu}
         aria-expanded={isMenuOpen}
         onClick={() => setIsMenuOpen(!isMenuOpen)}
         className={cn(

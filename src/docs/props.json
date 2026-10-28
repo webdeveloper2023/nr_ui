@@ -5,70 +5,70 @@
       "type": "'default' | 'surface' | 'bordered' | 'splitted'",
       "required": false,
       "default": "\"default\"",
-      "description": "Ko'rinish varianti"
+      "description": "Visual variant"
     },
     {
       "name": "selectionMode",
       "type": "'single' | 'multiple'",
       "required": false,
       "default": "\"single\"",
-      "description": "Bir vaqtda bitta yoki bir nechta ochilishi"
+      "description": "Whether one or several items can be open at once"
     },
     {
       "name": "defaultExpandedKeys",
       "type": "Set<string>",
       "required": false,
       "default": null,
-      "description": "Boshlang'ich ochiq elementlar"
+      "description": "Initially expanded items"
     },
     {
       "name": "expandedKeys",
       "type": "Set<string>",
       "required": false,
       "default": null,
-      "description": "Ochiq elementlar (boshqariladigan)"
+      "description": "Expanded items (controlled)"
     },
     {
       "name": "onExpandedChange",
       "type": "(keys: Set<string>) => void",
       "required": false,
       "default": null,
-      "description": "Ochiq elementlar o'zgarganda chaqiriladi"
+      "description": "Called when the expanded items change"
     },
     {
       "name": "disabledKeys",
       "type": "Set<string>",
       "required": false,
       "default": null,
-      "description": "O'chirilgan elementlar kalitlari"
+      "description": "Keys of disabled items"
     },
     {
       "name": "isCompact",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Ixcham (kichik oraliqlar)"
+      "description": "Compact (tighter spacing)"
     },
     {
       "name": "showDivider",
       "type": "boolean",
       "required": false,
       "default": "true",
-      "description": "Elementlar orasida chiziq"
+      "description": "Divider between items"
     },
     {
       "name": "hideIndicator",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Strelka indikatorini yashirish"
+      "description": "Hides the chevron indicator"
     },
     {
       "name": "children",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Ochilgan holatdagi kontent"
+      "description": "Content shown when expanded"
     }
   ],
   "AccordionItem": [
@@ -77,49 +77,49 @@
       "type": "string",
       "required": false,
       "default": null,
-      "description": "Elementning noyob kaliti"
+      "description": "Unique item key"
     },
     {
       "name": "title",
       "type": "ReactNode",
       "required": true,
       "default": null,
-      "description": "Sarlavha"
+      "description": "Title"
     },
     {
       "name": "subtitle",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Sarlavha ostidagi matn"
+      "description": "Text below the title"
     },
     {
       "name": "startContent",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Boshidagi kontent (ikonka va h.k.)"
+      "description": "Leading content (icon, etc.)"
     },
     {
       "name": "indicator",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Maxsus indikator ikonka"
+      "description": "Custom indicator icon"
     },
     {
       "name": "isDisabled",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "O'chirilgan (faol emas) holat"
+      "description": "Disabled (inactive) state"
     },
     {
       "name": "children",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Ochilgan holatdagi kontent"
+      "description": "Content shown when expanded"
     }
   ],
   "Alert": [
@@ -128,70 +128,70 @@
       "type": "'default' | 'accent' | 'success' | 'warning' | 'danger'",
       "required": false,
       "default": "\"accent\"",
-      "description": "Holat rangi (ikonka va fon tusi)"
+      "description": "Status color (icon and background tint)"
     },
     {
       "name": "variant",
       "type": "'default' | 'soft' | 'flat' | 'glass'",
       "required": false,
       "default": "\"default\"",
-      "description": "Ko'rinish: default — surface (yengil gradient), soft — rangli yengil tus, flat — to'liq rangli fon, glass — shisha"
+      "description": "Style: default — surface (soft gradient), soft — light color tint, flat — solid color, glass"
     },
     {
       "name": "material",
       "type": "\"frosted\" | \"liquid\"",
       "required": false,
       "default": null,
-      "description": "Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi"
+      "description": "Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass)"
     },
     {
       "name": "title",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Sarlavha"
+      "description": "Title"
     },
     {
       "name": "description",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Tavsif matni"
+      "description": "Description text"
     },
     {
       "name": "icon",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Maxsus ikonka (standart holat ikonkasi o'rniga)"
+      "description": "Custom icon (replaces the default status icon)"
     },
     {
       "name": "hideIcon",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Ikonkani yashirish"
+      "description": "Hides the icon"
     },
     {
       "name": "action",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "O'ng tomondagi amal (masalan, tugma)"
+      "description": "Action on the right (e.g. a button)"
     },
     {
       "name": "onClose",
       "type": "() => void",
       "required": false,
       "default": null,
-      "description": "Yopish tugmasi bosilganda chaqiriladi (berilsa X tugmasi ko'rinadi)"
+      "description": "Called when the close button is pressed (the X shows only when set)"
     },
     {
       "name": "children",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Qo'shimcha kontent (tavsif ostida)"
+      "description": "Extra content (below the description)"
     }
   ],
   "Avatar": [
@@ -200,84 +200,84 @@
       "type": "string",
       "required": false,
       "default": null,
-      "description": "Rasm manzili"
+      "description": "Image URL"
     },
     {
       "name": "name",
       "type": "string",
       "required": false,
       "default": null,
-      "description": "Ism - rasm bo'lmasa initsiallar shundan olinadi"
+      "description": "Name — initials are derived from it when there is no image"
     },
     {
       "name": "size",
       "type": "'xs' | 'sm' | 'md' | 'lg' | 'xl'",
       "required": false,
       "default": "\"md\"",
-      "description": "O'lcham"
+      "description": "Size"
     },
     {
       "name": "color",
       "type": "'default' | 'accent' | 'success' | 'warning' | 'danger'",
       "required": false,
       "default": "\"default\"",
-      "description": "Fallback (initsial) rangi va halqa rangi"
+      "description": "Fallback (initials) color and ring color"
     },
     {
       "name": "radius",
       "type": "'sm' | 'md' | 'lg' | 'none' | 'full'",
       "required": false,
       "default": "\"full\"",
-      "description": "Burchaklar yumaloqligi"
+      "description": "Corner radius"
     },
     {
       "name": "isBordered",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Atrofida rangli halqa (ring) chizadi"
+      "description": "Draws a colored ring around the avatar"
     },
     {
       "name": "isDisabled",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Xira, o'chirilgan ko'rinish"
+      "description": "Dimmed, disabled look"
     },
     {
       "name": "showFallback",
       "type": "boolean",
       "required": false,
       "default": "true",
-      "description": "Rasm yuklanmasa fallback ko'rsatish"
+      "description": "Shows the fallback when the image fails to load"
     },
     {
       "name": "fallback",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Rasm o'rniga ko'rsatiladigan maxsus kontent"
+      "description": "Custom content shown instead of the image"
     },
     {
       "name": "getInitials",
       "type": "(name: string) => string",
       "required": false,
       "default": "defaultInitials",
-      "description": "Ismdan initsiallarni hosil qiluvchi funksiya"
+      "description": "Function that builds initials from the name"
     },
     {
       "name": "className",
       "type": "string",
       "required": false,
       "default": "\"\"",
-      "description": "Qo'shimcha klasslar"
+      "description": "Extra classes"
     },
     {
       "name": "icon",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Rasm va ism bo'lmasa ko'rsatiladigan ikonka"
+      "description": "Icon shown when there is no image or name"
     }
   ],
   "AvatarGroup": [
@@ -286,70 +286,70 @@
       "type": "number",
       "required": false,
       "default": null,
-      "description": "Ko'rsatiladigan maksimal avatarlar soni"
+      "description": "Maximum number of avatars shown"
     },
     {
       "name": "total",
       "type": "number",
       "required": false,
       "default": null,
-      "description": "Umumiy son (+N hisoblash uchun)"
+      "description": "Total count (used to compute +N)"
     },
     {
       "name": "children",
       "type": "ReactNode",
       "required": true,
       "default": null,
-      "description": "Avatar elementlari"
+      "description": "Avatar elements"
     },
     {
       "name": "size",
       "type": "'xs' | 'sm' | 'md' | 'lg' | 'xl'",
       "required": false,
       "default": "\"md\"",
-      "description": "Barcha avatarlar o'lchami"
+      "description": "Size of every avatar"
     },
     {
       "name": "color",
       "type": "'default' | 'accent' | 'success' | 'warning' | 'danger'",
       "required": false,
       "default": null,
-      "description": "Barcha avatarlar rangi"
+      "description": "Color of every avatar"
     },
     {
       "name": "radius",
       "type": "'sm' | 'md' | 'lg' | 'none' | 'full'",
       "required": false,
       "default": null,
-      "description": "Barcha avatarlar burchagi"
+      "description": "Radius of every avatar"
     },
     {
       "name": "isBordered",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Avatarlarga halqa qo'shadi"
+      "description": "Adds a ring to every avatar"
     },
     {
       "name": "isGrid",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Ustma-ust emas, setka ko'rinishida joylashtiradi"
+      "description": "Lays avatars out in a grid instead of stacking"
     },
     {
       "name": "renderCount",
       "type": "(count: number) => ReactNode",
       "required": false,
       "default": null,
-      "description": "+N elementini maxsus chizish funksiyasi"
+      "description": "Custom renderer for the +N item"
     },
     {
       "name": "className",
       "type": "string",
       "required": false,
       "default": "\"\"",
-      "description": "Qo'shimcha klasslar"
+      "description": "Extra classes"
     }
   ],
   "Badge": [
@@ -358,84 +358,84 @@
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Badge ichidagi matn yoki son"
+      "description": "Text or number inside the badge"
     },
     {
       "name": "color",
       "type": "'default' | 'accent' | 'success' | 'warning' | 'danger'",
       "required": false,
       "default": "\"danger\"",
-      "description": "Rang"
+      "description": "Color"
     },
     {
       "name": "variant",
       "type": "'soft' | 'primary'",
       "required": false,
       "default": "\"primary\"",
-      "description": "Ko'rinish: primary (to'liq rang) yoki soft (yumshoq fon)"
+      "description": "Style: primary (solid color) or soft (tinted background)"
     },
     {
       "name": "size",
       "type": "'xs' | 'sm' | 'md' | 'lg'",
       "required": false,
       "default": "\"md\"",
-      "description": "O'lcham"
+      "description": "Size"
     },
     {
       "name": "placement",
       "type": "'top-right' | 'top-left' | 'bottom-right' | 'bottom-left'",
       "required": false,
       "default": "\"top-right\"",
-      "description": "Elementning qaysi burchagida joylashishi"
+      "description": "Which corner of the element it sits on"
     },
     {
       "name": "shape",
       "type": "'circle' | 'rectangle'",
       "required": false,
       "default": "\"circle\"",
-      "description": "Ostidagi element shakli (joylashuvni moslash uchun)"
+      "description": "Shape of the wrapped element (adjusts the position)"
     },
     {
       "name": "isDot",
       "type": "boolean",
       "required": false,
       "default": null,
-      "description": "Matnsiz kichik nuqta ko'rinishi"
+      "description": "Small dot without text"
     },
     {
       "name": "isInvisible",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Badge'ni animatsiya bilan yashiradi"
+      "description": "Hides the badge with an animation"
     },
     {
       "name": "showOutline",
       "type": "boolean",
       "required": false,
       "default": "true",
-      "description": "Atrofida fon rangidagi chegara (halqa)"
+      "description": "Ring in the background color around the badge"
     },
     {
       "name": "isOneChar",
       "type": "boolean",
       "required": false,
       "default": null,
-      "description": "Bitta belgi uchun aylana shakl"
+      "description": "Perfect circle for single-character content"
     },
     {
       "name": "children",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Badge qo'yiladigan element"
+      "description": "Element the badge is attached to"
     },
     {
       "name": "className",
       "type": "string",
       "required": false,
       "default": "\"\"",
-      "description": "Qo'shimcha klasslar"
+      "description": "Extra classes"
     }
   ],
   "Button": [
@@ -444,91 +444,91 @@
       "type": "'danger' | 'glass' | 'primary' | 'secondary' | 'tertiary' | 'outline' | 'ghost' | 'danger-soft'",
       "required": false,
       "default": "\"primary\"",
-      "description": "Ko'rinish varianti: primary, secondary, tertiary, outline, ghost, glass (shisha), danger, danger-soft"
+      "description": "Visual variant: primary, secondary, tertiary, outline, ghost, glass, danger, danger-soft"
     },
     {
       "name": "material",
       "type": "\"frosted\" | \"liquid\"",
       "required": false,
       "default": null,
-      "description": "Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi"
+      "description": "Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass)"
     },
     {
       "name": "size",
       "type": "'xs' | 'sm' | 'md' | 'lg'",
       "required": false,
       "default": "\"md\"",
-      "description": "O'lcham"
+      "description": "Size"
     },
     {
       "name": "radius",
       "type": "'sm' | 'md' | 'lg' | 'none' | 'full'",
       "required": false,
       "default": "\"full\"",
-      "description": "Burchaklar yumaloqligi (default — to'liq dumaloq)"
+      "description": "Corner radius (default: fully rounded)"
     },
     {
       "name": "startContent",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Boshidagi kontent (masalan, ikonka)"
+      "description": "Leading content (e.g. an icon)"
     },
     {
       "name": "endContent",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Oxiridagi kontent (masalan, ikonka)"
+      "description": "Trailing content (e.g. an icon)"
     },
     {
       "name": "spinner",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Loading paytida ko'rsatiladigan maxsus spinner"
+      "description": "Custom spinner shown while loading"
     },
     {
       "name": "isLoading",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Yuklanish holati: spinner chiqadi va bosib bo'lmaydi"
+      "description": "Loading state: shows a spinner and blocks presses"
     },
     {
       "name": "isDisabled",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "O'chirilgan holat"
+      "description": "Disabled state"
     },
     {
       "name": "isIconOnly",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Faqat ikonka uchun kvadrat (dumaloq) tugma"
+      "description": "Square (round) icon-only button"
     },
     {
       "name": "fullWidth",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Konteyner kengligini to'liq egallaydi"
+      "description": "Fills the container width"
     },
     {
       "name": "disableAnimation",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Bosilish animatsiyasini o'chiradi"
+      "description": "Disables the press animation"
     },
     {
       "name": "children",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Ichki kontent"
+      "description": "Inner content"
     }
   ],
   "ButtonGroup": [
@@ -537,42 +537,42 @@
       "type": "'danger' | 'glass' | 'primary' | 'secondary' | 'tertiary' | 'outline' | 'ghost' | 'danger-soft'",
       "required": false,
       "default": "\"tertiary\"",
-      "description": "Guruhdagi barcha tugmalar varianti"
+      "description": "Variant of every button in the group"
     },
     {
       "name": "size",
       "type": "'xs' | 'sm' | 'md' | 'lg'",
       "required": false,
       "default": null,
-      "description": "Guruhdagi barcha tugmalar o'lchami"
+      "description": "Size of every button in the group"
     },
     {
       "name": "radius",
       "type": "'sm' | 'md' | 'lg' | 'none' | 'full'",
       "required": false,
       "default": "\"full\"",
-      "description": "Guruh chetlarining yumaloqligi"
+      "description": "Corner radius of the group"
     },
     {
       "name": "isDisabled",
       "type": "boolean",
       "required": false,
       "default": null,
-      "description": "Guruhdagi barcha tugmalarni o'chiradi"
+      "description": "Disables every button in the group"
     },
     {
       "name": "fullWidth",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Konteyner kengligini to'liq egallaydi"
+      "description": "Fills the container width"
     },
     {
       "name": "children",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Button elementlari"
+      "description": "Button elements"
     }
   ],
   "Card": [
@@ -581,70 +581,70 @@
       "type": "'default' | 'flat' | 'glass' | 'secondary' | 'tertiary' | 'transparent'",
       "required": false,
       "default": "\"default\"",
-      "description": "Ko'rinish: default (yengil gradient), flat (gradientsiz), glass (shisha), secondary, tertiary yoki transparent"
+      "description": "Style: default (soft gradient), flat (no gradient), glass, secondary, tertiary or transparent"
     },
     {
       "name": "material",
       "type": "\"frosted\" | \"liquid\"",
       "required": false,
       "default": null,
-      "description": "Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi"
+      "description": "Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass)"
     },
     {
       "name": "radius",
       "type": "'md' | 'lg' | 'xl' | 'none'",
       "required": false,
       "default": "\"xl\"",
-      "description": "Burchaklar yumaloqligi"
+      "description": "Corner radius"
     },
     {
       "name": "isHoverable",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Hover'da biroz ko'tarilish effekti"
+      "description": "Lifts slightly on hover"
     },
     {
       "name": "isPressable",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Bosiladigan karta (tugma kabi, klaviatura bilan ham)"
+      "description": "Pressable card (acts like a button, keyboard accessible)"
     },
     {
       "name": "isDisabled",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Kartani o'chirilgan holatga o'tkazadi"
+      "description": "Puts the card in a disabled state"
     },
     {
       "name": "isFooterBlurred",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Footer'ni kontent ustiga xira shisha qilib qo'yadi"
+      "description": "Overlays the footer on the content as frosted glass"
     },
     {
       "name": "fullWidth",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Konteynerning to'liq kengligini egallaydi"
+      "description": "Fills the container width"
     },
     {
       "name": "onPress",
       "type": "() => void",
       "required": false,
       "default": null,
-      "description": "isPressable bo'lganda bosilganda chaqiriladi"
+      "description": "Called on press when isPressable is set"
     },
     {
       "name": "children",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Karta ichidagi kontent (CardHeader, CardBody, CardFooter)"
+      "description": "Card content (CardHeader, CardBody, CardFooter)"
     }
   ],
   "CardHeader": [
@@ -653,28 +653,28 @@
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Sarlavha matni"
+      "description": "Title text"
     },
     {
       "name": "description",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Sarlavha ostidagi izoh matni"
+      "description": "Description below the title"
     },
     {
       "name": "endContent",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "O'ng tomondagi slot (tugma, menyu)"
+      "description": "Right-side slot (button, menu)"
     },
     {
       "name": "children",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Sarlavha qismi kontenti (title o'rniga erkin kontent)"
+      "description": "Header content (free-form instead of title)"
     }
   ],
   "CardBody": [
@@ -683,7 +683,7 @@
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Asosiy kontent"
+      "description": "Main content"
     }
   ],
   "CardFooter": [
@@ -692,21 +692,21 @@
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Footer fonini xira shisha (backdrop-blur) qiladi"
+      "description": "Makes the footer background frosted glass (backdrop blur)"
     },
     {
       "name": "showDivider",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Footer ustiga ajratuvchi chiziq qo'shadi"
+      "description": "Adds a divider above the footer"
     },
     {
       "name": "children",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Pastki qism kontenti"
+      "description": "Footer content"
     }
   ],
   "ChatContainer": [
@@ -715,14 +715,14 @@
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Chat xabarlari"
+      "description": "Chat messages"
     },
     {
       "name": "className",
       "type": "string",
       "required": false,
       "default": "\"\"",
-      "description": "Qo'shimcha CSS klasslar"
+      "description": "Extra CSS classes"
     }
   ],
   "ChatMessage": [
@@ -731,70 +731,70 @@
       "type": "\"user\" | \"assistant\"",
       "required": true,
       "default": null,
-      "description": "Xabar muallifi: foydalanuvchi yoki assistent"
+      "description": "Message author: user or assistant"
     },
     {
       "name": "name",
       "type": "string",
       "required": false,
       "default": null,
-      "description": "Muallif ismi (assistent avatarida initsial sifatida)"
+      "description": "Author name (used as initials on the assistant avatar)"
     },
     {
       "name": "avatar",
       "type": "string",
       "required": false,
       "default": null,
-      "description": "Assistent avatari rasmi URL manzili"
+      "description": "Assistant avatar image URL"
     },
     {
       "name": "time",
       "type": "string",
       "required": false,
       "default": null,
-      "description": "Xabar vaqti"
+      "description": "Message time"
     },
     {
       "name": "isTyping",
       "type": "boolean",
       "required": false,
       "default": null,
-      "description": "Yozilmoqda (typing) indikatorini ko'rsatadi"
+      "description": "Shows the typing indicator"
     },
     {
       "name": "showActions",
       "type": "boolean",
       "required": false,
       "default": "true",
-      "description": "Copy/like/dislike amallarini ko'rsatadi"
+      "description": "Shows the copy / like / dislike actions"
     },
     {
       "name": "onCopy",
       "type": "() => void",
       "required": false,
       "default": null,
-      "description": "Nusxa olish bosilganda chaqiriladi"
+      "description": "Called when copy is pressed"
     },
     {
       "name": "onRegenerate",
       "type": "() => void",
       "required": false,
       "default": null,
-      "description": "Qayta yaratish bosilganda chaqiriladi"
+      "description": "Called when regenerate is pressed"
     },
     {
       "name": "onFeedback",
       "type": "(value: \"like\" | \"dislike\") => void",
       "required": false,
       "default": null,
-      "description": "Like yoki dislike bosilganda chaqiriladi"
+      "description": "Called when like or dislike is pressed"
     },
     {
       "name": "children",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Ichki kontent"
+      "description": "Inner content"
     }
   ],
   "PromptInput": [
@@ -803,112 +803,112 @@
       "type": "string",
       "required": false,
       "default": null,
-      "description": "Input qiymati (boshqariladigan)"
+      "description": "Input value (controlled)"
     },
     {
       "name": "onValueChange",
       "type": "(value: string) => void",
       "required": false,
       "default": null,
-      "description": "Qiymat o'zgarganda yangi qiymat bilan chaqiriladi"
+      "description": "Called with the new value when it changes"
     },
     {
       "name": "onSubmit",
       "type": "(value: string) => void",
       "required": false,
       "default": null,
-      "description": "Xabar yuborilganda (Enter) chaqiriladi"
+      "description": "Called when a message is sent (Enter)"
     },
     {
       "name": "onStop",
       "type": "() => void",
       "required": false,
       "default": null,
-      "description": "Javobni to'xtatish tugmasi bosilganda"
+      "description": "Called when the stop button is pressed"
     },
     {
       "name": "onAttach",
       "type": "() => void",
       "required": false,
       "default": null,
-      "description": "Fayl biriktirish tugmasi bosilganda (berilsa ko'rinadi)"
+      "description": "Called when the attach button is pressed (shown only when set)"
     },
     {
       "name": "isLoading",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Javob kutilmoqda — yuborish o'rniga stop tugmasi"
+      "description": "Waiting for a reply — shows a stop button instead of send"
     },
     {
       "name": "isDisabled",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "O'chirilgan holat"
+      "description": "Disabled state"
     },
     {
       "name": "placeholder",
       "type": "string",
       "required": false,
-      "default": "\"Nimani bilmoqchisiz?\"",
-      "description": "Bo'sh inputdagi matn"
+      "default": null,
+      "description": "Placeholder shown in the empty input"
     },
     {
       "name": "suggestions",
       "type": "string[]",
       "required": false,
       "default": null,
-      "description": "Tezkor tayyor so'rovlar ro'yxati"
+      "description": "Quick suggestion prompts"
     },
     {
       "name": "minRows",
       "type": "number",
       "required": false,
       "default": "2",
-      "description": "Minimal qatorlar soni"
+      "description": "Minimum rows"
     },
     {
       "name": "maxRows",
       "type": "number",
       "required": false,
       "default": "8",
-      "description": "Maksimal qatorlar soni"
+      "description": "Maximum rows"
     },
     {
       "name": "startContent",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Pastki qator chap tomonidagi qo'shimcha tugmalar"
+      "description": "Extra buttons on the left of the bottom row"
     },
     {
       "name": "footer",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Input ostidagi izoh matni"
+      "description": "Helper text below the input"
     },
     {
       "name": "isBlurred",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Kompozerni shisha (glass) qiladi — kontent ustida suzuvchi ko'rinish"
+      "description": "Makes the composer glass — floating over the content"
     },
     {
       "name": "material",
       "type": "\"frosted\" | \"liquid\"",
       "required": false,
       "default": null,
-      "description": "Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi"
+      "description": "Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass)"
     },
     {
       "name": "className",
       "type": "string",
       "required": false,
       "default": "\"\"",
-      "description": "Qo'shimcha CSS klasslar"
+      "description": "Extra CSS classes"
     }
   ],
   "Checkbox": [
@@ -917,119 +917,126 @@
       "type": "\"primary\" | \"secondary\"",
       "required": false,
       "default": "\"primary\"",
-      "description": "Ko'rinish: primary — oq katakcha soyali, secondary — kulrang (karta ichida)"
+      "description": "Style: primary — white box with a shadow, secondary — gray (inside cards)"
     },
     {
       "name": "color",
       "type": "'default' | 'accent' | 'success' | 'warning' | 'danger'",
       "required": false,
       "default": "\"accent\"",
-      "description": "Tanlangan holat rangi"
+      "description": "Color of the selected state"
     },
     {
       "name": "size",
       "type": "'xs' | 'sm' | 'md' | 'lg'",
       "required": false,
       "default": "\"md\"",
-      "description": "O'lcham"
+      "description": "Size"
     },
     {
       "name": "radius",
       "type": "'sm' | 'md' | 'none' | 'full'",
       "required": false,
       "default": "\"sm\"",
-      "description": "Burchaklar yumaloqligi"
+      "description": "Corner radius"
     },
     {
       "name": "isSelected",
       "type": "boolean",
       "required": false,
       "default": null,
-      "description": "Tanlangan holat (controlled)"
+      "description": "Selected state (controlled)"
     },
     {
       "name": "defaultSelected",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Boshlang'ich holat (uncontrolled)"
+      "description": "Initial state (uncontrolled)"
     },
     {
       "name": "isIndeterminate",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Qisman tanlangan holat (—)"
+      "description": "Indeterminate state (—)"
     },
     {
       "name": "isDisabled",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "O'chirilgan holat"
+      "description": "Disabled state"
     },
     {
       "name": "isInvalid",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Xato (invalid) holat"
+      "description": "Invalid state"
     },
     {
       "name": "lineThrough",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Tanlanganda matn ustidan chiziladi"
+      "description": "Strikes through the label when checked"
     },
     {
       "name": "onChange",
       "type": "(checked: boolean) => void",
       "required": false,
       "default": null,
-      "description": "Holat o'zgarganda chaqiriladi"
+      "description": "Called when the state changes"
     },
     {
       "name": "onValueChange",
       "type": "(checked: boolean) => void",
       "required": false,
       "default": null,
-      "description": "Qiymat o'zgarganda yangi qiymat bilan chaqiriladi"
+      "description": "Called with the new value when it changes"
     },
     {
       "name": "description",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Label ostidagi izoh"
+      "description": "Description below the label"
     },
     {
       "name": "children",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Label matni"
+      "description": "Label text"
     },
     {
       "name": "className",
       "type": "string",
       "required": false,
       "default": "\"\"",
-      "description": "Qo'shimcha CSS klasslar"
+      "description": "Extra CSS classes"
     },
     {
       "name": "name",
       "type": "string",
       "required": false,
       "default": "group?.name",
-      "description": "Forma uchun input nomi"
+      "description": "Input name for forms"
     },
     {
       "name": "value",
       "type": "string",
       "required": false,
       "default": null,
-      "description": "Guruhdagi qiymat"
+      "description": "Value inside a group"
+    },
+    {
+      "name": "aria-label",
+      "type": "string",
+      "required": false,
+      "default": null,
+      "description": "Accessible label when the checkbox has no visible text"
     }
   ],
   "CheckboxGroup": [
@@ -1038,119 +1045,119 @@
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Guruh sarlavhasi"
+      "description": "Group label"
     },
     {
       "name": "description",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Maydon ostidagi yordamchi matn"
+      "description": "Helper text below the field"
     },
     {
       "name": "errorMessage",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Xato holatida ko'rsatiladigan matn"
+      "description": "Text shown in the invalid state"
     },
     {
       "name": "orientation",
       "type": "\"vertical\" | \"horizontal\"",
       "required": false,
       "default": "\"vertical\"",
-      "description": "Elementlar yo'nalishi"
+      "description": "Items orientation"
     },
     {
       "name": "value",
       "type": "string[]",
       "required": false,
       "default": null,
-      "description": "Qiymat"
+      "description": "Value"
     },
     {
       "name": "defaultValue",
       "type": "string[]",
       "required": false,
       "default": "[]",
-      "description": "Boshlang'ich qiymat (uncontrolled)"
+      "description": "Initial value (uncontrolled)"
     },
     {
       "name": "onValueChange",
       "type": "(value: string[]) => void",
       "required": false,
       "default": null,
-      "description": "Qiymat o'zgarganda yangi qiymat bilan chaqiriladi"
+      "description": "Called with the new value when it changes"
     },
     {
       "name": "variant",
       "type": "\"primary\" | \"secondary\"",
       "required": false,
       "default": null,
-      "description": "Guruhdagi katakchalar ko'rinishi"
+      "description": "Style of the checkboxes in the group"
     },
     {
       "name": "color",
       "type": "'default' | 'accent' | 'success' | 'warning' | 'danger'",
       "required": false,
       "default": null,
-      "description": "Tanlangan holat rangi"
+      "description": "Color of the selected state"
     },
     {
       "name": "size",
       "type": "'xs' | 'sm' | 'md' | 'lg'",
       "required": false,
       "default": null,
-      "description": "O'lcham"
+      "description": "Size"
     },
     {
       "name": "radius",
       "type": "'sm' | 'md' | 'none' | 'full'",
       "required": false,
       "default": null,
-      "description": "Burchaklar yumaloqligi"
+      "description": "Corner radius"
     },
     {
       "name": "isDisabled",
       "type": "boolean",
       "required": false,
       "default": null,
-      "description": "O'chirilgan holat"
+      "description": "Disabled state"
     },
     {
       "name": "isInvalid",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Xato (invalid) holat"
+      "description": "Invalid state"
     },
     {
       "name": "isRequired",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Majburiy maydon (* belgisi)"
+      "description": "Required field (shows *)"
     },
     {
       "name": "name",
       "type": "string",
       "required": false,
       "default": null,
-      "description": "Forma uchun input nomi"
+      "description": "Input name for forms"
     },
     {
       "name": "children",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Ichki kontent"
+      "description": "Inner content"
     },
     {
       "name": "className",
       "type": "string",
       "required": false,
       "default": "\"\"",
-      "description": "Qo'shimcha CSS klasslar"
+      "description": "Extra CSS classes"
     }
   ],
   "Chip": [
@@ -1159,84 +1166,84 @@
       "type": "'soft' | 'glass' | 'primary' | 'secondary' | 'tertiary'",
       "required": false,
       "default": "\"soft\"",
-      "description": "Ko'rinish: primary (to'liq rang), secondary (kulrang fon), tertiary (fonsiz) soft (yumshoq rangli fon) yoki glass (shisha fon)"
+      "description": "Style: primary (solid color), secondary (gray), tertiary (no background), soft (tinted) or glass"
     },
     {
       "name": "material",
       "type": "\"frosted\" | \"liquid\"",
       "required": false,
       "default": null,
-      "description": "Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi"
+      "description": "Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass)"
     },
     {
       "name": "color",
       "type": "'default' | 'accent' | 'success' | 'warning' | 'danger'",
       "required": false,
       "default": "\"default\"",
-      "description": "Rang"
+      "description": "Color"
     },
     {
       "name": "size",
       "type": "'xs' | 'sm' | 'md' | 'lg'",
       "required": false,
       "default": "\"md\"",
-      "description": "O'lcham"
+      "description": "Size"
     },
     {
       "name": "dot",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Matn oldida rangli nuqta ko'rsatadi (status uchun)"
+      "description": "Shows a colored dot before the text (for statuses)"
     },
     {
       "name": "startContent",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Matn oldidagi kontent (ikonka)"
+      "description": "Content before the text (icon)"
     },
     {
       "name": "endContent",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Matn ortidagi kontent"
+      "description": "Content after the text"
     },
     {
       "name": "onClose",
       "type": "() => void",
       "required": false,
       "default": null,
-      "description": "Berilsa, yopish (X) tugmasi chiqadi"
+      "description": "When set, a close (X) button is shown"
     },
     {
       "name": "avatar",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Chap tomondagi avatar"
+      "description": "Avatar on the left"
     },
     {
       "name": "isDisabled",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "O'chirilgan holat"
+      "description": "Disabled state"
     },
     {
       "name": "children",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Chip matni"
+      "description": "Chip text"
     },
     {
       "name": "className",
       "type": "string",
       "required": false,
       "default": "\"\"",
-      "description": "Qo'shimcha klasslar"
+      "description": "Extra classes"
     }
   ],
   "Divider": [
@@ -1245,21 +1252,21 @@
       "type": "'vertical' | 'horizontal'",
       "required": false,
       "default": "\"horizontal\"",
-      "description": "Yo'nalish: gorizontal yoki vertikal"
+      "description": "Orientation: horizontal or vertical"
     },
     {
       "name": "children",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "O'rtadagi label (faqat gorizontal)"
+      "description": "Centered label (horizontal only)"
     },
     {
       "name": "className",
       "type": "string",
       "required": false,
       "default": "\"\"",
-      "description": "Qo'shimcha klasslar"
+      "description": "Extra classes"
     }
   ],
   "Dropdown": [
@@ -1268,56 +1275,56 @@
       "type": "ReactNode",
       "required": true,
       "default": null,
-      "description": "DropdownTrigger va DropdownMenu"
+      "description": "DropdownTrigger and DropdownMenu"
     },
     {
       "name": "isDisabled",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "O'chirilgan (faol emas) holat"
+      "description": "Disabled (inactive) state"
     },
     {
       "name": "isOpen",
       "type": "boolean",
       "required": false,
       "default": null,
-      "description": "Ochiq holati (boshqariladigan)"
+      "description": "Open state (controlled)"
     },
     {
       "name": "defaultOpen",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Boshlang'ich ochiq holati (boshqarilmaydigan)"
+      "description": "Initial open state (uncontrolled)"
     },
     {
       "name": "onOpenChange",
       "type": "(open: boolean) => void",
       "required": false,
       "default": null,
-      "description": "Ochiq holati o'zgarganda chaqiriladi"
+      "description": "Called when the open state changes"
     },
     {
       "name": "placement",
       "type": "'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end' | 'left' | 'left-start' | 'left-end' | 'right' | 'right-start' | 'right-end'",
       "required": false,
       "default": "\"bottom-start\"",
-      "description": "Joylashuv tomoni"
+      "description": "Placement side"
     },
     {
       "name": "offset",
       "type": "number",
       "required": false,
       "default": "6",
-      "description": "Trigger'dan masofa (px)"
+      "description": "Distance from the trigger (px)"
     },
     {
       "name": "closeOnSelect",
       "type": "boolean",
       "required": false,
       "default": "true",
-      "description": "Element tanlanganda menyuni yopish"
+      "description": "Close the menu when an item is selected"
     }
   ],
   "DropdownTrigger": [
@@ -1326,7 +1333,7 @@
       "type": "ReactElement",
       "required": true,
       "default": null,
-      "description": "DropdownTrigger va DropdownMenu"
+      "description": "DropdownTrigger and DropdownMenu"
     }
   ],
   "DropdownMenu": [
@@ -1335,70 +1342,70 @@
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "DropdownTrigger va DropdownMenu"
+      "description": "DropdownTrigger and DropdownMenu"
     },
     {
       "name": "isBlurred",
       "type": "boolean",
       "required": false,
       "default": "true",
-      "description": "Menyuni shisha (blur) material qiladi; false — to'q fon"
+      "description": "Glass (blur) menu material; false gives a solid background"
     },
     {
       "name": "material",
       "type": "\"frosted\" | \"liquid\"",
       "required": false,
       "default": null,
-      "description": "Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi"
+      "description": "Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass)"
     },
     {
       "name": "aria-label",
       "type": "string",
       "required": false,
       "default": null,
-      "description": "Ekran o'quvchilar uchun nom"
+      "description": "Name for screen readers"
     },
     {
       "name": "selectionMode",
       "type": "'single' | 'multiple' | 'none'",
       "required": false,
       "default": "\"none\"",
-      "description": "Tanlash rejimi"
+      "description": "Selection mode"
     },
     {
       "name": "selectedKeys",
       "type": "Set<string>",
       "required": false,
       "default": null,
-      "description": "Tanlangan kalitlar (boshqariladigan)"
+      "description": "Selected keys (controlled)"
     },
     {
       "name": "defaultSelectedKeys",
       "type": "Set<string>",
       "required": false,
       "default": null,
-      "description": "Boshlang'ich tanlangan kalitlar"
+      "description": "Initially selected keys"
     },
     {
       "name": "onSelectionChange",
       "type": "(keys: Set<string>) => void",
       "required": false,
       "default": null,
-      "description": "Tanlov o'zgarganda chaqiriladi"
+      "description": "Called when the selection changes"
     },
     {
       "name": "onAction",
       "type": "(key: string) => void",
       "required": false,
       "default": null,
-      "description": "Element bosilganda chaqiriladi (kalit bilan)"
+      "description": "Called with the item key when an item is pressed"
     },
     {
       "name": "disabledKeys",
       "type": "Set<string>",
       "required": false,
       "default": null,
-      "description": "O'chirilgan elementlar kalitlari"
+      "description": "Keys of disabled items"
     }
   ],
   "DropdownItem": [
@@ -1407,63 +1414,63 @@
       "type": "string",
       "required": false,
       "default": null,
-      "description": "Elementning noyob kaliti"
+      "description": "Unique item key"
     },
     {
       "name": "startContent",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Boshidagi kontent (ikonka va h.k.)"
+      "description": "Leading content (icon, etc.)"
     },
     {
       "name": "endContent",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Oxiridagi kontent"
+      "description": "Trailing content"
     },
     {
       "name": "description",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Qo'shimcha tavsif matni"
+      "description": "Extra description text"
     },
     {
       "name": "shortcut",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Klaviatura yorlig'i (o'ng tomonda)"
+      "description": "Keyboard shortcut (on the right)"
     },
     {
       "name": "color",
       "type": "'default' | 'accent' | 'success' | 'warning' | 'danger'",
       "required": false,
       "default": "\"default\"",
-      "description": "Element rangi (masalan, danger)"
+      "description": "Item color (e.g. danger)"
     },
     {
       "name": "isDisabled",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "O'chirilgan (faol emas) holat"
+      "description": "Disabled (inactive) state"
     },
     {
       "name": "showDivider",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Pastida ajratuvchi chiziq ko'rsatish"
+      "description": "Shows a divider below"
     },
     {
       "name": "children",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "DropdownTrigger va DropdownMenu"
+      "description": "DropdownTrigger and DropdownMenu"
     }
   ],
   "DropdownSection": [
@@ -1472,21 +1479,21 @@
       "type": "string",
       "required": false,
       "default": null,
-      "description": "Bo'lim sarlavhasi"
+      "description": "Section title"
     },
     {
       "name": "showDivider",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Pastida ajratuvchi chiziq ko'rsatish"
+      "description": "Shows a divider below"
     },
     {
       "name": "children",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "DropdownTrigger va DropdownMenu"
+      "description": "DropdownTrigger and DropdownMenu"
     }
   ],
   "FileUpload": [
@@ -1495,84 +1502,84 @@
       "type": "'default' | 'secondary'",
       "required": false,
       "default": "\"default\"",
-      "description": "Ko'rinish: oq surface yoki kulrang (surface ichida)"
+      "description": "Style: white surface or gray (inside a surface)"
     },
     {
       "name": "accept",
       "type": "string",
       "required": false,
       "default": null,
-      "description": "Qabul qilinadigan fayl turlari (masalan, image/*)"
+      "description": "Accepted file types (e.g. image/*)"
     },
     {
       "name": "multiple",
       "type": "boolean",
       "required": false,
       "default": "true",
-      "description": "Bir nechta fayl tanlashga ruxsat"
+      "description": "Allows selecting multiple files"
     },
     {
       "name": "maxSizeMB",
       "type": "number",
       "required": false,
       "default": "10",
-      "description": "Fayl hajmining maksimal chegarasi (MB)"
+      "description": "Maximum file size (MB)"
     },
     {
       "name": "files",
       "type": "File[]",
       "required": false,
       "default": null,
-      "description": "Fayllar ro'yxati (boshqariladigan)"
+      "description": "Files (controlled)"
     },
     {
       "name": "onFilesChange",
       "type": "(files: File[]) => void",
       "required": false,
       "default": null,
-      "description": "Fayllar ro'yxati o'zgarganda chaqiriladi"
+      "description": "Called when the file list changes"
     },
     {
       "name": "progress",
       "type": "Record<string, number>",
       "required": false,
       "default": null,
-      "description": "Fayl nomi bo'yicha yuklash progressi (0–100)"
+      "description": "Upload progress per file name (0–100)"
     },
     {
       "name": "showPreview",
       "type": "boolean",
       "required": false,
       "default": "true",
-      "description": "Rasmlar uchun thumbnail ko'rsatadi"
+      "description": "Shows thumbnails for images"
     },
     {
       "name": "label",
       "type": "string",
       "required": false,
-      "default": "\"Click to upload or drag and drop\"",
-      "description": "Drop zona sarlavhasi"
+      "default": null,
+      "description": "Drop zone title"
     },
     {
       "name": "description",
       "type": "string",
       "required": false,
       "default": null,
-      "description": "Drop zona ostidagi izoh"
+      "description": "Hint below the drop zone"
     },
     {
       "name": "isDisabled",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Yuklashni o'chiradi"
+      "description": "Disables uploading"
     },
     {
       "name": "className",
       "type": "string",
       "required": false,
       "default": "\"\"",
-      "description": "Qo'shimcha CSS klasslar"
+      "description": "Extra CSS classes"
     }
   ],
   "Input": [
@@ -1581,133 +1588,133 @@
       "type": "'primary' | 'secondary'",
       "required": false,
       "default": "\"primary\"",
-      "description": "Ko'rinish: primary — oq maydon soyali (kulrang fonda), secondary — kulrang maydon (oq karta ichida)"
+      "description": "Style: primary — white field with a shadow (on the gray canvas), secondary — gray field (inside white cards)"
     },
     {
       "name": "size",
       "type": "'xs' | 'sm' | 'md' | 'lg'",
       "required": false,
       "default": "\"md\"",
-      "description": "O'lcham"
+      "description": "Size"
     },
     {
       "name": "radius",
       "type": "'sm' | 'md' | 'lg' | 'full'",
       "required": false,
       "default": "\"md\"",
-      "description": "Burchaklar yumaloqligi"
+      "description": "Corner radius"
     },
     {
       "name": "label",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Maydon sarlavhasi (label) — maydon tepasida"
+      "description": "Field label, shown above the field"
     },
     {
       "name": "labelPlacement",
       "type": "'outside' | 'outside-left'",
       "required": false,
       "default": "\"outside\"",
-      "description": "Label joylashuvi: tepada yoki chap tomonda"
+      "description": "Label placement: above or to the left"
     },
     {
       "name": "description",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Maydon ostidagi yordamchi matn"
+      "description": "Helper text below the field"
     },
     {
       "name": "errorMessage",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Xato holatida ko'rsatiladigan matn"
+      "description": "Text shown in the invalid state"
     },
     {
       "name": "isInvalid",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Xato (invalid) holat"
+      "description": "Invalid state"
     },
     {
       "name": "isDisabled",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "O'chirilgan holat"
+      "description": "Disabled state"
     },
     {
       "name": "isReadOnly",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Faqat o'qish uchun"
+      "description": "Read-only"
     },
     {
       "name": "isRequired",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Majburiy maydon (* belgisi)"
+      "description": "Required field (shows *)"
     },
     {
       "name": "isClearable",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Qiymatni tozalash (X) tugmasini ko'rsatadi"
+      "description": "Shows a clear (X) button"
     },
     {
       "name": "onClear",
       "type": "() => void",
       "required": false,
       "default": null,
-      "description": "Tozalash tugmasi bosilganda chaqiriladi"
+      "description": "Called when the clear button is pressed"
     },
     {
       "name": "onValueChange",
       "type": "(value: string) => void",
       "required": false,
       "default": null,
-      "description": "Qiymat o'zgarganda yangi qiymat bilan chaqiriladi"
+      "description": "Called with the new value when it changes"
     },
     {
       "name": "startContent",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Boshidagi kontent (masalan, ikonka)"
+      "description": "Leading content (e.g. an icon)"
     },
     {
       "name": "endContent",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Oxiridagi kontent (masalan, ikonka)"
+      "description": "Trailing content (e.g. an icon)"
     },
     {
       "name": "fullWidth",
       "type": "boolean",
       "required": false,
       "default": "true",
-      "description": "Konteyner kengligini to'liq egallaydi"
+      "description": "Fills the container width"
     },
     {
       "name": "inputOverlay",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Input matni orqasida chiziladigan qatlam — masalan, mask yo'riqnomasi (PhoneInput ishlatadi)"
+      "description": "Layer drawn behind the input text — e.g. a mask guide (used by PhoneInput)"
     },
     {
       "name": "classNames",
       "type": "Partial<Record<\"base\" | \"label\" | \"inputWrapper\" | \"input\" | \"description\" | \"errorMessage\", string>>",
       "required": false,
       "default": "{}",
-      "description": "Ichki qismlar uchun qo'shimcha klasslar"
+      "description": "Extra classes for inner slots"
     }
   ],
   "Kbd": [
@@ -1716,14 +1723,37 @@
       "type": "KbdKey | KbdKey[]",
       "required": false,
       "default": null,
-      "description": "Modifikator tugma(lar): command, shift, ctrl va h.k."
+      "description": "Modifier key(s): command, shift, ctrl, etc."
     },
     {
       "name": "children",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Asosiy tugma matni"
+      "description": "Primary button text"
+    }
+  ],
+  "LocaleProvider": [
+    {
+      "name": "locale",
+      "type": "'en' | 'uz' | 'ru'",
+      "required": false,
+      "default": "\"en\"",
+      "description": "Language of the library's built-in texts and aria-labels"
+    },
+    {
+      "name": "messages",
+      "type": "DeepPartial<NRMessages>",
+      "required": false,
+      "default": null,
+      "description": "Override individual messages (merged over the chosen locale)"
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": true,
+      "default": null,
+      "description": "The part of the app the locale applies to"
     }
   ],
   "Modal": [
@@ -1732,98 +1762,119 @@
       "type": "boolean",
       "required": true,
       "default": null,
-      "description": "Modal ochiqmi"
+      "description": "Whether the modal is open"
     },
     {
       "name": "onClose",
       "type": "() => void",
       "required": true,
       "default": null,
-      "description": "Yopilganda chaqiriladi"
+      "description": "Called when closed"
     },
     {
       "name": "size",
       "type": "'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'full' | '2xl' | '3xl' | '4xl' | '5xl'",
       "required": false,
       "default": "\"md\"",
-      "description": "Modal kengligi"
+      "description": "Modal width"
     },
     {
       "name": "radius",
       "type": "'sm' | 'md' | 'lg' | 'none'",
       "required": false,
       "default": "\"lg\"",
-      "description": "Burchak yumaloqligi"
+      "description": "Corner radius"
     },
     {
       "name": "backdrop",
       "type": "'transparent' | 'opaque' | 'blur'",
       "required": false,
       "default": "\"opaque\"",
-      "description": "Orqa fon turi"
+      "description": "Backdrop style"
     },
     {
       "name": "isBlurred",
       "type": "boolean",
       "required": false,
       "default": "true",
-      "description": "Oynani shisha (blur) material qiladi; false — to'q fon"
+      "description": "Glass (blur) dialog material; false gives a solid background"
     },
     {
       "name": "material",
       "type": "\"frosted\" | \"liquid\"",
       "required": false,
       "default": null,
-      "description": "Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi"
+      "description": "Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass)"
     },
     {
       "name": "placement",
       "type": "'top' | 'bottom' | 'auto' | 'center'",
       "required": false,
       "default": "\"auto\"",
-      "description": "Ekrandagi joylashuv (auto — mobilda pastdan)"
+      "description": "Position on screen (auto: bottom sheet on mobile)"
     },
     {
       "name": "isDismissable",
       "type": "boolean",
       "required": false,
       "default": "true",
-      "description": "Tashqariga bosilganda yopilishi"
+      "description": "Closes on outside click"
     },
     {
       "name": "isKeyboardDismissDisabled",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Escape bilan yopilishni o'chirish"
+      "description": "Disables closing with Escape"
     },
     {
       "name": "hideCloseButton",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Yopish (X) tugmasini yashirish"
+      "description": "Hides the close (X) button"
     },
     {
       "name": "scrollBehavior",
       "type": "'outside' | 'inside' | 'normal'",
       "required": false,
       "default": "\"inside\"",
-      "description": "Uzun kontentda scroll qayerda bo'lishi"
+      "description": "Where scrolling happens for long content"
     },
     {
       "name": "className",
       "type": "string",
       "required": false,
       "default": "\"\"",
-      "description": "Qo'shimcha CSS klasslar"
+      "description": "Extra CSS classes"
     },
     {
       "name": "children",
       "type": "ReactNode | ((onClose: () => void) => ReactNode)",
       "required": false,
       "default": null,
-      "description": "Kontent yoki (onClose) => kontent funksiyasi"
+      "description": "Content, or a (onClose) => content function"
+    },
+    {
+      "name": "aria-label",
+      "type": "string",
+      "required": false,
+      "default": null,
+      "description": "Accessible name for a modal without a ModalHeader (a ModalHeader is linked automatically)"
+    },
+    {
+      "name": "aria-labelledby",
+      "type": "string",
+      "required": false,
+      "default": null,
+      "description": "Id of the element that names the dialog (overrides the automatic ModalHeader link)"
+    },
+    {
+      "name": "aria-describedby",
+      "type": "string",
+      "required": false,
+      "default": null,
+      "description": "Id of the element that describes the dialog"
     }
   ],
   "ModalContent": [
@@ -1832,7 +1883,7 @@
       "type": "ReactNode | ((onClose: () => void) => ReactNode)",
       "required": false,
       "default": null,
-      "description": "Kontent yoki (onClose) => kontent funksiyasi"
+      "description": "Content, or a (onClose) => content function"
     }
   ],
   "ModalHeader": [
@@ -1841,7 +1892,7 @@
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Sarlavha kontenti"
+      "description": "Header content"
     }
   ],
   "ModalBody": [
@@ -1850,7 +1901,7 @@
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Asosiy kontent"
+      "description": "Main content"
     }
   ],
   "ModalFooter": [
@@ -1859,7 +1910,7 @@
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Pastki qism (odatda tugmalar)"
+      "description": "Footer (usually buttons)"
     }
   ],
   "Navbar": [
@@ -1868,70 +1919,70 @@
       "type": "'sm' | 'md' | 'lg' | 'xl' | 'full' | '2xl'",
       "required": false,
       "default": "\"lg\"",
-      "description": "Ichki kontentning maksimal kengligi"
+      "description": "Maximum width of the inner content"
     },
     {
       "name": "height",
       "type": "string",
       "required": false,
       "default": "\"4rem\"",
-      "description": "Navbar balandligi (CSS qiymat)"
+      "description": "Navbar height (CSS value)"
     },
     {
       "name": "isBordered",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Pastki chegara chizig'i"
+      "description": "Bottom border"
     },
     {
       "name": "isBlurred",
       "type": "boolean",
       "required": false,
       "default": "true",
-      "description": "Shaffof blur fon"
+      "description": "Translucent blur background"
     },
     {
       "name": "material",
       "type": "\"frosted\" | \"liquid\"",
       "required": false,
       "default": null,
-      "description": "Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi"
+      "description": "Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass)"
     },
     {
       "name": "position",
       "type": "\"static\" | \"sticky\" | \"floating\"",
       "required": false,
       "default": "\"sticky\"",
-      "description": "Joylashuv turi"
+      "description": "Positioning mode"
     },
     {
       "name": "shouldHideOnScroll",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Pastga scroll qilganda yashirish"
+      "description": "Hides on scroll down"
     },
     {
       "name": "isMenuOpen",
       "type": "boolean",
       "required": false,
       "default": null,
-      "description": "Mobil menyu ochiqmi (boshqariladigan)"
+      "description": "Whether the mobile menu is open (controlled)"
     },
     {
       "name": "onMenuOpenChange",
       "type": "(open: boolean) => void",
       "required": false,
       "default": null,
-      "description": "Mobil menyu holati o'zgarganda chaqiriladi"
+      "description": "Called when the mobile menu opens or closes"
     },
     {
       "name": "children",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Ichki kontent"
+      "description": "Inner content"
     }
   ],
   "NavbarBrand": [
@@ -1940,7 +1991,7 @@
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Ichki kontent"
+      "description": "Inner content"
     }
   ],
   "NavbarContent": [
@@ -1949,21 +2000,21 @@
       "type": "\"start\" | \"center\" | \"end\"",
       "required": false,
       "default": "\"start\"",
-      "description": "Gorizontal tekislash"
+      "description": "Horizontal alignment"
     },
     {
       "name": "isAlwaysVisible",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Mobilda ham ko'rinib turish (default md'dan kichikda yashiriladi)"
+      "description": "Stays visible on mobile (hidden below md by default)"
     },
     {
       "name": "children",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Ichki kontent"
+      "description": "Inner content"
     }
   ],
   "NavbarItem": [
@@ -1972,21 +2023,21 @@
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Faol (tanlangan) holat"
+      "description": "Active (selected) state"
     },
     {
       "name": "variant",
       "type": "\"underline\" | \"pill\" | \"text\"",
       "required": false,
       "default": "\"underline\"",
-      "description": "Faol element ko'rinishi"
+      "description": "Active item style"
     },
     {
       "name": "children",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Ichki kontent"
+      "description": "Inner content"
     }
   ],
   "NavbarMenuToggle": [
@@ -1994,8 +2045,8 @@
       "name": "srOnlyText",
       "type": "string",
       "required": false,
-      "default": "\"Toggle menu\"",
-      "description": "Ekran o'quvchilar uchun matn"
+      "default": null,
+      "description": "Text for screen readers"
     }
   ],
   "NavbarMenu": [
@@ -2004,7 +2055,7 @@
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Ichki kontent"
+      "description": "Inner content"
     }
   ],
   "NavbarMenuItem": [
@@ -2013,21 +2064,21 @@
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Faol (tanlangan) holat"
+      "description": "Active (selected) state"
     },
     {
       "name": "index",
       "type": "number",
       "required": false,
       "default": "0",
-      "description": "Animatsiya kechikishi uchun tartib raqami"
+      "description": "Index used to stagger the enter animation"
     },
     {
       "name": "children",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Ichki kontent"
+      "description": "Inner content"
     }
   ],
   "Pagination": [
@@ -2036,77 +2087,77 @@
       "type": "number",
       "required": true,
       "default": null,
-      "description": "Jami sahifalar soni"
+      "description": "Total number of pages"
     },
     {
       "name": "page",
       "type": "number",
       "required": true,
       "default": null,
-      "description": "Joriy sahifa"
+      "description": "Current page"
     },
     {
       "name": "onChange",
       "type": "(page: number) => void",
       "required": true,
       "default": null,
-      "description": "Sahifa o'zgarganda chaqiriladi"
+      "description": "Called when the page changes"
     },
     {
       "name": "siblings",
       "type": "number",
       "required": false,
       "default": "1",
-      "description": "Joriy sahifa yonida ko'rinadigan sahifalar soni"
+      "description": "Pages shown on each side of the current page"
     },
     {
       "name": "color",
       "type": "'default' | 'accent'",
       "required": false,
       "default": "\"default\"",
-      "description": "Faol sahifa rangi: default (qora) yoki accent (ko'k)"
+      "description": "Active page color: default (black) or accent (blue)"
     },
     {
       "name": "size",
       "type": "'xs' | 'sm' | 'md' | 'lg'",
       "required": false,
       "default": "\"md\"",
-      "description": "O'lcham"
+      "description": "Size"
     },
     {
       "name": "variant",
       "type": "'surface' | 'tertiary' | 'ghost'",
       "required": false,
       "default": "\"ghost\"",
-      "description": "Ko'rinish: ghost (shaffof), tertiary (kulrang), surface (oq panel ichida)"
+      "description": "Style: ghost (transparent), tertiary (gray), surface (inside a white panel)"
     },
     {
       "name": "showControls",
       "type": "boolean",
       "required": false,
       "default": "true",
-      "description": "Oldingi/keyingi tugmalarini ko'rsatish"
+      "description": "Shows previous / next buttons"
     },
     {
       "name": "isCompact",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Tugmalarni bitta pill ichida zich joylashtirish"
+      "description": "Packs the buttons tightly into one pill"
     },
     {
       "name": "isDisabled",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "O'chirilgan (faol emas) holat"
+      "description": "Disabled (inactive) state"
     },
     {
       "name": "className",
       "type": "string",
       "required": false,
       "default": "\"\"",
-      "description": "Qo'shimcha CSS klasslar"
+      "description": "Extra CSS classes"
     }
   ],
   "PhoneInput": [
@@ -2115,203 +2166,203 @@
       "type": "string",
       "required": false,
       "default": "\"UZ\"",
-      "description": "Davlat: ISO qisqartmasi — 2 harfli (\"UZ\") yoki 3 harfli (\"UZB\"), katta-kichik harf farqi yo'q"
+      "description": "Country as an ISO code — 2 letters (\"UZ\") or 3 letters (\"UZB\"), case-insensitive"
     },
     {
       "name": "value",
       "type": "string",
       "required": false,
       "default": null,
-      "description": "Qiymat (E.164 \"+998901234567\" yoki faqat raqamlar) — boshqariladigan rejim"
+      "description": "Value (E.164 \"+998901234567\" or digits only) — controlled"
     },
     {
       "name": "defaultValue",
       "type": "string",
       "required": false,
       "default": null,
-      "description": "Boshlang'ich qiymat (boshqarilmaydigan rejim)"
+      "description": "Initial value (uncontrolled)"
     },
     {
       "name": "onValueChange",
       "type": "(value: string, info: PhoneValueInfo) => void",
       "required": false,
       "default": null,
-      "description": "O'zgarganda: E.164 qiymat (\"+998901234567\", bo'sh bo'lsa \"\") va qo'shimcha ma'lumot"
+      "description": "Called with the E.164 value (\"+998901234567\", or \"\" when empty) and extra info"
     },
     {
       "name": "isCountrySelectable",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Davlatni ro'yxatdan tanlash imkoniyati (bayroq + kod tugmasi)"
+      "description": "Lets the user pick the country from a list (flag + dial code button)"
     },
     {
       "name": "onCountryChange",
       "type": "(iso2: string) => void",
       "required": false,
       "default": null,
-      "description": "Davlat o'zgarganda (ISO alpha-2) chaqiriladi"
+      "description": "Called with the ISO alpha-2 code when the country changes"
     },
     {
       "name": "countries",
       "type": "string[]",
       "required": false,
       "default": null,
-      "description": "Tanlash ro'yxatini shu davlatlar bilan cheklash (ISO kodlari)"
+      "description": "Limits the picker to these countries (ISO codes)"
     },
     {
       "name": "placeholderChar",
       "type": "string",
       "required": false,
       "default": "\"_\"",
-      "description": "Maskaning bo'sh joylari belgisi"
+      "description": "Character used for empty mask slots"
     },
     {
       "name": "showMaskGuide",
       "type": "boolean",
       "required": false,
       "default": "true",
-      "description": "Kiritilmagan qismni kulrang mask bilan ko'rsatish"
+      "description": "Shows the remaining part as a gray mask guide"
     },
     {
       "name": "flag",
       "type": "\"emoji\" | \"code\" | \"none\" | ((country: PhoneCountry) => ReactNode)",
       "required": false,
       "default": "\"emoji\"",
-      "description": "Bayroq: emoji, ISO kod, ko'rsatmaslik yoki o'z render funksiyangiz"
+      "description": "Flag: emoji, ISO code, none, or your own render function"
     },
     {
       "name": "autoValidate",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Raqam to'liq bo'lmasa, maydondan chiqqanda xato holatini avtomatik ko'rsatish"
+      "description": "Automatically shows an error on blur when the number is incomplete"
     },
     {
       "name": "incompleteMessage",
       "type": "ReactNode",
       "required": false,
-      "default": "\"Telefon raqam to'liq kiritilmagan\"",
-      "description": "autoValidate xato matni"
+      "default": null,
+      "description": "Error text used by autoValidate"
     },
     {
       "name": "startContent",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Boshidagi qo'shimcha kontent (bayroq/kod oldidan)"
+      "description": "Extra leading content (before the flag and dial code)"
     },
     {
       "name": "size",
       "type": "'xs' | 'sm' | 'md' | 'lg'",
       "required": false,
       "default": "\"md\"",
-      "description": "O'lcham"
+      "description": "Size"
     },
     {
       "name": "label",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Maydon sarlavhasi (label) — maydon tepasida"
+      "description": "Field label, shown above the field"
     },
     {
       "name": "description",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Maydon ostidagi yordamchi matn"
+      "description": "Helper text below the field"
     },
     {
       "name": "errorMessage",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Xato holatida ko'rsatiladigan matn"
+      "description": "Text shown in the invalid state"
     },
     {
       "name": "variant",
       "type": "'primary' | 'secondary'",
       "required": false,
       "default": null,
-      "description": "Ko'rinish: primary — oq maydon soyali (kulrang fonda), secondary — kulrang maydon (oq karta ichida)"
+      "description": "Style: primary — white field with a shadow (on the gray canvas), secondary — gray field (inside white cards)"
     },
     {
       "name": "radius",
       "type": "'sm' | 'md' | 'lg' | 'full'",
       "required": false,
       "default": null,
-      "description": "Burchaklar yumaloqligi"
+      "description": "Corner radius"
     },
     {
       "name": "labelPlacement",
       "type": "'outside' | 'outside-left'",
       "required": false,
       "default": null,
-      "description": "Label joylashuvi: tepada yoki chap tomonda"
+      "description": "Label placement: above or to the left"
     },
     {
       "name": "isInvalid",
       "type": "boolean",
       "required": false,
       "default": null,
-      "description": "Xato (invalid) holat"
+      "description": "Invalid state"
     },
     {
       "name": "isDisabled",
       "type": "boolean",
       "required": false,
       "default": null,
-      "description": "O'chirilgan holat"
+      "description": "Disabled state"
     },
     {
       "name": "isReadOnly",
       "type": "boolean",
       "required": false,
       "default": null,
-      "description": "Faqat o'qish uchun"
+      "description": "Read-only"
     },
     {
       "name": "isRequired",
       "type": "boolean",
       "required": false,
       "default": null,
-      "description": "Majburiy maydon (* belgisi)"
+      "description": "Required field (shows *)"
     },
     {
       "name": "isClearable",
       "type": "boolean",
       "required": false,
       "default": null,
-      "description": "Qiymatni tozalash (X) tugmasini ko'rsatadi"
+      "description": "Shows a clear (X) button"
     },
     {
       "name": "onClear",
       "type": "() => void",
       "required": false,
       "default": null,
-      "description": "Tozalash tugmasi bosilganda chaqiriladi"
+      "description": "Called when the clear button is pressed"
     },
     {
       "name": "endContent",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Oxiridagi kontent (masalan, ikonka)"
+      "description": "Trailing content (e.g. an icon)"
     },
     {
       "name": "fullWidth",
       "type": "boolean",
       "required": false,
       "default": null,
-      "description": "Konteyner kengligini to'liq egallaydi"
+      "description": "Fills the container width"
     },
     {
       "name": "classNames",
       "type": "Partial<Record<\"base\" | \"label\" | \"inputWrapper\" | \"input\" | \"description\" | \"errorMessage\", string>>",
       "required": false,
       "default": null,
-      "description": "Ichki qismlar uchun qo'shimcha klasslar"
+      "description": "Extra classes for inner slots"
     }
   ],
   "Popover": [
@@ -2320,91 +2371,91 @@
       "type": "boolean",
       "required": false,
       "default": null,
-      "description": "Ochiq holati (boshqariladigan)"
+      "description": "Open state (controlled)"
     },
     {
       "name": "defaultOpen",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Boshlang'ich ochiq holati (boshqarilmaydigan)"
+      "description": "Initial open state (uncontrolled)"
     },
     {
       "name": "onOpenChange",
       "type": "(open: boolean) => void",
       "required": false,
       "default": null,
-      "description": "Ochiq holati o'zgarganda chaqiriladi"
+      "description": "Called when the open state changes"
     },
     {
       "name": "placement",
       "type": "'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end' | 'left' | 'left-start' | 'left-end' | 'right' | 'right-start' | 'right-end'",
       "required": false,
       "default": "\"bottom\"",
-      "description": "Joylashuv tomoni"
+      "description": "Placement side"
     },
     {
       "name": "offset",
       "type": "number",
       "required": false,
       "default": "8",
-      "description": "Trigger'dan masofa (px)"
+      "description": "Distance from the trigger (px)"
     },
     {
       "name": "showArrow",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Ko'rsatkich strelkani ko'rsatish"
+      "description": "Shows the pointer arrow"
     },
     {
       "name": "radius",
       "type": "'sm' | 'md' | 'lg' | 'none'",
       "required": false,
       "default": "\"lg\"",
-      "description": "Burchak yumaloqligi"
+      "description": "Corner radius"
     },
     {
       "name": "isBlurred",
       "type": "boolean",
       "required": false,
       "default": "true",
-      "description": "Panelni shisha (blur) material qiladi; false — to'q fon"
+      "description": "Glass (blur) panel material; false gives a solid background"
     },
     {
       "name": "material",
       "type": "\"frosted\" | \"liquid\"",
       "required": false,
       "default": null,
-      "description": "Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi"
+      "description": "Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass)"
     },
     {
       "name": "backdrop",
       "type": "'transparent' | 'opaque' | 'blur'",
       "required": false,
       "default": "\"transparent\"",
-      "description": "Orqa fon turi"
+      "description": "Backdrop style"
     },
     {
       "name": "shouldCloseOnBlur",
       "type": "boolean",
       "required": false,
       "default": null,
-      "description": "Fokus chiqib ketganda yopilishi"
+      "description": "Close when focus leaves"
     },
     {
       "name": "isDismissable",
       "type": "boolean",
       "required": false,
       "default": "true",
-      "description": "Tashqariga bosilganda yopilishi"
+      "description": "Closes on outside click"
     },
     {
       "name": "children",
       "type": "ReactNode",
       "required": true,
       "default": null,
-      "description": "PopoverTrigger va PopoverContent"
+      "description": "PopoverTrigger and PopoverContent"
     }
   ],
   "PopoverTrigger": [
@@ -2413,7 +2464,7 @@
       "type": "ReactElement",
       "required": true,
       "default": null,
-      "description": "PopoverTrigger va PopoverContent"
+      "description": "PopoverTrigger and PopoverContent"
     }
   ],
   "PopoverContent": [
@@ -2422,7 +2473,7 @@
       "type": "ReactNode | ((onClose: () => void) => ReactNode)",
       "required": false,
       "default": null,
-      "description": "PopoverTrigger va PopoverContent"
+      "description": "PopoverTrigger and PopoverContent"
     }
   ],
   "BillingToggle": [
@@ -2431,35 +2482,35 @@
       "type": "'monthly' | 'yearly'",
       "required": true,
       "default": null,
-      "description": "Tanlangan davr"
+      "description": "Selected period"
     },
     {
       "name": "onChange",
       "type": "(value: BillingPeriod) => void",
       "required": true,
       "default": null,
-      "description": "Davr o'zgarganda chaqiriladi"
+      "description": "Called when the billing period changes"
     },
     {
       "name": "yearlyBadge",
       "type": "string",
       "required": false,
       "default": "\"-20%\"",
-      "description": "Yillik variant yonidagi chegirma belgisi"
+      "description": "Discount badge next to the yearly option"
     },
     {
       "name": "labels",
       "type": "{ monthly: string; yearly: string }",
       "required": false,
-      "default": "{ monthly: \"Monthly\", yearly: \"Yearly\" }",
-      "description": "Tugma matnlari"
+      "default": null,
+      "description": "Button labels"
     },
     {
       "name": "className",
       "type": "string",
       "required": false,
       "default": "\"\"",
-      "description": "Qo'shimcha CSS klasslar"
+      "description": "Extra CSS classes"
     }
   ],
   "PricingCard": [
@@ -2468,112 +2519,112 @@
       "type": "string",
       "required": true,
       "default": null,
-      "description": "Tarif nomi"
+      "description": "Plan name"
     },
     {
       "name": "description",
       "type": "string",
       "required": false,
       "default": null,
-      "description": "Tarif tavsifi"
+      "description": "Plan description"
     },
     {
       "name": "price",
       "type": "{ monthly: number; yearly: number } | string",
       "required": true,
       "default": null,
-      "description": "Narx: { monthly, yearly } yoki matn (masalan, \"Custom\")"
+      "description": "Price: { monthly, yearly } or text (e.g. \"Custom\")"
     },
     {
       "name": "period",
       "type": "'monthly' | 'yearly'",
       "required": true,
       "default": null,
-      "description": "Joriy to'lov davri"
+      "description": "Current billing period"
     },
     {
       "name": "currency",
       "type": "string",
       "required": false,
       "default": "\"$\"",
-      "description": "Valyuta belgisi"
+      "description": "Currency symbol"
     },
     {
       "name": "features",
       "type": "PricingFeature[]",
       "required": true,
       "default": null,
-      "description": "Imkoniyatlar ro'yxati (string yoki { label, included })"
+      "description": "Feature list (string or { label, included })"
     },
     {
       "name": "featuresTitle",
       "type": "string",
       "required": false,
       "default": null,
-      "description": "Imkoniyatlar ro'yxati sarlavhasi"
+      "description": "Feature list heading"
     },
     {
       "name": "ctaLabel",
       "type": "string",
       "required": false,
-      "default": "\"Get started\"",
-      "description": "Asosiy tugma matni"
+      "default": null,
+      "description": "Primary button text"
     },
     {
       "name": "onSelect",
       "type": "() => void",
       "required": false,
       "default": null,
-      "description": "Tarif tugmasi bosilganda chaqiriladi"
+      "description": "Called when the plan button is pressed"
     },
     {
       "name": "isPopular",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Mashhur tarif sifatida ajratib ko'rsatadi (accent ramka + belgi)"
+      "description": "Highlights the plan as popular (accent border + badge)"
     },
     {
       "name": "popularLabel",
       "type": "string",
       "required": false,
-      "default": "\"Most popular\"",
-      "description": "Mashhur tarif belgisi matni"
+      "default": null,
+      "description": "Text of the popular plan badge"
     },
     {
       "name": "variant",
       "type": "\"default\" | \"inverse\" | \"gradient\"",
       "required": false,
       "default": "\"default\"",
-      "description": "Ko'rinish: default (yengil gradient), inverse (teskari, qora) yoki gradient (accent → indigo)"
+      "description": "Style: default (soft gradient), inverse (dark) or gradient (accent → indigo)"
     },
     {
       "name": "isBlurred",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Kartani shisha (glass) qiladi — rangli fon ustida"
+      "description": "Makes the card glass — for colorful backgrounds"
     },
     {
       "name": "material",
       "type": "\"frosted\" | \"liquid\"",
       "required": false,
       "default": null,
-      "description": "Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi"
+      "description": "Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass)"
     },
     {
       "name": "icon",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Sarlavha yonidagi ikonka"
+      "description": "Icon next to the title"
     },
     {
       "name": "className",
       "type": "string",
       "required": false,
       "default": "\"\"",
-      "description": "Qo'shimcha CSS klasslar"
+      "description": "Extra CSS classes"
     }
   ],
   "Progress": [
@@ -2582,98 +2633,98 @@
       "type": "number",
       "required": false,
       "default": "0",
-      "description": "Joriy qiymat"
+      "description": "Current value"
     },
     {
       "name": "minValue",
       "type": "number",
       "required": false,
       "default": "0",
-      "description": "Minimal qiymat"
+      "description": "Minimum value"
     },
     {
       "name": "maxValue",
       "type": "number",
       "required": false,
       "default": "100",
-      "description": "Maksimal qiymat"
+      "description": "Maximum value"
     },
     {
       "name": "color",
       "type": "'default' | 'accent' | 'success' | 'warning' | 'danger'",
       "required": false,
       "default": "\"accent\"",
-      "description": "Rang"
+      "description": "Color"
     },
     {
       "name": "size",
       "type": "'xs' | 'sm' | 'md' | 'lg'",
       "required": false,
       "default": "\"md\"",
-      "description": "O'lcham (chiziq qalinligi)"
+      "description": "Size (bar thickness)"
     },
     {
       "name": "radius",
       "type": "'sm' | 'md' | 'none' | 'full'",
       "required": false,
       "default": "\"full\"",
-      "description": "Burchak yumaloqligi"
+      "description": "Corner radius"
     },
     {
       "name": "showValueLabel",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Qiymat yorlig'ini ko'rsatish"
+      "description": "Shows the value label"
     },
     {
       "name": "valueLabel",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Qiymat o'rniga ko'rsatiladigan maxsus matn"
+      "description": "Custom text shown instead of the value"
     },
     {
       "name": "label",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Yorliq matni"
+      "description": "Label text"
     },
     {
       "name": "formatOptions",
       "type": "Intl.NumberFormatOptions",
       "required": false,
       "default": null,
-      "description": "Qiymatni formatlash (Intl.NumberFormat) sozlamalari"
+      "description": "Value formatting options (Intl.NumberFormat)"
     },
     {
       "name": "isIndeterminate",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Noma'lum davomiylikdagi (cheksiz) animatsiya"
+      "description": "Indeterminate (endless) animation"
     },
     {
       "name": "isStriped",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Chiziqli (striped) animatsiyali to'ldirish"
+      "description": "Animated striped fill"
     },
     {
       "name": "isDisabled",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "O'chirilgan (faol emas) holat"
+      "description": "Disabled (inactive) state"
     },
     {
       "name": "className",
       "type": "string",
       "required": false,
       "default": "\"\"",
-      "description": "Qo'shimcha CSS klasslar"
+      "description": "Extra CSS classes"
     }
   ],
   "CircularProgress": [
@@ -2682,91 +2733,91 @@
       "type": "number",
       "required": false,
       "default": "0",
-      "description": "Joriy qiymat"
+      "description": "Current value"
     },
     {
       "name": "minValue",
       "type": "number",
       "required": false,
       "default": "0",
-      "description": "Minimal qiymat"
+      "description": "Minimum value"
     },
     {
       "name": "maxValue",
       "type": "number",
       "required": false,
       "default": "100",
-      "description": "Maksimal qiymat"
+      "description": "Maximum value"
     },
     {
       "name": "color",
       "type": "'default' | 'accent' | 'success' | 'warning' | 'danger'",
       "required": false,
       "default": "\"accent\"",
-      "description": "Rang"
+      "description": "Color"
     },
     {
       "name": "size",
       "type": "'xs' | 'sm' | 'md' | 'lg' | 'xl'",
       "required": false,
       "default": "\"md\"",
-      "description": "O'lcham"
+      "description": "Size"
     },
     {
       "name": "strokeWidth",
       "type": "number",
       "required": false,
       "default": null,
-      "description": "Doira chizig'i qalinligi"
+      "description": "Ring stroke width"
     },
     {
       "name": "showValueLabel",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Qiymat yorlig'ini markazda ko'rsatish"
+      "description": "Shows the value label in the center"
     },
     {
       "name": "valueLabel",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Qiymat o'rniga ko'rsatiladigan maxsus matn"
+      "description": "Custom text shown instead of the value"
     },
     {
       "name": "label",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Pastdagi yorliq matni"
+      "description": "Label text below"
     },
     {
       "name": "formatOptions",
       "type": "Intl.NumberFormatOptions",
       "required": false,
       "default": null,
-      "description": "Qiymatni formatlash (Intl.NumberFormat) sozlamalari"
+      "description": "Value formatting options (Intl.NumberFormat)"
     },
     {
       "name": "isIndeterminate",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Noma'lum davomiylikdagi (cheksiz) animatsiya"
+      "description": "Indeterminate (endless) animation"
     },
     {
       "name": "isDisabled",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "O'chirilgan (faol emas) holat"
+      "description": "Disabled (inactive) state"
     },
     {
       "name": "className",
       "type": "string",
       "required": false,
       "default": "\"\"",
-      "description": "Qo'shimcha CSS klasslar"
+      "description": "Extra CSS classes"
     }
   ],
   "RadioGroup": [
@@ -2775,112 +2826,112 @@
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Guruh sarlavhasi"
+      "description": "Group label"
     },
     {
       "name": "description",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Maydon ostidagi yordamchi matn"
+      "description": "Helper text below the field"
     },
     {
       "name": "errorMessage",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Xato holatida ko'rsatiladigan matn"
+      "description": "Text shown in the invalid state"
     },
     {
       "name": "orientation",
       "type": "\"vertical\" | \"horizontal\"",
       "required": false,
       "default": "\"vertical\"",
-      "description": "Elementlar yo'nalishi"
+      "description": "Items orientation"
     },
     {
       "name": "value",
       "type": "string",
       "required": false,
       "default": null,
-      "description": "Tanlangan qiymat (controlled)"
+      "description": "Selected value (controlled)"
     },
     {
       "name": "defaultValue",
       "type": "string",
       "required": false,
       "default": "\"\"",
-      "description": "Boshlang'ich qiymat (uncontrolled)"
+      "description": "Initial value (uncontrolled)"
     },
     {
       "name": "onValueChange",
       "type": "(value: string) => void",
       "required": false,
       "default": null,
-      "description": "Qiymat o'zgarganda yangi qiymat bilan chaqiriladi"
+      "description": "Called with the new value when it changes"
     },
     {
       "name": "variant",
       "type": "'primary' | 'secondary'",
       "required": false,
       "default": "\"primary\"",
-      "description": "Ko'rinish: primary — oq doiracha soyali, secondary — kulrang (karta ichida)"
+      "description": "Style: primary — white circle with a shadow, secondary — gray (inside cards)"
     },
     {
       "name": "color",
       "type": "'default' | 'accent' | 'success' | 'warning' | 'danger'",
       "required": false,
       "default": "\"accent\"",
-      "description": "Tanlangan holat rangi"
+      "description": "Color of the selected state"
     },
     {
       "name": "size",
       "type": "'xs' | 'sm' | 'md' | 'lg'",
       "required": false,
       "default": "\"md\"",
-      "description": "O'lcham"
+      "description": "Size"
     },
     {
       "name": "isDisabled",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "O'chirilgan holat"
+      "description": "Disabled state"
     },
     {
       "name": "isInvalid",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Xato (invalid) holat"
+      "description": "Invalid state"
     },
     {
       "name": "isRequired",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Majburiy maydon (* belgisi)"
+      "description": "Required field (shows *)"
     },
     {
       "name": "name",
       "type": "string",
       "required": false,
       "default": null,
-      "description": "Forma uchun input nomi"
+      "description": "Input name for forms"
     },
     {
       "name": "children",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Radio elementlari"
+      "description": "Radio items"
     },
     {
       "name": "className",
       "type": "string",
       "required": false,
       "default": "\"\"",
-      "description": "Qo'shimcha CSS klasslar"
+      "description": "Extra CSS classes"
     }
   ],
   "Radio": [
@@ -2889,35 +2940,35 @@
       "type": "string",
       "required": true,
       "default": null,
-      "description": "Variant qiymati"
+      "description": "Option value"
     },
     {
       "name": "description",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Variant ostidagi izoh"
+      "description": "Description below the option"
     },
     {
       "name": "isDisabled",
       "type": "boolean",
       "required": false,
       "default": null,
-      "description": "O'chirilgan holat"
+      "description": "Disabled state"
     },
     {
       "name": "children",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Label matni"
+      "description": "Label text"
     },
     {
       "name": "className",
       "type": "string",
       "required": false,
       "default": "\"\"",
-      "description": "Qo'shimcha CSS klasslar"
+      "description": "Extra CSS classes"
     }
   ],
   "Rating": [
@@ -2926,70 +2977,70 @@
       "type": "number",
       "required": false,
       "default": null,
-      "description": "Baho (boshqariladigan)"
+      "description": "Rating value (controlled)"
     },
     {
       "name": "defaultValue",
       "type": "number",
       "required": false,
       "default": "0",
-      "description": "Boshlang'ich baho"
+      "description": "Initial rating"
     },
     {
       "name": "onChange",
       "type": "(value: number) => void",
       "required": false,
       "default": null,
-      "description": "Baho o'zgarganda chaqiriladi"
+      "description": "Called when the rating changes"
     },
     {
       "name": "max",
       "type": "number",
       "required": false,
       "default": "5",
-      "description": "Yulduzlar soni"
+      "description": "Number of stars"
     },
     {
       "name": "size",
       "type": "'xs' | 'sm' | 'md' | 'lg'",
       "required": false,
       "default": "\"md\"",
-      "description": "O'lcham"
+      "description": "Size"
     },
     {
       "name": "color",
       "type": "'default' | 'accent' | 'success' | 'warning' | 'danger'",
       "required": false,
       "default": "\"warning\"",
-      "description": "To'ldirilgan yulduz rangi"
+      "description": "Color of filled stars"
     },
     {
       "name": "isReadOnly",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Faqat ko'rsatish, o'zgartirib bo'lmaydi"
+      "description": "Display only, cannot be changed"
     },
     {
       "name": "isDisabled",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "O'chirilgan holat"
+      "description": "Disabled state"
     },
     {
       "name": "showValue",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Raqamli qiymatni yonida ko'rsatadi"
+      "description": "Shows the numeric value next to it"
     },
     {
       "name": "className",
       "type": "string",
       "required": false,
       "default": "\"\"",
-      "description": "Qo'shimcha CSS klasslar"
+      "description": "Extra CSS classes"
     }
   ],
   "Select": [
@@ -2998,133 +3049,133 @@
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Maydon sarlavhasi (label) — maydon tepasida"
+      "description": "Field label, shown above the field"
     },
     {
       "name": "labelPlacement",
       "type": "'outside' | 'outside-left'",
       "required": false,
       "default": "\"outside\"",
-      "description": "Label joylashuvi: tepada yoki chap tomonda"
+      "description": "Label placement: above or to the left"
     },
     {
       "name": "placeholder",
       "type": "string",
       "required": false,
-      "default": "\"Tanlang\"",
-      "description": "Qiymat tanlanmaganda ko'rinadigan matn"
+      "default": null,
+      "description": "Text shown when nothing is selected"
     },
     {
       "name": "variant",
       "type": "'primary' | 'secondary'",
       "required": false,
       "default": "\"primary\"",
-      "description": "Ko'rinish: primary — oq maydon soyali, secondary — kulrang maydon (karta ichida)"
+      "description": "Style: primary — white field with a shadow, secondary — gray field (inside cards)"
     },
     {
       "name": "size",
       "type": "'xs' | 'sm' | 'md' | 'lg'",
       "required": false,
       "default": "\"md\"",
-      "description": "O'lcham"
+      "description": "Size"
     },
     {
       "name": "radius",
       "type": "'sm' | 'md' | 'lg' | 'full'",
       "required": false,
       "default": "\"md\"",
-      "description": "Burchaklar yumaloqligi"
+      "description": "Corner radius"
     },
     {
       "name": "isDisabled",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "O'chirilgan holat"
+      "description": "Disabled state"
     },
     {
       "name": "isRequired",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Majburiy maydon (* belgisi)"
+      "description": "Required field (shows *)"
     },
     {
       "name": "isInvalid",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Xato (invalid) holat"
+      "description": "Invalid state"
     },
     {
       "name": "errorMessage",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Xato holatida ko'rsatiladigan matn"
+      "description": "Text shown in the invalid state"
     },
     {
       "name": "isBlurred",
       "type": "boolean",
       "required": false,
       "default": "true",
-      "description": "Ochiladigan ro'yxatni shisha (blur) material qiladi; false — to'q fon"
+      "description": "Glass (blur) listbox material; false gives a solid background"
     },
     {
       "name": "material",
       "type": "\"frosted\" | \"liquid\"",
       "required": false,
       "default": null,
-      "description": "Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi"
+      "description": "Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass)"
     },
     {
       "name": "description",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Maydon ostidagi yordamchi matn"
+      "description": "Helper text below the field"
     },
     {
       "name": "startContent",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Boshidagi kontent (masalan, ikonka)"
+      "description": "Leading content (e.g. an icon)"
     },
     {
       "name": "items",
       "type": "SelectItemData[]",
       "required": true,
       "default": null,
-      "description": "Variantlar ro'yxati"
+      "description": "List of options"
     },
     {
       "name": "selectedKey",
       "type": "string",
       "required": false,
       "default": null,
-      "description": "Tanlangan element kaliti (controlled)"
+      "description": "Selected item key (controlled)"
     },
     {
       "name": "defaultSelectedKey",
       "type": "string",
       "required": false,
       "default": null,
-      "description": "Boshlang'ich tanlangan kalit (uncontrolled)"
+      "description": "Initially selected key (uncontrolled)"
     },
     {
       "name": "onSelectionChange",
       "type": "(key: string) => void",
       "required": false,
       "default": null,
-      "description": "Tanlov o'zgarganda chaqiriladi"
+      "description": "Called when the selection changes"
     },
     {
       "name": "emptyContent",
       "type": "ReactNode",
       "required": false,
-      "default": "\"Variantlar yo'q\"",
-      "description": "Ro'yxat bo'sh bo'lganda ko'rsatiladi"
+      "default": null,
+      "description": "Shown when the list is empty"
     }
   ],
   "SelectItem": [
@@ -3133,35 +3184,35 @@
       "type": "string",
       "required": true,
       "default": null,
-      "description": "Elementning noyob kaliti"
+      "description": "Unique item key"
     },
     {
       "name": "startContent",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Boshidagi kontent (masalan, ikonka)"
+      "description": "Leading content (e.g. an icon)"
     },
     {
       "name": "description",
       "type": "string",
       "required": false,
       "default": null,
-      "description": "Element ostidagi izoh"
+      "description": "Description below the item"
     },
     {
       "name": "isDisabled",
       "type": "boolean",
       "required": false,
       "default": null,
-      "description": "O'chirilgan holat"
+      "description": "Disabled state"
     },
     {
       "name": "children",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Ichki kontent"
+      "description": "Inner content"
     }
   ],
   "Sidebar": [
@@ -3170,98 +3221,98 @@
       "type": "'default' | 'surface'",
       "required": false,
       "default": "\"default\"",
-      "description": "Ko'rinish: canvas ustida shaffof yoki oq surface panel"
+      "description": "Style: transparent on the canvas or a white surface panel"
     },
     {
       "name": "isCollapsed",
       "type": "boolean",
       "required": false,
       "default": null,
-      "description": "Yig'ilgan holat (boshqariladigan)"
+      "description": "Collapsed state (controlled)"
     },
     {
       "name": "defaultCollapsed",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Boshlang'ich yig'ilgan holat"
+      "description": "Initial collapsed state"
     },
     {
       "name": "onCollapsedChange",
       "type": "(collapsed: boolean) => void",
       "required": false,
       "default": null,
-      "description": "Yig'ilish holati o'zgarganda chaqiriladi"
+      "description": "Called when the collapsed state changes"
     },
     {
       "name": "selectedKey",
       "type": "string",
       "required": false,
       "default": null,
-      "description": "Tanlangan element kaliti (boshqariladigan)"
+      "description": "Selected item key (controlled)"
     },
     {
       "name": "defaultSelectedKey",
       "type": "string",
       "required": false,
       "default": null,
-      "description": "Boshlang'ich tanlangan kalit"
+      "description": "Initially selected key"
     },
     {
       "name": "onSelect",
       "type": "(key: string) => void",
       "required": false,
       "default": null,
-      "description": "Element tanlanganda chaqiriladi"
+      "description": "Called when an item is selected"
     },
     {
       "name": "header",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Yuqori qism (logo va h.k.)"
+      "description": "Header (logo, etc.)"
     },
     {
       "name": "footer",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Pastki qism (profil va h.k.)"
+      "description": "Footer (profile, etc.)"
     },
     {
       "name": "hideToggle",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Yig'ish tugmasini yashirish"
+      "description": "Hides the collapse button"
     },
     {
       "name": "isBlurred",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Panelni shisha (glass) qiladi — rangli fon yoki rasm ustida"
+      "description": "Makes the panel glass — for colorful backgrounds or images"
     },
     {
       "name": "material",
       "type": "\"frosted\" | \"liquid\"",
       "required": false,
       "default": null,
-      "description": "Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi"
+      "description": "Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass)"
     },
     {
       "name": "children",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Ichki elementlar"
+      "description": "Child items"
     },
     {
       "name": "className",
       "type": "string",
       "required": false,
       "default": "\"\"",
-      "description": "Qo'shimcha CSS klasslar"
+      "description": "Extra CSS classes"
     }
   ],
   "SidebarSection": [
@@ -3270,14 +3321,14 @@
       "type": "string",
       "required": false,
       "default": null,
-      "description": "Bo'lim nomi"
+      "description": "Section name"
     },
     {
       "name": "children",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Ichki elementlar"
+      "description": "Child items"
     }
   ],
   "SidebarItem": [
@@ -3286,42 +3337,42 @@
       "type": "string",
       "required": true,
       "default": null,
-      "description": "Elementning noyob kaliti"
+      "description": "Unique item key"
     },
     {
       "name": "icon",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Ikonka"
+      "description": "Icon"
     },
     {
       "name": "title",
       "type": "string",
       "required": true,
       "default": null,
-      "description": "Element nomi"
+      "description": "Item title"
     },
     {
       "name": "href",
       "type": "string",
       "required": false,
       "default": null,
-      "description": "Havola (berilsa <a> sifatida chiqadi)"
+      "description": "Link (renders an <a> when set)"
     },
     {
       "name": "endContent",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "O'ng tomondagi kontent (badge va h.k.)"
+      "description": "Content on the right (badge, etc.)"
     },
     {
       "name": "children",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Ichki (nested) elementlar"
+      "description": "Nested items"
     }
   ],
   "Skeleton": [
@@ -3330,21 +3381,21 @@
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "true bo'lsa skeleton o'rniga asl kontent ko'rinadi"
+      "description": "When true, the real content is shown instead of the skeleton"
     },
     {
       "name": "disableAnimation",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Shimmer animatsiyasini o'chiradi"
+      "description": "Disables the shimmer animation"
     },
     {
       "name": "children",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Yuklangandan keyin ko'rinadigan kontent"
+      "description": "Content shown once loaded"
     }
   ],
   "Spinner": [
@@ -3353,42 +3404,42 @@
       "type": "'xs' | 'sm' | 'md' | 'lg'",
       "required": false,
       "default": "\"md\"",
-      "description": "O'lcham"
+      "description": "Size"
     },
     {
       "name": "color",
       "type": "'default' | 'accent' | 'success' | 'warning' | 'danger' | 'current'",
       "required": false,
       "default": "\"accent\"",
-      "description": "Rang"
+      "description": "Color"
     },
     {
       "name": "variant",
       "type": "'default' | 'dots' | 'wave' | 'spinner'",
       "required": false,
       "default": "\"default\"",
-      "description": "Animatsiya turi"
+      "description": "Animation style"
     },
     {
       "name": "label",
       "type": "string",
       "required": false,
       "default": null,
-      "description": "Yorliq matni"
+      "description": "Label text"
     },
     {
       "name": "labelColor",
       "type": "'foreground' | 'muted'",
       "required": false,
       "default": "\"muted\"",
-      "description": "Yorliq rangi"
+      "description": "Label color"
     },
     {
       "name": "className",
       "type": "string",
       "required": false,
       "default": "\"\"",
-      "description": "Qo'shimcha CSS klasslar"
+      "description": "Extra CSS classes"
     }
   ],
   "Sparkline": [
@@ -3397,49 +3448,49 @@
       "type": "number[]",
       "required": true,
       "default": null,
-      "description": "Grafik nuqtalari qiymatlari"
+      "description": "Chart data points"
     },
     {
       "name": "color",
       "type": "'default' | 'accent' | 'success' | 'warning' | 'danger'",
       "required": false,
       "default": "\"accent\"",
-      "description": "Chiziq rangi"
+      "description": "Line color"
     },
     {
       "name": "stroke",
       "type": "string",
       "required": false,
       "default": null,
-      "description": "Istalgan CSS rang (`color` o'rniga)"
+      "description": "Any CSS color (instead of `color`)"
     },
     {
       "name": "width",
       "type": "number",
       "required": false,
       "default": null,
-      "description": "Kenglik (px). Berilmasa konteyner kengligini egallaydi"
+      "description": "Width (px). Fills the container when omitted"
     },
     {
       "name": "height",
       "type": "number",
       "required": false,
       "default": "40",
-      "description": "Balandlik (px)"
+      "description": "Height (px)"
     },
     {
       "name": "showArea",
       "type": "boolean",
       "required": false,
       "default": "true",
-      "description": "Ostidagi gradient maydonni ko'rsatadi"
+      "description": "Shows the gradient area below the line"
     },
     {
       "name": "className",
       "type": "string",
       "required": false,
       "default": "\"\"",
-      "description": "Qo'shimcha klasslar"
+      "description": "Extra classes"
     }
   ],
   "StatCard": [
@@ -3448,98 +3499,98 @@
       "type": "string",
       "required": true,
       "default": null,
-      "description": "Ko'rsatkich nomi"
+      "description": "Metric name"
     },
     {
       "name": "value",
       "type": "ReactNode",
       "required": true,
       "default": null,
-      "description": "Asosiy qiymat"
+      "description": "Main value"
     },
     {
       "name": "change",
       "type": "number",
       "required": false,
       "default": null,
-      "description": "O'zgarish foizi (musbat - o'sish, manfiy - tushish)"
+      "description": "Change in percent (positive = up, negative = down)"
     },
     {
       "name": "changeLabel",
       "type": "string",
       "required": false,
       "default": null,
-      "description": "Trend ostidagi izoh matni (masalan, \"o'tgan oyga nisbatan\")"
+      "description": "Caption under the trend (e.g. \"vs last month\")"
     },
     {
       "name": "isInverted",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Tushish ijobiy bo'lsa (masalan, bounce rate) ranglarni almashtiradi"
+      "description": "Swaps the colors when a decrease is good (e.g. bounce rate)"
     },
     {
       "name": "icon",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Sarlavha yonidagi ikonka"
+      "description": "Icon next to the title"
     },
     {
       "name": "color",
       "type": "'default' | 'accent' | 'success' | 'warning' | 'danger'",
       "required": false,
       "default": "\"accent\"",
-      "description": "Ikonka, progress va grafik rangi"
+      "description": "Color of the icon, progress and chart"
     },
     {
       "name": "variant",
       "type": "'default' | 'glass' | 'secondary' | 'gradient'",
       "required": false,
       "default": "\"default\"",
-      "description": "Ko'rinish: default (yengil gradient), secondary (kulrang), glass (shisha) yoki gradient (accent → indigo)"
+      "description": "Style: default (soft gradient), secondary (gray), glass or gradient (accent → indigo)"
     },
     {
       "name": "material",
       "type": "\"frosted\" | \"liquid\"",
       "required": false,
       "default": null,
-      "description": "Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi"
+      "description": "Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass)"
     },
     {
       "name": "actions",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "O'ng yuqoridagi amallar (menyu tugmasi va h.k.)"
+      "description": "Top-right actions (menu button, etc.)"
     },
     {
       "name": "progress",
       "type": "number",
       "required": false,
       "default": null,
-      "description": "Progress chizig'i qiymati (0–100)"
+      "description": "Progress bar value (0–100)"
     },
     {
       "name": "chartData",
       "type": "number[]",
       "required": false,
       "default": null,
-      "description": "Pastdagi sparkline grafik ma'lumotlari"
+      "description": "Data for the sparkline at the bottom"
     },
     {
       "name": "footer",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Pastki qism kontenti (havola va h.k.)"
+      "description": "Footer content (link, etc.)"
     },
     {
       "name": "className",
       "type": "string",
       "required": false,
       "default": "\"\"",
-      "description": "Qo'shimcha klasslar"
+      "description": "Extra classes"
     }
   ],
   "Stepper": [
@@ -3548,42 +3599,42 @@
       "type": "StepItem[]",
       "required": true,
       "default": null,
-      "description": "Bosqichlar ro'yxati"
+      "description": "List of steps"
     },
     {
       "name": "currentStep",
       "type": "number",
       "required": true,
       "default": null,
-      "description": "Joriy bosqich indeksi (0 dan)"
+      "description": "Current step index (0-based)"
     },
     {
       "name": "onStepChange",
       "type": "(step: number) => void",
       "required": false,
       "default": null,
-      "description": "Bosqich bosilganda chaqiriladi (faqat o'tilganlari)"
+      "description": "Called when a step is clicked (completed steps only)"
     },
     {
       "name": "orientation",
       "type": "\"horizontal\" | \"vertical\"",
       "required": false,
       "default": "\"horizontal\"",
-      "description": "Yo'nalish"
+      "description": "Orientation"
     },
     {
       "name": "color",
       "type": "'default' | 'accent' | 'success' | 'warning' | 'danger'",
       "required": false,
       "default": "\"accent\"",
-      "description": "Rang mavzusi"
+      "description": "Color theme"
     },
     {
       "name": "className",
       "type": "string",
       "required": false,
       "default": "\"\"",
-      "description": "Qo'shimcha CSS klasslar"
+      "description": "Extra CSS classes"
     }
   ],
   "Switch": [
@@ -3592,98 +3643,98 @@
       "type": "'default' | 'accent' | 'success' | 'warning' | 'danger'",
       "required": false,
       "default": "\"accent\"",
-      "description": "Yoqilgan holat rangi"
+      "description": "Color of the on state"
     },
     {
       "name": "size",
       "type": "'xs' | 'sm' | 'md' | 'lg'",
       "required": false,
       "default": "\"md\"",
-      "description": "O'lcham"
+      "description": "Size"
     },
     {
       "name": "isSelected",
       "type": "boolean",
       "required": false,
       "default": null,
-      "description": "Tanlangan holat (controlled)"
+      "description": "Selected state (controlled)"
     },
     {
       "name": "defaultSelected",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Boshlang'ich holat (uncontrolled)"
+      "description": "Initial state (uncontrolled)"
     },
     {
       "name": "isDisabled",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "O'chirilgan holat"
+      "description": "Disabled state"
     },
     {
       "name": "onChange",
       "type": "(selected: boolean) => void",
       "required": false,
       "default": null,
-      "description": "Holat o'zgarganda chaqiriladi"
+      "description": "Called when the state changes"
     },
     {
       "name": "onValueChange",
       "type": "(selected: boolean) => void",
       "required": false,
       "default": null,
-      "description": "Qiymat o'zgarganda yangi qiymat bilan chaqiriladi"
+      "description": "Called with the new value when it changes"
     },
     {
       "name": "children",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Label matni"
+      "description": "Label text"
     },
     {
       "name": "description",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Label ostidagi izoh"
+      "description": "Description below the label"
     },
     {
       "name": "thumbIcon",
       "type": "ReactNode | ((state: { isSelected: boolean }) => ReactNode)",
       "required": false,
       "default": null,
-      "description": "Thumb ichidagi ikonka; funksiya joriy holatni qabul qiladi"
+      "description": "Icon inside the thumb; a function receives the current state"
     },
     {
       "name": "startContent",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Yoqilganda trekning chap tomonida ko'rinadigan ikonka"
+      "description": "Icon shown on the left of the track when on"
     },
     {
       "name": "endContent",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "O'chirilganda trekning o'ng tomonida ko'rinadigan ikonka"
+      "description": "Icon shown on the right of the track when off"
     },
     {
       "name": "className",
       "type": "string",
       "required": false,
       "default": "\"\"",
-      "description": "Qo'shimcha CSS klasslar"
+      "description": "Extra CSS classes"
     },
     {
       "name": "name",
       "type": "string",
       "required": false,
       "default": null,
-      "description": "Forma uchun input nomi"
+      "description": "Input name for forms"
     }
   ],
   "Table": [
@@ -3692,196 +3743,196 @@
       "type": "TableColumn<T>[]",
       "required": true,
       "default": null,
-      "description": "Ustunlar ta'rifi"
+      "description": "Column definitions"
     },
     {
       "name": "rows",
       "type": "T[]",
       "required": true,
       "default": null,
-      "description": "Jadval qatorlari (ma'lumotlar)"
+      "description": "Table rows (data)"
     },
     {
       "name": "keyField",
       "type": "string",
       "required": true,
       "default": null,
-      "description": "Har bir qatorni noyob aniqlovchi maydon nomi"
+      "description": "Field that uniquely identifies each row"
     },
     {
       "name": "variant",
       "type": "'primary' | 'secondary'",
       "required": false,
       "default": "\"primary\"",
-      "description": "Ko'rinish: primary (oq surface ichida) yoki secondary (fonsiz, surface ichida ishlatish uchun)"
+      "description": "Style: primary (white surface) or secondary (no background, for use inside a surface)"
     },
     {
       "name": "color",
       "type": "'default' | 'accent' | 'success' | 'warning' | 'danger'",
       "required": false,
       "default": "\"accent\"",
-      "description": "Tanlangan qator va checkbox rangi"
+      "description": "Color of the selected row and checkbox"
     },
     {
       "name": "layout",
       "type": "'auto' | 'fixed'",
       "required": false,
       "default": "\"auto\"",
-      "description": "Jadval layout'i: auto yoki fixed"
+      "description": "Table layout: auto or fixed"
     },
     {
       "name": "isStriped",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Qatorlarni navbatma-navbat bo'yaydi"
+      "description": "Zebra-striped rows"
     },
     {
       "name": "isCompact",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Kichikroq padding bilan zich ko'rinish"
+      "description": "Dense layout with smaller padding"
     },
     {
       "name": "isHeaderSticky",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Skroll qilganda sarlavha yuqorida qoladi"
+      "description": "Keeps the header pinned while scrolling"
     },
     {
       "name": "isLoading",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Skeleton qatorlarni ko'rsatadi"
+      "description": "Shows skeleton rows"
     },
     {
       "name": "loadingRows",
       "type": "number",
       "required": false,
       "default": "5",
-      "description": "Yuklanishda ko'rsatiladigan skeleton qatorlar soni"
+      "description": "Number of skeleton rows while loading"
     },
     {
       "name": "removeWrapper",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Tashqi karta (wrapper) ni olib tashlaydi"
+      "description": "Removes the outer card wrapper"
     },
     {
       "name": "isBlurred",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Wrapper'ni shisha (glass) qiladi — rangli fon ustida"
+      "description": "Makes the wrapper glass — for colorful backgrounds"
     },
     {
       "name": "material",
       "type": "\"frosted\" | \"liquid\"",
       "required": false,
       "default": null,
-      "description": "Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi"
+      "description": "Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass)"
     },
     {
       "name": "hideHeader",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Sarlavha qatorini yashiradi"
+      "description": "Hides the header row"
     },
     {
       "name": "selectionMode",
       "type": "'single' | 'multiple' | 'none'",
       "required": false,
       "default": "\"none\"",
-      "description": "Qatorlarni tanlash rejimi"
+      "description": "Row selection mode"
     },
     {
       "name": "selectedKeys",
       "type": "Set<string>",
       "required": false,
       "default": null,
-      "description": "Tanlangan qatorlar kalitlari (controlled)"
+      "description": "Selected row keys (controlled)"
     },
     {
       "name": "disabledKeys",
       "type": "string[]",
       "required": false,
       "default": "[]",
-      "description": "Tanlab bo'lmaydigan qatorlar kalitlari"
+      "description": "Keys of rows that cannot be selected"
     },
     {
       "name": "onSelectionChange",
       "type": "(keys: Set<string>) => void",
       "required": false,
       "default": null,
-      "description": "Tanlov o'zgarganda chaqiriladi"
+      "description": "Called when the selection changes"
     },
     {
       "name": "onRowAction",
       "type": "(key: string, row: T) => void",
       "required": false,
       "default": null,
-      "description": "Qator bosilganda chaqiriladi"
+      "description": "Called when a row is pressed"
     },
     {
       "name": "sortDescriptor",
       "type": "SortDescriptor",
       "required": false,
       "default": null,
-      "description": "Joriy saralash holati (controlled)"
+      "description": "Current sort state (controlled)"
     },
     {
       "name": "onSortChange",
       "type": "(descriptor: SortDescriptor) => void",
       "required": false,
       "default": null,
-      "description": "Saralash o'zgarganda chaqiriladi"
+      "description": "Called when sorting changes"
     },
     {
       "name": "topContent",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Jadval ustidagi slot (qidiruv, tugmalar)"
+      "description": "Slot above the table (search, buttons)"
     },
     {
       "name": "bottomContent",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Jadval ostidagi slot (pagination)"
+      "description": "Slot below the table (pagination)"
     },
     {
       "name": "maxHeight",
       "type": "string | number",
       "required": false,
       "default": null,
-      "description": "Maksimal balandlik, oshsa ichida skroll"
+      "description": "Maximum height; scrolls inside when exceeded"
     },
     {
       "name": "className",
       "type": "string",
       "required": false,
       "default": "\"\"",
-      "description": "Wrapper uchun qo'shimcha klasslar"
+      "description": "Extra classes for the wrapper"
     },
     {
       "name": "emptyContent",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Qatorlar bo'lmaganda ko'rsatiladigan kontent"
+      "description": "Content shown when there are no rows"
     },
     {
       "name": "aria-label",
       "type": "string",
       "required": false,
       "default": null,
-      "description": "Ekran o'quvchilar uchun jadval nomi"
+      "description": "Table name for screen readers"
     }
   ],
   "Tabs": [
@@ -3890,98 +3941,98 @@
       "type": "'primary' | 'secondary'",
       "required": false,
       "default": "\"primary\"",
-      "description": "Ko'rinish: primary (kulrang trek + oq segment) yoki secondary (pastki chiziq)"
+      "description": "Style: primary (gray track + white segment) or secondary (underline)"
     },
     {
       "name": "size",
       "type": "'xs' | 'sm' | 'md' | 'lg'",
       "required": false,
       "default": "\"md\"",
-      "description": "O'lcham"
+      "description": "Size"
     },
     {
       "name": "fullWidth",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Tablar butun kenglikni egallaydi"
+      "description": "Tabs fill the full width"
     },
     {
       "name": "placement",
       "type": "'top' | 'bottom' | 'end' | 'start'",
       "required": false,
       "default": "\"top\"",
-      "description": "Tablar joylashuvi kontentga nisbatan"
+      "description": "Tab list position relative to the content"
     },
     {
       "name": "isVertical",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Tablarni vertikal joylashtiradi"
+      "description": "Lays the tabs out vertically"
     },
     {
       "name": "isBlurred",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Trekni shisha (glass) qiladi — rangli fon yoki rasm ustida chiroyli"
+      "description": "Makes the track glass — looks best over colorful backgrounds or images"
     },
     {
       "name": "material",
       "type": "\"frosted\" | \"liquid\"",
       "required": false,
       "default": null,
-      "description": "Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi"
+      "description": "Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass)"
     },
     {
       "name": "isDisabled",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Barcha tablarni o'chiradi"
+      "description": "Disables all tabs"
     },
     {
       "name": "disabledKeys",
       "type": "string[]",
       "required": false,
       "default": "[]",
-      "description": "O'chirilgan tablar kalitlari"
+      "description": "Keys of disabled tabs"
     },
     {
       "name": "tabs",
       "type": "TabItem[]",
       "required": true,
       "default": null,
-      "description": "Tablar ro'yxati"
+      "description": "List of tabs"
     },
     {
       "name": "selectedKey",
       "type": "string",
       "required": false,
       "default": null,
-      "description": "Tanlangan tab (controlled)"
+      "description": "Selected tab (controlled)"
     },
     {
       "name": "defaultSelectedKey",
       "type": "string",
       "required": false,
       "default": null,
-      "description": "Boshlang'ich tanlangan tab (uncontrolled)"
+      "description": "Initially selected tab (uncontrolled)"
     },
     {
       "name": "onSelectionChange",
       "type": "(key: string) => void",
       "required": false,
       "default": null,
-      "description": "Tab almashganda chaqiriladi"
+      "description": "Called when the tab changes"
     },
     {
       "name": "children",
       "type": "(key: string) => ReactNode",
       "required": false,
       "default": null,
-      "description": "Tanlangan tab kalitiga qarab panel kontentini qaytaruvchi funksiya"
+      "description": "Function that returns the panel content for the selected tab key"
     }
   ],
   "Textarea": [
@@ -3990,112 +4041,112 @@
       "type": "'primary' | 'secondary'",
       "required": false,
       "default": "\"primary\"",
-      "description": "Ko'rinish: primary — oq maydon soyali, secondary — kulrang maydon (karta ichida)"
+      "description": "Style: primary — white field with a shadow, secondary — gray field (inside cards)"
     },
     {
       "name": "size",
       "type": "'xs' | 'sm' | 'md' | 'lg'",
       "required": false,
       "default": "\"md\"",
-      "description": "O'lcham"
+      "description": "Size"
     },
     {
       "name": "radius",
       "type": "\"sm\" | \"md\" | \"lg\"",
       "required": false,
       "default": "\"md\"",
-      "description": "Burchaklar yumaloqligi"
+      "description": "Corner radius"
     },
     {
       "name": "label",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Maydon sarlavhasi (label) — maydon tepasida"
+      "description": "Field label, shown above the field"
     },
     {
       "name": "description",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Maydon ostidagi yordamchi matn"
+      "description": "Helper text below the field"
     },
     {
       "name": "errorMessage",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Xato holatida ko'rsatiladigan matn"
+      "description": "Text shown in the invalid state"
     },
     {
       "name": "isInvalid",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Xato (invalid) holat"
+      "description": "Invalid state"
     },
     {
       "name": "isDisabled",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "O'chirilgan holat"
+      "description": "Disabled state"
     },
     {
       "name": "isReadOnly",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Faqat o'qish uchun"
+      "description": "Read-only"
     },
     {
       "name": "isRequired",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Majburiy maydon (* belgisi)"
+      "description": "Required field (shows *)"
     },
     {
       "name": "minRows",
       "type": "number",
       "required": false,
       "default": "3",
-      "description": "Minimal qatorlar soni"
+      "description": "Minimum rows"
     },
     {
       "name": "maxRows",
       "type": "number",
       "required": false,
       "default": "8",
-      "description": "Avtomatik o'sishdagi maksimal qatorlar soni"
+      "description": "Maximum rows while auto-growing"
     },
     {
       "name": "disableAutosize",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Avtomatik balandlikni o'chiradi"
+      "description": "Disables auto-resizing"
     },
     {
       "name": "showCount",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Belgilar sonini ko'rsatadi (maxLength bilan)"
+      "description": "Shows the character count (with maxLength)"
     },
     {
       "name": "onValueChange",
       "type": "(value: string) => void",
       "required": false,
       "default": null,
-      "description": "Qiymat o'zgarganda yangi qiymat bilan chaqiriladi"
+      "description": "Called with the new value when it changes"
     },
     {
       "name": "fullWidth",
       "type": "boolean",
       "required": false,
       "default": "true",
-      "description": "Konteyner kengligini to'liq egallaydi"
+      "description": "Fills the container width"
     }
   ],
   "Timeline": [
@@ -4104,14 +4155,14 @@
       "type": "TimelineItemData[]",
       "required": true,
       "default": null,
-      "description": "Voqealar ro'yxati"
+      "description": "List of events"
     },
     {
       "name": "className",
       "type": "string",
       "required": false,
       "default": "\"\"",
-      "description": "Qo'shimcha klasslar"
+      "description": "Extra classes"
     }
   ],
   "ToastOptions": [
@@ -4120,70 +4171,70 @@
       "type": "ReactNode",
       "required": true,
       "default": null,
-      "description": "Bildirishnoma sarlavhasi"
+      "description": "Notification title"
     },
     {
       "name": "description",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Qo'shimcha tavsif matni"
+      "description": "Extra description text"
     },
     {
       "name": "color",
       "type": "'default' | 'accent' | 'success' | 'warning' | 'danger'",
       "required": false,
       "default": null,
-      "description": "Holat rangi (ikonka va progress chizig'i)"
+      "description": "Status color (icon and progress bar)"
     },
     {
       "name": "icon",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Ikonka"
+      "description": "Icon"
     },
     {
       "name": "timeout",
       "type": "number",
       "required": false,
       "default": null,
-      "description": "Avtomatik yopilish vaqti (ms); 0 — yopilmaydi. Default 5000"
+      "description": "Auto-dismiss delay in ms; 0 keeps it open. Default 5000"
     },
     {
       "name": "hideIcon",
       "type": "boolean",
       "required": false,
       "default": null,
-      "description": "Ikonkani yashirish"
+      "description": "Hides the icon"
     },
     {
       "name": "action",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Amal tugmasi (masalan, \"Qayta urinish\")"
+      "description": "Action button (e.g. \"Retry\")"
     },
     {
       "name": "onClose",
       "type": "() => void",
       "required": false,
       "default": null,
-      "description": "Toast yopilganda chaqiriladi"
+      "description": "Called when the toast closes"
     },
     {
       "name": "isBlurred",
       "type": "boolean",
       "required": false,
       "default": null,
-      "description": "Shu toast uchun shisha (blur) fon; berilmasa ToastProvider qiymati ishlatiladi"
+      "description": "Glass (blur) background for this toast; defaults to the ToastProvider value"
     },
     {
       "name": "material",
       "type": "\"frosted\" | \"liquid\"",
       "required": false,
       "default": null,
-      "description": "Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi"
+      "description": "Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass)"
     }
   ],
   "ToastProvider": [
@@ -4192,35 +4243,35 @@
       "type": "'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' | 'top-center' | 'bottom-center'",
       "required": false,
       "default": "\"bottom-right\"",
-      "description": "Ekrandagi joylashuv"
+      "description": "Position on screen"
     },
     {
       "name": "maxVisible",
       "type": "number",
       "required": false,
       "default": "5",
-      "description": "Bir vaqtda ko'rinadigan maksimal toastlar soni"
+      "description": "Maximum number of toasts visible at once"
     },
     {
       "name": "isBlurred",
       "type": "boolean",
       "required": false,
       "default": "true",
-      "description": "Barcha toastlar uchun shisha (blur) fon (default true)"
+      "description": "Glass (blur) background for all toasts (default true)"
     },
     {
       "name": "material",
       "type": "\"frosted\" | \"liquid\"",
       "required": false,
       "default": null,
-      "description": "Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi"
+      "description": "Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass)"
     },
     {
       "name": "children",
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Ilova kontenti"
+      "description": "App content"
     }
   ],
   "Tooltip": [
@@ -4229,119 +4280,119 @@
       "type": "ReactNode",
       "required": true,
       "default": null,
-      "description": "Tooltip ichidagi kontent"
+      "description": "Tooltip content"
     },
     {
       "name": "placement",
       "type": "'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end' | 'left' | 'left-start' | 'left-end' | 'right' | 'right-start' | 'right-end'",
       "required": false,
       "default": "\"top\"",
-      "description": "Joylashuv tomoni"
+      "description": "Placement side"
     },
     {
       "name": "color",
       "type": "'default' | 'accent' | 'success' | 'warning' | 'danger' | 'foreground'",
       "required": false,
       "default": "\"default\"",
-      "description": "Rang mavzusi"
+      "description": "Color theme"
     },
     {
       "name": "size",
       "type": "'xs' | 'sm' | 'md' | 'lg'",
       "required": false,
       "default": "\"md\"",
-      "description": "O'lcham"
+      "description": "Size"
     },
     {
       "name": "radius",
       "type": "'sm' | 'md' | 'lg' | 'full'",
       "required": false,
       "default": "\"md\"",
-      "description": "Burchak yumaloqligi"
+      "description": "Corner radius"
     },
     {
       "name": "delay",
       "type": "number",
       "required": false,
       "default": "300",
-      "description": "Ochilishdan oldingi kechikish (ms)"
+      "description": "Delay before opening (ms)"
     },
     {
       "name": "closeDelay",
       "type": "number",
       "required": false,
       "default": "150",
-      "description": "Yopilishdan oldingi kechikish (ms)"
+      "description": "Delay before closing (ms)"
     },
     {
       "name": "offset",
       "type": "number",
       "required": false,
       "default": "8",
-      "description": "Trigger'dan masofa (px)"
+      "description": "Distance from the trigger (px)"
     },
     {
       "name": "showArrow",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Ko'rsatkich strelkani ko'rsatish"
+      "description": "Shows the pointer arrow"
     },
     {
       "name": "isBlurred",
       "type": "boolean",
       "required": false,
       "default": "true",
-      "description": "Shisha (blur) fon — faqat default rang uchun; rangli tooltip doim to'q"
+      "description": "Glass (blur) background — default color only; colored tooltips stay solid"
     },
     {
       "name": "material",
       "type": "\"frosted\" | \"liquid\"",
       "required": false,
       "default": null,
-      "description": "Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi"
+      "description": "Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass)"
     },
     {
       "name": "isDisabled",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "O'chirilgan (faol emas) holat"
+      "description": "Disabled (inactive) state"
     },
     {
       "name": "isOpen",
       "type": "boolean",
       "required": false,
       "default": null,
-      "description": "Ochiq holati (boshqariladigan)"
+      "description": "Open state (controlled)"
     },
     {
       "name": "defaultOpen",
       "type": "boolean",
       "required": false,
       "default": "false",
-      "description": "Boshlang'ich ochiq holati (boshqarilmaydigan)"
+      "description": "Initial open state (uncontrolled)"
     },
     {
       "name": "onOpenChange",
       "type": "(open: boolean) => void",
       "required": false,
       "default": null,
-      "description": "Ochiq holati o'zgarganda chaqiriladi"
+      "description": "Called when the open state changes"
     },
     {
       "name": "className",
       "type": "string",
       "required": false,
       "default": "\"\"",
-      "description": "Qo'shimcha CSS klasslar"
+      "description": "Extra CSS classes"
     },
     {
       "name": "children",
       "type": "ReactElement",
       "required": true,
       "default": null,
-      "description": "Trigger element (bitta React element)"
+      "description": "Trigger element (a single React element)"
     }
   ]
 }

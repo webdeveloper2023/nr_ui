@@ -9,8 +9,8 @@ export default function StatCardLiquidGlass() {
       <div aria-hidden className="absolute -right-6 top-4 size-60 rounded-full bg-pink opacity-70 blur-2xl" />
       <div aria-hidden className="absolute -bottom-16 left-1/3 size-56 rounded-full bg-orange opacity-60 blur-2xl" />
       <div aria-hidden className="absolute bottom-6 right-1/4 size-32 rounded-full bg-mint opacity-70 blur-xl" />
-      <StatCard className="relative" variant="glass" material="frosted" title="Daromad · frosted" value="$48,210" change={8.4} icon={<DollarSign />} chartData={[4, 6, 5, 8, 7, 10, 12]} />
-      <StatCard className="relative" variant="glass" material="liquid" title="Foydalanuvchilar · liquid" value="3,942" change={4.1} color="success" icon={<Users />} chartData={[3, 4, 4, 6, 5, 7, 8]} />
+      <StatCard className="relative" variant="glass" material="frosted" title="Revenue · frosted" value="$48,210" change={8.4} icon={<DollarSign />} chartData={[4, 6, 5, 8, 7, 10, 12]} />
+      <StatCard className="relative" variant="glass" material="liquid" title="Users · liquid" value="3,942" change={4.1} color="success" icon={<Users />} chartData={[3, 4, 4, 6, 5, 7, 8]} />
     </div>
   );
 }

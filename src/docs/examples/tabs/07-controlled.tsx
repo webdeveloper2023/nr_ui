@@ -14,15 +14,15 @@ export default function TabsControlled() {
         selectedKey={selected}
         onSelectionChange={setSelected}
         tabs={[
-          { key: "monthly", title: "Oylik" },
-          { key: "quarterly", title: "Choraklik" },
-          { key: "yearly", title: "Yillik" },
+          { key: "monthly", title: "Monthly" },
+          { key: "quarterly", title: "Quarterly" },
+          { key: "yearly", title: "Yearly" },
         ]}
       />
       <div className="flex items-center gap-3 text-sm text-muted">
-        Tanlangan: <span className="font-medium text-foreground">{selected}</span>
+        Selected: <span className="font-medium text-foreground">{selected}</span>
         <Button size="sm" variant="tertiary" onClick={() => setSelected(keys[(keys.indexOf(selected) + 1) % keys.length])}>
-          Keyingisi
+          Next
         </Button>
       </div>
     </div>

@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { CodeBlock } from "./CodeBlock";
 import type { Example } from "./modules";
+import { useT } from "./i18n/lang";
 
 export function ExampleBlock({ example }: { example: Example }) {
   const [expanded, setExpanded] = useState(false);
+  const t = useT();
   const { Component } = example;
   const long = example.code.split("\n").length > 6;
 
@@ -25,7 +27,7 @@ export function ExampleBlock({ example }: { example: Example }) {
                 aria-expanded={expanded}
                 className="h-8 rounded-full bg-overlay px-3.5 text-xs font-medium text-foreground shadow-overlay transition-transform hover:scale-[1.03] active:scale-[0.97] cursor-pointer"
               >
-                {expanded ? "Hide code" : "Show code"}
+                {expanded ? t({ en: "Hide code", uz: "Kodni yashirish", ru: "Скрыть код" }) : t({ en: "Show code", uz: "Kodni ko'rsatish", ru: "Показать код" })}
               </button>
             </div>
           )}

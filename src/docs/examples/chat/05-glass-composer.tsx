@@ -5,13 +5,13 @@ type Msg = { role: "user" | "assistant"; text: string };
 
 export default function ChatGlassComposer() {
   const [messages, setMessages] = useState<Msg[]>([
-    { role: "user", text: "Bugun ob-havo qanday?" },
-    { role: "assistant", text: "Toshkentda quyoshli, +24°C. Kechqurun biroz salqin bo'ladi." },
+    { role: "user", text: "What's the weather like today?" },
+    { role: "assistant", text: "Sunny in Tashkent, +24°C. It will get a bit cooler in the evening." },
   ]);
 
   const send = (text: string) => {
     setMessages((m) => [...m, { role: "user", text }]);
-    setTimeout(() => setMessages((m) => [...m, { role: "assistant", text: "Tushunarli! Bu demo javob." }]), 700);
+    setTimeout(() => setMessages((m) => [...m, { role: "assistant", text: "Got it! This is a demo reply." }]), 700);
   };
 
   return (
@@ -27,7 +27,7 @@ export default function ChatGlassComposer() {
         ))}
       </ChatContainer>
       <div className="relative p-3">
-        <PromptInput isBlurred minRows={1} onSubmit={send} placeholder="Xabar yozing..." />
+        <PromptInput isBlurred minRows={1} onSubmit={send} placeholder="Type a message..." />
       </div>
     </div>
   );

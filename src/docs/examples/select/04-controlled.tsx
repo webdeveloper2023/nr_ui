@@ -13,9 +13,9 @@ export default function SelectControlled() {
 
   return (
     <div className="mx-auto flex w-full max-w-xs flex-col gap-2">
-      <Select label="Tarif" items={plans} selectedKey={plan} onSelectionChange={setPlan} />
+      <Select label="Plan" items={plans} selectedKey={plan} onSelectionChange={setPlan} />
       <p className="text-sm text-muted">
-        Tanlangan: <span className="font-medium text-foreground">{plan}</span>
+        Selected: <span className="font-medium text-foreground">{plan}</span>
       </p>
     </div>
   );

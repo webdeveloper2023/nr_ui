@@ -11,7 +11,7 @@ export default function BadgePlacement() {
         ))}
       </div>
       <div className="flex items-center gap-8">
-        {/* content berilmasa — nuqta (online holati) */}
+        {/* no content — a dot (online status) */}
         <Badge color="success" placement="bottom-right">
           <Avatar src="https://i.pravatar.cc/150?u=online" />
         </Badge>

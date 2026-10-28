@@ -4,8 +4,8 @@ export default function AlertBasic() {
   return (
     <div className="mx-auto max-w-xl">
       <Alert
-        title="Yangi versiya chiqdi"
-        description="NR UI 2.0 — yangilangan dizayn, dark mode va 40+ komponent. Yangilash uchun npm update qiling."
+        title="A new version is out"
+        description="NR UI 2.0 — refreshed design, dark mode and 40+ components. Run npm update to upgrade."
       />
     </div>
   );

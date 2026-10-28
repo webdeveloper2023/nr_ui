@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Checkbox } from "nr-ui-kit";
 
-const tasks = ["Dizayn", "Frontend", "Backend", "Test"];
+const tasks = ["Design", "Frontend", "Backend", "Test"];
 
 export default function CheckboxIndeterminate() {
-  const [done, setDone] = useState<string[]>(["Dizayn", "Frontend"]);
+  const [done, setDone] = useState<string[]>(["Design", "Frontend"]);
   const all = done.length === tasks.length;
 
   const toggle = (t: string, on: boolean) => setDone((d) => (on ? [...d, t] : d.filter((x) => x !== t)));
@@ -16,7 +16,7 @@ export default function CheckboxIndeterminate() {
         isIndeterminate={done.length > 0 && !all}
         onValueChange={(on) => setDone(on ? tasks : [])}
       >
-        <span className="font-medium">Hammasi</span>
+        <span className="font-medium">All</span>
       </Checkbox>
       <div className="flex flex-col gap-3 pl-7">
         {tasks.map((t) => (

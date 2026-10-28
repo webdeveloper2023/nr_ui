@@ -7,10 +7,10 @@ export default function StepperVertical() {
       currentStep={2}
       className="mx-auto max-w-xs"
       steps={[
-        { title: "Buyurtma berildi", description: "27-oktabr, 09:12" },
-        { title: "To'lov tasdiqlandi", description: "27-oktabr, 09:14" },
-        { title: "Yetkazilmoqda", description: "Kuryer yo'lda" },
-        { title: "Yetkazildi" },
+        { title: "Order placed", description: "Oct 27, 09:12" },
+        { title: "Payment confirmed", description: "Oct 27, 09:14" },
+        { title: "Out for delivery", description: "The courier is on the way" },
+        { title: "Delivered" },
       ]}
     />
   );

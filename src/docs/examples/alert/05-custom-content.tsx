@@ -7,22 +7,22 @@ export default function AlertCustomContent() {
       <Alert
         color="accent"
         icon={<Rocket size={18} />}
-        title="Deploy tayyor"
-        description="main branch'dagi 3 ta o'zgarish production'ga chiqishga tayyor."
+        title="Ready to deploy"
+        description="3 changes on the main branch are ready for production."
       >
         <ul className="list-disc space-y-1 pl-4 text-muted">
-          <li>Yangi Sidebar komponenti</li>
-          <li>Dark mode ranglari tuzatildi</li>
-          <li>Table saralash tezlashtirildi</li>
+          <li>New Sidebar component</li>
+          <li>Fixed dark mode colors</li>
+          <li>Faster table sorting</li>
         </ul>
         <div className="mt-4 flex gap-2">
-          <Button size="sm">Deploy qilish</Button>
+          <Button size="sm">Deploy</Button>
           <Button size="sm" variant="ghost">
-            Keyinroq
+            Later
           </Button>
         </div>
       </Alert>
-      <Alert hideIcon color="default" description="Ikonkasiz, faqat matnli oddiy xabar." />
+      <Alert hideIcon color="default" description="A plain text-only message without an icon." />
     </div>
   );
 }

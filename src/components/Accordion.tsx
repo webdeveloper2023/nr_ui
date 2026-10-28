@@ -5,42 +5,42 @@ type AccordionVariant = "default" | "surface" | "bordered" | "splitted";
 type AccordionSelectionMode = "single" | "multiple";
 
 export interface AccordionProps extends Omit<HTMLAttributes<HTMLDivElement>, "onChange"> {
-  /** Ko'rinish varianti */
+  /** Visual variant */
   variant?: AccordionVariant;
-  /** Bir vaqtda bitta yoki bir nechta ochilishi */
+  /** Whether one or several items can be open at once */
   selectionMode?: AccordionSelectionMode;
-  /** Boshlang'ich ochiq elementlar */
+  /** Initially expanded items */
   defaultExpandedKeys?: Set<string>;
-  /** Ochiq elementlar (boshqariladigan) */
+  /** Expanded items (controlled) */
   expandedKeys?: Set<string>;
-  /** Ochiq elementlar o'zgarganda chaqiriladi */
+  /** Called when the expanded items change */
   onExpandedChange?: (keys: Set<string>) => void;
-  /** O'chirilgan elementlar kalitlari */
+  /** Keys of disabled items */
   disabledKeys?: Set<string>;
-  /** Ixcham (kichik oraliqlar) */
+  /** Compact (tighter spacing) */
   isCompact?: boolean;
-  /** Elementlar orasida chiziq */
+  /** Divider between items */
   showDivider?: boolean;
-  /** Strelka indikatorini yashirish */
+  /** Hides the chevron indicator */
   hideIndicator?: boolean;
-  /** Ochilgan holatdagi kontent */
+  /** Content shown when expanded */
   children?: ReactNode;
 }
 
 export interface AccordionItemProps extends Omit<HTMLAttributes<HTMLDivElement>, "title"> {
-  /** Elementning noyob kaliti */
+  /** Unique item key */
   itemKey?: string;
-  /** Sarlavha */
+  /** Title */
   title: ReactNode;
-  /** Sarlavha ostidagi matn */
+  /** Text below the title */
   subtitle?: ReactNode;
-  /** Boshidagi kontent (ikonka va h.k.) */
+  /** Leading content (icon, etc.) */
   startContent?: ReactNode;
-  /** Maxsus indikator ikonka */
+  /** Custom indicator icon */
   indicator?: ReactNode;
-  /** O'chirilgan (faol emas) holat */
+  /** Disabled (inactive) state */
   isDisabled?: boolean;
-  /** Ochilgan holatdagi kontent */
+  /** Content shown when expanded */
   children?: ReactNode;
 }
 

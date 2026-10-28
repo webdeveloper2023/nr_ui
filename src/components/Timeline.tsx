@@ -4,26 +4,26 @@ import { cn } from "../lib/cn";
 type TimelineColor = "default" | "accent" | "success" | "warning" | "danger";
 
 export interface TimelineItemData {
-  /** Noyob kalit */
+  /** Unique key */
   id: string;
-  /** Voqea sarlavhasi */
+  /** Event title */
   title: ReactNode;
-  /** Qo'shimcha izoh */
+  /** Extra description */
   description?: ReactNode;
-  /** Vaqt belgisi */
+  /** Timestamp */
   time?: string;
-  /** Nuqta ichidagi ikonka */
+  /** Icon inside the dot */
   icon?: ReactNode;
-  /** Nuqta rangi */
+  /** Dot color */
   color?: TimelineColor;
-  /** Ostidagi qo'shimcha kontent (karta va h.k.) */
+  /** Extra content below (card, etc.) */
   content?: ReactNode;
 }
 
 export interface TimelineProps {
-  /** Voqealar ro'yxati */
+  /** List of events */
   items: TimelineItemData[];
-  /** Qo'shimcha klasslar */
+  /** Extra classes */
   className?: string;
 }
 

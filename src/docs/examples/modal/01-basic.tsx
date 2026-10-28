@@ -6,20 +6,20 @@ export default function ModalBasic() {
 
   return (
     <div className="flex justify-center">
-      <Button onClick={() => setIsOpen(true)}>Modalni ochish</Button>
+      <Button onClick={() => setIsOpen(true)}>Open modal</Button>
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader>Jamoaga taklif qilish</ModalHeader>
+              <ModalHeader>Invite to team</ModalHeader>
               <ModalBody>
-                <p>Yangi a'zo loyihadagi barcha fayllar va muhokamalarni ko'ra oladi. Ruxsatlarni keyinroq sozlamalarda o'zgartirish mumkin.</p>
+                <p>The new member will see all files and discussions in this project. You can change permissions later in settings.</p>
               </ModalBody>
               <ModalFooter>
                 <Button variant="tertiary" onClick={onClose}>
-                  Bekor qilish
+                  Cancel
                 </Button>
-                <Button onClick={onClose}>Taklif yuborish</Button>
+                <Button onClick={onClose}>Send invite</Button>
               </ModalFooter>
             </>
           )}

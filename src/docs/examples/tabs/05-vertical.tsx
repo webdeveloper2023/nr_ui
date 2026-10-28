@@ -1,10 +1,10 @@
 import { Tabs } from "nr-ui-kit";
 
 const content: Record<string, { title: string; text: string }> = {
-  account: { title: "Hisob sozlamalari", text: "Hisob ma'lumotlari va afzalliklaringizni boshqaring." },
-  security: { title: "Xavfsizlik", text: "Parol, ikki bosqichli autentifikatsiya va sessiyalar." },
-  notifications: { title: "Bildirishnomalar", text: "Qaysi xabarlarni olishni tanlang." },
-  billing: { title: "To'lovlar", text: "Tarif, hisob-fakturalar va to'lov usullari." },
+  account: { title: "Account settings", text: "Manage your account details and preferences." },
+  security: { title: "Security", text: "Password, two-factor authentication and sessions." },
+  notifications: { title: "Notifications", text: "Choose which messages you receive." },
+  billing: { title: "Billing", text: "Plan, invoices and payment methods." },
 };
 
 export default function TabsVertical() {
@@ -13,10 +13,10 @@ export default function TabsVertical() {
       <Tabs
         isVertical
         tabs={[
-          { key: "account", title: "Hisob" },
-          { key: "security", title: "Xavfsizlik" },
-          { key: "notifications", title: "Bildirishnomalar" },
-          { key: "billing", title: "To'lovlar" },
+          { key: "account", title: "Account" },
+          { key: "security", title: "Security" },
+          { key: "notifications", title: "Notifications" },
+          { key: "billing", title: "Billing" },
         ]}
       >
         {(key) => (

@@ -5,50 +5,50 @@ type CardVariant = "default" | "flat" | "glass" | "secondary" | "tertiary" | "tr
 type CardRadius = "none" | "md" | "lg" | "xl";
 
 export interface CardProps extends HTMLAttributes<HTMLDivElement> {
-  /** Ko'rinish: default (yengil gradient), flat (gradientsiz), glass (shisha), secondary, tertiary yoki transparent */
+  /** Style: default (soft gradient), flat (no gradient), glass, secondary, tertiary or transparent */
   variant?: CardVariant;
-  /** Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi */
+  /** Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass) */
   material?: "frosted" | "liquid";
-  /** Burchaklar yumaloqligi */
+  /** Corner radius */
   radius?: CardRadius;
-  /** Hover'da biroz ko'tarilish effekti */
+  /** Lifts slightly on hover */
   isHoverable?: boolean;
-  /** Bosiladigan karta (tugma kabi, klaviatura bilan ham) */
+  /** Pressable card (acts like a button, keyboard accessible) */
   isPressable?: boolean;
-  /** Kartani o'chirilgan holatga o'tkazadi */
+  /** Puts the card in a disabled state */
   isDisabled?: boolean;
-  /** Footer'ni kontent ustiga xira shisha qilib qo'yadi */
+  /** Overlays the footer on the content as frosted glass */
   isFooterBlurred?: boolean;
-  /** Konteynerning to'liq kengligini egallaydi */
+  /** Fills the container width */
   fullWidth?: boolean;
-  /** isPressable bo'lganda bosilganda chaqiriladi */
+  /** Called on press when isPressable is set */
   onPress?: () => void;
-  /** Karta ichidagi kontent (CardHeader, CardBody, CardFooter) */
+  /** Card content (CardHeader, CardBody, CardFooter) */
   children?: ReactNode;
 }
 
 export interface CardHeaderProps extends Omit<HTMLAttributes<HTMLDivElement>, "title"> {
-  /** Sarlavha matni */
+  /** Title text */
   title?: ReactNode;
-  /** Sarlavha ostidagi izoh matni */
+  /** Description below the title */
   description?: ReactNode;
-  /** O'ng tomondagi slot (tugma, menyu) */
+  /** Right-side slot (button, menu) */
   endContent?: ReactNode;
-  /** Sarlavha qismi kontenti (title o'rniga erkin kontent) */
+  /** Header content (free-form instead of title) */
   children?: ReactNode;
 }
 
 export interface CardBodyProps extends HTMLAttributes<HTMLDivElement> {
-  /** Asosiy kontent */
+  /** Main content */
   children?: ReactNode;
 }
 
 export interface CardFooterProps extends HTMLAttributes<HTMLDivElement> {
-  /** Footer fonini xira shisha (backdrop-blur) qiladi */
+  /** Makes the footer background frosted glass (backdrop blur) */
   isBlurred?: boolean;
-  /** Footer ustiga ajratuvchi chiziq qo'shadi */
+  /** Adds a divider above the footer */
   showDivider?: boolean;
-  /** Pastki qism kontenti */
+  /** Footer content */
   children?: ReactNode;
 }
 

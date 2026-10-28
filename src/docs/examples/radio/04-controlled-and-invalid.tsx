@@ -7,18 +7,18 @@ export default function RadioControlledAndInvalid() {
   return (
     <div className="flex justify-center">
       <RadioGroup
-        label="To'lov usuli"
+        label="Payment method"
         isRequired
         value={payment}
         onValueChange={setPayment}
         isInvalid={!payment}
-        errorMessage="To'lov usulini tanlang"
-        description={payment ? `Tanlangan: ${payment}` : undefined}
+        errorMessage="Select a payment method"
+        description={payment ? `Selected: ${payment}` : undefined}
       >
-        <Radio value="card">Karta</Radio>
-        <Radio value="cash">Naqd</Radio>
+        <Radio value="card">Card</Radio>
+        <Radio value="cash">Cash</Radio>
         <Radio value="transfer" isDisabled>
-          Bank o'tkazmasi (tez orada)
+          Bank transfer (coming soon)
         </Radio>
       </RadioGroup>
     </div>

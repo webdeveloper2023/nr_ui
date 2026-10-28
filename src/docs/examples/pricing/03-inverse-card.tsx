@@ -8,19 +8,19 @@ export default function PricingInverseCard() {
         name="Team"
         price={{ monthly: 49, yearly: 470 }}
         period="monthly"
-        featuresTitle="Hammasi Pro'dagidek, va:"
-        features={["10 ta a'zo", "Umumiy ish joyi", "Audit log"]}
+        featuresTitle="Everything in Pro, plus:"
+        features={["10 members", "Shared workspace", "Audit log"]}
       />
       <PricingCard
         variant="inverse"
         isPopular
-        popularLabel="Tavsiya"
+        popularLabel="Recommended"
         name="Business"
         icon={<Crown />}
         price={{ monthly: 99, yearly: 950 }}
         period="monthly"
-        featuresTitle="Hammasi Team'dagidek, va:"
-        features={["Cheksiz a'zolar", "SSO", "24/7 yordam"]}
+        featuresTitle="Everything in Team, plus:"
+        features={["Unlimited members", "SSO", "24/7 support"]}
       />
     </div>
   );

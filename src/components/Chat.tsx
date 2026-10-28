@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from 
 import { ArrowUp, Plus, Copy, Check, ThumbsUp, ThumbsDown, RotateCcw, Square } from "lucide-react";
 import { Avatar } from "./Avatar";
 import { cn } from "../lib/cn";
+import { useLocale } from "./locale";
 
 const actionBtn = cn(
   "flex items-center justify-center w-7 h-7 rounded-full text-muted cursor-pointer",
@@ -10,9 +11,9 @@ const actionBtn = cn(
 );
 
 export interface ChatContainerProps {
-  /** Chat xabarlari */
+  /** Chat messages */
   children?: ReactNode;
-  /** Qo'shimcha CSS klasslar */
+  /** Extra CSS classes */
   className?: string;
 }
 
@@ -33,25 +34,25 @@ export function ChatContainer({ children, className = "" }: ChatContainerProps) 
 }
 
 export interface ChatMessageProps {
-  /** Xabar muallifi: foydalanuvchi yoki assistent */
+  /** Message author: user or assistant */
   role: "user" | "assistant";
-  /** Muallif ismi (assistent avatarida initsial sifatida) */
+  /** Author name (used as initials on the assistant avatar) */
   name?: string;
-  /** Assistent avatari rasmi URL manzili */
+  /** Assistant avatar image URL */
   avatar?: string;
-  /** Xabar vaqti */
+  /** Message time */
   time?: string;
-  /** Yozilmoqda (typing) indikatorini ko'rsatadi */
+  /** Shows the typing indicator */
   isTyping?: boolean;
-  /** Copy/like/dislike amallarini ko'rsatadi */
+  /** Shows the copy / like / dislike actions */
   showActions?: boolean;
-  /** Nusxa olish bosilganda chaqiriladi */
+  /** Called when copy is pressed */
   onCopy?: () => void;
-  /** Qayta yaratish bosilganda chaqiriladi */
+  /** Called when regenerate is pressed */
   onRegenerate?: () => void;
-  /** Like yoki dislike bosilganda chaqiriladi */
+  /** Called when like or dislike is pressed */
   onFeedback?: (value: "like" | "dislike") => void;
-  /** Ichki kontent */
+  /** Inner content */
   children?: ReactNode;
 }
 
@@ -67,6 +68,7 @@ export function ChatMessage({
   onFeedback,
   children,
 }: ChatMessageProps) {
+  const t = useLocale();
   const isUser = role === "user";
   const [copied, setCopied] = useState(false);
   const [feedback, setFeedback] = useState<"like" | "dislike" | null>(null);
@@ -105,7 +107,7 @@ export function ChatMessage({
         {time && <p className="mb-1 text-xs text-muted">{time}</p>}
         <div className="w-fit max-w-full rounded-[20px] rounded-bl-md bg-default px-4 py-2.5 text-sm leading-relaxed text-foreground break-words">
           {isTyping ? (
-            <span className="flex items-center gap-1 h-6" aria-label="Typing">
+            <span className="flex items-center gap-1 h-6" aria-label={t.chat.typing}>
               {[0, 150, 300].map((d) => (
                 <span key={d} className="w-1.5 h-1.5 rounded-full bg-muted animate-bounce" style={{ animationDelay: `${d}ms` }} />
               ))}
@@ -116,18 +118,18 @@ export function ChatMessage({
         </div>
         {!isTyping && showActions && (
           <div className="mt-2 -ml-1.5 flex items-center gap-0.5">
-            <button className={actionBtn} onClick={copy} aria-label="Copy">
+            <button className={actionBtn} onClick={copy} aria-label={t.chat.copy}>
               {copied ? <Check size={14} className="text-success" /> : <Copy size={14} />}
             </button>
             {onRegenerate && (
-              <button className={actionBtn} onClick={onRegenerate} aria-label="Regenerate">
+              <button className={actionBtn} onClick={onRegenerate} aria-label={t.chat.regenerate}>
                 <RotateCcw size={14} />
               </button>
             )}
-            <button className={cn(actionBtn, feedback === "like" && "text-foreground")} onClick={() => rate("like")} aria-label="Like">
+            <button className={cn(actionBtn, feedback === "like" && "text-foreground")} onClick={() => rate("like")} aria-label={t.chat.like}>
               <ThumbsUp size={14} className={feedback === "like" ? "fill-current" : undefined} />
             </button>
-            <button className={cn(actionBtn, feedback === "dislike" && "text-foreground")} onClick={() => rate("dislike")} aria-label="Dislike">
+            <button className={cn(actionBtn, feedback === "dislike" && "text-foreground")} onClick={() => rate("dislike")} aria-label={t.chat.dislike}>
               <ThumbsDown size={14} className={feedback === "dislike" ? "fill-current" : undefined} />
             </button>
           </div>
@@ -138,37 +140,37 @@ export function ChatMessage({
 }
 
 export interface PromptInputProps {
-  /** Input qiymati (boshqariladigan) */
+  /** Input value (controlled) */
   value?: string;
-  /** Qiymat o'zgarganda yangi qiymat bilan chaqiriladi */
+  /** Called with the new value when it changes */
   onValueChange?: (value: string) => void;
-  /** Xabar yuborilganda (Enter) chaqiriladi */
+  /** Called when a message is sent (Enter) */
   onSubmit?: (value: string) => void;
-  /** Javobni to'xtatish tugmasi bosilganda */
+  /** Called when the stop button is pressed */
   onStop?: () => void;
-  /** Fayl biriktirish tugmasi bosilganda (berilsa ko'rinadi) */
+  /** Called when the attach button is pressed (shown only when set) */
   onAttach?: () => void;
-  /** Javob kutilmoqda — yuborish o'rniga stop tugmasi */
+  /** Waiting for a reply — shows a stop button instead of send */
   isLoading?: boolean;
-  /** O'chirilgan holat */
+  /** Disabled state */
   isDisabled?: boolean;
-  /** Bo'sh inputdagi matn */
+  /** Placeholder shown in the empty input */
   placeholder?: string;
-  /** Tezkor tayyor so'rovlar ro'yxati */
+  /** Quick suggestion prompts */
   suggestions?: string[];
-  /** Minimal qatorlar soni */
+  /** Minimum rows */
   minRows?: number;
-  /** Maksimal qatorlar soni */
+  /** Maximum rows */
   maxRows?: number;
-  /** Pastki qator chap tomonidagi qo'shimcha tugmalar */
+  /** Extra buttons on the left of the bottom row */
   startContent?: ReactNode;
-  /** Input ostidagi izoh matni */
+  /** Helper text below the input */
   footer?: ReactNode;
-  /** Kompozerni shisha (glass) qiladi — kontent ustida suzuvchi ko'rinish */
+  /** Makes the composer glass — floating over the content */
   isBlurred?: boolean;
-  /** Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi */
+  /** Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass) */
   material?: "frosted" | "liquid";
-  /** Qo'shimcha CSS klasslar */
+  /** Extra CSS classes */
   className?: string;
 }
 
@@ -180,7 +182,7 @@ export function PromptInput({
   onAttach,
   isLoading = false,
   isDisabled = false,
-  placeholder = "Nimani bilmoqchisiz?",
+  placeholder,
   suggestions,
   minRows = 2,
   maxRows = 8,
@@ -190,6 +192,7 @@ export function PromptInput({
   material,
   className = "",
 }: PromptInputProps) {
+  const t = useLocale();
   const [valueState, setValueState] = useState("");
   const ref = useRef<HTMLTextAreaElement>(null);
   const value = valueProp ?? valueState;
@@ -259,7 +262,7 @@ export function PromptInput({
           disabled={isDisabled}
           onChange={(e) => setValue(e.target.value)}
           onKeyDown={onKeyDown}
-          placeholder={placeholder}
+          placeholder={placeholder ?? t.chat.placeholder}
           className="w-full resize-none bg-transparent px-1 text-sm leading-6 text-foreground placeholder:text-field-placeholder outline-none"
         />
         <div className="flex items-center gap-1">
@@ -270,7 +273,7 @@ export function PromptInput({
                 onAttach();
               }}
               className={cn(actionBtn, "w-8 h-8")}
-              aria-label="Attach"
+              aria-label={t.chat.attach}
             >
               <Plus size={17} />
             </button>
@@ -289,7 +292,7 @@ export function PromptInput({
               "outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-background",
               isLoading || canSend ? "hover:bg-accent-hover active:scale-95 cursor-pointer" : "opacity-40 cursor-not-allowed"
             )}
-            aria-label={isLoading ? "Stop" : "Send"}
+            aria-label={isLoading ? t.chat.stop : t.chat.send}
           >
             {isLoading ? <Square size={12} fill="currentColor" /> : <ArrowUp size={17} />}
           </button>

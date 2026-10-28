@@ -5,13 +5,13 @@ function Menu({ isBlurred }: { isBlurred: boolean }) {
   return (
     <Dropdown>
       <DropdownTrigger>
-        <Button variant="secondary">{isBlurred ? "Glass menyu" : "Solid menyu"}</Button>
+        <Button variant="secondary">{isBlurred ? "Glass menu" : "Solid menu"}</Button>
       </DropdownTrigger>
-      <DropdownMenu aria-label="Amallar" isBlurred={isBlurred}>
-        <DropdownItem itemKey="edit" startContent={<Pencil size={16} />} shortcut="⌘E">Tahrirlash</DropdownItem>
-        <DropdownItem itemKey="copy" startContent={<Copy size={16} />} shortcut="⌘D">Nusxa olish</DropdownItem>
-        <DropdownItem itemKey="share" startContent={<Share size={16} />}>Ulashish</DropdownItem>
-        <DropdownItem itemKey="delete" color="danger" startContent={<Trash2 size={16} />}>O'chirish</DropdownItem>
+      <DropdownMenu aria-label="Actions" isBlurred={isBlurred}>
+        <DropdownItem itemKey="edit" startContent={<Pencil size={16} />} shortcut="⌘E">Edit</DropdownItem>
+        <DropdownItem itemKey="copy" startContent={<Copy size={16} />} shortcut="⌘D">Duplicate</DropdownItem>
+        <DropdownItem itemKey="share" startContent={<Share size={16} />}>Share</DropdownItem>
+        <DropdownItem itemKey="delete" color="danger" startContent={<Trash2 size={16} />}>Delete</DropdownItem>
       </DropdownMenu>
     </Dropdown>
   );

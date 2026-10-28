@@ -3,9 +3,9 @@ import { Inbox, RotateCw } from "lucide-react";
 import { Button, Table } from "nr-ui-kit";
 
 const columns = [
-  { key: "order", label: "Buyurtma" },
-  { key: "customer", label: "Mijoz" },
-  { key: "total", label: "Jami", align: "end" as const },
+  { key: "order", label: "Order" },
+  { key: "customer", label: "Customer" },
+  { key: "total", label: "Total", align: "end" as const },
 ];
 
 export default function TableLoadingEmpty() {
@@ -20,11 +20,11 @@ export default function TableLoadingEmpty() {
     <div className="space-y-3">
       <div className="flex justify-end">
         <Button size="sm" variant="tertiary" startContent={<RotateCw size={14} />} onClick={reload}>
-          Yangilash
+          Refresh
         </Button>
       </div>
       <Table
-        aria-label="Buyurtmalar"
+        aria-label="Orders"
         columns={columns}
         rows={[]}
         keyField="order"
@@ -33,8 +33,8 @@ export default function TableLoadingEmpty() {
         emptyContent={
           <div className="flex flex-col items-center gap-2">
             <Inbox size={28} className="text-muted" />
-            <p className="font-medium text-foreground">Buyurtmalar yo'q</p>
-            <p className="text-xs">Yangi buyurtmalar shu yerda paydo bo'ladi.</p>
+            <p className="font-medium text-foreground">No orders yet</p>
+            <p className="text-xs">New orders will show up here.</p>
           </div>
         }
       />

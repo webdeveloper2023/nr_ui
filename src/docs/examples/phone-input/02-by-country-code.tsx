@@ -1,6 +1,6 @@
 import { PhoneInput } from "nr-ui-kit";
 
-// country — ISO qisqartmasi: 2 harfli ("UZ") yoki 3 harfli ("UZB"), katta-kichik harf farqi yo'q
+// country — ISO code: 2 letters ("UZ") or 3 letters ("UZB"), case-insensitive
 const examples = ["uzb", "KZ", "RUS", "US", "TR", "GB", "DE", "KOR"];
 
 export default function PhoneInputByCountry() {

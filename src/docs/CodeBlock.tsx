@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { highlight } from "sugar-high";
 import { Check, Copy } from "lucide-react";
 import { cn } from "../lib/cn";
+import { useT } from "./i18n/lang";
 
 export interface CodeBlockProps {
   code: string;
@@ -19,6 +20,7 @@ export interface CodeBlockProps {
 
 export function CopyButton({ text, className = "" }: { text: string; className?: string }) {
   const [copied, setCopied] = useState(false);
+  const t = useT();
   const copy = async () => {
     try {
       await navigator.clipboard.writeText(text);
@@ -31,7 +33,7 @@ export function CopyButton({ text, className = "" }: { text: string; className?:
   return (
     <button
       onClick={copy}
-      aria-label="Copy code"
+      aria-label={t({ en: "Copy code", uz: "Kodni nusxalash", ru: "Копировать код" })}
       className={cn(
         "flex items-center justify-center w-8 h-8 rounded-lg cursor-pointer transition-colors",
         copied ? "text-success" : "text-muted hover:bg-default hover:text-foreground",

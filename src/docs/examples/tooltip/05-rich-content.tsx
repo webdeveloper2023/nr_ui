@@ -11,7 +11,7 @@ export default function TooltipRichContent() {
             <Avatar src="https://i.pravatar.cc/150?u=dilnoza" size="sm" />
             <div>
               <p className="text-sm font-medium text-foreground">Dilnoza Karimova</p>
-              <p className="text-xs text-muted">Tech Lead · Toshkent</p>
+              <p className="text-xs text-muted">Tech Lead · Tashkent</p>
             </div>
           </div>
         }

@@ -11,18 +11,18 @@ export default function PopoverBackdropControlled() {
           <Button variant="tertiary">backdrop="blur"</Button>
         </PopoverTrigger>
         <PopoverContent className="w-60 p-4">
-          <p className="text-sm text-muted">Orqa fon xiralashtirildi — e'tibor faqat shu panelda.</p>
+          <p className="text-sm text-muted">The background is blurred — all focus stays on this panel.</p>
         </PopoverContent>
       </Popover>
 
       <Popover isOpen={open} onOpenChange={setOpen} placement="bottom">
         <PopoverTrigger>
-          <Button variant="secondary">Controlled: {open ? "ochiq" : "yopiq"}</Button>
+          <Button variant="secondary">Controlled: {open ? "open" : "closed"}</Button>
         </PopoverTrigger>
         <PopoverContent className="w-60 p-4">
-          <p className="text-sm text-muted">Holat useState orqali boshqariladi.</p>
+          <p className="text-sm text-muted">The state is controlled with useState.</p>
           <Button size="sm" variant="tertiary" className="mt-3" onClick={() => setOpen(false)}>
-            Yopish
+            Close
           </Button>
         </PopoverContent>
       </Popover>

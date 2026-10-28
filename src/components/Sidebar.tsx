@@ -1,6 +1,7 @@
 import { Children, createContext, isValidElement, useContext, useState, type ReactElement, type ReactNode } from "react";
 import { ChevronDown, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import { cn } from "../lib/cn";
+import { useLocale } from "./locale";
 
 type SidebarVariant = "default" | "surface";
 
@@ -14,33 +15,33 @@ interface SidebarContextValue {
 const SidebarContext = createContext<SidebarContextValue>({ isCollapsed: false, variant: "default" });
 
 export interface SidebarProps {
-  /** Ko'rinish: canvas ustida shaffof yoki oq surface panel */
+  /** Style: transparent on the canvas or a white surface panel */
   variant?: SidebarVariant;
-  /** Yig'ilgan holat (boshqariladigan) */
+  /** Collapsed state (controlled) */
   isCollapsed?: boolean;
-  /** Boshlang'ich yig'ilgan holat */
+  /** Initial collapsed state */
   defaultCollapsed?: boolean;
-  /** Yig'ilish holati o'zgarganda chaqiriladi */
+  /** Called when the collapsed state changes */
   onCollapsedChange?: (collapsed: boolean) => void;
-  /** Tanlangan element kaliti (boshqariladigan) */
+  /** Selected item key (controlled) */
   selectedKey?: string;
-  /** Boshlang'ich tanlangan kalit */
+  /** Initially selected key */
   defaultSelectedKey?: string;
-  /** Element tanlanganda chaqiriladi */
+  /** Called when an item is selected */
   onSelect?: (key: string) => void;
-  /** Yuqori qism (logo va h.k.) */
+  /** Header (logo, etc.) */
   header?: ReactNode;
-  /** Pastki qism (profil va h.k.) */
+  /** Footer (profile, etc.) */
   footer?: ReactNode;
-  /** Yig'ish tugmasini yashirish */
+  /** Hides the collapse button */
   hideToggle?: boolean;
-  /** Panelni shisha (glass) qiladi — rangli fon yoki rasm ustida */
+  /** Makes the panel glass — for colorful backgrounds or images */
   isBlurred?: boolean;
-  /** Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi */
+  /** Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass) */
   material?: "frosted" | "liquid";
-  /** Ichki elementlar */
+  /** Child items */
   children?: ReactNode;
-  /** Qo'shimcha CSS klasslar */
+  /** Extra CSS classes */
   className?: string;
 }
 
@@ -62,6 +63,7 @@ export function Sidebar({
   children,
   className = "",
 }: SidebarProps) {
+  const t = useLocale();
   const [collapsedState, setCollapsedState] = useState(defaultCollapsed);
   const [selectedState, setSelectedState] = useState(defaultSelectedKey);
   const isCollapsed = collapsedProp ?? collapsedState;
@@ -99,7 +101,7 @@ export function Sidebar({
                 "hover:bg-default hover:text-foreground transition-colors duration-150",
                 focusRing
               )}
-              aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+              aria-label={isCollapsed ? t.sidebar.expand : t.sidebar.collapse}
             >
               {isCollapsed ? <PanelLeftOpen size={17} /> : <PanelLeftClose size={17} />}
             </button>
@@ -113,9 +115,9 @@ export function Sidebar({
 }
 
 export interface SidebarSectionProps {
-  /** Bo'lim nomi */
+  /** Section name */
   title?: string;
-  /** Ichki elementlar */
+  /** Child items */
   children?: ReactNode;
 }
 
@@ -131,17 +133,17 @@ export function SidebarSection({ title, children }: SidebarSectionProps) {
 }
 
 export interface SidebarItemProps {
-  /** Elementning noyob kaliti */
+  /** Unique item key */
   itemKey: string;
-  /** Ikonka */
+  /** Icon */
   icon?: ReactNode;
-  /** Element nomi */
+  /** Item title */
   title: string;
-  /** Havola (berilsa <a> sifatida chiqadi) */
+  /** Link (renders an <a> when set) */
   href?: string;
-  /** O'ng tomondagi kontent (badge va h.k.) */
+  /** Content on the right (badge, etc.) */
   endContent?: ReactNode;
-  /** Ichki (nested) elementlar */
+  /** Nested items */
   children?: ReactNode;
 }
 

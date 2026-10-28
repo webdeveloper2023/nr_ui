@@ -19,10 +19,10 @@ export default function ModalBackdrop() {
             <>
               <ModalHeader>backdrop="{backdrop}"</ModalHeader>
               <ModalBody>
-                <p>Orqa fon: to'q (opaque), xiralashgan (blur) yoki shaffof (transparent).</p>
+                <p>Backdrop: dimmed (opaque), blurred (blur) or clear (transparent).</p>
               </ModalBody>
               <ModalFooter>
-                <Button onClick={onClose}>Yopish</Button>
+                <Button onClick={onClose}>Close</Button>
               </ModalFooter>
             </>
           )}

@@ -1,34 +1,35 @@
 import { forwardRef, type ReactNode } from "react";
 import { cn } from "../lib/cn";
+import { useLocale } from "./locale";
 
 type ChipVariant = "primary" | "secondary" | "tertiary" | "soft" | "glass";
 type ChipColor = "default" | "accent" | "success" | "warning" | "danger";
 type ChipSize = "xs" | "sm" | "md" | "lg";
 
 export interface ChipProps {
-  /** Ko'rinish: primary (to'liq rang), secondary (kulrang fon), tertiary (fonsiz) soft (yumshoq rangli fon) yoki glass (shisha fon) */
+  /** Style: primary (solid color), secondary (gray), tertiary (no background), soft (tinted) or glass */
   variant?: ChipVariant;
-  /** Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi */
+  /** Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass) */
   material?: "frosted" | "liquid";
-  /** Rang */
+  /** Color */
   color?: ChipColor;
-  /** O'lcham */
+  /** Size */
   size?: ChipSize;
-  /** Matn oldida rangli nuqta ko'rsatadi (status uchun) */
+  /** Shows a colored dot before the text (for statuses) */
   dot?: boolean;
-  /** Matn oldidagi kontent (ikonka) */
+  /** Content before the text (icon) */
   startContent?: ReactNode;
-  /** Matn ortidagi kontent */
+  /** Content after the text */
   endContent?: ReactNode;
-  /** Berilsa, yopish (X) tugmasi chiqadi */
+  /** When set, a close (X) button is shown */
   onClose?: () => void;
-  /** Chap tomondagi avatar */
+  /** Avatar on the left */
   avatar?: ReactNode;
-  /** O'chirilgan holat */
+  /** Disabled state */
   isDisabled?: boolean;
-  /** Chip matni */
+  /** Chip text */
   children?: ReactNode;
-  /** Qo'shimcha klasslar */
+  /** Extra classes */
   className?: string;
 }
 
@@ -110,7 +111,9 @@ export const Chip = forwardRef<HTMLSpanElement, ChipProps>(
       className = "",
     },
     ref
-  ) => (
+  ) => {
+    const t = useLocale();
+    return (
     <span
       ref={ref}
       data-glass={material}
@@ -140,7 +143,7 @@ export const Chip = forwardRef<HTMLSpanElement, ChipProps>(
             "outline-none focus-visible:ring-2 focus-visible:ring-focus",
             sizeMap[size].close
           )}
-          aria-label="Close"
+          aria-label={t.common.close}
         >
           <svg viewBox="0 0 24 24" className="!w-[70%] !h-[70%]" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
             <line x1="18" y1="6" x2="6" y2="18" />
@@ -149,7 +152,8 @@ export const Chip = forwardRef<HTMLSpanElement, ChipProps>(
         </button>
       )}
     </span>
-  )
+    );
+  }
 );
 
 Chip.displayName = "Chip";

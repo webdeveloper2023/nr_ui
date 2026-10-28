@@ -3,7 +3,7 @@ import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from
 
 const placements = ["auto", "center", "top", "bottom"] as const;
 
-// "auto" — mobilda pastdan chiqadigan sheet, kattaroq ekranda markazda.
+// "auto" — a bottom sheet on mobile, centered on larger screens.
 export default function ModalPlacement() {
   const [placement, setPlacement] = useState<(typeof placements)[number] | null>(null);
 
@@ -20,10 +20,10 @@ export default function ModalPlacement() {
             <>
               <ModalHeader>placement="{placement}"</ModalHeader>
               <ModalBody>
-                <p>Modal ekranning qaysi qismida chiqishini tanlang.</p>
+                <p>Choose where on the screen the modal appears.</p>
               </ModalBody>
               <ModalFooter>
-                <Button onClick={onClose}>Yaxshi</Button>
+                <Button onClick={onClose}>Got it</Button>
               </ModalFooter>
             </>
           )}

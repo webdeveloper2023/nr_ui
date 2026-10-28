@@ -27,10 +27,10 @@ export default function SidebarLiquidGlass() {
         }
       >
         <SidebarSection>
-          <SidebarItem itemKey="home" icon={<Home size={17} />} title="Bosh sahifa" />
-          <SidebarItem itemKey="inbox" icon={<Inbox size={17} />} title="Xabarlar" />
-          <SidebarItem itemKey="analytics" icon={<BarChart3 size={17} />} title="Analitika" />
-          <SidebarItem itemKey="settings" icon={<Settings size={17} />} title="Sozlamalar" />
+          <SidebarItem itemKey="home" icon={<Home size={17} />} title="Home" />
+          <SidebarItem itemKey="inbox" icon={<Inbox size={17} />} title="Inbox" />
+          <SidebarItem itemKey="analytics" icon={<BarChart3 size={17} />} title="Analytics" />
+          <SidebarItem itemKey="settings" icon={<Settings size={17} />} title="Settings" />
         </SidebarSection>
       </Sidebar>
       <div className="relative flex flex-1 items-start justify-center pt-6">

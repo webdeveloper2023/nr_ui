@@ -4,10 +4,10 @@ export default function ChatMessages() {
   return (
     <div className="mx-auto w-full max-w-xl space-y-6">
       <ChatMessage role="user" time="14:02">
-        Viewport foydalanuvchi pastga tushganda ham joyida qoladimi?
+        Does the view stay in place when the user scrolls down?
       </ChatMessage>
       <ChatMessage role="assistant" time="14:02">
-        Ha — ChatContainer yangi xabar kelganda avtomatik pastga suriladi, javob esa oddiy matn sifatida ko'rsatiladi.
+        Yes — ChatContainer scrolls to the bottom automatically when a new message arrives, and replies render as plain text.
       </ChatMessage>
       <ChatMessage role="assistant" name="NR" isTyping />
     </div>

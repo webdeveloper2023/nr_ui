@@ -14,7 +14,7 @@ function ProfilePopover({ isBlurred }: { isBlurred: boolean }) {
             <p className="text-xs text-muted">Product designer</p>
           </div>
         </div>
-        <p className="mt-3 text-sm text-muted">Shisha orqasidagi ranglar xira ko'rinadi, matn esa aniq o'qiladi.</p>
+        <p className="mt-3 text-sm text-muted">Colors behind the glass are blurred while the text stays crisp.</p>
       </PopoverContent>
     </Popover>
   );

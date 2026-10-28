@@ -5,16 +5,16 @@ export default function PhoneInputValidation() {
     <div className="grid max-w-2xl gap-4 sm:grid-cols-2">
       <PhoneInput
         country="UZ"
-        label="Avtomatik tekshiruv"
+        label="Automatic validation"
         isRequired
         autoValidate
-        description="Raqamni yarim yozib, maydondan chiqing"
+        description="Type half a number, then leave the field"
       />
       <PhoneInput
         country="UZ"
-        label="O'z xato matningiz"
+        label="Custom error message"
         autoValidate
-        incompleteMessage="Iltimos, raqamni to'liq kiriting"
+        incompleteMessage="Please enter the full number"
         defaultValue="+99890123"
       />
     </div>

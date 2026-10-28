@@ -8,19 +8,19 @@ export default function CardGlassAndGradient() {
       <div aria-hidden className="absolute -right-8 top-6 size-60 rounded-full bg-pink opacity-60 blur-3xl" />
       <div aria-hidden className="absolute -bottom-16 left-1/3 size-56 rounded-full bg-mint opacity-60 blur-3xl" />
       <Card className="relative">
-        <CardHeader title="Default" description="Bilinar-bilinmas gradient" />
-        <CardBody className="text-muted">Oddiy kartalar uchun standart ko'rinish.</CardBody>
+        <CardHeader title="Default" description="A barely-there gradient" />
+        <CardBody className="text-muted">The standard look for everyday cards.</CardBody>
       </Card>
       <Card variant="flat" className="relative">
-        <CardHeader title="Flat" description="Gradientsiz, tekis surface" />
-        <CardBody className="text-muted">Zich jadval va formalar uchun.</CardBody>
+        <CardHeader title="Flat" description="Plain surface, no gradient" />
+        <CardBody className="text-muted">For dense tables and forms.</CardBody>
       </Card>
       <Card variant="glass" className="relative">
-        <CardHeader title="Hozir ijroda" description="Lo-fi beats · 2:41" endContent={<Music2 size={18} className="text-muted" />} />
+        <CardHeader title="Now playing" description="Lo-fi beats · 2:41" endContent={<Music2 size={18} className="text-muted" />} />
         <CardFooter className="justify-center gap-1">
-          <Button variant="ghost" isIconOnly size="sm" aria-label="Oldingi"><SkipBack size={16} /></Button>
-          <Button variant="glass" isIconOnly aria-label="Pauza"><Pause size={18} /></Button>
-          <Button variant="ghost" isIconOnly size="sm" aria-label="Keyingi"><SkipForward size={16} /></Button>
+          <Button variant="ghost" isIconOnly size="sm" aria-label="Previous"><SkipBack size={16} /></Button>
+          <Button variant="glass" isIconOnly aria-label="Pause"><Pause size={18} /></Button>
+          <Button variant="ghost" isIconOnly size="sm" aria-label="Next"><SkipForward size={16} /></Button>
         </CardFooter>
       </Card>
     </div>

@@ -14,19 +14,19 @@ const strokeColors: Record<StatColor, string> = {
 };
 
 export interface SparklineProps {
-  /** Grafik nuqtalari qiymatlari */
+  /** Chart data points */
   data: number[];
-  /** Chiziq rangi */
+  /** Line color */
   color?: StatColor;
-  /** Istalgan CSS rang (`color` o'rniga) */
+  /** Any CSS color (instead of `color`) */
   stroke?: string;
-  /** Kenglik (px). Berilmasa konteyner kengligini egallaydi */
+  /** Width (px). Fills the container when omitted */
   width?: number;
-  /** Balandlik (px) */
+  /** Height (px) */
   height?: number;
-  /** Ostidagi gradient maydonni ko'rsatadi */
+  /** Shows the gradient area below the line */
   showArea?: boolean;
-  /** Qo'shimcha klasslar */
+  /** Extra classes */
   className?: string;
 }
 
@@ -72,33 +72,33 @@ export function Sparkline({
 }
 
 export interface StatCardProps {
-  /** Ko'rsatkich nomi */
+  /** Metric name */
   title: string;
-  /** Asosiy qiymat */
+  /** Main value */
   value: ReactNode;
-  /** O'zgarish foizi (musbat - o'sish, manfiy - tushish) */
+  /** Change in percent (positive = up, negative = down) */
   change?: number;
-  /** Trend ostidagi izoh matni (masalan, "o'tgan oyga nisbatan") */
+  /** Caption under the trend (e.g. "vs last month") */
   changeLabel?: string;
-  /** Tushish ijobiy bo'lsa (masalan, bounce rate) ranglarni almashtiradi */
+  /** Swaps the colors when a decrease is good (e.g. bounce rate) */
   isInverted?: boolean;
-  /** Sarlavha yonidagi ikonka */
+  /** Icon next to the title */
   icon?: ReactNode;
-  /** Ikonka, progress va grafik rangi */
+  /** Color of the icon, progress and chart */
   color?: StatColor;
-  /** Ko'rinish: default (yengil gradient), secondary (kulrang), glass (shisha) yoki gradient (accent → indigo) */
+  /** Style: default (soft gradient), secondary (gray), glass or gradient (accent → indigo) */
   variant?: StatVariant;
-  /** Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi */
+  /** Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass) */
   material?: "frosted" | "liquid";
-  /** O'ng yuqoridagi amallar (menyu tugmasi va h.k.) */
+  /** Top-right actions (menu button, etc.) */
   actions?: ReactNode;
-  /** Progress chizig'i qiymati (0–100) */
+  /** Progress bar value (0–100) */
   progress?: number;
-  /** Pastdagi sparkline grafik ma'lumotlari */
+  /** Data for the sparkline at the bottom */
   chartData?: number[];
-  /** Pastki qism kontenti (havola va h.k.) */
+  /** Footer content (link, etc.) */
   footer?: ReactNode;
-  /** Qo'shimcha klasslar */
+  /** Extra classes */
   className?: string;
 }
 

@@ -1,6 +1,6 @@
 import { Stepper } from "nr-ui-kit";
 
-const steps = [{ title: "Boshlash" }, { title: "Jarayon" }, { title: "Tekshiruv" }, { title: "Tugash" }];
+const steps = [{ title: "Start" }, { title: "In progress" }, { title: "Review" }, { title: "Finish" }];
 
 export default function StepperColors() {
   return (

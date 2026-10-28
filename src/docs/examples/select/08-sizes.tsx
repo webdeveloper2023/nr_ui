@@ -2,9 +2,9 @@ import { Select } from "nr-ui-kit";
 
 const sizes = ["xs", "sm", "md", "lg"] as const;
 const cities = [
-  { key: "tas", label: "Toshkent" },
-  { key: "sam", label: "Samarqand" },
-  { key: "bux", label: "Buxoro" },
+  { key: "tas", label: "Tashkent" },
+  { key: "sam", label: "Samarkand" },
+  { key: "bux", label: "Bukhara" },
 ];
 
 export default function SelectSizes() {

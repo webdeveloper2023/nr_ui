@@ -7,29 +7,29 @@ export default function DropdownSectionsShortcuts() {
       <Dropdown>
         <DropdownTrigger>
           <Button variant="tertiary" endContent={<ChevronDown size={16} />}>
-            Tahrirlash
+            Edit
           </Button>
         </DropdownTrigger>
-        <DropdownMenu aria-label="Tahrirlash" className="w-64">
-          <DropdownSection title="Fayl" showDivider>
+        <DropdownMenu aria-label="Edit" className="w-64">
+          <DropdownSection title="File" showDivider>
             <DropdownItem itemKey="new" startContent={<FilePlus size={16} />} shortcut="⌘N">
-              Yangi fayl
+              New file
             </DropdownItem>
           </DropdownSection>
-          <DropdownSection title="Bufer" showDivider>
+          <DropdownSection title="Clipboard" showDivider>
             <DropdownItem itemKey="cut" startContent={<Scissors size={16} />} shortcut="⌘X">
-              Kesish
+              Cut
             </DropdownItem>
             <DropdownItem itemKey="copy" startContent={<Copy size={16} />} shortcut="⌘C">
-              Nusxalash
+              Copy
             </DropdownItem>
             <DropdownItem itemKey="paste" startContent={<ClipboardPaste size={16} />} shortcut="⌘V" isDisabled>
-              Qo'yish
+              Paste
             </DropdownItem>
           </DropdownSection>
-          <DropdownSection title="Xavfli zona">
+          <DropdownSection title="Danger zone">
             <DropdownItem itemKey="delete" color="danger" startContent={<Trash2 size={16} />} shortcut="⌘⌫">
-              O'chirish
+              Delete
             </DropdownItem>
           </DropdownSection>
         </DropdownMenu>

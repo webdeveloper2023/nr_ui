@@ -8,29 +8,29 @@ type BadgePlacement = "top-right" | "top-left" | "bottom-right" | "bottom-left";
 type BadgeShape = "circle" | "rectangle";
 
 export interface BadgeProps {
-  /** Badge ichidagi matn yoki son */
+  /** Text or number inside the badge */
   content?: ReactNode;
-  /** Rang */
+  /** Color */
   color?: BadgeColor;
-  /** Ko'rinish: primary (to'liq rang) yoki soft (yumshoq fon) */
+  /** Style: primary (solid color) or soft (tinted background) */
   variant?: BadgeVariant;
-  /** O'lcham */
+  /** Size */
   size?: BadgeSize;
-  /** Elementning qaysi burchagida joylashishi */
+  /** Which corner of the element it sits on */
   placement?: BadgePlacement;
-  /** Ostidagi element shakli (joylashuvni moslash uchun) */
+  /** Shape of the wrapped element (adjusts the position) */
   shape?: BadgeShape;
-  /** Matnsiz kichik nuqta ko'rinishi */
+  /** Small dot without text */
   isDot?: boolean;
-  /** Badge'ni animatsiya bilan yashiradi */
+  /** Hides the badge with an animation */
   isInvisible?: boolean;
-  /** Atrofida fon rangidagi chegara (halqa) */
+  /** Ring in the background color around the badge */
   showOutline?: boolean;
-  /** Bitta belgi uchun aylana shakl */
+  /** Perfect circle for single-character content */
   isOneChar?: boolean;
-  /** Badge qo'yiladigan element */
+  /** Element the badge is attached to */
   children?: ReactNode;
-  /** Qo'shimcha klasslar */
+  /** Extra classes */
   className?: string;
 }
 

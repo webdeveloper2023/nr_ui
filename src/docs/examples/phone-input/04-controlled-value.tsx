@@ -4,12 +4,12 @@ import { Chip, PhoneInput, type PhoneValueInfo } from "nr-ui-kit";
 export default function PhoneInputControlled() {
   const [value, setValue] = useState("+998901234567");
   const [info, setInfo] = useState<PhoneValueInfo | null>(null);
-  const isComplete = info ? info.isComplete : true; // boshlang'ich qiymat to'liq
+  const isComplete = info ? info.isComplete : true; // the initial value is complete
 
   return (
     <div className="max-w-sm space-y-4">
       <PhoneInput
-        label="Telefon"
+        label="Phone"
         country="UZ"
         value={value}
         onValueChange={(v, i) => {

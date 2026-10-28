@@ -1,6 +1,6 @@
 import { Button, useToast } from "nr-ui-kit";
 
-// Joylashuv ilova darajasida beriladi:
+// Placement is set once at the app level:
 //
 //   <ToastProvider placement="top-center" maxVisible={3}>
 //     <App />
@@ -15,10 +15,10 @@ export default function ToastPlacement() {
       <Button
         variant="secondary"
         onClick={() =>
-          addToast({ title: "Joylashuv", description: "Bu docs saytida bottom-right ishlatilgan.", color: "accent" })
+          addToast({ title: "Placement", description: "This docs site uses bottom-right.", color: "accent" })
         }
       >
-        Sinab ko'rish
+        Try it
       </Button>
     </div>
   );

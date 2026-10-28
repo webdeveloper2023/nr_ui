@@ -1,10 +1,10 @@
 import { Select } from "nr-ui-kit";
 
 const cities = [
-  { key: "tashkent", label: "Toshkent" },
-  { key: "samarkand", label: "Samarqand" },
-  { key: "bukhara", label: "Buxoro" },
-  { key: "khiva", label: "Xiva" },
+  { key: "tashkent", label: "Tashkent" },
+  { key: "samarkand", label: "Samarkand" },
+  { key: "bukhara", label: "Bukhara" },
+  { key: "khiva", label: "Khiva" },
 ];
 
 export default function SelectLiquidGlass() {

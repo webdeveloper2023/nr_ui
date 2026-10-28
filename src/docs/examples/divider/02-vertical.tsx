@@ -5,9 +5,9 @@ export default function DividerVertical() {
     <div className="flex h-5 items-center justify-center gap-4 text-sm text-muted">
       <a href="#" className="hover:text-foreground">Blog</a>
       <Divider orientation="vertical" />
-      <a href="#" className="hover:text-foreground">Hujjatlar</a>
+      <a href="#" className="hover:text-foreground">Docs</a>
       <Divider orientation="vertical" />
-      <a href="#" className="hover:text-foreground">Narxlar</a>
+      <a href="#" className="hover:text-foreground">Pricing</a>
     </div>
   );
 }

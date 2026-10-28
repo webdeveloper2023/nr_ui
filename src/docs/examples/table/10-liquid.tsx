@@ -2,9 +2,9 @@ import { useState } from "react";
 import { Chip, Table, Tabs } from "nr-ui-kit";
 
 const rows = [
-  { id: "1", order: "#3201", customer: "Ali Valiyev", total: "$129", status: "Yetkazildi" },
-  { id: "2", order: "#3202", customer: "Dilnoza Karimova", total: "$54", status: "Yo'lda" },
-  { id: "3", order: "#3203", customer: "Jasur Rahimov", total: "$310", status: "Yetkazildi" },
+  { id: "1", order: "#3201", customer: "Ali Valiyev", total: "$129", status: "Delivered" },
+  { id: "2", order: "#3202", customer: "Dilnoza Karimova", total: "$54", status: "In transit" },
+  { id: "3", order: "#3203", customer: "Jasur Rahimov", total: "$310", status: "Delivered" },
 ];
 
 export default function TableLiquidGlass() {
@@ -28,19 +28,19 @@ export default function TableLiquidGlass() {
       </div>
       <div className="relative">
         <Table
-          aria-label="Buyurtmalar"
+          aria-label="Orders"
           keyField="id"
           rows={rows}
           isBlurred
           material={material}
           columns={[
-            { key: "order", label: "Buyurtma" },
-            { key: "customer", label: "Mijoz" },
-            { key: "total", label: "Summa" },
+            { key: "order", label: "Order" },
+            { key: "customer", label: "Customer" },
+            { key: "total", label: "Total" },
             {
               key: "status",
-              label: "Holat",
-              render: (v) => <Chip size="sm" color={v === "Yetkazildi" ? "success" : "warning"}>{String(v)}</Chip>,
+              label: "Status",
+              render: (v) => <Chip size="sm" color={v === "Delivered" ? "success" : "warning"}>{String(v)}</Chip>,
             },
           ]}
         />

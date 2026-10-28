@@ -7,14 +7,14 @@ export default function PricingSingleCard() {
     <div className="mx-auto w-full max-w-sm">
       <PricingCard
         name="Lifetime"
-        description="Bir marta to'lang — umrbod foydalaning"
+        description="Pay once — use it forever"
         price="$199"
         period="monthly"
-        ctaLabel="Sotib olish"
+        ctaLabel="Buy now"
         isPopular
-        popularLabel="Chegirma"
-        features={["Barcha komponentlar", "Kelajakdagi yangilanishlar", "Figma fayllari", "Shaxsiy Discord kanal"]}
-        onSelect={() => addToast({ title: "Savatga qo'shildi", color: "success" })}
+        popularLabel="Sale"
+        features={["All components", "Future updates", "Figma files", "Private Discord channel"]}
+        onSelect={() => addToast({ title: "Added to cart", color: "success" })}
       />
     </div>
   );

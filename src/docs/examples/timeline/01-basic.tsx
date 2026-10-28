@@ -5,10 +5,10 @@ export default function TimelineBasic() {
     <Timeline
       className="mx-auto max-w-md"
       items={[
-        { id: "1", title: "Buyurtma qabul qilindi", time: "09:12" },
-        { id: "2", title: "To'lov tasdiqlandi", time: "09:14" },
-        { id: "3", title: "Omborga yuborildi", time: "11:40" },
-        { id: "4", title: "Kuryer yo'lda", time: "14:05" },
+        { id: "1", title: "Order received", time: "09:12" },
+        { id: "2", title: "Payment confirmed", time: "09:14" },
+        { id: "3", title: "Sent to warehouse", time: "11:40" },
+        { id: "4", title: "Courier on the way", time: "14:05" },
       ]}
     />
   );

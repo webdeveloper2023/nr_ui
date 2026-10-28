@@ -7,8 +7,8 @@ export default function PricingBillingToggle() {
   return (
     <div className="flex flex-col items-center gap-4">
       <BillingToggle value={period} onChange={setPeriod} />
-      <BillingToggle value={period} onChange={setPeriod} yearlyBadge="2 oy bepul" labels={{ monthly: "Oylik", yearly: "Yillik" }} />
-      <p className="text-sm text-muted">Tanlangan: {period}</p>
+      <BillingToggle value={period} onChange={setPeriod} yearlyBadge="2 months free" labels={{ monthly: "Per month", yearly: "Per year" }} />
+      <p className="text-sm text-muted">Selected: {period}</p>
     </div>
   );
 }

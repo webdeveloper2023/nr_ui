@@ -11,14 +11,14 @@ export default function NavbarFloating() {
         </NavbarBrand>
         <NavbarContent justify="center">
           <NavbarItem variant="pill" isActive>
-            Bosh sahifa
+            Home
           </NavbarItem>
-          <NavbarItem variant="pill">Narxlar</NavbarItem>
-          <NavbarItem variant="pill">Hujjatlar</NavbarItem>
+          <NavbarItem variant="pill">Pricing</NavbarItem>
+          <NavbarItem variant="pill">Docs</NavbarItem>
         </NavbarContent>
         <NavbarContent justify="end" isAlwaysVisible>
           <NavbarItem>
-            <Button size="sm">Pro olish</Button>
+            <Button size="sm">Get Pro</Button>
           </NavbarItem>
         </NavbarContent>
       </Navbar>

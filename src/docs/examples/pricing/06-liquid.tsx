@@ -15,10 +15,10 @@ export default function PricingLiquidGlass() {
         material="frosted"
         icon={<Snowflake />}
         name="Frosted"
-        description="Klassik xira shisha"
+        description="Classic frosted glass"
         price={{ monthly: 9, yearly: 90 }}
         period="monthly"
-        features={["Barcha komponentlar", "Dark mode", "Email yordam"]}
+        features={["All components", "Dark mode", "Email support"]}
       />
       <PricingCard
         className="relative"
@@ -30,7 +30,7 @@ export default function PricingLiquidGlass() {
         price={{ monthly: 19, yearly: 190 }}
         period="monthly"
         isPopular
-        features={["Barcha komponentlar", "Liquid material", "Prioritet yordam"]}
+        features={["All components", "Liquid material", "Priority support"]}
       />
     </div>
   );

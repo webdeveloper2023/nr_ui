@@ -7,24 +7,24 @@ export default function PopoverWithForm() {
       <Popover placement="bottom-start">
         <PopoverTrigger>
           <Button variant="tertiary" startContent={<SlidersHorizontal size={16} />}>
-            O'lchamlar
+            Dimensions
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-72 p-4">
           {(onClose) => (
             <div className="flex flex-col gap-3">
               <div>
-                <p className="text-sm font-medium text-foreground">O'lchamlar</p>
-                <p className="text-xs text-muted">Element o'lchamini belgilang</p>
+                <p className="text-sm font-medium text-foreground">Dimensions</p>
+                <p className="text-xs text-muted">Set the element size</p>
               </div>
-              <Input size="sm" variant="secondary" label="Kenglik" defaultValue="100%" />
-              <Input size="sm" variant="secondary" label="Balandlik" defaultValue="320px" />
+              <Input size="sm" variant="secondary" label="Width" defaultValue="100%" />
+              <Input size="sm" variant="secondary" label="Height" defaultValue="320px" />
               <div className="mt-1 flex justify-end gap-2">
                 <Button size="sm" variant="ghost" onClick={onClose}>
-                  Bekor
+                  Cancel
                 </Button>
                 <Button size="sm" onClick={onClose}>
-                  Saqlash
+                  Save
                 </Button>
               </div>
             </div>

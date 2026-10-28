@@ -10,7 +10,7 @@ export default function DropdownProfileMenu() {
             <Avatar src="https://i.pravatar.cc/150?u=rafiqjon" />
           </button>
         </DropdownTrigger>
-        <DropdownMenu aria-label="Profil" className="w-60">
+        <DropdownMenu aria-label="Profile" className="w-60">
           <DropdownSection showDivider>
             <DropdownItem itemKey="profile" className="h-14" description="rafiqjon@acme.uz">
               Rafiqjon Nazirov
@@ -18,20 +18,20 @@ export default function DropdownProfileMenu() {
           </DropdownSection>
           <DropdownSection showDivider>
             <DropdownItem itemKey="account" startContent={<User size={16} />}>
-              Profil
+              Profile
             </DropdownItem>
             <DropdownItem itemKey="billing" startContent={<CreditCard size={16} />}>
-              To'lovlar
+              Billing
             </DropdownItem>
             <DropdownItem itemKey="settings" startContent={<Settings size={16} />} shortcut="⌘,">
-              Sozlamalar
+              Settings
             </DropdownItem>
             <DropdownItem itemKey="help" startContent={<HelpCircle size={16} />}>
-              Yordam
+              Help
             </DropdownItem>
           </DropdownSection>
           <DropdownItem itemKey="logout" color="danger" startContent={<LogOut size={16} />}>
-            Chiqish
+            Log out
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>

@@ -4,11 +4,11 @@ import { cn } from "../lib/cn";
 type DividerOrientation = "horizontal" | "vertical";
 
 export interface DividerProps {
-  /** Yo'nalish: gorizontal yoki vertikal */
+  /** Orientation: horizontal or vertical */
   orientation?: DividerOrientation;
-  /** O'rtadagi label (faqat gorizontal) */
+  /** Centered label (horizontal only) */
   children?: ReactNode;
-  /** Qo'shimcha klasslar */
+  /** Extra classes */
   className?: string;
 }
 

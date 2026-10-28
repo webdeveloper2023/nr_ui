@@ -7,11 +7,11 @@ function Menu({ material }: { material: "frosted" | "liquid" }) {
       <DropdownTrigger>
         <Button variant="glass" material={material} className="capitalize">{material}</Button>
       </DropdownTrigger>
-      <DropdownMenu aria-label="Amallar" material={material}>
-        <DropdownItem itemKey="edit" startContent={<Pencil size={16} />} shortcut="⌘E">Tahrirlash</DropdownItem>
-        <DropdownItem itemKey="copy" startContent={<Copy size={16} />} shortcut="⌘D">Nusxa olish</DropdownItem>
-        <DropdownItem itemKey="share" startContent={<Share size={16} />}>Ulashish</DropdownItem>
-        <DropdownItem itemKey="delete" color="danger" startContent={<Trash2 size={16} />}>O'chirish</DropdownItem>
+      <DropdownMenu aria-label="Actions" material={material}>
+        <DropdownItem itemKey="edit" startContent={<Pencil size={16} />} shortcut="⌘E">Edit</DropdownItem>
+        <DropdownItem itemKey="copy" startContent={<Copy size={16} />} shortcut="⌘D">Duplicate</DropdownItem>
+        <DropdownItem itemKey="share" startContent={<Share size={16} />}>Share</DropdownItem>
+        <DropdownItem itemKey="delete" color="danger" startContent={<Trash2 size={16} />}>Delete</DropdownItem>
       </DropdownMenu>
     </Dropdown>
   );

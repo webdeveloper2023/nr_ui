@@ -10,7 +10,9 @@ import {
   useToast,
 } from "nr-ui-kit";
 import { ThemeButton, Notifications, UserMenu, CardMenu, NewOrderModal, UpgradeModal } from "./shared";
-import { STATUS, ORDERS, REVENUE, TEAM, PAGE_SIZE, avatarUrl, type Order, type Status } from "./data";
+import { STATUS, ORDERS, REVENUE, TEAM, PAGE_SIZE, avatarUrl, formatToday, type Order, type Status } from "./data";
+import { useLang, useT, type Tr } from "../../i18n/lang";
+import { LanguageSwitch } from "../../LanguageSwitch";
 import { useDesignStyle } from "../../designStyle";
 import { DesignStyleSwitch } from "../../DesignStyleSwitch";
 
@@ -18,12 +20,12 @@ import { DesignStyleSwitch } from "../../DesignStyleSwitch";
 // large-radius widgets. Every glass surface opts into material="liquid".
 const M = "liquid" as const;
 
-const NAV = [
-  { key: "home", label: "Bosh sahifa", short: "Bosh", icon: LayoutDashboard },
-  { key: "orders", label: "Buyurtmalar", short: "Buyurtma", icon: ShoppingBag },
-  { key: "products", label: "Mahsulotlar", short: "Mahsulot", icon: Package },
-  { key: "customers", label: "Mijozlar", short: "Mijoz", icon: Users },
-  { key: "analytics", label: "Analitika", short: "Tahlil", icon: BarChart3 },
+const NAV: { key: string; label: Tr; short: Tr; icon: typeof LayoutDashboard }[] = [
+  { key: "home", label: { en: "Home", uz: "Bosh sahifa", ru: "Главная" }, short: { en: "Home", uz: "Bosh", ru: "Главная" }, icon: LayoutDashboard },
+  { key: "orders", label: { en: "Orders", uz: "Buyurtmalar", ru: "Заказы" }, short: { en: "Orders", uz: "Buyurtma", ru: "Заказы" }, icon: ShoppingBag },
+  { key: "products", label: { en: "Products", uz: "Mahsulotlar", ru: "Товары" }, short: { en: "Products", uz: "Mahsulot", ru: "Товары" }, icon: Package },
+  { key: "customers", label: { en: "Customers", uz: "Mijozlar", ru: "Клиенты" }, short: { en: "Clients", uz: "Mijoz", ru: "Клиенты" }, icon: Users },
+  { key: "analytics", label: { en: "Analytics", uz: "Analitika", ru: "Аналитика" }, short: { en: "Stats", uz: "Tahlil", ru: "Анализ" }, icon: BarChart3 },
 ];
 
 const NOISE =
@@ -56,9 +58,10 @@ function Capsule({ children, className = "" }: { children: ReactNode; className?
 }
 
 function TabBar({ active, onChange, compact = false }: { active: string; onChange: (k: string) => void; compact?: boolean }) {
+  const t = useT();
   return (
     <Capsule>
-      <nav aria-label="Asosiy navigatsiya" className="flex items-center gap-0.5">
+      <nav aria-label={t({ en: "Main navigation", uz: "Asosiy navigatsiya", ru: "Основная навигация" })} className="flex items-center gap-0.5">
         {NAV.map(({ key, label, short, icon: Icon }) => {
           const isActive = key === active;
           return (
@@ -66,7 +69,7 @@ function TabBar({ active, onChange, compact = false }: { active: string; onChang
               key={key}
               onClick={() => onChange(key)}
               aria-current={isActive ? "page" : undefined}
-              aria-label={label}
+              aria-label={t(label)}
               className={[
                 "flex items-center gap-2 rounded-full font-medium transition-all duration-300 ease-(--ease-out-soft) cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-focus",
                 compact ? "h-12 w-[62px] flex-col justify-center gap-0.5 text-[10px]" : "h-10 px-4 text-sm",
@@ -76,7 +79,7 @@ function TabBar({ active, onChange, compact = false }: { active: string; onChang
               ].join(" ")}
             >
               <Icon size={compact ? 18 : 16} strokeWidth={isActive ? 2.4 : 2} />
-              <span className={compact ? "" : "hidden lg:inline"}>{compact ? short : label}</span>
+              <span className={compact ? "" : "hidden lg:inline"}>{compact ? t(short) : t(label)}</span>
             </button>
           );
         })}
@@ -104,6 +107,7 @@ function Widget({ children, className = "", title, subtitle, end }: { children: 
 }
 
 function SourceList({ open, nav, onNav, onUpgrade }: { open: boolean; nav: string; onNav: (k: string) => void; onUpgrade: () => void }) {
+  const t = useT();
   const item = (key: string, label: string, icon: ReactNode, badge?: ReactNode) => (
     <button
       key={key}
@@ -128,21 +132,21 @@ function SourceList({ open, nav, onNav, onUpgrade }: { open: boolean; nav: strin
         open ? "translate-x-0 opacity-100" : "-translate-x-[110%] opacity-0 pointer-events-none",
       ].join(" ")}
     >
-      <p className="px-3 pb-1 pt-2 text-xs font-semibold text-foreground/55">Do'kon</p>
-      {NAV.map((n) => item(n.key, n.label, <n.icon size={16} />, n.key === "orders" ? <Chip size="sm" variant="soft" color="accent">8</Chip> : undefined))}
-      <p className="px-3 pb-1 pt-4 text-xs font-semibold text-foreground/55">To'plamlar</p>
-      {item("fav", "Sevimlilar", <Heart size={16} />)}
-      {item("vip", "VIP mijozlar", <Star size={16} />)}
-      {item("files", "Fayllar", <Folder size={16} />)}
-      {item("messages", "Xabarlar", <MessageSquare size={16} />, <Chip size="sm" color="danger" variant="primary">3</Chip>)}
+      <p className="px-3 pb-1 pt-2 text-xs font-semibold text-foreground/55">{t({ en: "Store", uz: "Do'kon", ru: "Магазин" })}</p>
+      {NAV.map((n) => item(n.key, t(n.label), <n.icon size={16} />, n.key === "orders" ? <Chip size="sm" variant="soft" color="accent">8</Chip> : undefined))}
+      <p className="px-3 pb-1 pt-4 text-xs font-semibold text-foreground/55">{t({ en: "Collections", uz: "To'plamlar", ru: "Коллекции" })}</p>
+      {item("fav", t({ en: "Favorites", uz: "Sevimlilar", ru: "Избранное" }), <Heart size={16} />)}
+      {item("vip", t({ en: "VIP customers", uz: "VIP mijozlar", ru: "VIP-клиенты" }), <Star size={16} />)}
+      {item("files", t({ en: "Files", uz: "Fayllar", ru: "Файлы" }), <Folder size={16} />)}
+      {item("messages", t({ en: "Messages", uz: "Xabarlar", ru: "Сообщения" }), <MessageSquare size={16} />, <Chip size="sm" color="danger" variant="primary">3</Chip>)}
       <a href="/" className="flex h-9 items-center gap-3 rounded-xl px-3 text-sm text-foreground/75 hover:bg-white/30 dark:hover:bg-white/8">
-        <BookOpen size={16} /> Hujjatlar
+        <BookOpen size={16} /> {t({ en: "Docs", uz: "Hujjatlar", ru: "Документация" })}
       </a>
       <div className="mt-auto rounded-[22px] bg-white/40 p-4 dark:bg-white/8">
-        <p className="text-sm font-semibold text-foreground">Pro'ga o'ting</p>
-        <p className="mt-0.5 text-xs text-foreground/65">AI va cheksiz buyurtmalar</p>
-        <Progress value={72} size="sm" className="mt-3" label="Limit" showValueLabel />
-        <Button size="sm" radius="full" fullWidth className="mt-3" onClick={onUpgrade}>Yangilash</Button>
+        <p className="text-sm font-semibold text-foreground">{t({ en: "Go Pro", uz: "Pro'ga o'ting", ru: "Перейти на Pro" })}</p>
+        <p className="mt-0.5 text-xs text-foreground/65">{t({ en: "AI and unlimited orders", uz: "AI va cheksiz buyurtmalar", ru: "AI и безлимитные заказы" })}</p>
+        <Progress value={72} size="sm" className="mt-3" label={t({ en: "Limit", uz: "Limit", ru: "Лимит" })} showValueLabel />
+        <Button size="sm" radius="full" fullWidth className="mt-3" onClick={onUpgrade}>{t({ en: "Upgrade", uz: "Yangilash", ru: "Обновить" })}</Button>
       </div>
     </aside>
   );
@@ -150,6 +154,8 @@ function SourceList({ open, nav, onNav, onUpgrade }: { open: boolean; nav: strin
 
 export default function LiquidDashboard() {
   const [designStyle, setDesignStyle] = useDesignStyle();
+  const [lang, setLang] = useLang();
+  const t = useT();
   const { addToast } = useToast();
   const [nav, setNav] = useState("home");
   const [sourceOpen, setSourceOpen] = useState(true);
@@ -161,14 +167,14 @@ export default function LiquidDashboard() {
   const [orderOpen, setOrderOpen] = useState(false);
   const [upgradeOpen, setUpgradeOpen] = useState(false);
   const [chatLoading, setChatLoading] = useState(false);
-  const [messages, setMessages] = useState<{ role: "user" | "assistant"; text: string }[]>([
-    { role: "user", text: "Bugun nimaga e'tibor beray?" },
-    { role: "assistant", text: "2 ta buyurtma kutilmoqda va Wireless earbuds zaxirasi 4 donaga tushdi. Ularni jo'natib, zaxirani to'ldirsangiz haftalik maqsadga 96% yetasiz." },
+  const [messages, setMessages] = useState<{ role: "user" | "assistant"; text: string | Tr }[]>([
+    { role: "user", text: { en: "What should I focus on today?", uz: "Bugun nimaga e'tibor beray?", ru: "На что обратить внимание сегодня?" } },
+    { role: "assistant", text: { en: "2 orders are pending and Wireless earbuds stock is down to 4. Ship them and restock to reach 96% of the weekly goal.", uz: "2 ta buyurtma kutilmoqda va Wireless earbuds zaxirasi 4 donaga tushdi. Ularni jo'natib, zaxirani to'ldirsangiz haftalik maqsadga 96% yetasiz.", ru: "2 заказа ждут отправки, а запас Wireless earbuds упал до 4 шт. Отправьте их и пополните склад — план недели будет выполнен на 96%." } },
   ]);
 
   useEffect(() => {
-    const t = setTimeout(() => setLoading(false), 900);
-    return () => clearTimeout(t);
+    const timer = setTimeout(() => setLoading(false), 900);
+    return () => clearTimeout(timer);
   }, []);
 
   const toast = (title: string, color: "success" | "accent" | "danger" | "warning" = "success", icon?: ReactNode) =>
@@ -178,7 +184,7 @@ export default function LiquidDashboard() {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      toast("Ma'lumotlar yangilandi");
+      toast(t({ en: "Data refreshed", uz: "Ma'lumotlar yangilandi", ru: "Данные обновлены" }));
     }, 900);
   };
 
@@ -199,7 +205,7 @@ export default function LiquidDashboard() {
     setMessages((m) => [...m, { role: "user", text }]);
     setChatLoading(true);
     setTimeout(() => {
-      setMessages((m) => [...m, { role: "assistant", text: "Tayyor: eng faol 5 mijozga shaxsiy chegirma taklifini yuborish konversiyani taxminan +0.6% oshiradi." }]);
+      setMessages((m) => [...m, { role: "assistant", text: { en: "Done: a personal discount for your 5 most active customers should lift conversion by about +0.6%.", uz: "Tayyor: eng faol 5 mijozga shaxsiy chegirma taklifini yuborish konversiyani taxminan +0.6% oshiradi.", ru: "Готово: персональная скидка 5 самым активным клиентам поднимет конверсию примерно на +0,6%." } }]);
       setChatLoading(false);
     }, 1400);
   };
@@ -212,8 +218,8 @@ export default function LiquidDashboard() {
       <header className="fixed inset-x-0 top-4 z-40 flex items-center justify-between gap-3 px-4">
         <Capsule className="sm:pr-4">
           <div className="hidden xl:block">
-            <Tooltip content={sourceOpen ? "Panelni yashirish" : "Panelni ko'rsatish"} placement="bottom" material={M}>
-              <Button isIconOnly radius="full" variant="glass" material={M} aria-label="Panel" onClick={() => setSourceOpen(!sourceOpen)}>
+            <Tooltip content={sourceOpen ? t({ en: "Hide sidebar", uz: "Panelni yashirish", ru: "Скрыть панель" }) : t({ en: "Show sidebar", uz: "Panelni ko'rsatish", ru: "Показать панель" })} placement="bottom" material={M}>
+              <Button isIconOnly radius="full" variant="glass" material={M} aria-label={t({ en: "Sidebar", uz: "Panel", ru: "Панель" })} onClick={() => setSourceOpen(!sourceOpen)}>
                 <PanelLeft size={17} />
               </Button>
             </Tooltip>
@@ -230,13 +236,14 @@ export default function LiquidDashboard() {
 
         <Capsule>
           <div className="hidden sm:block">
-            <Tooltip content="Qidirish" placement="bottom" material={M}>
-              <Button isIconOnly radius="full" variant="ghost" aria-label="Qidirish" onClick={() => document.getElementById("liquid-search")?.focus()}>
+            <Tooltip content={t({ en: "Search", uz: "Qidirish", ru: "Поиск" })} placement="bottom" material={M}>
+              <Button isIconOnly radius="full" variant="ghost" aria-label={t({ en: "Search", uz: "Qidirish", ru: "Поиск" })} onClick={() => document.getElementById("liquid-search")?.focus()}>
                 <Search size={17} />
               </Button>
             </Tooltip>
           </div>
           <DesignStyleSwitch style={designStyle} onChange={setDesignStyle} />
+          <LanguageSwitch lang={lang} onChange={setLang} className="hidden lg:flex" />
           <Notifications />
           <ThemeButton />
           <div className="pl-1 pr-0.5"><UserMenu /></div>
@@ -255,19 +262,19 @@ export default function LiquidDashboard() {
         {/* Greeting */}
         <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="text-sm font-medium text-foreground/70">Seshanba, 27 oktyabr</p>
-            <h1 className="mt-1 text-[34px] font-bold leading-tight tracking-tight text-foreground sm:text-[40px]">Xayrli kech, Rafiqjon</h1>
+            <p className="text-sm font-medium text-foreground/70">{formatToday(lang)}</p>
+            <h1 className="mt-1 text-[34px] font-bold leading-tight tracking-tight text-foreground sm:text-[40px]">{t({ en: "Good evening, Rafiqjon", uz: "Xayrli kech, Rafiqjon", ru: "Добрый вечер, Рафикжон" })}</h1>
           </div>
           <div className="flex items-center gap-2">
-            <Tooltip content="Yangilash" material={M}>
-              <Button isIconOnly radius="full" variant="glass" material={M} onClick={refresh} aria-label="Yangilash">
+            <Tooltip content={t({ en: "Refresh", uz: "Yangilash", ru: "Обновить" })} material={M}>
+              <Button isIconOnly radius="full" variant="glass" material={M} onClick={refresh} aria-label={t({ en: "Refresh", uz: "Yangilash", ru: "Обновить" })}>
                 {loading ? <Spinner size="sm" color="current" /> : <RefreshCw size={16} />}
               </Button>
             </Tooltip>
-            <Button radius="full" variant="glass" material={M} startContent={<Download size={16} />} onClick={() => toast("Hisobot yuklab olinmoqda", "accent", <Download size={16} />)}>
-              Eksport
+            <Button radius="full" variant="glass" material={M} startContent={<Download size={16} />} onClick={() => toast(t({ en: "Downloading report", uz: "Hisobot yuklab olinmoqda", ru: "Отчёт скачивается" }), "accent", <Download size={16} />)}>
+              {t({ en: "Export", uz: "Eksport", ru: "Экспорт" })}
             </Button>
-            <Button radius="full" startContent={<Plus size={16} />} onClick={() => setOrderOpen(true)}>Yangi buyurtma</Button>
+            <Button radius="full" startContent={<Plus size={16} />} onClick={() => setOrderOpen(true)}>{t({ en: "New order", uz: "Yangi buyurtma", ru: "Новый заказ" })}</Button>
           </div>
         </div>
 
@@ -275,7 +282,7 @@ export default function LiquidDashboard() {
           {/* Revenue — the hero widget */}
           <Widget
             className="lg:col-span-8"
-            title="Daromad"
+            title={t({ en: "Revenue", uz: "Daromad", ru: "Выручка" })}
             subtitle={
               <span className="flex items-center gap-2">
                 <span className="text-[28px] font-bold tracking-tight text-foreground tabular-nums">{revenue.total}</span>
@@ -290,9 +297,9 @@ export default function LiquidDashboard() {
                 selectedKey={range}
                 onSelectionChange={setRange}
                 tabs={[
-                  { key: "week", title: "7 kun" },
-                  { key: "month", title: "30 kun" },
-                  { key: "year", title: "12 oy" },
+                  { key: "week", title: t({ en: "7 days", uz: "7 kun", ru: "7 дней" }) },
+                  { key: "month", title: t({ en: "30 days", uz: "30 kun", ru: "30 дней" }) },
+                  { key: "year", title: t({ en: "12 months", uz: "12 oy", ru: "12 месяцев" }) },
                 ]}
               />
             }
@@ -302,9 +309,9 @@ export default function LiquidDashboard() {
             </Skeleton>
             <div className="mt-4 flex flex-wrap gap-2">
               {[
-                { label: "Onlayn", value: "$31,420", dot: "bg-blue" },
-                { label: "Do'kon", value: "$12,610", dot: "bg-green" },
-                { label: "Ulgurji", value: "$4,200", dot: "bg-orange" },
+                { label: t({ en: "Online", uz: "Onlayn", ru: "Онлайн" }), value: "$31,420", dot: "bg-blue" },
+                { label: t({ en: "In-store", uz: "Do'kon", ru: "Магазин" }), value: "$12,610", dot: "bg-green" },
+                { label: t({ en: "Wholesale", uz: "Ulgurji", ru: "Опт" }), value: "$4,200", dot: "bg-orange" },
               ].map((s) => (
                 <span key={s.label} data-glass={M} className="glass-thin flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm">
                   <span className={`h-2 w-2 rounded-full ${s.dot}`} />
@@ -316,16 +323,16 @@ export default function LiquidDashboard() {
           </Widget>
 
           {/* Goals ring */}
-          <Widget className="lg:col-span-4" title="Oylik maqsad" subtitle="Oktyabr, 2026" end={<CardMenu />}>
+          <Widget className="lg:col-span-4" title={t({ en: "Monthly goal", uz: "Oylik maqsad", ru: "Цель на месяц" })} subtitle={t({ en: "October 2026", uz: "Oktyabr, 2026", ru: "Октябрь 2026" })} end={<CardMenu />}>
             <div className="flex flex-col items-center py-2">
               <CircularProgress value={78} size="xl" strokeWidth={10} color="accent" showValueLabel />
-              <p className="mt-3 text-sm text-foreground/70">$48.2k / $62k sotuv</p>
+              <p className="mt-3 text-sm text-foreground/70">$48.2k / $62k {t({ en: "sales", uz: "sotuv", ru: "продаж" })}</p>
             </div>
             <div className="mt-4 grid grid-cols-3 gap-2">
               {[
-                { label: "Mijozlar", value: "68%", color: "text-green" },
-                { label: "Qaytarish", value: "18%", color: "text-red" },
-                { label: "Ombor", value: "55%", color: "text-orange" },
+                { label: t({ en: "Customers", uz: "Mijozlar", ru: "Клиенты" }), value: "68%", color: "text-green" },
+                { label: t({ en: "Returns", uz: "Qaytarish", ru: "Возвраты" }), value: "18%", color: "text-red" },
+                { label: t({ en: "Stock", uz: "Ombor", ru: "Склад" }), value: "55%", color: "text-orange" },
               ].map((g) => (
                 <div key={g.label} className="rounded-2xl bg-white/35 px-2 py-3 text-center dark:bg-white/8">
                   <p className={`text-lg font-bold tabular-nums ${g.color}`}>{g.value}</p>
@@ -338,10 +345,10 @@ export default function LiquidDashboard() {
           {/* KPIs */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:col-span-12 lg:gap-5 xl:grid-cols-4">
             {[
-              { title: "Daromad", value: "$48,230", change: 12.5, color: "accent" as const, icon: <DollarSign size={16} />, chart: [22, 28, 25, 31, 36, 33, 40, 44] },
-              { title: "Buyurtmalar", value: "1,284", change: 8.2, color: "success" as const, icon: <ShoppingBag size={16} />, chart: [12, 15, 14, 18, 17, 21, 24, 23] },
-              { title: "Yangi mijozlar", value: "342", change: -3.1, color: "warning" as const, icon: <Users size={16} />, chart: [30, 28, 31, 27, 26, 25, 27, 24] },
-              { title: "Konversiya", value: "3.8%", change: 1.7, color: "danger" as const, icon: <TrendingUp size={16} />, progress: 64 },
+              { title: t({ en: "Revenue", uz: "Daromad", ru: "Выручка" }), value: "$48,230", change: 12.5, color: "accent" as const, icon: <DollarSign size={16} />, chart: [22, 28, 25, 31, 36, 33, 40, 44] },
+              { title: t({ en: "Orders", uz: "Buyurtmalar", ru: "Заказы" }), value: "1,284", change: 8.2, color: "success" as const, icon: <ShoppingBag size={16} />, chart: [12, 15, 14, 18, 17, 21, 24, 23] },
+              { title: t({ en: "New customers", uz: "Yangi mijozlar", ru: "Новые клиенты" }), value: "342", change: -3.1, color: "warning" as const, icon: <Users size={16} />, chart: [30, 28, 31, 27, 26, 25, 27, 24] },
+              { title: t({ en: "Conversion", uz: "Konversiya", ru: "Конверсия" }), value: "3.8%", change: 1.7, color: "danger" as const, icon: <TrendingUp size={16} />, progress: 64 },
             ].map((k) => (
               <Skeleton key={k.title} isLoaded={!loading} className="h-full rounded-[28px]">
                 <StatCard
@@ -363,14 +370,14 @@ export default function LiquidDashboard() {
           {/* Orders */}
           <Widget
             className="lg:col-span-8"
-            title="Buyurtmalar"
-            subtitle={`${filtered.length} ta buyurtma`}
+            title={t({ en: "Orders", uz: "Buyurtmalar", ru: "Заказы" })}
+            subtitle={t({ en: `${filtered.length} orders`, uz: `${filtered.length} ta buyurtma`, ru: `Заказов: ${filtered.length}` })}
             end={
               <Input
                 id="liquid-search"
                 size="sm"
                 radius="full"
-                placeholder="Qidirish..."
+                placeholder={t({ en: "Search...", uz: "Qidirish...", ru: "Поиск..." })}
                 startContent={<Search size={14} />}
                 value={query}
                 onValueChange={(v) => { setQuery(v); setPage(1); }}
@@ -378,7 +385,7 @@ export default function LiquidDashboard() {
                 onClear={() => setQuery("")}
                 className="w-44 sm:w-60"
                 classNames={{ inputWrapper: "bg-white/50! dark:bg-white/10! shadow-none!" }}
-                aria-label="Buyurtmalarni qidirish"
+                aria-label={t({ en: "Search orders", uz: "Buyurtmalarni qidirish", ru: "Поиск заказов" })}
               />
             }
           >
@@ -389,28 +396,28 @@ export default function LiquidDashboard() {
                 material={M}
                 selectedKey={status}
                 onSelectionChange={(k) => { setStatus(k); setPage(1); }}
-                tabs={[{ key: "all", title: "Barchasi" }, ...Object.entries(STATUS).map(([key, s]) => ({ key, title: s.label }))]}
+                tabs={[{ key: "all", title: t({ en: "All", uz: "Barchasi", ru: "Все" }) }, ...Object.entries(STATUS).map(([key, s]) => ({ key, title: t(s.label) }))]}
               />
             </div>
             <Table<Order>
-              aria-label="Buyurtmalar"
+              aria-label={t({ en: "Orders", uz: "Buyurtmalar", ru: "Заказы" })}
               keyField="id"
               rows={rows}
               isBlurred
               material={M}
               isLoading={loading}
               className="rounded-[24px]!"
-              emptyContent={<div className="py-10 text-center text-sm text-foreground/65">Hech narsa topilmadi</div>}
+              emptyContent={<div className="py-10 text-center text-sm text-foreground/65">{t({ en: "Nothing found", uz: "Hech narsa topilmadi", ru: "Ничего не найдено" })}</div>}
               bottomContent={
                 <div className="flex items-center justify-between">
-                  <p className="text-xs text-foreground/65">Sahifa {page} / {pages}</p>
+                  <p className="text-xs text-foreground/65">{t({ en: "Page", uz: "Sahifa", ru: "Страница" })} {page} / {pages}</p>
                   <Pagination total={pages} page={page} onChange={setPage} size="sm" />
                 </div>
               }
               columns={[
                 {
                   key: "customer",
-                  label: "Mijoz",
+                  label: t({ en: "Customer", uz: "Mijoz", ru: "Клиент" }),
                   sortable: true,
                   render: (_v, r) => (
                     <div className="flex items-center gap-3">
@@ -422,16 +429,16 @@ export default function LiquidDashboard() {
                     </div>
                   ),
                 },
-                { key: "product", label: "Mahsulot" },
-                { key: "amount", label: "Summa", sortable: true, align: "end", render: (v) => <span className="font-semibold tabular-nums">${Number(v).toLocaleString("en-US")}</span> },
-                { key: "status", label: "Holat", render: (v) => <Chip size="sm" variant="glass" material={M} dot color={STATUS[v as Status].color}>{STATUS[v as Status].label}</Chip> },
+                { key: "product", label: t({ en: "Product", uz: "Mahsulot", ru: "Товар" }) },
+                { key: "amount", label: t({ en: "Amount", uz: "Summa", ru: "Сумма" }), sortable: true, align: "end", render: (v) => <span className="font-semibold tabular-nums">${Number(v).toLocaleString("en-US")}</span> },
+                { key: "status", label: t({ en: "Status", uz: "Holat", ru: "Статус" }), render: (v) => <Chip size="sm" variant="glass" material={M} dot color={STATUS[v as Status].color}>{t(STATUS[v as Status].label)}</Chip> },
                 {
                   key: "actions",
                   label: "",
                   align: "end",
                   render: (_v, r) => (
-                    <Tooltip content="Jo'natish" material={M}>
-                      <Button isIconOnly size="sm" radius="full" variant="glass" material={M} aria-label="Jo'natish" onClick={() => toast(`${r.id} jo'natildi`, "accent", <Truck size={16} />)}>
+                    <Tooltip content={t({ en: "Ship", uz: "Jo'natish", ru: "Отправить" })} material={M}>
+                      <Button isIconOnly size="sm" radius="full" variant="glass" material={M} aria-label={t({ en: "Ship", uz: "Jo'natish", ru: "Отправить" })} onClick={() => toast(t({ en: `${r.id} shipped`, uz: `${r.id} jo'natildi`, ru: `${r.id} отправлен` }), "accent", <Truck size={16} />)}>
                         <Truck size={14} />
                       </Button>
                     </Tooltip>
@@ -450,10 +457,10 @@ export default function LiquidDashboard() {
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green opacity-60" />
                   <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-green" />
                 </span>
-                Hozir
+                {t({ en: "Now", uz: "Hozir", ru: "Сейчас" })}
               </span>
             }
-            subtitle="Jonli faollik"
+            subtitle={t({ en: "Live activity", uz: "Jonli faollik", ru: "Активность в реальном времени" })}
             end={
               <AvatarGroup max={3} size="sm">
                 {TEAM.map((m) => <Avatar key={m.name} src={avatarUrl(m.name)} name={m.name} />)}
@@ -462,10 +469,10 @@ export default function LiquidDashboard() {
           >
             <Timeline
               items={[
-                { id: "l1", title: <><b className="font-medium">Dilnoza</b> #3209 ni jo'natdi</>, time: "10 daq", color: "accent", icon: <Truck size={14} /> },
-                { id: "l2", title: "To'lov qabul qilindi", description: "Click · $599", time: "1 soat", color: "success", icon: <CheckCircle2 size={14} /> },
-                { id: "l3", title: "Zaxira kam qoldi", description: "Wireless earbuds — 4 dona", time: "3 soat", color: "warning", icon: <AlertTriangle size={14} /> },
-                { id: "l4", title: <><b className="font-medium">Jasur</b> 12 ta mahsulot qo'shdi</>, time: "5 soat", icon: <Package size={14} /> },
+                { id: "l1", title: t({ en: <><b className="font-medium">Dilnoza</b> shipped #3209</>, uz: <><b className="font-medium">Dilnoza</b> #3209 ni jo'natdi</>, ru: <><b className="font-medium">Дильноза</b> отправила #3209</> }), time: t({ en: "10 min", uz: "10 daq", ru: "10 мин" }), color: "accent", icon: <Truck size={14} /> },
+                { id: "l2", title: t({ en: "Payment received", uz: "To'lov qabul qilindi", ru: "Платёж получен" }), description: "Click · $599", time: t({ en: "1 h", uz: "1 soat", ru: "1 ч" }), color: "success", icon: <CheckCircle2 size={14} /> },
+                { id: "l3", title: t({ en: "Low stock", uz: "Zaxira kam qoldi", ru: "Заканчивается запас" }), description: t({ en: "Wireless earbuds — 4 left", uz: "Wireless earbuds — 4 dona", ru: "Wireless earbuds — 4 шт." }), time: t({ en: "3 h", uz: "3 soat", ru: "3 ч" }), color: "warning", icon: <AlertTriangle size={14} /> },
+                { id: "l4", title: t({ en: <><b className="font-medium">Jasur</b> added 12 products</>, uz: <><b className="font-medium">Jasur</b> 12 ta mahsulot qo'shdi</>, ru: <><b className="font-medium">Жасур</b> добавил 12 товаров</> }), time: t({ en: "5 h", uz: "5 soat", ru: "5 ч" }), icon: <Package size={14} /> },
               ]}
             />
             <div className="mt-4 space-y-1">
@@ -476,7 +483,7 @@ export default function LiquidDashboard() {
                   </Badge>
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-sm font-medium">{m.name}</p>
-                    <p className="text-xs text-foreground/60">{m.role}</p>
+                    <p className="text-xs text-foreground/60">{t(m.role)}</p>
                   </div>
                   <Clock size={14} className="text-foreground/40" />
                 </div>
@@ -487,13 +494,13 @@ export default function LiquidDashboard() {
           {/* AI assistant — floating composer */}
           <Widget
             className="flex flex-col lg:col-span-7"
-            title={<span className="flex items-center gap-2"><Sparkles size={17} className="text-purple" /> AI yordamchi</span>}
-            subtitle="Savdo bo'yicha savol bering"
-            end={<Chip size="sm" variant="glass" material={M} color="success" dot>Onlayn</Chip>}
+            title={<span className="flex items-center gap-2"><Sparkles size={17} className="text-purple" /> {t({ en: "AI assistant", uz: "AI yordamchi", ru: "AI-ассистент" })}</span>}
+            subtitle={t({ en: "Ask about your sales", uz: "Savdo bo'yicha savol bering", ru: "Спросите о продажах" })}
+            end={<Chip size="sm" variant="glass" material={M} color="success" dot>{t({ en: "Online", uz: "Onlayn", ru: "Онлайн" })}</Chip>}
           >
             <ChatContainer className="h-60 flex-1 space-y-4 overflow-y-auto pr-1">
               {messages.map((m, i) => (
-                <ChatMessage key={i} role={m.role} showActions={m.role === "assistant"}>{m.text}</ChatMessage>
+                <ChatMessage key={i} role={m.role} showActions={m.role === "assistant"}>{typeof m.text === "string" ? m.text : t(m.text)}</ChatMessage>
               ))}
               {chatLoading && <ChatMessage role="assistant" isTyping />}
             </ChatContainer>
@@ -505,7 +512,7 @@ export default function LiquidDashboard() {
               isLoading={chatLoading}
               onStop={() => setChatLoading(false)}
               minRows={1}
-              suggestions={["Haftalik hisobot", "Eng yaxshi mijozlar"]}
+              suggestions={[t({ en: "Weekly report", uz: "Haftalik hisobot", ru: "Недельный отчёт" }), t({ en: "Top customers", uz: "Eng yaxshi mijozlar", ru: "Лучшие клиенты" })]}
             />
           </Widget>
 
@@ -517,22 +524,22 @@ export default function LiquidDashboard() {
                 <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-blue to-indigo text-white shadow-[inset_0_1px_0_rgb(255_255_255/0.4)]">
                   <Sparkles size={20} />
                 </span>
-                <p className="mt-4 text-xl font-bold tracking-tight">Pro — 14 kun bepul</p>
-                <p className="mt-1 text-sm text-foreground/70">AI yordamchi, kengaytirilgan analitika va cheksiz buyurtmalar.</p>
+                <p className="mt-4 text-xl font-bold tracking-tight">{t({ en: "Pro — 14 days free", uz: "Pro — 14 kun bepul", ru: "Pro — 14 дней бесплатно" })}</p>
+                <p className="mt-1 text-sm text-foreground/70">{t({ en: "AI assistant, advanced analytics and unlimited orders.", uz: "AI yordamchi, kengaytirilgan analitika va cheksiz buyurtmalar.", ru: "AI-ассистент, расширенная аналитика и безлимитные заказы." })}</p>
                 <div className="mt-5 flex items-center gap-3">
-                  <Button radius="full" onClick={() => setUpgradeOpen(true)}>Sinab ko'rish</Button>
-                  <span className="text-sm font-medium text-foreground/70">$29 / oy</span>
+                  <Button radius="full" onClick={() => setUpgradeOpen(true)}>{t({ en: "Try it", uz: "Sinab ko'rish", ru: "Попробовать" })}</Button>
+                  <span className="text-sm font-medium text-foreground/70">$29 / {t({ en: "mo", uz: "oy", ru: "мес" })}</span>
                 </div>
               </div>
             </Card>
 
-            <Widget title="Tezkor amallar" className="flex-1">
+            <Widget title={t({ en: "Quick actions", uz: "Tezkor amallar", ru: "Быстрые действия" })} className="flex-1">
               <div className="grid grid-cols-2 gap-2.5">
                 {[
-                  { label: "Buyurtma", icon: <Plus size={18} />, run: () => setOrderOpen(true) },
-                  { label: "Mahsulot", icon: <Package size={18} />, run: () => toast("Mahsulot qo'shish oynasi", "accent") },
-                  { label: "Xabar", icon: <MessageSquare size={18} />, run: () => toast("3 ta yangi xabar", "accent") },
-                  { label: "Hisobot", icon: <BarChart3 size={18} />, run: () => toast("Hisobot tayyorlanmoqda", "accent") },
+                  { label: t({ en: "Order", uz: "Buyurtma", ru: "Заказ" }), icon: <Plus size={18} />, run: () => setOrderOpen(true) },
+                  { label: t({ en: "Product", uz: "Mahsulot", ru: "Товар" }), icon: <Package size={18} />, run: () => toast(t({ en: "Add product dialog", uz: "Mahsulot qo'shish oynasi", ru: "Окно добавления товара" }), "accent") },
+                  { label: t({ en: "Message", uz: "Xabar", ru: "Сообщение" }), icon: <MessageSquare size={18} />, run: () => toast(t({ en: "3 new messages", uz: "3 ta yangi xabar", ru: "3 новых сообщения" }), "accent") },
+                  { label: t({ en: "Report", uz: "Hisobot", ru: "Отчёт" }), icon: <BarChart3 size={18} />, run: () => toast(t({ en: "Preparing report", uz: "Hisobot tayyorlanmoqda", ru: "Готовим отчёт" }), "accent") },
                 ].map((a) => (
                   <Button key={a.label} variant="glass" material={M} radius="full" size="lg" startContent={a.icon} onClick={a.run} className="justify-start bg-white/40! dark:bg-white/10!">
                     {a.label}

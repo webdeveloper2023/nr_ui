@@ -6,13 +6,13 @@ export default function SidebarCollapsed() {
     <div className="flex h-[400px] justify-center">
       <Sidebar defaultCollapsed defaultSelectedKey="home">
         <SidebarSection>
-          <SidebarItem itemKey="home" icon={<Home size={18} />} title="Bosh sahifa" />
-          <SidebarItem itemKey="messages" icon={<MessageSquare size={18} />} title="Xabarlar" />
-          <SidebarItem itemKey="calendar" icon={<Calendar size={18} />} title="Kalendar" />
-          <SidebarItem itemKey="notifications" icon={<Bell size={18} />} title="Bildirishnomalar" />
+          <SidebarItem itemKey="home" icon={<Home size={18} />} title="Home" />
+          <SidebarItem itemKey="messages" icon={<MessageSquare size={18} />} title="Messages" />
+          <SidebarItem itemKey="calendar" icon={<Calendar size={18} />} title="Calendar" />
+          <SidebarItem itemKey="notifications" icon={<Bell size={18} />} title="Notifications" />
         </SidebarSection>
-        <SidebarSection title="Boshqa">
-          <SidebarItem itemKey="settings" icon={<Settings size={18} />} title="Sozlamalar" />
+        <SidebarSection title="Other">
+          <SidebarItem itemKey="settings" icon={<Settings size={18} />} title="Settings" />
         </SidebarSection>
       </Sidebar>
     </div>

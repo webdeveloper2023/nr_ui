@@ -8,7 +8,7 @@ export default function ModalForm() {
 
   return (
     <div className="flex justify-center">
-      <Button onClick={() => setIsOpen(true)}>Tizimga kirish</Button>
+      <Button onClick={() => setIsOpen(true)}>Sign in</Button>
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} size="sm" backdrop="blur">
         <ModalContent>
           {(onClose) => (
@@ -16,26 +16,26 @@ export default function ModalForm() {
               onSubmit={(e) => {
                 e.preventDefault();
                 onClose();
-                addToast({ title: "Xush kelibsiz!", color: "success" });
+                addToast({ title: "Welcome back!", color: "success" });
               }}
             >
               <ModalHeader>
-                Tizimga kirish
-                <span className="text-sm font-normal text-muted">Hisobingizga kirish uchun ma'lumotlarni kiriting</span>
+                Sign in
+                <span className="text-sm font-normal text-muted">Enter your details to sign in to your account</span>
               </ModalHeader>
               <ModalBody className="gap-4">
                 <Input label="Email" type="email" variant="secondary" placeholder="you@example.com" startContent={<Mail size={16} />} />
-                <Input label="Parol" type="password" variant="secondary" placeholder="••••••••" startContent={<Lock size={16} />} />
+                <Input label="Password" type="password" variant="secondary" placeholder="••••••••" startContent={<Lock size={16} />} />
                 <div className="flex items-center justify-between">
-                  <Checkbox size="sm" variant="secondary">Eslab qolish</Checkbox>
+                  <Checkbox size="sm" variant="secondary">Remember me</Checkbox>
                   <a href="#" className="text-sm text-accent hover:underline">
-                    Parolni unutdingizmi?
+                    Forgot password?
                   </a>
                 </div>
               </ModalBody>
               <ModalFooter>
                 <Button type="submit" fullWidth>
-                  Kirish
+                  Sign in
                 </Button>
               </ModalFooter>
             </form>

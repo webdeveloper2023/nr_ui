@@ -21,79 +21,79 @@ type DropdownColor = "default" | "accent" | "success" | "warning" | "danger";
 type SelectionMode = "none" | "single" | "multiple";
 
 export interface DropdownProps {
-  /** DropdownTrigger va DropdownMenu */
+  /** DropdownTrigger and DropdownMenu */
   children: ReactNode;
-  /** O'chirilgan (faol emas) holat */
+  /** Disabled (inactive) state */
   isDisabled?: boolean;
-  /** Ochiq holati (boshqariladigan) */
+  /** Open state (controlled) */
   isOpen?: boolean;
-  /** Boshlang'ich ochiq holati (boshqarilmaydigan) */
+  /** Initial open state (uncontrolled) */
   defaultOpen?: boolean;
-  /** Ochiq holati o'zgarganda chaqiriladi */
+  /** Called when the open state changes */
   onOpenChange?: (open: boolean) => void;
-  /** Joylashuv tomoni */
+  /** Placement side */
   placement?: Placement;
-  /** Trigger'dan masofa (px) */
+  /** Distance from the trigger (px) */
   offset?: number;
-  /** Element tanlanganda menyuni yopish */
+  /** Close the menu when an item is selected */
   closeOnSelect?: boolean;
 }
 
 export interface DropdownTriggerProps {
-  /** DropdownTrigger va DropdownMenu */
+  /** DropdownTrigger and DropdownMenu */
   children: ReactElement;
 }
 
 export interface DropdownMenuProps extends Omit<HTMLAttributes<HTMLDivElement>, "onSelect"> {
-  /** DropdownTrigger va DropdownMenu */
+  /** DropdownTrigger and DropdownMenu */
   children?: ReactNode;
-  /** Menyuni shisha (blur) material qiladi; false — to'q fon */
+  /** Glass (blur) menu material; false gives a solid background */
   isBlurred?: boolean;
-  /** Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi */
+  /** Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass) */
   material?: "frosted" | "liquid";
-  /** Ekran o'quvchilar uchun nom */
+  /** Name for screen readers */
   "aria-label"?: string;
-  /** Tanlash rejimi */
+  /** Selection mode */
   selectionMode?: SelectionMode;
-  /** Tanlangan kalitlar (boshqariladigan) */
+  /** Selected keys (controlled) */
   selectedKeys?: Set<string>;
-  /** Boshlang'ich tanlangan kalitlar */
+  /** Initially selected keys */
   defaultSelectedKeys?: Set<string>;
-  /** Tanlov o'zgarganda chaqiriladi */
+  /** Called when the selection changes */
   onSelectionChange?: (keys: Set<string>) => void;
-  /** Element bosilganda chaqiriladi (kalit bilan) */
+  /** Called with the item key when an item is pressed */
   onAction?: (key: string) => void;
-  /** O'chirilgan elementlar kalitlari */
+  /** Keys of disabled items */
   disabledKeys?: Set<string>;
 }
 
 export interface DropdownItemProps extends Omit<HTMLAttributes<HTMLButtonElement>, "color"> {
-  /** Elementning noyob kaliti */
+  /** Unique item key */
   itemKey?: string;
-  /** Boshidagi kontent (ikonka va h.k.) */
+  /** Leading content (icon, etc.) */
   startContent?: ReactNode;
-  /** Oxiridagi kontent */
+  /** Trailing content */
   endContent?: ReactNode;
-  /** Qo'shimcha tavsif matni */
+  /** Extra description text */
   description?: ReactNode;
-  /** Klaviatura yorlig'i (o'ng tomonda) */
+  /** Keyboard shortcut (on the right) */
   shortcut?: ReactNode;
-  /** Element rangi (masalan, danger) */
+  /** Item color (e.g. danger) */
   color?: DropdownColor;
-  /** O'chirilgan (faol emas) holat */
+  /** Disabled (inactive) state */
   isDisabled?: boolean;
-  /** Pastida ajratuvchi chiziq ko'rsatish */
+  /** Shows a divider below */
   showDivider?: boolean;
-  /** DropdownTrigger va DropdownMenu */
+  /** DropdownTrigger and DropdownMenu */
   children?: ReactNode;
 }
 
 export interface DropdownSectionProps extends HTMLAttributes<HTMLDivElement> {
-  /** Bo'lim sarlavhasi */
+  /** Section title */
   title?: string;
-  /** Pastida ajratuvchi chiziq ko'rsatish */
+  /** Shows a divider below */
   showDivider?: boolean;
-  /** DropdownTrigger va DropdownMenu */
+  /** DropdownTrigger and DropdownMenu */
   children?: ReactNode;
 }
 

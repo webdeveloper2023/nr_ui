@@ -7,11 +7,20 @@ import { ExampleBlock } from "./ExampleBlock";
 import { PropsTable } from "./PropsTable";
 import { getExamples, loadSource } from "./modules";
 import { findEntry, registry } from "./registry";
+import { useT } from "./i18n/lang";
+
+const L = {
+  usage: { en: "Usage", uz: "Ishlatish", ru: "Использование" },
+  examples: { en: "Examples", uz: "Misollar", ru: "Примеры" },
+  api: { en: "API Reference", uz: "API ma'lumotnomasi", ru: "Справочник API" },
+  source: { en: "Source code", uz: "Manba kodi", ru: "Исходный код" },
+};
 
 function SourceViewer({ files }: { files: string[] }) {
   const [active, setActive] = useState(files[0]);
   const [code, setCode] = useState<Record<string, string>>({});
   const [expanded, setExpanded] = useState(false);
+  const t = useT();
 
   useEffect(() => {
     let alive = true;
@@ -49,7 +58,7 @@ function SourceViewer({ files }: { files: string[] }) {
             onClick={() => setExpanded(!expanded)}
             className="h-8 rounded-full bg-overlay px-3.5 text-xs font-medium text-foreground shadow-overlay cursor-pointer"
           >
-            {expanded ? "Collapse" : "Expand source"}
+            {expanded ? t({ en: "Collapse", uz: "Yig'ish", ru: "Свернуть" }) : t({ en: "Expand source", uz: "To'liq kodni ochish", ru: "Показать весь код" })}
           </button>
         </div>
       </div>
@@ -68,6 +77,7 @@ function H2({ id, children }: { id?: string; children: React.ReactNode }) {
 export default function ComponentPage() {
   const { slug = "" } = useParams();
   const entry = findEntry(slug);
+  const t = useT();
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
@@ -76,8 +86,8 @@ export default function ComponentPage() {
   if (!entry) {
     return (
       <div className="py-24 text-center">
-        <p className="text-2xl font-semibold text-foreground">Topilmadi</p>
-        <Link to="/" className="mt-3 inline-block text-accent hover:underline">Bosh sahifa</Link>
+        <p className="text-2xl font-semibold text-foreground">{t({ en: "Not found", uz: "Topilmadi", ru: "Не найдено" })}</p>
+        <Link to="/" className="mt-3 inline-block text-accent hover:underline">{t({ en: "Home", uz: "Bosh sahifa", ru: "Главная" })}</Link>
       </div>
     );
   }
@@ -89,40 +99,40 @@ export default function ComponentPage() {
   const importCode = `import { ${entry.imports.join(", ")} } from "nr-ui-kit";`;
 
   const toc = [
-    { id: "usage", label: "Usage", depth: 0 },
-    { id: "examples", label: "Examples", depth: 0 },
+    { id: "usage", label: t(L.usage), depth: 0 },
+    { id: "examples", label: t(L.examples), depth: 0 },
     ...examples.map((e) => ({ id: e.id, label: e.title, depth: 1 })),
-    { id: "api", label: "API Reference", depth: 0 },
+    { id: "api", label: t(L.api), depth: 0 },
     ...entry.props.map((p) => ({ id: `props-${p.toLowerCase()}`, label: p, depth: 1 })),
-    { id: "source", label: "Source code", depth: 0 },
+    { id: "source", label: t(L.source), depth: 0 },
   ];
 
   return (
     <div className="flex gap-12">
       <article className="min-w-0 flex-1 max-w-[860px]">
         <h1 className="text-4xl font-semibold tracking-tight text-foreground">{entry.name}</h1>
-        <p className="mt-3 text-lg text-muted">{entry.description}</p>
+        <p className="mt-3 text-lg text-muted">{t(entry.description)}</p>
 
         <section id="usage" className="scroll-mt-28 mt-10">
-          <H2>Usage</H2>
+          <H2>{t(L.usage)}</H2>
           <CodeBlock code={importCode} lineNumbers={false} className="mt-5" />
         </section>
 
         <section id="examples" className="scroll-mt-28 mt-14">
-          <H2>Examples</H2>
+          <H2>{t(L.examples)}</H2>
           <div className="mt-6 space-y-12">
             {examples.length ? (
               examples.map((ex) => <ExampleBlock key={ex.id} example={ex} />)
             ) : (
-              <p className="text-sm text-muted">Misollar hali qo'shilmagan.</p>
+              <p className="text-sm text-muted">{t({ en: "No examples yet.", uz: "Misollar hali qo'shilmagan.", ru: "Примеров пока нет." })}</p>
             )}
           </div>
         </section>
 
         <section id="api" className="scroll-mt-28 mt-16">
-          <H2>API Reference</H2>
+          <H2>{t(L.api)}</H2>
           <p className="mt-2 mb-6 text-[15px] text-muted">
-            Komponentning o'z prop'lari. Standart HTML atributlari (<code className="font-mono text-[13px]">className</code>, <code className="font-mono text-[13px]">onClick</code>, <code className="font-mono text-[13px]">aria-*</code>…) ham uzatiladi.
+            {t({ en: "The component's own props. Standard HTML attributes", uz: "Komponentning o'z prop'lari. Standart HTML atributlari", ru: "Собственные свойства компонента. Стандартные HTML-атрибуты" })} (<code className="font-mono text-[13px]">className</code>, <code className="font-mono text-[13px]">onClick</code>, <code className="font-mono text-[13px]">aria-*</code>…) {t({ en: "are passed through as well.", uz: "ham uzatiladi.", ru: "также передаются." })}
           </p>
           <div className="space-y-10">
             {entry.props.map((p) => (
@@ -132,9 +142,9 @@ export default function ComponentPage() {
         </section>
 
         <section id="source" className="scroll-mt-28 mt-16">
-          <H2>Source code</H2>
+          <H2>{t(L.source)}</H2>
           <p className="mt-2 mb-6 text-[15px] text-muted">
-            Paketsiz ishlatish uchun fayllarni loyihangizga ko'chiring. Komponentlar <code className="font-mono text-[13px]">src/lib/cn.ts</code> va theme CSS'ga tayanadi.
+            {t({ en: "To use without the package, copy these files into your project. Components rely on", uz: "Paketsiz ishlatish uchun fayllarni loyihangizga ko'chiring. Komponentlar tayanadi:", ru: "Чтобы использовать без пакета, скопируйте файлы в проект. Компоненты используют" })} <code className="font-mono text-[13px]">src/lib/cn.ts</code> {t({ en: "and the theme CSS.", uz: "va theme CSS.", ru: "и CSS темы." })}
           </p>
           <SourceViewer key={entry.slug} files={[...entry.sources, "cn.ts"]} />
         </section>
@@ -142,13 +152,13 @@ export default function ComponentPage() {
         <nav className="mt-16 grid grid-cols-2 gap-4 border-t border-separator pt-8">
           {prev ? (
             <Link to={`/components/${prev.slug}`} className="group rounded-2xl bg-surface p-4 shadow-surface transition-transform hover:-translate-y-0.5">
-              <span className="flex items-center gap-1 text-xs text-muted"><ChevronLeft size={14} /> Oldingi</span>
+              <span className="flex items-center gap-1 text-xs text-muted"><ChevronLeft size={14} /> {t({ en: "Previous", uz: "Oldingi", ru: "Назад" })}</span>
               <span className="mt-1 block font-medium text-foreground">{prev.name}</span>
             </Link>
           ) : <span />}
           {next && (
             <Link to={`/components/${next.slug}`} className="group rounded-2xl bg-surface p-4 text-right shadow-surface transition-transform hover:-translate-y-0.5">
-              <span className="flex items-center justify-end gap-1 text-xs text-muted">Keyingi <ChevronRight size={14} /></span>
+              <span className="flex items-center justify-end gap-1 text-xs text-muted">{t({ en: "Next", uz: "Keyingi", ru: "Далее" })} <ChevronRight size={14} /></span>
               <span className="mt-1 block font-medium text-foreground">{next.name}</span>
             </Link>
           )}
@@ -157,7 +167,7 @@ export default function ComponentPage() {
 
       <aside className="hidden xl:block w-56 shrink-0">
         <div className="sticky top-24">
-          <p className="mb-3 flex items-center gap-2 text-sm text-muted"><AlignLeft size={14} /> On this page</p>
+          <p className="mb-3 flex items-center gap-2 text-sm text-muted"><AlignLeft size={14} /> {t({ en: "On this page", uz: "Sahifada", ru: "На странице" })}</p>
           <ul className="space-y-1">
             {toc.map((t) => (
               <li key={t.id}>

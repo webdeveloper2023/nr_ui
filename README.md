@@ -2,15 +2,14 @@
 
 Pro darajadagi React komponent kutubxonasi — **React 18/19**, **Tailwind CSS v4**, **TypeScript**, to'liq **dark mode**.
 
-45+ komponent: Button, Input, Select, Table, Modal, Dropdown, Toast, Sidebar, Pricing, AI Chat va boshqalar.
+36 ta komponent (ichki qismlari — `ModalHeader`, `CardBody`, `SidebarItem` va h.k. — bilan birga 68 ta): Button, Input, Select, Table, Modal, Dropdown, Toast, Sidebar, Pricing, AI Chat va boshqalar.
 
 ## O'rnatish
 
-NR UI Kit pullik: **$10, bir martalik to'lov, umrbod yangilanishlar**. Kutubxona private GitHub repo orqali beriladi:
-to'lovdan keyin GitHub akkauntingizga taklif (invite) keladi, uni qabul qilganingizdan so'ng:
+NR UI Kit bepul va MIT litsenziyasi asosida foydalanish mumkin.
 
 ```bash
-npm install github:webdeveloper2023/nr_ui
+npm install nr-ui-kit
 ```
 
 Talablar: `react >= 18`, `react-dom >= 18`. `lucide-react` avtomatik o'rnatiladi.
@@ -106,19 +105,9 @@ npm run dev        # http://localhost:5199
 | `npm run build:lib` | npm paketini `dist/` ga build qilish (JS, CJS, types, CSS) |
 | `npm run gen:props` | `src/docs/props.json` ni komponent type'laridan generatsiya qilish |
 
-## Xaridorga kirish berish
-
-To'lovdan keyin xaridorning GitHub akkauntini repo'ga **Read** huquqi bilan qo'shing:
-
-```bash
-gh api -X PUT repos/webdeveloper2023/nr_ui/collaborators/<github-username> -f permission=pull
-```
-
-> Paketni ochiq npm registry'ga publish qilmang — u holda har kim uni tekin o'rnatib oladi.
-
 ## Litsenziya
 
-Tijoriy (proprietary) — `package.json` da `"license": "UNLICENSED"`. Kodni qayta tarqatish taqiqlanadi.
+MIT — foydalanish, o'zgartirish va tarqatish mumkin. Batafsil `LICENSE` faylida.
 
 ## Struktura
 

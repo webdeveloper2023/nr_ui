@@ -1,11 +1,11 @@
 {
   "name": "nr-ui-kit",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Pro-grade React component library — Tailwind CSS v4, TypeScript, dark mode",
   "type": "module",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "author": "Nazirov Rafiqjon",
-  "homepage": "https://github.com/webdeveloper2023/nr_ui#readme",
+  "homepage": "https://webdeveloper2023.github.io/nr_ui/",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/webdeveloper2023/nr_ui.git"
@@ -57,7 +57,9 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "typecheck": "tsc -b",
-    "check": "npm run lint && npm run typecheck && npm run build && npm run build:lib"
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "check": "npm run lint && npm run typecheck && npm run test && npm run build && npm run build:lib"
   },
   "peerDependencies": {
     "react": ">=18",
@@ -68,10 +70,15 @@
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.3",
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.8",
     "@types/node": "^24.19.2",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.2",
+    "jsdom": "^29.1.1",
     "oxlint": "^1.89.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
@@ -80,6 +87,7 @@
     "tailwindcss": "^4.3.3",
     "ts5": "npm:typescript@^5.9.3",
     "typescript": "~7.0.2",
-    "vite": "^8.3.5"
+    "vite": "^8.3.5",
+    "vitest": "^5.0.5"
   }
 }

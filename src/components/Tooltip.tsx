@@ -28,39 +28,39 @@ type TooltipSize = "xs" | "sm" | "md" | "lg";
 type TooltipRadius = "sm" | "md" | "lg" | "full";
 
 export interface TooltipProps {
-  /** Tooltip ichidagi kontent */
+  /** Tooltip content */
   content: ReactNode;
-  /** Joylashuv tomoni */
+  /** Placement side */
   placement?: TooltipPlacement;
-  /** Rang mavzusi */
+  /** Color theme */
   color?: TooltipColor;
-  /** O'lcham */
+  /** Size */
   size?: TooltipSize;
-  /** Burchak yumaloqligi */
+  /** Corner radius */
   radius?: TooltipRadius;
-  /** Ochilishdan oldingi kechikish (ms) */
+  /** Delay before opening (ms) */
   delay?: number;
-  /** Yopilishdan oldingi kechikish (ms) */
+  /** Delay before closing (ms) */
   closeDelay?: number;
-  /** Trigger'dan masofa (px) */
+  /** Distance from the trigger (px) */
   offset?: number;
-  /** Ko'rsatkich strelkani ko'rsatish */
+  /** Shows the pointer arrow */
   showArrow?: boolean;
-  /** Shisha (blur) fon — faqat default rang uchun; rangli tooltip doim to'q */
+  /** Glass (blur) background — default color only; colored tooltips stay solid */
   isBlurred?: boolean;
-  /** Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi */
+  /** Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass) */
   material?: "frosted" | "liquid";
-  /** O'chirilgan (faol emas) holat */
+  /** Disabled (inactive) state */
   isDisabled?: boolean;
-  /** Ochiq holati (boshqariladigan) */
+  /** Open state (controlled) */
   isOpen?: boolean;
-  /** Boshlang'ich ochiq holati (boshqarilmaydigan) */
+  /** Initial open state (uncontrolled) */
   defaultOpen?: boolean;
-  /** Ochiq holati o'zgarganda chaqiriladi */
+  /** Called when the open state changes */
   onOpenChange?: (open: boolean) => void;
-  /** Qo'shimcha CSS klasslar */
+  /** Extra CSS classes */
   className?: string;
-  /** Trigger element (bitta React element) */
+  /** Trigger element (a single React element) */
   children: ReactElement;
 }
 

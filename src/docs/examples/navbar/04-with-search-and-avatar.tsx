@@ -12,14 +12,14 @@ export default function NavbarWithSearchAvatar() {
         <NavbarContent justify="center" className="flex-1 max-w-sm">
           <Input
             size="sm"
-            placeholder="Qidirish..."
+            placeholder="Search..."
             startContent={<Search size={14} />}
             endContent={<Kbd keys="command">K</Kbd>}
           />
         </NavbarContent>
         <NavbarContent justify="end" isAlwaysVisible>
           <NavbarItem>
-            <Button size="sm" variant="ghost" isIconOnly aria-label="Bildirishnomalar">
+            <Button size="sm" variant="ghost" isIconOnly aria-label="Notifications">
               <Bell size={16} />
             </Button>
           </NavbarItem>

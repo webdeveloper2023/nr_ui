@@ -12,10 +12,10 @@ export default function ChipLiquidGlass() {
         <div key={material} className="relative flex flex-col items-center gap-3">
           <p className="text-xs font-semibold uppercase tracking-wider text-foreground/70">{material}</p>
           <div className="flex flex-wrap justify-center gap-2">
-            <Chip variant="glass" material={material}>Dizayn</Chip>
-            <Chip variant="glass" material={material} color="accent" dot>Faol</Chip>
+            <Chip variant="glass" material={material}>Design</Chip>
+            <Chip variant="glass" material={material} color="accent" dot>Active</Chip>
             <Chip variant="glass" material={material} color="success" dot>Online</Chip>
-            <Chip variant="glass" material={material} color="danger">Xato</Chip>
+            <Chip variant="glass" material={material} color="danger">Error</Chip>
           </div>
         </div>
       ))}

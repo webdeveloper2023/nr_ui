@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url'
 // Docs site. Examples import from "nr-ui-kit" exactly like a consumer app would;
 // the alias points that at the local sources.
 export default defineConfig({
+  base: process.env.DOCS_BASE || '/',
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {

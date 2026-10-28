@@ -22,16 +22,16 @@ export default function PopoverProfileCard() {
               </div>
             </div>
             <Button size="sm" variant={following ? "tertiary" : "primary"} onClick={() => setFollowing(!following)}>
-              {following ? "Obunadasiz" : "Obuna"}
+              {following ? "Following" : "Follow"}
             </Button>
           </div>
-          <p className="mt-3 text-sm text-muted">Product designer. Dizayn tizimlari va mikro-animatsiyalar ishqibozi.</p>
+          <p className="mt-3 text-sm text-muted">Product designer. Into design systems and micro-interactions.</p>
           <div className="mt-3 flex gap-4 text-sm">
             <span>
-              <b className="font-medium text-foreground">128</b> <span className="text-muted">Obunalar</span>
+              <b className="font-medium text-foreground">128</b> <span className="text-muted">Following</span>
             </span>
             <span>
-              <b className="font-medium text-foreground">4.2K</b> <span className="text-muted">Obunachilar</span>
+              <b className="font-medium text-foreground">4.2K</b> <span className="text-muted">Followers</span>
             </span>
           </div>
         </PopoverContent>

@@ -17,40 +17,42 @@ type CheckboxSize = "xs" | "sm" | "md" | "lg";
 type CheckboxRadius = "none" | "sm" | "md" | "full";
 
 export interface CheckboxProps {
-  /** Ko'rinish: primary — oq katakcha soyali, secondary — kulrang (karta ichida) */
+  /** Style: primary — white box with a shadow, secondary — gray (inside cards) */
   variant?: "primary" | "secondary";
-  /** Tanlangan holat rangi */
+  /** Color of the selected state */
   color?: CheckboxColor;
-  /** O'lcham */
+  /** Size */
   size?: CheckboxSize;
-  /** Burchaklar yumaloqligi */
+  /** Corner radius */
   radius?: CheckboxRadius;
-  /** Tanlangan holat (controlled) */
+  /** Selected state (controlled) */
   isSelected?: boolean;
-  /** Boshlang'ich holat (uncontrolled) */
+  /** Initial state (uncontrolled) */
   defaultSelected?: boolean;
-  /** Qisman tanlangan holat (—) */
+  /** Indeterminate state (—) */
   isIndeterminate?: boolean;
-  /** O'chirilgan holat */
+  /** Disabled state */
   isDisabled?: boolean;
-  /** Xato (invalid) holat */
+  /** Invalid state */
   isInvalid?: boolean;
-  /** Tanlanganda matn ustidan chiziladi */
+  /** Strikes through the label when checked */
   lineThrough?: boolean;
-  /** Holat o'zgarganda chaqiriladi */
+  /** Called when the state changes */
   onChange?: (checked: boolean) => void;
-  /** Qiymat o'zgarganda yangi qiymat bilan chaqiriladi */
+  /** Called with the new value when it changes */
   onValueChange?: (checked: boolean) => void;
-  /** Label ostidagi izoh */
+  /** Description below the label */
   description?: ReactNode;
-  /** Label matni */
+  /** Label text */
   children?: ReactNode;
-  /** Qo'shimcha CSS klasslar */
+  /** Extra CSS classes */
   className?: string;
-  /** Forma uchun input nomi */
+  /** Input name for forms */
   name?: string;
-  /** Guruhdagi qiymat */
+  /** Value inside a group */
   value?: string;
+  /** Accessible label when the checkbox has no visible text */
+  "aria-label"?: string;
 }
 
 const sizeMap: Record<CheckboxSize, { box: string; icon: string; label: string; gap: string }> = {
@@ -115,6 +117,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>((props, ref)
     className = "",
     name = group?.name,
     value,
+    "aria-label": ariaLabel,
   } = props;
 
   const id = useId();
@@ -159,6 +162,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>((props, ref)
         onChange={handleChange}
         disabled={isDisabled}
         aria-invalid={isInvalid || undefined}
+        aria-label={ariaLabel}
         className="peer sr-only"
       />
 
@@ -222,39 +226,39 @@ Checkbox.displayName = "Checkbox";
 
 // ─── CheckboxGroup ──────────────────────────
 export interface CheckboxGroupProps {
-  /** Guruh sarlavhasi */
+  /** Group label */
   label?: ReactNode;
-  /** Maydon ostidagi yordamchi matn */
+  /** Helper text below the field */
   description?: ReactNode;
-  /** Xato holatida ko'rsatiladigan matn */
+  /** Text shown in the invalid state */
   errorMessage?: ReactNode;
-  /** Elementlar yo'nalishi */
+  /** Items orientation */
   orientation?: "vertical" | "horizontal";
-  /** Qiymat */
+  /** Value */
   value?: string[];
-  /** Boshlang'ich qiymat (uncontrolled) */
+  /** Initial value (uncontrolled) */
   defaultValue?: string[];
-  /** Qiymat o'zgarganda yangi qiymat bilan chaqiriladi */
+  /** Called with the new value when it changes */
   onValueChange?: (value: string[]) => void;
-  /** Guruhdagi katakchalar ko'rinishi */
+  /** Style of the checkboxes in the group */
   variant?: "primary" | "secondary";
-  /** Tanlangan holat rangi */
+  /** Color of the selected state */
   color?: CheckboxColor;
-  /** O'lcham */
+  /** Size */
   size?: CheckboxSize;
-  /** Burchaklar yumaloqligi */
+  /** Corner radius */
   radius?: CheckboxRadius;
-  /** O'chirilgan holat */
+  /** Disabled state */
   isDisabled?: boolean;
-  /** Xato (invalid) holat */
+  /** Invalid state */
   isInvalid?: boolean;
-  /** Majburiy maydon (* belgisi) */
+  /** Required field (shows *) */
   isRequired?: boolean;
-  /** Forma uchun input nomi */
+  /** Input name for forms */
   name?: string;
-  /** Ichki kontent */
+  /** Inner content */
   children?: ReactNode;
-  /** Qo'shimcha CSS klasslar */
+  /** Extra CSS classes */
   className?: string;
 }
 

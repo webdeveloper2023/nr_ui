@@ -8,10 +8,10 @@ export default function ButtonGlass() {
       <div aria-hidden className="absolute -right-8 top-6 size-60 rounded-full bg-pink opacity-60 blur-3xl" />
       <div aria-hidden className="absolute -bottom-16 left-1/3 size-56 rounded-full bg-mint opacity-60 blur-3xl" />
       <Button variant="glass" className="relative">Glass</Button>
-      <Button variant="glass" className="relative" startContent={<Plus size={16} />}>Qo'shish</Button>
-      <Button variant="glass" className="relative" isIconOnly aria-label="Yoqdi"><Heart size={18} /></Button>
-      <Button variant="glass" className="relative" isIconOnly aria-label="Ulashish"><Share2 size={18} /></Button>
-      <Button variant="glass" size="lg" className="relative">Katta glass</Button>
+      <Button variant="glass" className="relative" startContent={<Plus size={16} />}>Add</Button>
+      <Button variant="glass" className="relative" isIconOnly aria-label="Like"><Heart size={18} /></Button>
+      <Button variant="glass" className="relative" isIconOnly aria-label="Share"><Share2 size={18} /></Button>
+      <Button variant="glass" size="lg" className="relative">Large glass</Button>
     </div>
   );
 }

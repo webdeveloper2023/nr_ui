@@ -1,13 +1,18 @@
 import React, {
   useEffect,
+  useId,
+  useLayoutEffect,
   useRef,
+  useState,
   forwardRef,
   type ReactNode,
   type HTMLAttributes,
 } from "react";
 import { createPortal } from "react-dom";
 import { cn } from "../lib/cn";
+import { useLocale } from "./locale";
 import { usePresence } from "./floating";
+import { getTabbable } from "../lib/focus";
 
 type ModalSize = "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl" | "full";
 type ModalBackdrop = "opaque" | "blur" | "transparent";
@@ -16,53 +21,59 @@ type ModalRadius = "none" | "sm" | "md" | "lg";
 type ScrollBehavior = "inside" | "outside" | "normal";
 
 export interface ModalProps {
-  /** Modal ochiqmi */
+  /** Whether the modal is open */
   isOpen: boolean;
-  /** Yopilganda chaqiriladi */
+  /** Called when closed */
   onClose: () => void;
-  /** Modal kengligi */
+  /** Modal width */
   size?: ModalSize;
-  /** Burchak yumaloqligi */
+  /** Corner radius */
   radius?: ModalRadius;
-  /** Orqa fon turi */
+  /** Backdrop style */
   backdrop?: ModalBackdrop;
-  /** Oynani shisha (blur) material qiladi; false — to'q fon */
+  /** Glass (blur) dialog material; false gives a solid background */
   isBlurred?: boolean;
-  /** Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi */
+  /** Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass) */
   material?: "frosted" | "liquid";
-  /** Ekrandagi joylashuv (auto — mobilda pastdan) */
+  /** Position on screen (auto: bottom sheet on mobile) */
   placement?: ModalPlacement;
-  /** Tashqariga bosilganda yopilishi */
+  /** Closes on outside click */
   isDismissable?: boolean;
-  /** Escape bilan yopilishni o'chirish */
+  /** Disables closing with Escape */
   isKeyboardDismissDisabled?: boolean;
-  /** Yopish (X) tugmasini yashirish */
+  /** Hides the close (X) button */
   hideCloseButton?: boolean;
-  /** Uzun kontentda scroll qayerda bo'lishi */
+  /** Where scrolling happens for long content */
   scrollBehavior?: ScrollBehavior;
-  /** Qo'shimcha CSS klasslar */
+  /** Extra CSS classes */
   className?: string;
-  /** Kontent yoki (onClose) => kontent funksiyasi */
+  /** Content, or a (onClose) => content function */
   children?: ReactNode | ((onClose: () => void) => ReactNode);
+  /** Accessible name for a modal without a ModalHeader (a ModalHeader is linked automatically) */
+  "aria-label"?: string;
+  /** Id of the element that names the dialog (overrides the automatic ModalHeader link) */
+  "aria-labelledby"?: string;
+  /** Id of the element that describes the dialog */
+  "aria-describedby"?: string;
 }
 
 export interface ModalContentProps extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
-  /** Kontent yoki (onClose) => kontent funksiyasi */
+  /** Content, or a (onClose) => content function */
   children?: ReactNode | ((onClose: () => void) => ReactNode);
 }
 
 export interface ModalHeaderProps extends HTMLAttributes<HTMLDivElement> {
-  /** Sarlavha kontenti */
+  /** Header content */
   children?: ReactNode;
 }
 
 export interface ModalBodyProps extends HTMLAttributes<HTMLDivElement> {
-  /** Asosiy kontent */
+  /** Main content */
   children?: ReactNode;
 }
 
 export interface ModalFooterProps extends HTMLAttributes<HTMLDivElement> {
-  /** Pastki qism (odatda tugmalar) */
+  /** Footer (usually buttons) */
   children?: ReactNode;
 }
 
@@ -99,12 +110,11 @@ const backdropStyles: Record<ModalBackdrop, string> = {
   transparent: "bg-transparent",
 };
 
-const FOCUSABLE =
-  'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
-
 const ModalContext = React.createContext<{
   onClose: () => void;
   scrollBehavior: ScrollBehavior;
+  titleId: string;
+  setHeaderId: (id: string | null) => void;
 } | null>(null);
 
 const useModalContext = () => {
@@ -114,6 +124,8 @@ const useModalContext = () => {
 };
 
 let scrollLocks = 0;
+/** Open modals, innermost last — only the top one handles the keyboard */
+const modalStack: object[] = [];
 
 export const Modal: React.FC<ModalProps> = ({
   isOpen,
@@ -130,7 +142,13 @@ export const Modal: React.FC<ModalProps> = ({
   scrollBehavior = "inside",
   className = "",
   children,
+  "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledBy,
+  "aria-describedby": ariaDescribedBy,
 }) => {
+  const t = useLocale();
+  const titleId = useId();
+  const [headerId, setHeaderId] = useState<string | null>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
   const onCloseRef = useRef(onClose);
@@ -143,6 +161,8 @@ export const Modal: React.FC<ModalProps> = ({
   useEffect(() => {
     if (!isOpen) return;
     const previouslyFocused = document.activeElement as HTMLElement | null;
+    const token = {};
+    modalStack.push(token);
 
     scrollLocks++;
     const scrollbar = window.innerWidth - document.documentElement.clientWidth;
@@ -152,29 +172,36 @@ export const Modal: React.FC<ModalProps> = ({
     const raf = requestAnimationFrame(() => {
       const dialog = dialogRef.current;
       if (!dialog) return;
-      const first = Array.from(dialog.querySelectorAll<HTMLElement>(FOCUSABLE)).find(
-        (el) => !el.hasAttribute("data-close-button")
-      );
+      const first = getTabbable(dialog).find((el) => !el.hasAttribute("data-close-button"));
       (first ?? dialog).focus();
     });
 
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isDismissable && !isKeyboardDismissDisabled) {
-        e.stopPropagation();
-        onCloseRef.current();
+      const dialog = dialogRef.current;
+      // Nested modals: only the innermost one reacts; keys already handled by a child (e.g. an open Select) are skipped
+      if (!dialog || modalStack[modalStack.length - 1] !== token || e.defaultPrevented) return;
+      if (e.key === "Escape") {
+        if (isDismissable && !isKeyboardDismissDisabled) {
+          e.preventDefault();
+          onCloseRef.current();
+        }
         return;
       }
-      if (e.key !== "Tab" || !dialogRef.current) return;
-      const nodes = Array.from(dialogRef.current.querySelectorAll<HTMLElement>(FOCUSABLE));
-      if (!nodes.length) return;
+      if (e.key !== "Tab") return;
+      const nodes = getTabbable(dialog);
+      const active = document.activeElement as HTMLElement | null;
+      // Nothing to tab to — keep focus on the dialog itself
+      if (!nodes.length) {
+        e.preventDefault();
+        dialog.focus();
+        return;
+      }
       const first = nodes[0];
       const last = nodes[nodes.length - 1];
-      if (e.shiftKey && document.activeElement === first) {
+      const inside = !!active && dialog.contains(active) && active !== dialog;
+      if (e.shiftKey ? !inside || active === first : !inside || active === last) {
         e.preventDefault();
-        last.focus();
-      } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault();
-        first.focus();
+        (e.shiftKey ? last : first).focus();
       }
     };
     document.addEventListener("keydown", onKeyDown);
@@ -182,6 +209,7 @@ export const Modal: React.FC<ModalProps> = ({
     return () => {
       cancelAnimationFrame(raf);
       document.removeEventListener("keydown", onKeyDown);
+      modalStack.splice(modalStack.indexOf(token), 1);
       scrollLocks--;
       if (scrollLocks === 0) {
         document.body.style.overflow = "";
@@ -198,7 +226,7 @@ export const Modal: React.FC<ModalProps> = ({
   const fromBottom = placement === "bottom" || placement === "auto";
 
   return createPortal(
-    <ModalContext.Provider value={{ onClose, scrollBehavior }}>
+    <ModalContext.Provider value={{ onClose, scrollBehavior, titleId, setHeaderId }}>
       <div
         className={cn(
           "fixed inset-0 z-50 transition-opacity duration-200 ease-out",
@@ -225,6 +253,9 @@ export const Modal: React.FC<ModalProps> = ({
           ref={dialogRef}
           role="dialog"
           aria-modal="true"
+          aria-label={ariaLabel}
+          aria-labelledby={ariaLabelledBy ?? (ariaLabel ? undefined : headerId ?? undefined)}
+          aria-describedby={ariaDescribedBy}
           data-glass={material}
           tabIndex={-1}
           className={cn(
@@ -251,7 +282,7 @@ export const Modal: React.FC<ModalProps> = ({
                 "bg-default text-muted hover:bg-default-hover hover:text-foreground active:scale-[0.95] transition-[color,background-color,transform]",
                 "outline-none focus-visible:ring-2 focus-visible:ring-focus"
               )}
-              aria-label="Close"
+              aria-label={t.common.close}
             >
               <svg width="14" height="14" viewBox="0 0 18 18" fill="none">
                 <path d="M4.5 4.5L13.5 13.5M4.5 13.5L13.5 4.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -282,15 +313,25 @@ export const ModalContent = forwardRef<HTMLDivElement, ModalContentProps>(
 ModalContent.displayName = "ModalContent";
 
 export const ModalHeader = forwardRef<HTMLDivElement, ModalHeaderProps>(
-  ({ children, className = "", ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn("flex flex-col gap-1 px-6 pt-6 pb-2 pr-14 text-lg font-semibold leading-7 text-foreground", className)}
-      {...props}
-    >
-      {children}
-    </div>
-  )
+  ({ children, className = "", id, ...props }, ref) => {
+    const { titleId, setHeaderId } = useModalContext();
+    const headerId = id ?? titleId;
+    // Names the dialog: <Modal> points aria-labelledby at this header
+    useLayoutEffect(() => {
+      setHeaderId(headerId);
+      return () => setHeaderId(null);
+    }, [headerId, setHeaderId]);
+    return (
+      <div
+        ref={ref}
+        id={headerId}
+        className={cn("flex flex-col gap-1 px-6 pt-6 pb-2 pr-14 text-lg font-semibold leading-7 text-foreground", className)}
+        {...props}
+      >
+        {children}
+      </div>
+    );
+  }
 );
 
 ModalHeader.displayName = "ModalHeader";

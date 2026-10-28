@@ -2,9 +2,9 @@ import { Accordion, AccordionItem } from "nr-ui-kit";
 import { CreditCard, Shield, User } from "lucide-react";
 
 const items = [
-  { key: "account", icon: <User size={18} />, title: "Hisob", subtitle: "Ism, email va avatar", text: "Profil ma'lumotlarini istalgan vaqtda yangilashingiz mumkin." },
-  { key: "security", icon: <Shield size={18} />, title: "Xavfsizlik", subtitle: "Parol va ikki bosqichli himoya", text: "2FA yoqilsa, har kirishda telefoningizga kod yuboriladi." },
-  { key: "billing", icon: <CreditCard size={18} />, title: "To'lovlar", subtitle: "Tarif va hisob-fakturalar", text: "Joriy tarif: Pro. Keyingi to'lov — 28-noyabr." },
+  { key: "account", icon: <User size={18} />, title: "Account", subtitle: "Name, email and avatar", text: "You can update your profile details at any time." },
+  { key: "security", icon: <Shield size={18} />, title: "Security", subtitle: "Password and two-factor authentication", text: "With 2FA on, a code is sent to your phone every time you sign in." },
+  { key: "billing", icon: <CreditCard size={18} />, title: "Billing", subtitle: "Plan and invoices", text: "Current plan: Pro. Next payment — November 28." },
 ];
 
 export default function AccordionWithSubtitleIcons() {

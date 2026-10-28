@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useState, type ReactNode } from "react";
 import { cn } from "../lib/cn";
+import { useLocale } from "./locale";
 import { Checkbox } from "./Checkbox";
 
 type TableColor = "default" | "accent" | "success" | "warning" | "danger";
@@ -9,17 +10,17 @@ type SelectionMode = "none" | "single" | "multiple";
 type SortDirection = "ascending" | "descending";
 
 export interface TableColumn<T = Record<string, unknown>> {
-  /** Qator obyektidagi maydon nomi */
+  /** Field name in the row object */
   key: string;
-  /** Ustun sarlavhasi */
+  /** Column header */
   label: string;
-  /** Ustun bo'yicha saralashni yoqadi */
+  /** Enables sorting by this column */
   sortable?: boolean;
-  /** Ustun kengligi (px yoki CSS qiymat) */
+  /** Column width (px or CSS value) */
   width?: string | number;
-  /** Kontentni tekislash */
+  /** Content alignment */
   align?: "start" | "center" | "end";
-  /** Katakni maxsus ko'rinishda chizish funksiyasi */
+  /** Custom cell renderer */
   render?: (value: unknown, row: T, index: number) => ReactNode;
 }
 
@@ -29,61 +30,61 @@ export interface SortDescriptor {
 }
 
 export interface TableProps<T = Record<string, unknown>> {
-  /** Ustunlar ta'rifi */
+  /** Column definitions */
   columns: TableColumn<T>[];
-  /** Jadval qatorlari (ma'lumotlar) */
+  /** Table rows (data) */
   rows: T[];
-  /** Har bir qatorni noyob aniqlovchi maydon nomi */
+  /** Field that uniquely identifies each row */
   keyField: string;
-  /** Ko'rinish: primary (oq surface ichida) yoki secondary (fonsiz, surface ichida ishlatish uchun) */
+  /** Style: primary (white surface) or secondary (no background, for use inside a surface) */
   variant?: TableVariant;
-  /** Tanlangan qator va checkbox rangi */
+  /** Color of the selected row and checkbox */
   color?: TableColor;
-  /** Jadval layout'i: auto yoki fixed */
+  /** Table layout: auto or fixed */
   layout?: TableLayout;
-  /** Qatorlarni navbatma-navbat bo'yaydi */
+  /** Zebra-striped rows */
   isStriped?: boolean;
-  /** Kichikroq padding bilan zich ko'rinish */
+  /** Dense layout with smaller padding */
   isCompact?: boolean;
-  /** Skroll qilganda sarlavha yuqorida qoladi */
+  /** Keeps the header pinned while scrolling */
   isHeaderSticky?: boolean;
-  /** Skeleton qatorlarni ko'rsatadi */
+  /** Shows skeleton rows */
   isLoading?: boolean;
-  /** Yuklanishda ko'rsatiladigan skeleton qatorlar soni */
+  /** Number of skeleton rows while loading */
   loadingRows?: number;
-  /** Tashqi karta (wrapper) ni olib tashlaydi */
+  /** Removes the outer card wrapper */
   removeWrapper?: boolean;
-  /** Wrapper'ni shisha (glass) qiladi — rangli fon ustida */
+  /** Makes the wrapper glass — for colorful backgrounds */
   isBlurred?: boolean;
-  /** Shisha materiali: frosted (klassik) yoki liquid (clear glass Liquid). Berilmasa global sozlama (html data-glass) ishlatiladi */
+  /** Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass) */
   material?: "frosted" | "liquid";
-  /** Sarlavha qatorini yashiradi */
+  /** Hides the header row */
   hideHeader?: boolean;
-  /** Qatorlarni tanlash rejimi */
+  /** Row selection mode */
   selectionMode?: SelectionMode;
-  /** Tanlangan qatorlar kalitlari (controlled) */
+  /** Selected row keys (controlled) */
   selectedKeys?: Set<string>;
-  /** Tanlab bo'lmaydigan qatorlar kalitlari */
+  /** Keys of rows that cannot be selected */
   disabledKeys?: string[];
-  /** Tanlov o'zgarganda chaqiriladi */
+  /** Called when the selection changes */
   onSelectionChange?: (keys: Set<string>) => void;
-  /** Qator bosilganda chaqiriladi */
+  /** Called when a row is pressed */
   onRowAction?: (key: string, row: T) => void;
-  /** Joriy saralash holati (controlled) */
+  /** Current sort state (controlled) */
   sortDescriptor?: SortDescriptor;
-  /** Saralash o'zgarganda chaqiriladi */
+  /** Called when sorting changes */
   onSortChange?: (descriptor: SortDescriptor) => void;
-  /** Jadval ustidagi slot (qidiruv, tugmalar) */
+  /** Slot above the table (search, buttons) */
   topContent?: ReactNode;
-  /** Jadval ostidagi slot (pagination) */
+  /** Slot below the table (pagination) */
   bottomContent?: ReactNode;
-  /** Maksimal balandlik, oshsa ichida skroll */
+  /** Maximum height; scrolls inside when exceeded */
   maxHeight?: string | number;
-  /** Wrapper uchun qo'shimcha klasslar */
+  /** Extra classes for the wrapper */
   className?: string;
-  /** Qatorlar bo'lmaganda ko'rsatiladigan kontent */
+  /** Content shown when there are no rows */
   emptyContent?: ReactNode;
-  /** Ekran o'quvchilar uchun jadval nomi */
+  /** Table name for screen readers */
   "aria-label"?: string;
 }
 
@@ -159,6 +160,7 @@ export function Table<T extends Record<string, unknown>>({
   emptyContent,
   "aria-label": ariaLabel,
 }: TableProps<T>) {
+  const t = useLocale();
   const [internalKeys, setInternalKeys] = useState<Set<string>>(new Set());
   const [internalSort, setInternalSort] = useState<SortDescriptor | undefined>();
   const selectedKeys = controlledKeys ?? internalKeys;
@@ -235,6 +237,7 @@ export function Table<T extends Record<string, unknown>>({
                     isIndeterminate={someSelected && !allSelected}
                     isDisabled={isLoading || selectableKeys.length === 0}
                     onChange={toggleAll}
+                    aria-label={t.table.selectAll}
                   />
                 )}
               </th>
@@ -246,19 +249,29 @@ export function Table<T extends Record<string, unknown>>({
                   key={col.key}
                   scope="col"
                   aria-sort={isSorted ? sort.direction : undefined}
-                  className={cn(
-                    thBase,
-                    alignClasses[col.align ?? "start"],
-                    col.sortable && "cursor-pointer select-none hover:text-foreground transition-colors",
-                    isSorted && "text-foreground"
-                  )}
+                  className={cn(thBase, alignClasses[col.align ?? "start"], isSorted && "text-foreground")}
                   style={col.width ? { width: col.width } : undefined}
-                  onClick={col.sortable ? () => handleSort(col.key) : undefined}
                 >
-                  <span className={cn("inline-flex items-center", col.align === "end" && "flex-row-reverse", col.align === "center" && "justify-center")}>
-                    {col.label}
-                    {col.sortable && <SortIcon active={isSorted} direction={isSorted ? sort.direction : undefined} />}
-                  </span>
+                  {col.sortable ? (
+                    // A real button: reachable with Tab, sorts with Enter / Space
+                    <button
+                      type="button"
+                      onClick={() => handleSort(col.key)}
+                      className={cn(
+                        "inline-flex items-center rounded-md -mx-1 px-1 cursor-pointer select-none hover:text-foreground transition-colors",
+                        "outline-none focus-visible:ring-2 focus-visible:ring-focus",
+                        col.align === "end" && "flex-row-reverse",
+                        col.align === "center" && "justify-center"
+                      )}
+                    >
+                      {col.label}
+                      <SortIcon active={isSorted} direction={isSorted ? sort.direction : undefined} />
+                    </button>
+                  ) : (
+                    <span className={cn("inline-flex items-center", col.align === "end" && "flex-row-reverse", col.align === "center" && "justify-center")}>
+                      {col.label}
+                    </span>
+                  )}
                 </th>
               );
             })}
@@ -289,7 +302,7 @@ export function Table<T extends Record<string, unknown>>({
         {!isLoading && displayRows.length === 0 && (
           <tr>
             <td colSpan={colSpan} className="h-40 text-center text-sm text-muted">
-              {emptyContent ?? "No rows to display."}
+              {emptyContent ?? t.table.empty}
             </td>
           </tr>
         )}
@@ -349,6 +362,7 @@ export function Table<T extends Record<string, unknown>>({
                         isSelected={isSelected}
                         isDisabled={isDisabled}
                         onChange={() => toggleRow(rowKey)}
+                        aria-label={t.table.selectRow}
                       />
                     ) : (
                       <button

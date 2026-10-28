@@ -2,11 +2,11 @@ import { forwardRef, type HTMLAttributes, type ReactNode } from "react";
 import { cn } from "../lib/cn";
 
 export interface SkeletonProps extends HTMLAttributes<HTMLDivElement> {
-  /** true bo'lsa skeleton o'rniga asl kontent ko'rinadi */
+  /** When true, the real content is shown instead of the skeleton */
   isLoaded?: boolean;
-  /** Shimmer animatsiyasini o'chiradi */
+  /** Disables the shimmer animation */
   disableAnimation?: boolean;
-  /** Yuklangandan keyin ko'rinadigan kontent */
+  /** Content shown once loaded */
   children?: ReactNode;
 }
 

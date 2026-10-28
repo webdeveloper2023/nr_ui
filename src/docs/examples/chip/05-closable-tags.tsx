@@ -14,11 +14,11 @@ export default function ChipClosable() {
             {tag}
           </Chip>
         ))}
-        {tags.length === 0 && <p className="text-sm text-muted">Teglar qolmadi</p>}
+        {tags.length === 0 && <p className="text-sm text-muted">No tags left</p>}
       </div>
       {tags.length < initial.length && (
         <Button size="sm" variant="tertiary" onClick={() => setTags(initial)}>
-          Qaytarish
+          Reset
         </Button>
       )}
     </div>

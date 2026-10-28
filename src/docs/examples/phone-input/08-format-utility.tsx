@@ -1,6 +1,6 @@
 import { formatPhone } from "nr-ui-kit";
 
-// Ma'lumotlar bazasidagi E.164 raqamlarni chiroyli ko'rsatish
+// Pretty-print E.164 numbers stored in your database
 const contacts = [
   { name: "Ali Valiyev", phone: "+998901234567", country: "UZ" },
   { name: "Aigerim", phone: "+77011234567", country: "KZ" },

@@ -4,24 +4,24 @@ import { cn } from "../lib/cn";
 type StepperColor = "default" | "accent" | "success" | "warning" | "danger";
 
 export interface StepItem {
-  /** Bosqich nomi */
+  /** Step title */
   title: string;
-  /** Bosqich izohi */
+  /** Step description */
   description?: string;
 }
 
 export interface StepperProps {
-  /** Bosqichlar ro'yxati */
+  /** List of steps */
   steps: StepItem[];
-  /** Joriy bosqich indeksi (0 dan) */
+  /** Current step index (0-based) */
   currentStep: number;
-  /** Bosqich bosilganda chaqiriladi (faqat o'tilganlari) */
+  /** Called when a step is clicked (completed steps only) */
   onStepChange?: (step: number) => void;
-  /** Yo'nalish */
+  /** Orientation */
   orientation?: "horizontal" | "vertical";
-  /** Rang mavzusi */
+  /** Color theme */
   color?: StepperColor;
-  /** Qo'shimcha CSS klasslar */
+  /** Extra CSS classes */
   className?: string;
 }
 

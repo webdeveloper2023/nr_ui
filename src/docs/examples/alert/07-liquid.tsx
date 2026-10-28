@@ -8,8 +8,8 @@ export default function AlertLiquidGlass() {
       <div aria-hidden className="absolute -right-6 top-4 size-60 rounded-full bg-pink opacity-70 blur-2xl" />
       <div aria-hidden className="absolute -bottom-16 left-1/3 size-56 rounded-full bg-orange opacity-60 blur-2xl" />
       <div aria-hidden className="absolute bottom-6 right-1/4 size-32 rounded-full bg-mint opacity-70 blur-xl" />
-      <Alert className="relative" variant="glass" material="frosted" title="Frosted" description="Klassik xira shisha bildirishnoma." />
-      <Alert className="relative" variant="glass" material="liquid" color="success" title="Liquid" description="mobile 26 uslubi: shaffof, chetlari yaltiroq." />
+      <Alert className="relative" variant="glass" material="frosted" title="Frosted" description="A classic frosted glass notification." />
+      <Alert className="relative" variant="glass" material="liquid" color="success" title="Liquid" description="Modern style: clear, with glossy edges." />
     </div>
   );
 }

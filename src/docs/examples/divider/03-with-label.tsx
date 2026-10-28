@@ -4,10 +4,10 @@ export default function DividerWithLabel() {
   return (
     <Card className="mx-auto w-full max-w-sm">
       <CardBody className="gap-4 py-4">
-        <Button variant="outline" fullWidth>Google bilan kirish</Button>
-        <Divider>yoki</Divider>
-        <Input variant="secondary" placeholder="Email manzilingiz" />
-        <Button fullWidth>Davom etish</Button>
+        <Button variant="outline" fullWidth>Continue with Google</Button>
+        <Divider>or</Divider>
+        <Input variant="secondary" placeholder="Your email address" />
+        <Button fullWidth>Continue</Button>
       </CardBody>
     </Card>
   );

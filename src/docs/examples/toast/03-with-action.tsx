@@ -5,19 +5,19 @@ export default function ToastWithAction() {
 
   const remove = () => {
     const id = addToast({
-      title: "Xabar o'chirildi",
-      description: "Uni hali qaytarishingiz mumkin.",
-      timeout: 0, // 0 — o'zi yopilmaydi
+      title: "Message deleted",
+      description: "You can still restore it.",
+      timeout: 0, // 0 — never closes on its own
       action: (
         <Button
           size="sm"
           variant="tertiary"
           onClick={() => {
             closeToast(id);
-            addToast({ title: "Xabar qaytarildi", color: "success" });
+            addToast({ title: "Message restored", color: "success" });
           }}
         >
-          Bekor qilish
+          Undo
         </Button>
       ),
     });
@@ -26,7 +26,7 @@ export default function ToastWithAction() {
   return (
     <div className="flex justify-center">
       <Button variant="danger-soft" onClick={remove}>
-        Xabarni o'chirish
+        Delete message
       </Button>
     </div>
   );

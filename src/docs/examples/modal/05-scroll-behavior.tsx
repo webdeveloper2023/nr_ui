@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "nr-ui-kit";
 
-const paragraphs = Array.from({ length: 14 }, (_, i) => `${i + 1}. Foydalanish shartlari bandi: xizmatdan foydalanish orqali siz ushbu qoidalarga rozilik bildirasiz. Ma'lumotlaringiz maxfiylik siyosatiga muvofiq qayta ishlanadi.`);
+const paragraphs = Array.from({ length: 14 }, (_, i) => `${i + 1}. Terms of service clause: by using the service you agree to these rules. Your data is processed in accordance with our privacy policy.`);
 
 export default function ModalScrollBehavior() {
   const [mode, setMode] = useState<"inside" | "outside" | null>(null);
@@ -18,7 +18,7 @@ export default function ModalScrollBehavior() {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader>Foydalanish shartlari</ModalHeader>
+              <ModalHeader>Terms of service</ModalHeader>
               <ModalBody>
                 {paragraphs.map((p) => (
                   <p key={p}>{p}</p>
@@ -26,9 +26,9 @@ export default function ModalScrollBehavior() {
               </ModalBody>
               <ModalFooter>
                 <Button variant="tertiary" onClick={onClose}>
-                  Rad etish
+                  Decline
                 </Button>
-                <Button onClick={onClose}>Qabul qilaman</Button>
+                <Button onClick={onClose}>I agree</Button>
               </ModalFooter>
             </>
           )}

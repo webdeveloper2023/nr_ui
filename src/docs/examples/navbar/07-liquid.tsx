@@ -18,13 +18,13 @@ export default function NavbarLiquidGlass() {
           <span className="font-semibold text-foreground">Acme</span>
         </NavbarBrand>
         <NavbarContent justify="center">
-          <NavbarItem variant="pill" isActive>Bosh sahifa</NavbarItem>
-          <NavbarItem variant="pill">Mahsulotlar</NavbarItem>
-          <NavbarItem variant="pill">Narxlar</NavbarItem>
+          <NavbarItem variant="pill" isActive>Home</NavbarItem>
+          <NavbarItem variant="pill">Products</NavbarItem>
+          <NavbarItem variant="pill">Pricing</NavbarItem>
         </NavbarContent>
         <NavbarContent justify="end" isAlwaysVisible>
           <NavbarItem>
-            <Button variant="ghost" isIconOnly size="sm" aria-label="Qidirish"><Search size={16} /></Button>
+            <Button variant="ghost" isIconOnly size="sm" aria-label="Search"><Search size={16} /></Button>
           </NavbarItem>
           <NavbarItem>
             <Avatar size="sm" name="Rafiqjon" />

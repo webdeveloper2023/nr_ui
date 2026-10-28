@@ -31,13 +31,13 @@ export default function ModalLiquidGlass() {
               <ModalBody>
                 <p className="text-sm text-foreground/75">
                   {material === "liquid"
-                    ? "clear glass sheet: shaffof, chetlarida yorug'lik aksi."
-                    : "Klassik xira shisha — kuchli blur, oq tus."}
+                    ? "clear glass sheet: clear, with light reflecting off the edges."
+                    : "Classic frosted glass — strong blur, white tint."}
                 </p>
               </ModalBody>
               <ModalFooter>
-                <Button variant="tertiary" onClick={onClose}>Bekor qilish</Button>
-                <Button onClick={onClose}>Davom etish</Button>
+                <Button variant="tertiary" onClick={onClose}>Cancel</Button>
+                <Button onClick={onClose}>Continue</Button>
               </ModalFooter>
             </>
           )}
