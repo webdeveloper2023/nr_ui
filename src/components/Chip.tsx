@@ -1,6 +1,7 @@
 import { forwardRef, type ReactNode } from "react";
 import { cn } from "../lib/cn";
 import { useLocale } from "./locale";
+import { rx, useResponsive, type BreakpointClasses, type ResponsiveProp } from "./breakpoints";
 
 type ChipVariant = "primary" | "secondary" | "tertiary" | "soft" | "glass";
 type ChipColor = "default" | "accent" | "success" | "warning" | "danger";
@@ -31,7 +32,21 @@ export interface ChipProps {
   children?: ReactNode;
   /** Extra classes */
   className?: string;
+  /** Adapts to the screen: sm and md chips grow a step on mobile, and the close button gets a finger-sized hit area on mobile and tablet. true = all breakpoints or a list like ["m", "t"] */
+  responsive?: ResponsiveProp;
 }
+
+// Mobile: sm / md one step taller. Mobile / tablet: the close (X) keeps its look but takes a ~36px hit area.
+const chipR: Record<ChipSize, BreakpointClasses> = {
+  xs: {},
+  sm: { m: "mobile:h-6 mobile:px-2" },
+  md: { m: "mobile:h-7 mobile:px-2.5" },
+  lg: {},
+};
+const closeHitR: BreakpointClasses = {
+  m: "mobile:before:absolute mobile:before:-inset-2.5 mobile:before:content-['']",
+  t: "tablet:before:absolute tablet:before:-inset-2.5 tablet:before:content-['']",
+};
 
 const sizeMap: Record<ChipSize, { chip: string; close: string; dot: string; avatar: string; icon: string }> = {
   xs: { chip: "h-4 px-1 gap-0.5 text-[10px]", close: "w-3 h-3", dot: "w-1 h-1", avatar: "[&_*]:w-3 [&_*]:h-3 -ml-0.5", icon: "[&_svg]:w-2.5 [&_svg]:h-2.5" },
@@ -109,10 +124,12 @@ export const Chip = forwardRef<HTMLSpanElement, ChipProps>(
       isDisabled = false,
       children,
       className = "",
+      responsive,
     },
     ref
   ) => {
     const t = useLocale();
+    const bps = useResponsive(responsive);
     return (
     <span
       ref={ref}
@@ -121,6 +138,7 @@ export const Chip = forwardRef<HTMLSpanElement, ChipProps>(
         "relative inline-flex max-w-fit min-w-min items-center rounded-full whitespace-nowrap font-medium leading-none",
         "transition-colors duration-150",
         sizeMap[size].chip,
+        rx(bps, chipR[size]),
         sizeMap[size].icon,
         colorStyles[color][variant],
         isDisabled && "opacity-50 pointer-events-none",
@@ -138,7 +156,8 @@ export const Chip = forwardRef<HTMLSpanElement, ChipProps>(
           onClick={onClose}
           disabled={isDisabled}
           className={cn(
-            "-mr-0.5 shrink-0 flex items-center justify-center rounded-full cursor-pointer",
+            "relative -mr-0.5 shrink-0 flex items-center justify-center rounded-full cursor-pointer",
+            rx(bps, closeHitR),
             "opacity-60 hover:opacity-100 hover:bg-current/15 transition-[opacity,background-color] duration-150",
             "outline-none focus-visible:ring-2 focus-visible:ring-focus",
             sizeMap[size].close

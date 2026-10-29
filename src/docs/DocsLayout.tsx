@@ -3,6 +3,7 @@ import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { Menu, Monitor, Moon, Search, Sun, X, Zap } from "lucide-react";
 import { cn } from "../lib/cn";
 import { GROUPS, GROUP_LABELS, registry } from "./registry";
+import { NewTag } from "./NewTag";
 import { useLang, useT } from "./i18n/lang";
 import { LanguageSwitch } from "./LanguageSwitch";
 import { Donate } from "./Donate";
@@ -89,6 +90,7 @@ function SideNav({ query, onNavigate }: { query: string; onNavigate?: () => void
                 <li key={e.slug}>
                   <NavLink to={`/components/${e.slug}`} className={link} onClick={onNavigate}>
                     {e.name}
+                    {e.isNew && <NewTag className="ml-auto" />}
                   </NavLink>
                 </li>
               ))}
@@ -151,16 +153,16 @@ export default function DocsLayout() {
   return (
     <div className="min-h-screen">
       <header className="sticky top-0 z-40 border-b border-separator glass">
-        <div className="mx-auto flex h-16 max-w-[1440px] items-center gap-4 px-5 sm:px-8">
+        <div className="mx-auto flex h-16 max-w-[1440px] items-center gap-2 px-4 sm:gap-4 sm:px-8">
           <button className="lg:hidden flex h-9 w-9 items-center justify-center rounded-full text-muted hover:bg-default cursor-pointer" onClick={() => setMobileOpen(true)} aria-label="Menu">
             <Menu size={18} />
           </button>
-          <NavLink to="/" className="flex items-center gap-2">
+          <NavLink to="/" className="flex shrink-0 items-center gap-2">
             <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-foreground text-background">
               <Zap size={15} strokeWidth={2.5} />
             </span>
-            <span className="text-lg font-bold tracking-tight text-foreground">nr ui</span>
-            <span className="rounded-md bg-default px-1.5 py-0.5 text-xs font-medium text-muted">v1.0</span>
+            <span className="whitespace-nowrap text-lg font-bold tracking-tight text-foreground">nr ui</span>
+            <span className="rounded-md bg-default px-1.5 py-0.5 text-xs font-medium text-muted max-sm:hidden">v1.0</span>
           </NavLink>
           <div className="flex-1 hidden md:flex justify-center">
             <SearchField value={query} onChange={setQuery} inputRef={searchRef} className="w-full max-w-md" />
@@ -169,7 +171,9 @@ export default function DocsLayout() {
           <Donate />
           <div className="ml-auto md:ml-0 flex items-center gap-2">
             <LanguageSwitch lang={lang} onChange={setLang} />
-            <ThemeSwitch mode={mode} onChange={setMode} />
+            <div className="max-sm:hidden">
+              <ThemeSwitch mode={mode} onChange={setMode} />
+            </div>
           </div>
         </div>
       </header>
@@ -184,7 +188,10 @@ export default function DocsLayout() {
                 <X size={16} />
               </button>
             </div>
-            <SearchField value={query} onChange={setQuery} className="mb-5" />
+            <SearchField value={query} onChange={setQuery} className="mb-4" />
+            <div className="mb-5 sm:hidden">
+              <ThemeSwitch mode={mode} onChange={setMode} />
+            </div>
             <SideNav query={query} onNavigate={() => setMobileOpen(false)} />
           </div>
         </div>

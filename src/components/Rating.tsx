@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Star } from "lucide-react";
 import { cn } from "../lib/cn";
 import { useLocale } from "./locale";
+import { rx, useResponsive, type BreakpointClasses, type ResponsiveProp } from "./breakpoints";
 
 type RatingSize = "xs" | "sm" | "md" | "lg";
 type RatingColor = "warning" | "accent" | "danger" | "success" | "default";
@@ -25,11 +26,27 @@ export interface RatingProps {
   isDisabled?: boolean;
   /** Shows the numeric value next to it */
   showValue?: boolean;
+  /** Adapts to the screen: on mobile stars one step larger, spaced apart with a 44px-tall tap area and a 16px value; larger lg stars on desktop. true = all breakpoints or a list like ["m", "t"] */
+  responsive?: ResponsiveProp;
   /** Extra CSS classes */
   className?: string;
 }
 
 const sizes: Record<RatingSize, number> = { xs: 12, sm: 16, md: 20, lg: 26 };
+// Mobile: stars one step larger (CSS size overrides the icon's width / height), wider spacing and a
+// 44px-tall invisible tap area on editable stars. Tablet: a taller tap area. Desktop: lg one step larger.
+const starR: Record<RatingSize, BreakpointClasses> = {
+  xs: { m: "mobile:size-4" },
+  sm: { m: "mobile:size-5" },
+  md: { m: "mobile:size-6" },
+  lg: { d: "desktop:size-8" },
+};
+const hitR: BreakpointClasses = {
+  m: "mobile:after:absolute mobile:after:-inset-x-1 mobile:after:-inset-y-2.5",
+  t: "tablet:after:absolute tablet:after:-inset-x-0.5 tablet:after:-inset-y-2",
+};
+const rowR: BreakpointClasses = { m: "mobile:gap-2", t: "tablet:gap-1" };
+
 const fills: Record<RatingColor, string> = {
   warning: "text-warning fill-warning",
   accent: "text-accent fill-accent",
@@ -48,9 +65,12 @@ export function Rating({
   isReadOnly = false,
   isDisabled = false,
   showValue = false,
+  responsive,
   className = "",
 }: RatingProps) {
   const t = useLocale();
+  const bps = useResponsive(responsive);
+  const starClass = rx(bps, starR[size]);
   const [valueState, setValueState] = useState(defaultValue);
   const [hover, setHover] = useState<number | null>(null);
   const value = valueProp ?? valueState;
@@ -66,7 +86,7 @@ export function Rating({
 
   return (
     <div className={cn("inline-flex items-center gap-2", isDisabled && "opacity-50", className)}>
-      <div className="flex items-center gap-0.5" role="radiogroup" aria-readonly={isReadOnly} onMouseLeave={() => setHover(null)}>
+      <div className={cn("flex items-center gap-0.5", rx(bps, rowR))} role="radiogroup" aria-readonly={isReadOnly} onMouseLeave={() => setHover(null)}>
         {Array.from({ length: max }, (_, i) => {
           const n = i + 1;
           const fillPct = Math.max(0, Math.min(1, shown - i)) * 100;
@@ -83,18 +103,18 @@ export function Rating({
               className={cn(
                 "relative rounded-md transition-transform duration-150",
                 "outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-                isStatic ? "cursor-default" : "cursor-pointer hover:scale-110 active:scale-95"
+                isStatic ? "cursor-default" : cn("cursor-pointer hover:scale-110 active:scale-95", rx(bps, hitR))
               )}
             >
-              <Star size={sizes[size]} strokeWidth={1.5} className="text-default fill-default" />
+              <Star size={sizes[size]} strokeWidth={1.5} className={cn("text-default fill-default", starClass)} />
               <span className="absolute inset-0 overflow-hidden transition-[width] duration-150" style={{ width: `${fillPct}%` }}>
-                <Star size={sizes[size]} strokeWidth={1.5} className={fills[color]} />
+                <Star size={sizes[size]} strokeWidth={1.5} className={cn(fills[color], starClass)} />
               </span>
             </button>
           );
         })}
       </div>
-      {showValue && <span className="text-sm font-medium text-foreground tabular-nums">{value.toFixed(1)}</span>}
+      {showValue && <span className={cn("text-sm font-medium text-foreground tabular-nums", rx(bps, { m: "mobile:text-base" }))}>{value.toFixed(1)}</span>}
     </div>
   );
 }

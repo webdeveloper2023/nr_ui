@@ -1,6 +1,7 @@
 import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
 import { cn } from "../lib/cn";
 import { useLocale } from "./locale";
+import { rx, useBreakpoint, useResponsive, type BreakpointClasses, type ResponsiveProp } from "./breakpoints";
 
 type PaginationColor = "default" | "accent";
 type PaginationSize = "xs" | "sm" | "md" | "lg";
@@ -27,6 +28,8 @@ export interface PaginationProps {
   isCompact?: boolean;
   /** Disabled (inactive) state */
   isDisabled?: boolean;
+  /** Adapts to the screen: touch-sized (44px for md) buttons and no sibling pages on mobile so it fits a phone, touch-sized on tablet, larger lg on desktop. true = all breakpoints or a list like ["m", "t"] */
+  responsive?: ResponsiveProp;
   /** Extra CSS classes */
   className?: string;
 }
@@ -36,6 +39,14 @@ const sizes: Record<PaginationSize, string> = {
   sm: "min-w-8 h-8 text-xs",
   md: "min-w-9 h-9 text-sm",
   lg: "min-w-10 h-10 text-sm",
+};
+
+// Mobile / tablet: touch targets. Laptop: static sizes. Desktop: lg grows a step.
+const sizesR: Record<PaginationSize, BreakpointClasses> = {
+  xs: { m: "mobile:min-w-8 mobile:h-8 mobile:text-xs" },
+  sm: { m: "mobile:min-w-10 mobile:h-10 mobile:text-sm", t: "tablet:min-w-9 tablet:h-9" },
+  md: { m: "mobile:min-w-11 mobile:h-11", t: "tablet:min-w-11 tablet:h-11" },
+  lg: { m: "mobile:min-w-11 mobile:h-11", t: "tablet:min-w-11 tablet:h-11", d: "desktop:min-w-12 desktop:h-12 desktop:text-base" },
 };
 
 const activeStyles: Record<PaginationColor, string> = {
@@ -66,14 +77,20 @@ export function Pagination({
   showControls = true,
   isCompact = false,
   isDisabled = false,
+  responsive,
   className = "",
 }: PaginationProps) {
   const t = useLocale();
+  const bps = useResponsive(responsive);
+  const bp = useBreakpoint();
+  // No sibling pages on a phone: 1 … 5 … 20 fits next to the arrows
+  const shownSiblings = bp === "m" && bps.includes("m") ? 0 : siblings;
   const base = cn(
     "flex items-center justify-center px-2 rounded-full font-medium tabular-nums select-none cursor-pointer",
     "transition-colors duration-150 active:scale-[0.96]",
     "outline-none focus-visible:z-10 focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-    sizes[size]
+    sizes[size],
+    rx(bps, sizesR[size])
   );
   const grouped = isCompact || variant === "surface";
   const idle = cn(
@@ -99,9 +116,9 @@ export function Pagination({
           <ChevronLeft size={16} />
         </button>
       )}
-      {range(page, total, siblings).map((p, i) =>
+      {range(page, total, shownSiblings).map((p, i) =>
         p === "dots" ? (
-          <span key={`d${i}`} className={cn("flex items-center justify-center text-muted", sizes[size])} aria-hidden>
+          <span key={`d${i}`} className={cn("flex items-center justify-center text-muted", sizes[size], rx(bps, sizesR[size]))} aria-hidden>
             <MoreHorizontal size={15} />
           </span>
         ) : (

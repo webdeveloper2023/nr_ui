@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useId, forwardRef, type ReactNode, type HTMLAttributes } from "react";
 import { cn } from "../lib/cn";
+import { rx, useResponsive, type Breakpoint, type BreakpointClasses, type ResponsiveProp } from "./breakpoints";
 
 type AccordionVariant = "default" | "surface" | "bordered" | "splitted";
 type AccordionSelectionMode = "single" | "multiple";
@@ -23,6 +24,8 @@ export interface AccordionProps extends Omit<HTMLAttributes<HTMLDivElement>, "on
   showDivider?: boolean;
   /** Hides the chevron indicator */
   hideIndicator?: boolean;
+  /** Adapts to the screen: touch-sized triggers (at least 48px) and tighter side padding on mobile, touch-sized on tablet, roomier padding and text on desktop. true = all breakpoints or a list like ["m", "t"] */
+  responsive?: ResponsiveProp;
   /** Content shown when expanded */
   children?: ReactNode;
 }
@@ -52,6 +55,7 @@ interface AccordionContextValue {
   showDivider: boolean;
   hideIndicator: boolean;
   toggleKey: (key: string) => void;
+  bps: Breakpoint[];
 }
 
 const AccordionContext = React.createContext<AccordionContextValue | null>(null);
@@ -81,6 +85,17 @@ const variantContainerStyles: Record<AccordionVariant, string> = {
   splitted: "flex flex-col gap-2",
 };
 
+// Side padding of the boxed variants: tighter on mobile, roomier on desktop
+const variantPaddingR: Record<AccordionVariant, BreakpointClasses> = {
+  default: {},
+  surface: { m: "mobile:px-4", d: "desktop:px-7" },
+  bordered: { m: "mobile:px-4", d: "desktop:px-7" },
+  splitted: {},
+};
+const triggerR: BreakpointClasses = { m: "mobile:min-h-12", t: "tablet:min-h-12", d: "desktop:py-5" };
+const compactTriggerR: BreakpointClasses = { m: "mobile:min-h-11", t: "tablet:min-h-11" };
+const contentR: BreakpointClasses = { d: "desktop:text-base desktop:leading-7" };
+
 const variantItemStyles: Record<AccordionVariant, string> = {
   default: "",
   surface: "",
@@ -100,12 +115,14 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
       isCompact = false,
       showDivider = true,
       hideIndicator = false,
+      responsive,
       children,
       className = "",
       ...props
     },
     ref
   ) => {
+    const bps = useResponsive(responsive);
     const [internalKeys, setInternalKeys] = useState<Set<string>>(defaultExpandedKeys ?? new Set());
     const expandedKeys = controlledKeys ?? internalKeys;
 
@@ -122,9 +139,9 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
 
     return (
       <AccordionContext.Provider
-        value={{ variant, expandedKeys, disabledKeys, isCompact, showDivider: showDivider && variant !== "splitted", hideIndicator, toggleKey }}
+        value={{ variant, expandedKeys, disabledKeys, isCompact, showDivider: showDivider && variant !== "splitted", hideIndicator, toggleKey, bps }}
       >
-        <div ref={ref} className={cn("w-full", variantContainerStyles[variant], className)} {...props}>
+        <div ref={ref} className={cn("w-full", variantContainerStyles[variant], rx(bps, variantPaddingR[variant]), className)} {...props}>
           {children}
         </div>
       </AccordionContext.Provider>
@@ -139,7 +156,7 @@ export const AccordionItem = forwardRef<HTMLDivElement, AccordionItemProps>(
     { itemKey, title, subtitle, startContent, indicator, isDisabled = false, children, className = "", ...props },
     ref
   ) => {
-    const { variant, expandedKeys, disabledKeys, isCompact, showDivider, hideIndicator, toggleKey } = useAccordionContext();
+    const { variant, expandedKeys, disabledKeys, isCompact, showDivider, hideIndicator, toggleKey, bps } = useAccordionContext();
     const fallbackKey = useId();
     const key = itemKey ?? fallbackKey;
     const contentId = `${fallbackKey}-content`;
@@ -152,6 +169,7 @@ export const AccordionItem = forwardRef<HTMLDivElement, AccordionItemProps>(
         data-open={isOpen || undefined}
         className={cn(
           variantItemStyles[variant],
+          variant === "splitted" && rx(bps, { m: "mobile:px-4", d: "desktop:px-7" }),
           showDivider && "border-b border-separator last:border-b-0",
           disabled && "opacity-50",
           className
@@ -170,6 +188,7 @@ export const AccordionItem = forwardRef<HTMLDivElement, AccordionItemProps>(
               "transition-opacity duration-150",
               "focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-background",
               isCompact ? "py-2" : "py-4",
+              rx(bps, isCompact ? compactTriggerR : triggerR),
               disabled ? "cursor-not-allowed" : "cursor-pointer"
             )}
           >
@@ -193,7 +212,7 @@ export const AccordionItem = forwardRef<HTMLDivElement, AccordionItemProps>(
           style={{ gridTemplateRows: isOpen ? "1fr" : "0fr", opacity: isOpen ? 1 : 0 }}
         >
           <div className="overflow-hidden" inert={!isOpen}>
-            <div className={cn("text-sm leading-6 text-muted", isCompact ? "pb-2" : "pb-4")}>
+            <div className={cn("text-sm leading-6 text-muted", isCompact ? "pb-2" : "pb-4", !isCompact && rx(bps, contentR))}>
               {children}
             </div>
           </div>

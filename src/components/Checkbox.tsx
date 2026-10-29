@@ -11,6 +11,7 @@ import {
   type ReactNode,
 } from "react";
 import { cn } from "../lib/cn";
+import { rx, useResponsive, type BreakpointClasses, type ResponsiveProp } from "./breakpoints";
 
 type CheckboxColor = "default" | "accent" | "success" | "warning" | "danger";
 type CheckboxSize = "xs" | "sm" | "md" | "lg";
@@ -53,6 +54,8 @@ export interface CheckboxProps {
   value?: string;
   /** Accessible label when the checkbox has no visible text */
   "aria-label"?: string;
+  /** Adapts to the screen: on mobile a 44px tap row, one step larger box and 16px label; taller tap row on tablet; larger lg on desktop. true = all breakpoints or a list like ["m", "t"] */
+  responsive?: ResponsiveProp;
 }
 
 const sizeMap: Record<CheckboxSize, { box: string; icon: string; label: string; gap: string }> = {
@@ -60,6 +63,24 @@ const sizeMap: Record<CheckboxSize, { box: string; icon: string; label: string; 
   sm: { box: "w-4 h-4", icon: "w-2.5 h-2.5", label: "text-sm", gap: "gap-2" },
   md: { box: "w-5 h-5", icon: "w-3 h-3", label: "text-sm", gap: "gap-2.5" },
   lg: { box: "w-6 h-6", icon: "w-3.5 h-3.5", label: "text-base", gap: "gap-3" },
+};
+
+// Mobile: 44px tap row (padding), box one step larger, 16px label. Tablet: taller tap row. Desktop: lg one step larger.
+const sizeMapR: Record<CheckboxSize, { row: BreakpointClasses; box: BreakpointClasses; icon: BreakpointClasses; label: BreakpointClasses }> = {
+  xs: { row: { m: "mobile:py-2" }, box: { m: "mobile:w-4 mobile:h-4" }, icon: { m: "mobile:w-2.5 mobile:h-2.5" }, label: { m: "mobile:text-sm" } },
+  sm: { row: { m: "mobile:py-2", t: "tablet:py-1.5" }, box: { m: "mobile:w-5 mobile:h-5" }, icon: { m: "mobile:w-3 mobile:h-3" }, label: { m: "mobile:text-base" } },
+  md: {
+    row: { m: "mobile:py-2.5", t: "tablet:py-2" },
+    box: { m: "mobile:w-6 mobile:h-6 mobile:mt-0" },
+    icon: { m: "mobile:w-3.5 mobile:h-3.5" },
+    label: { m: "mobile:text-base" },
+  },
+  lg: {
+    row: { m: "mobile:py-2.5", t: "tablet:py-2" },
+    box: { d: "desktop:w-7 desktop:h-7" },
+    icon: { d: "desktop:w-4 desktop:h-4" },
+    label: { d: "desktop:text-lg" },
+  },
 };
 
 const radiusMap: Record<CheckboxRadius, string> = {
@@ -93,6 +114,7 @@ interface CheckboxGroupContextValue {
   isDisabled?: boolean;
   isInvalid?: boolean;
   name?: string;
+  responsive?: ResponsiveProp;
 }
 
 const CheckboxGroupContext = createContext<CheckboxGroupContextValue | null>(null);
@@ -118,7 +140,10 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>((props, ref)
     name = group?.name,
     value,
     "aria-label": ariaLabel,
+    responsive,
   } = props;
+  const bps = useResponsive(responsive ?? group?.responsive);
+  const r = sizeMapR[size];
 
   const id = useId();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -148,6 +173,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>((props, ref)
       className={cn(
         "group relative inline-flex items-start select-none",
         sizeMap[size].gap,
+        rx(bps, r.row),
         isDisabled ? "opacity-50 pointer-events-none" : "cursor-pointer",
         className
       )}
@@ -174,13 +200,14 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>((props, ref)
           "group-active:scale-90 motion-reduce:group-active:scale-100",
           "peer-focus-visible:ring-2 peer-focus-visible:ring-focus peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-background",
           sizeMap[size].box,
+          rx(bps, r.box),
           radiusMap[radius],
           isOn ? checkedMap[color] : uncheckedMap[variant],
           isInvalid && !isOn && "outline-1 outline-offset-[-1px] outline-danger"
         )}
       >
         <svg
-          className={cn(sizeMap[size].icon, "transition-[opacity,transform] duration-150 ease-out", isOn ? "opacity-100 scale-100" : "opacity-0 scale-50")}
+          className={cn(sizeMap[size].icon, rx(bps, r.icon), "transition-[opacity,transform] duration-150 ease-out", isOn ? "opacity-100 scale-100" : "opacity-0 scale-50")}
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -208,6 +235,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>((props, ref)
               className={cn(
                 "relative text-foreground transition-colors duration-150",
                 sizeMap[size].label,
+                rx(bps, r.label),
                 isInvalid && "text-danger",
                 lineThrough && checked && "text-muted line-through"
               )}
@@ -256,6 +284,8 @@ export interface CheckboxGroupProps {
   isRequired?: boolean;
   /** Input name for forms */
   name?: string;
+  /** Passed to every checkbox (44px tap rows on mobile); a horizontal group stacks vertically on mobile. true = all breakpoints or a list like ["m", "t"] */
+  responsive?: ResponsiveProp;
   /** Inner content */
   children?: ReactNode;
   /** Extra CSS classes */
@@ -280,11 +310,13 @@ export const CheckboxGroup = forwardRef<HTMLDivElement, CheckboxGroupProps>(
       isInvalid = false,
       isRequired = false,
       name,
+      responsive,
       children,
       className = "",
     },
     ref
   ) => {
+    const bps = useResponsive(responsive);
     const labelId = useId();
     const [internal, setInternal] = useState<string[]>(defaultValue);
     const value = valueProp ?? internal;
@@ -296,7 +328,7 @@ export const CheckboxGroup = forwardRef<HTMLDivElement, CheckboxGroupProps>(
     };
 
     return (
-      <CheckboxGroupContext.Provider value={{ value, toggle, variant, color, size, radius, isDisabled, isInvalid, name }}>
+      <CheckboxGroupContext.Provider value={{ value, toggle, variant, color, size, radius, isDisabled, isInvalid, name, responsive }}>
         <div ref={ref} role="group" aria-labelledby={label ? labelId : undefined} className={cn("flex flex-col gap-2", className)}>
           {label && (
             <span id={labelId} className="text-sm text-muted">
@@ -304,7 +336,16 @@ export const CheckboxGroup = forwardRef<HTMLDivElement, CheckboxGroupProps>(
               {isRequired && <span className="text-danger ml-0.5">*</span>}
             </span>
           )}
-          <div className={cn("flex", orientation === "horizontal" ? "flex-row flex-wrap gap-4" : "flex-col gap-2.5")}>{children}</div>
+          <div
+            className={cn(
+              "flex",
+              orientation === "horizontal" ? "flex-row flex-wrap gap-4" : "flex-col gap-2.5",
+              // Rows are already 44px tall on mobile: stack them without extra gaps
+              rx(bps, { m: "mobile:flex-col mobile:gap-0", t: orientation === "vertical" ? "tablet:gap-1" : undefined })
+            )}
+          >
+            {children}
+          </div>
           {isInvalid && errorMessage ? (
             <p className="text-xs text-danger">{errorMessage}</p>
           ) : (

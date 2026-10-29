@@ -1,6 +1,7 @@
 import { forwardRef, type HTMLAttributes, type ReactNode } from "react";
 import { cn } from "../lib/cn";
 import { useLocale } from "./locale";
+import { rx, useResponsive, type BreakpointClasses, type ResponsiveProp } from "./breakpoints";
 
 type AlertColor = "default" | "accent" | "success" | "warning" | "danger";
 type AlertVariant = "default" | "soft" | "flat" | "glass";
@@ -24,6 +25,8 @@ export interface AlertProps extends Omit<HTMLAttributes<HTMLDivElement>, "title"
   action?: ReactNode;
   /** Called when the close button is pressed (the X shows only when set) */
   onClose?: () => void;
+  /** Adapts to the screen: on mobile the action moves under the text and the close button grows to a touch target; roomier padding with 16px text on desktop. true = all breakpoints or a list like ["m", "t"] */
+  responsive?: ResponsiveProp;
   /** Extra content (below the description) */
   children?: ReactNode;
 }
@@ -68,6 +71,12 @@ const iconPath: Record<AlertColor, ReactNode> = {
   danger: <path d="M12 8v4m0 4h.01M22 12a10 10 0 1 1-20 0 10 10 0 0 1 20 0Z" />,
 };
 
+// Mobile: the action wraps onto its own row (aligned with the text) and close is a touch target. Desktop: roomier.
+const rootR: BreakpointClasses = { m: "mobile:flex-wrap", d: "desktop:gap-4 desktop:p-5 desktop:text-base" };
+const actionR: BreakpointClasses = { m: "mobile:order-last mobile:basis-full mobile:self-start" };
+const actionIndentR: BreakpointClasses = { m: "mobile:pl-[30px]" };
+const closeR: BreakpointClasses = { m: "mobile:-m-2 mobile:h-9 mobile:w-9", t: "tablet:-m-1.5 tablet:h-8 tablet:w-8" };
+
 export const Alert = forwardRef<HTMLDivElement, AlertProps>(
   (
     {
@@ -80,6 +89,7 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(
       hideIcon = false,
       action,
       onClose,
+      responsive,
       children,
       className = "",
       ...props
@@ -87,6 +97,7 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(
     ref
   ) => {
     const t = useLocale();
+    const bps = useResponsive(responsive);
     const isFlat = variant === "flat";
 
     return (
@@ -97,6 +108,7 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(
         className={cn(
           "relative isolate flex w-full items-start gap-3 overflow-hidden rounded-2xl p-4 text-sm",
           isFlat ? flatTone[color] : variant === "glass" ? "glass" : "bg-surface-gradient shadow-surface",
+          rx(bps, rootR),
           className
         )}
         {...props}
@@ -124,7 +136,9 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(
           {children && <div className={cn((title || description) && "mt-3")}>{children}</div>}
         </div>
 
-        {action && <div className="flex shrink-0 items-center gap-2 self-center">{action}</div>}
+        {action && (
+          <div className={cn("flex shrink-0 items-center gap-2 self-center", rx(bps, actionR), !hideIcon && rx(bps, actionIndentR))}>{action}</div>
+        )}
 
         {onClose && (
           <button
@@ -133,6 +147,7 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(
             aria-label={t.common.close}
             className={cn(
               "-m-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full cursor-pointer",
+              rx(bps, closeR),
               "text-muted hover:bg-default hover:text-foreground transition-colors",
               "outline-none focus-visible:ring-2 focus-visible:ring-focus"
             )}

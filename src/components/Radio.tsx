@@ -1,5 +1,6 @@
 import { createContext, forwardRef, useContext, useId, useState, type ReactNode } from "react";
 import { cn } from "../lib/cn";
+import { rx, useResponsive, type Breakpoint, type BreakpointClasses, type ResponsiveProp } from "./breakpoints";
 
 type RadioColor = "default" | "accent" | "success" | "warning" | "danger";
 type RadioSize = "xs" | "sm" | "md" | "lg";
@@ -14,6 +15,7 @@ interface RadioGroupContextValue {
   size: RadioSize;
   isDisabled: boolean;
   isInvalid: boolean;
+  bps: Breakpoint[];
 }
 
 const RadioGroupContext = createContext<RadioGroupContextValue | null>(null);
@@ -23,6 +25,24 @@ const sizeMap: Record<RadioSize, { outer: string; dot: string; label: string; ga
   sm: { outer: "w-4 h-4", dot: "w-1.5 h-1.5", label: "text-sm", gap: "gap-2" },
   md: { outer: "w-5 h-5", dot: "w-2 h-2", label: "text-sm", gap: "gap-2.5" },
   lg: { outer: "w-6 h-6", dot: "w-2.5 h-2.5", label: "text-base", gap: "gap-3" },
+};
+
+// Mobile: 44px tap row (padding), circle one step larger, 16px label. Tablet: taller tap row. Desktop: lg one step larger.
+const sizeMapR: Record<RadioSize, { row: BreakpointClasses; outer: BreakpointClasses; dot: BreakpointClasses; label: BreakpointClasses }> = {
+  xs: { row: { m: "mobile:py-2" }, outer: { m: "mobile:w-4 mobile:h-4" }, dot: {}, label: { m: "mobile:text-sm" } },
+  sm: { row: { m: "mobile:py-2", t: "tablet:py-1.5" }, outer: { m: "mobile:w-5 mobile:h-5" }, dot: { m: "mobile:w-2 mobile:h-2" }, label: { m: "mobile:text-base" } },
+  md: {
+    row: { m: "mobile:py-2.5", t: "tablet:py-2" },
+    outer: { m: "mobile:w-6 mobile:h-6 mobile:mt-0" },
+    dot: { m: "mobile:w-2.5 mobile:h-2.5" },
+    label: { m: "mobile:text-base" },
+  },
+  lg: {
+    row: { m: "mobile:py-2.5", t: "tablet:py-2" },
+    outer: { d: "desktop:w-7 desktop:h-7" },
+    dot: { d: "desktop:w-3 desktop:h-3" },
+    label: { d: "desktop:text-lg" },
+  },
 };
 
 const checkedMap: Record<RadioColor, { fill: string; dot: string }> = {
@@ -68,6 +88,8 @@ export interface RadioGroupProps {
   isRequired?: boolean;
   /** Input name for forms */
   name?: string;
+  /** Adapts to the screen: on mobile 44px tap rows, one step larger circles, 16px labels and a horizontal group stacks vertically; taller tap rows on tablet; larger lg on desktop. true = all breakpoints or a list like ["m", "t"] */
+  responsive?: ResponsiveProp;
   /** Radio items */
   children?: ReactNode;
   /** Extra CSS classes */
@@ -91,11 +113,13 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
       isInvalid = false,
       isRequired = false,
       name: nameProp,
+      responsive,
       children,
       className = "",
     },
     ref
   ) => {
+    const bps = useResponsive(responsive);
     const autoName = useId();
     const labelId = useId();
     const [internal, setInternal] = useState(defaultValue);
@@ -107,7 +131,7 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
     };
 
     return (
-      <RadioGroupContext.Provider value={{ value, setValue, name: nameProp ?? autoName, variant, color, size, isDisabled, isInvalid }}>
+      <RadioGroupContext.Provider value={{ value, setValue, name: nameProp ?? autoName, variant, color, size, isDisabled, isInvalid, bps }}>
         <div
           ref={ref}
           role="radiogroup"
@@ -122,7 +146,16 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
               {isRequired && <span className="text-danger ml-0.5">*</span>}
             </span>
           )}
-          <div className={cn("flex", orientation === "horizontal" ? "flex-row flex-wrap gap-x-5 gap-y-2.5" : "flex-col gap-3")}>{children}</div>
+          <div
+            className={cn(
+              "flex",
+              orientation === "horizontal" ? "flex-row flex-wrap gap-x-5 gap-y-2.5" : "flex-col gap-3",
+              // Rows are already 44px tall on mobile: stack them without extra gaps
+              rx(bps, { m: "mobile:flex-col mobile:gap-0", t: orientation === "vertical" ? "tablet:gap-1" : undefined })
+            )}
+          >
+            {children}
+          </div>
           {isInvalid && errorMessage ? (
             <p className="text-xs text-danger">{errorMessage}</p>
           ) : (
@@ -155,14 +188,15 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(({ value, descript
   const id = useId();
   if (!ctx) throw new Error("<Radio> must be used inside <RadioGroup>");
 
-  const { size, color, variant, isInvalid } = ctx;
+  const { size, color, variant, isInvalid, bps } = ctx;
+  const r = sizeMapR[size];
   const isDisabled = disabledProp ?? ctx.isDisabled;
   const checked = ctx.value === value;
 
   return (
     <label
       htmlFor={id}
-      className={cn("group inline-flex items-start select-none", sizeMap[size].gap, isDisabled ? "opacity-50 pointer-events-none" : "cursor-pointer", className)}
+      className={cn("group inline-flex items-start select-none", sizeMap[size].gap, rx(bps, r.row), isDisabled ? "opacity-50 pointer-events-none" : "cursor-pointer", className)}
     >
       <input
         ref={ref}
@@ -182,6 +216,7 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(({ value, descript
           "transition-[background-color,box-shadow,transform] duration-150 ease-out group-active:scale-90 motion-reduce:group-active:scale-100",
           "peer-focus-visible:ring-2 peer-focus-visible:ring-focus peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-background",
           sizeMap[size].outer,
+          rx(bps, r.outer),
           checked ? checkedMap[color].fill : uncheckedMap[variant],
           isInvalid && !checked && "outline-1 outline-offset-[-1px] outline-danger"
         )}
@@ -190,6 +225,7 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(({ value, descript
           className={cn(
             "rounded-full transition-[transform,opacity] duration-150 ease-out",
             sizeMap[size].dot,
+            rx(bps, r.dot),
             checkedMap[color].dot,
             checked ? "scale-100 opacity-100" : "scale-0 opacity-0"
           )}
@@ -197,7 +233,7 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(({ value, descript
       </span>
       {(children || description) && (
         <span className="flex flex-col">
-          {children && <span className={cn("text-foreground", sizeMap[size].label, isInvalid && "text-danger")}>{children}</span>}
+          {children && <span className={cn("text-foreground", sizeMap[size].label, rx(bps, r.label), isInvalid && "text-danger")}>{children}</span>}
           {description && <span className="text-xs text-muted mt-0.5">{description}</span>}
         </span>
       )}

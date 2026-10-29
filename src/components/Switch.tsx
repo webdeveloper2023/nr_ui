@@ -1,5 +1,6 @@
 import { forwardRef, useId, useState, type ChangeEvent, type ReactNode } from "react";
 import { cn } from "../lib/cn";
+import { rx, useResponsive, type BreakpointClasses, type ResponsiveProp } from "./breakpoints";
 
 type SwitchColor = "default" | "accent" | "success" | "warning" | "danger";
 type SwitchSize = "xs" | "sm" | "md" | "lg";
@@ -33,6 +34,8 @@ export interface SwitchProps {
   className?: string;
   /** Input name for forms */
   name?: string;
+  /** Adapts to the screen: on mobile a 44px tap row, the track one size larger (md becomes the 48×28 phone size) and a 16px label; taller tap row on tablet; larger lg on desktop. true = all breakpoints or a list like ["m", "t"] */
+  responsive?: ResponsiveProp;
 }
 
 // thumb travel = track width - thumb width - 2 * 2px padding; pressed thumb grows by 4px
@@ -41,6 +44,39 @@ const sizeMap: Record<SwitchSize, { track: string; thumb: string; press: string;
   sm: { track: "w-8 h-5 px-0.5", thumb: "w-4 h-4", press: "group-active:w-5", on: "translate-x-3", onPressed: "group-active:translate-x-2", label: "text-sm", icon: "[&_svg]:w-2.5 [&_svg]:h-2.5" },
   md: { track: "w-10 h-6 px-0.5", thumb: "w-5 h-5", press: "group-active:w-6", on: "translate-x-4", onPressed: "group-active:translate-x-3", label: "text-sm", icon: "[&_svg]:w-3 [&_svg]:h-3" },
   lg: { track: "w-12 h-7 px-0.5", thumb: "w-6 h-6", press: "group-active:w-7", on: "translate-x-5", onPressed: "group-active:translate-x-4", label: "text-base", icon: "[&_svg]:w-3.5 [&_svg]:h-3.5" },
+};
+
+// Mobile: the next size up (track, thumb and travel together) + 44px tap row. Tablet: taller tap row. Desktop: lg one step larger.
+type SwitchPartsR = { row: BreakpointClasses; track: BreakpointClasses; thumb: BreakpointClasses; on: BreakpointClasses; label: BreakpointClasses };
+const sizeMapR: Record<SwitchSize, SwitchPartsR> = {
+  xs: {
+    row: { m: "mobile:py-2" },
+    track: { m: "mobile:w-8 mobile:h-5" },
+    thumb: { m: "mobile:w-4 mobile:h-4 mobile:group-active:w-5" },
+    on: { m: "mobile:translate-x-3 mobile:group-active:translate-x-2" },
+    label: { m: "mobile:text-sm" },
+  },
+  sm: {
+    row: { m: "mobile:py-2.5", t: "tablet:py-1.5" },
+    track: { m: "mobile:w-10 mobile:h-6" },
+    thumb: { m: "mobile:w-5 mobile:h-5 mobile:group-active:w-6" },
+    on: { m: "mobile:translate-x-4 mobile:group-active:translate-x-3" },
+    label: { m: "mobile:text-base" },
+  },
+  md: {
+    row: { m: "mobile:py-2", t: "tablet:py-2" },
+    track: { m: "mobile:w-12 mobile:h-7" },
+    thumb: { m: "mobile:w-6 mobile:h-6 mobile:group-active:w-7" },
+    on: { m: "mobile:translate-x-5 mobile:group-active:translate-x-4" },
+    label: { m: "mobile:text-base" },
+  },
+  lg: {
+    row: { m: "mobile:py-2", t: "tablet:py-1.5" },
+    track: { d: "desktop:w-14 desktop:h-8" },
+    thumb: { d: "desktop:w-7 desktop:h-7 desktop:group-active:w-8" },
+    on: { d: "desktop:translate-x-6 desktop:group-active:translate-x-5" },
+    label: { d: "desktop:text-lg" },
+  },
 };
 
 const colorMap: Record<SwitchColor, { on: string; onText: string; icon: string }> = {
@@ -68,9 +104,12 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
       endContent,
       className = "",
       name,
+      responsive,
     },
     ref
   ) => {
+    const bps = useResponsive(responsive);
+    const r = sizeMapR[size];
     const id = useId();
     const [internalSelected, setInternalSelected] = useState(defaultSelected);
     const isControlled = isSelected !== undefined;
@@ -89,7 +128,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
     return (
       <label
         htmlFor={id}
-        className={cn("group inline-flex items-center gap-3 select-none", isDisabled ? "opacity-50 pointer-events-none" : "cursor-pointer", className)}
+        className={cn("group inline-flex items-center gap-3 select-none", rx(bps, r.row), isDisabled ? "opacity-50 pointer-events-none" : "cursor-pointer", className)}
       >
         <input
           ref={ref}
@@ -111,6 +150,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
             "transition-colors duration-150 ease-out",
             "peer-focus-visible:ring-2 peer-focus-visible:ring-focus peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-background",
             s.track,
+            rx(bps, r.track),
             selected ? colorMap[color].on : "bg-default group-hover:bg-default-hover"
           )}
         >
@@ -143,7 +183,8 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
               "transition-[transform,width] duration-200 ease-(--ease-out-soft) motion-reduce:transition-none",
               s.thumb,
               s.press,
-              selected ? cn(s.on, s.onPressed) : "translate-x-0"
+              rx(bps, r.thumb),
+              selected ? cn(s.on, s.onPressed, rx(bps, r.on)) : "translate-x-0"
             )}
           >
             {icon && <span className={cn("flex", s.icon, selected ? colorMap[color].icon : "text-muted")}>{icon}</span>}
@@ -152,7 +193,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
 
         {(children || description) && (
           <span className="flex flex-col">
-            {children && <span className={cn("text-foreground", s.label)}>{children}</span>}
+            {children && <span className={cn("text-foreground", s.label, rx(bps, r.label))}>{children}</span>}
             {description && <span className="text-xs text-muted">{description}</span>}
           </span>
         )}

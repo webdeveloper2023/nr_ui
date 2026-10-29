@@ -16,9 +16,11 @@ import {
   fieldErrorClasses,
   fieldLabelClasses,
   fieldText,
+  fieldTextR,
   type FieldSize,
   type FieldVariant,
 } from "./fieldStyles";
+import { rx, useBreakpoint, useResponsive, type BreakpointClasses, type ResponsiveProp } from "./breakpoints";
 
 export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   /** Style: primary — white field with a shadow, secondary — gray field (inside cards) */
@@ -53,10 +55,18 @@ export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElemen
   onValueChange?: (value: string) => void;
   /** Fills the container width */
   fullWidth?: boolean;
+  /** Adapts to the screen: 16px text and roomier padding on mobile (no zoom on focus), larger lg on desktop. true = all breakpoints or a list like ["m", "t"] */
+  responsive?: ResponsiveProp;
 }
 
 const lineHeight: Record<FieldSize, number> = { xs: 16, sm: 20, md: 20, lg: 24 };
 const padding: Record<FieldSize, string> = { xs: "px-2 py-1", sm: "px-2.5 py-1.5", md: "px-3 py-2", lg: "px-3.5 py-2.5" };
+const paddingR: Record<FieldSize, BreakpointClasses> = {
+  xs: {},
+  sm: { m: "mobile:px-3 mobile:py-2" },
+  md: { m: "mobile:px-3.5 mobile:py-2.5" },
+  lg: { d: "desktop:px-4 desktop:py-3" },
+};
 const radiusStyles = { sm: "rounded-lg", md: "rounded-xl", lg: "rounded-2xl" } as const;
 
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
@@ -78,6 +88,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
       showCount = false,
       onValueChange,
       fullWidth = true,
+      responsive,
       className = "",
       value,
       defaultValue,
@@ -96,7 +107,10 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     const [internalValue, setInternalValue] = useState(String(defaultValue ?? ""));
     const isControlled = value !== undefined;
     const currentValue = isControlled ? String(value ?? "") : internalValue;
-    const lh = lineHeight[size];
+    const bps = useResponsive(responsive);
+    const bp = useBreakpoint();
+    // 16px text on mobile needs a taller line; autosize measures with the line height in use
+    const lh = bps.includes(bp) && ((bp === "m" && (size === "sm" || size === "md")) || (bp === "d" && size === "lg")) ? lineHeight[size] + 4 : lineHeight[size];
 
     useLayoutEffect(() => {
       const el = areaRef.current;
@@ -116,7 +130,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     const showError = isInvalid && Boolean(errorMessage);
 
     return (
-      <div className={cn("flex flex-col gap-1.5", fullWidth ? "w-full" : "w-fit", isDisabled && "opacity-50 pointer-events-none", className)}>
+      <div className={cn("flex flex-col gap-1.5", fullWidth ? "w-full" : cn("w-fit", rx(bps, { m: "mobile:w-full" })), isDisabled && "opacity-50 pointer-events-none", className)}>
         {label && (
           <label htmlFor={id} className={fieldLabelClasses}>
             {label}
@@ -125,7 +139,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         )}
         <div
           onClick={() => areaRef.current?.focus()}
-          className={cn("relative flex w-full cursor-text", padding[size], radiusStyles[radius], fieldBoxClasses(variant, isInvalid))}
+          className={cn("relative flex w-full cursor-text", padding[size], rx(bps, paddingR[size]), radiusStyles[radius], fieldBoxClasses(variant, isInvalid))}
         >
           <textarea
             ref={areaRef}
@@ -142,6 +156,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             className={cn(
               "w-full bg-transparent outline-none resize-none text-foreground placeholder:text-field-placeholder",
               fieldText[size],
+              rx(bps, fieldTextR[size]),
               disableAutosize && "resize-y"
             )}
             {...props}

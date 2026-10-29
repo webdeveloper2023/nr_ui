@@ -64,6 +64,13 @@
       "description": "Hides the chevron indicator"
     },
     {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: touch-sized triggers (at least 48px) and tighter side padding on mobile, touch-sized on tablet, roomier padding and text on desktop. true = all breakpoints or a list like [\"m\", \"t\"]"
+    },
+    {
       "name": "children",
       "type": "ReactNode",
       "required": false,
@@ -185,6 +192,13 @@
       "required": false,
       "default": null,
       "description": "Called when the close button is pressed (the X shows only when set)"
+    },
+    {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: on mobile the action moves under the text and the close button grows to a touch target; roomier padding with 16px text on desktop. true = all breakpoints or a list like [\"m\", \"t\"]"
     },
     {
       "name": "children",
@@ -315,6 +329,13 @@
       "description": "Fills the container width"
     },
     {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: touch-sized (44px) with 16px text on mobile, touch-sized on tablet, larger lg on desktop; a left label moves on top on mobile. true = all breakpoints or a list like [\"m\", \"t\"]"
+    },
+    {
       "name": "inputOverlay",
       "type": "ReactNode",
       "required": false,
@@ -443,6 +464,13 @@
       "required": false,
       "default": "15",
       "description": "Maximum digits before the decimal separator"
+    },
+    {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen like Input (44px field with 16px text on mobile, touch-sized on tablet, larger lg on desktop); preset buttons grow to 40px on mobile and 36px on tablet, and the currency symbol to 16px on mobile. true = all breakpoints or a list like [\"m\", \"t\"]"
     },
     {
       "name": "size",
@@ -648,6 +676,13 @@
       "required": false,
       "default": null,
       "description": "Icon shown when there is no image or name"
+    },
+    {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: lg and xl get one step smaller on mobile and one step larger on desktop. true = all breakpoints or a list like [\"m\", \"t\"]"
     }
   ],
   "AvatarGroup": [
@@ -720,6 +755,13 @@
       "required": false,
       "default": "\"\"",
       "description": "Extra classes"
+    },
+    {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Passed to every avatar; on mobile at most 3 avatars stay visible and the +N count grows to match. true = all breakpoints or a list like [\"m\", \"t\"]"
     }
   ],
   "Badge": [
@@ -806,6 +848,13 @@
       "required": false,
       "default": "\"\"",
       "description": "Extra classes"
+    },
+    {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: on mobile the two smallest sizes grow a little so the number stays legible. true = all breakpoints or a list like [\"m\", \"t\"]"
     }
   ],
   "Button": [
@@ -894,6 +943,13 @@
       "description": "Disables the press animation"
     },
     {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: touch-sized (44px for md) on mobile and tablet, larger lg on desktop. true = all breakpoints or a list like [\"m\", \"t\"]"
+    },
+    {
       "name": "children",
       "type": "ReactNode",
       "required": false,
@@ -936,6 +992,13 @@
       "required": false,
       "default": "false",
       "description": "Fills the container width"
+    },
+    {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Passed to every button; on mobile the group also fills the width and the buttons share it equally. true = all breakpoints or a list like [\"m\", \"t\"]"
     },
     {
       "name": "children",
@@ -1001,6 +1064,13 @@
       "required": false,
       "default": "false",
       "description": "Fills the container width"
+    },
+    {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: fills the width with a smaller radius on mobile, roomier padding on desktop (header, body and footer follow). true = all breakpoints or a list like [\"m\", \"t\"]"
     },
     {
       "name": "onPress",
@@ -1081,6 +1151,13 @@
   ],
   "ChatContainer": [
     {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: tighter list padding on mobile, roomier on desktop; messages inside inherit it. true = all breakpoints or a list like [\"m\", \"t\"]"
+    },
+    {
       "name": "children",
       "type": "ReactNode",
       "required": false,
@@ -1158,6 +1235,13 @@
       "required": false,
       "default": null,
       "description": "Called when like or dislike is pressed"
+    },
+    {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: wider bubbles (88%) with 15px text and touch-sized actions on mobile, 16px text on desktop. Inherits the ChatContainer's. true = all breakpoints or a list like [\"m\", \"t\"]"
     },
     {
       "name": "children",
@@ -1272,6 +1356,13 @@
       "required": false,
       "default": null,
       "description": "Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass)"
+    },
+    {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: 16px text (no zoom on focus), touch-sized send / attach buttons and suggestions on mobile, touch-sized on tablet, 16px text on desktop. true = all breakpoints or a list like [\"m\", \"t\"]"
     },
     {
       "name": "className",
@@ -1407,6 +1498,13 @@
       "required": false,
       "default": null,
       "description": "Accessible label when the checkbox has no visible text"
+    },
+    {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: on mobile a 44px tap row, one step larger box and 16px label; taller tap row on tablet; larger lg on desktop. true = all breakpoints or a list like [\"m\", \"t\"]"
     }
   ],
   "CheckboxGroup": [
@@ -1516,6 +1614,13 @@
       "description": "Input name for forms"
     },
     {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Passed to every checkbox (44px tap rows on mobile); a horizontal group stacks vertically on mobile. true = all breakpoints or a list like [\"m\", \"t\"]"
+    },
+    {
       "name": "children",
       "type": "ReactNode",
       "required": false,
@@ -1614,6 +1719,13 @@
       "required": false,
       "default": "\"\"",
       "description": "Extra classes"
+    },
+    {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: sm and md chips grow a step on mobile, and the close button gets a finger-sized hit area on mobile and tablet. true = all breakpoints or a list like [\"m\", \"t\"]"
     }
   ],
   "Divider": [
@@ -1637,6 +1749,13 @@
       "required": false,
       "default": "\"\"",
       "description": "Extra classes"
+    },
+    {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: a vertical divider turns horizontal on mobile, where side-by-side content stacks (pair it with a responsive Stack). true = all breakpoints or a list like [\"m\", \"t\"]"
     }
   ],
   "Dropdown": [
@@ -1695,6 +1814,13 @@
       "required": false,
       "default": "true",
       "description": "Close the menu when an item is selected"
+    },
+    {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: on mobile the menu is never wider than the screen, scrolls within 60% of its height, has 44px items with 16px text and hides shortcuts; 44px items on tablet. true = all breakpoints or a list like [\"m\", \"t\"]"
     }
   ],
   "DropdownTrigger": [
@@ -1945,6 +2071,13 @@
       "description": "Disables uploading"
     },
     {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: compact drop zone with a 16px title and 44px remove buttons on mobile, 40px remove buttons on tablet, a taller drop zone on desktop. true = all breakpoints or a list like [\"m\", \"t\"]"
+    },
+    {
       "name": "className",
       "type": "string",
       "required": false,
@@ -1966,6 +2099,189 @@
       "required": false,
       "default": null,
       "description": "Primary button text"
+    },
+    {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: hidden on mobile and tablet (touch screens have no keyboard shortcuts), a step larger on desktop. true = all breakpoints or a list like [\"m\", \"t\"]"
+    }
+  ],
+  "Container": [
+    {
+      "name": "size",
+      "type": "'sm' | 'md' | 'lg' | 'full' | 'xl' | '2xl'",
+      "required": false,
+      "default": "\"xl\"",
+      "description": "Maximum width: sm 640, md 768, lg 1024, xl 1280, 2xl 1536 px or full"
+    },
+    {
+      "name": "padding",
+      "type": "ResponsiveValue<Space>",
+      "required": false,
+      "default": "\"lg\"",
+      "description": "Side gutters (shared spacing scale); an object sets them per breakpoint: { m: \"md\", l: \"xl\" }"
+    },
+    {
+      "name": "paddingY",
+      "type": "ResponsiveValue<Space>",
+      "required": false,
+      "default": null,
+      "description": "Top and bottom padding (shared spacing scale)"
+    },
+    {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Gutters follow the screen: 16px mobile, 20px tablet, 24px laptop, 28px desktop (for padding \"lg\"). true = all breakpoints or a list like [\"m\", \"t\"]"
+    },
+    {
+      "name": "as",
+      "type": "'div' | 'section' | 'main' | 'header' | 'footer' | 'article' | 'aside' | 'nav' | 'ul' | 'ol' | 'li'",
+      "required": false,
+      "default": "\"div\"",
+      "description": "HTML element to render"
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Content"
+    }
+  ],
+  "Stack": [
+    {
+      "name": "direction",
+      "type": "ResponsiveValue<StackDirection>",
+      "required": false,
+      "default": "\"column\"",
+      "description": "Direction; an object sets it per breakpoint: { m: \"column\", t: \"row\" }"
+    },
+    {
+      "name": "gap",
+      "type": "ResponsiveValue<Space>",
+      "required": false,
+      "default": "\"md\"",
+      "description": "Space between items (shared spacing scale)"
+    },
+    {
+      "name": "align",
+      "type": "'end' | 'start' | 'center' | 'stretch' | 'baseline'",
+      "required": false,
+      "default": null,
+      "description": "Cross-axis alignment"
+    },
+    {
+      "name": "justify",
+      "type": "'end' | 'start' | 'center' | 'between' | 'around' | 'evenly'",
+      "required": false,
+      "default": null,
+      "description": "Main-axis distribution"
+    },
+    {
+      "name": "wrap",
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Lets items wrap onto new lines"
+    },
+    {
+      "name": "padding",
+      "type": "ResponsiveValue<Space>",
+      "required": false,
+      "default": null,
+      "description": "Padding inside the stack (shared spacing scale)"
+    },
+    {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "A row turns into a column on mobile and the gap follows the screen. true = all breakpoints or a list like [\"m\", \"t\"]"
+    },
+    {
+      "name": "as",
+      "type": "'div' | 'section' | 'main' | 'header' | 'footer' | 'article' | 'aside' | 'nav' | 'ul' | 'ol' | 'li'",
+      "required": false,
+      "default": "\"div\"",
+      "description": "HTML element to render"
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Items"
+    }
+  ],
+  "Grid": [
+    {
+      "name": "cols",
+      "type": "ResponsiveValue<GridCols>",
+      "required": false,
+      "default": "1",
+      "description": "Number of columns (1–12); an object sets it per breakpoint: { m: 1, t: 2, l: 4 }"
+    },
+    {
+      "name": "minChildWidth",
+      "type": "number | string",
+      "required": false,
+      "default": null,
+      "description": "Fits as many columns as there is room for, each at least this wide (e.g. 240 or \"16rem\"); overrides cols"
+    },
+    {
+      "name": "gap",
+      "type": "ResponsiveValue<Space>",
+      "required": false,
+      "default": "\"md\"",
+      "description": "Space between cells (shared spacing scale)"
+    },
+    {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Columns collapse on small screens (1 on mobile, up to 2 on tablet) and the gap follows the screen. true = all breakpoints or a list like [\"m\", \"t\"]"
+    },
+    {
+      "name": "as",
+      "type": "'div' | 'section' | 'main' | 'header' | 'footer' | 'article' | 'aside' | 'nav' | 'ul' | 'ol' | 'li'",
+      "required": false,
+      "default": "\"div\"",
+      "description": "HTML element to render"
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Cells"
+    }
+  ],
+  "GridItem": [
+    {
+      "name": "span",
+      "type": "ResponsiveValue<GridCols | \"full\">",
+      "required": false,
+      "default": "1",
+      "description": "Columns the cell spans (1–12 or \"full\"); an object sets it per breakpoint. Never wider than the grid's columns on that breakpoint"
+    },
+    {
+      "name": "as",
+      "type": "'div' | 'section' | 'main' | 'header' | 'footer' | 'article' | 'aside' | 'nav' | 'ul' | 'ol' | 'li'",
+      "required": false,
+      "default": "\"div\"",
+      "description": "HTML element to render"
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Content"
     }
   ],
   "LocaleProvider": [
@@ -2043,7 +2359,7 @@
     },
     {
       "name": "placement",
-      "type": "'top' | 'bottom' | 'auto' | 'center'",
+      "type": "'top' | 'bottom' | 'center' | 'auto'",
       "required": false,
       "default": "\"auto\"",
       "description": "Position on screen (auto: bottom sheet on mobile)"
@@ -2075,6 +2391,13 @@
       "required": false,
       "default": "\"inside\"",
       "description": "Where scrolling happens for long content"
+    },
+    {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: a full-width bottom sheet on mobile (rounded top, grab handle, up to 90% height, scrolling body, stacked full-width footer buttons, touch-sized close); a centered dialog up to the screen width on tablet; roomier padding and 16px text on desktop. Ignored for size \"full\". true = all breakpoints or a list like [\"m\", \"t\"]"
     },
     {
       "name": "className",
@@ -2211,6 +2534,13 @@
       "required": false,
       "default": null,
       "description": "Called when the mobile menu opens or closes"
+    },
+    {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: narrower side padding and a touch-sized menu toggle on mobile; with \"t\" the links also fold into the menu on tablet (below 1024px instead of 768px); roomier padding on desktop. true = all breakpoints or a list like [\"m\", \"t\"]"
     },
     {
       "name": "children",
@@ -2388,6 +2718,13 @@
       "description": "Disabled (inactive) state"
     },
     {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: touch-sized (44px for md) buttons and no sibling pages on mobile so it fits a phone, touch-sized on tablet, larger lg on desktop. true = all breakpoints or a list like [\"m\", \"t\"]"
+    },
+    {
       "name": "className",
       "type": "string",
       "required": false,
@@ -2486,6 +2823,13 @@
       "required": false,
       "default": null,
       "description": "Extra leading content (before the flag and dial code)"
+    },
+    {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen like Input (44px field with 16px text on mobile, touch-sized on tablet, larger lg on desktop); the country picker's tap area grows to the full field height on mobile and tablet. true = all breakpoints or a list like [\"m\", \"t\"]"
     },
     {
       "name": "size",
@@ -2686,6 +3030,13 @@
       "description": "Closes on outside click"
     },
     {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: on mobile the content opens as a bottom sheet (full width, dimmed backdrop, up to 80% height, scrolls); never wider than the screen on tablet. true = all breakpoints or a list like [\"m\", \"t\"]"
+    },
+    {
       "name": "children",
       "type": "ReactNode",
       "required": true,
@@ -2739,6 +3090,13 @@
       "required": false,
       "default": null,
       "description": "Button labels"
+    },
+    {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: fills the width with two equal touch-sized (44px) options on mobile, touch-sized on tablet. true = all breakpoints or a list like [\"m\", \"t\"]"
     },
     {
       "name": "className",
@@ -2855,6 +3213,13 @@
       "description": "Icon next to the title"
     },
     {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: full width with tighter padding and a smaller price on mobile, roomier padding and a larger price on desktop; the button becomes touch-sized. true = all breakpoints or a list like [\"m\", \"t\"]"
+    },
+    {
       "name": "className",
       "type": "string",
       "required": false,
@@ -2955,6 +3320,13 @@
       "description": "Disabled (inactive) state"
     },
     {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: the thinnest bar thickens on mobile so it stays visible; md / lg bars and the labels grow on desktop. true = all breakpoints or a list like [\"m\", \"t\"]"
+    },
+    {
       "name": "className",
       "type": "string",
       "required": false,
@@ -3046,6 +3418,13 @@
       "required": false,
       "default": "false",
       "description": "Disabled (inactive) state"
+    },
+    {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: xl shrinks to 80px on mobile; lg / xl grow to 72 / 112px on desktop; the label grows on mobile. true = all breakpoints or a list like [\"m\", \"t\"]"
     },
     {
       "name": "className",
@@ -3153,6 +3532,13 @@
       "required": false,
       "default": null,
       "description": "Input name for forms"
+    },
+    {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: on mobile 44px tap rows, one step larger circles, 16px labels and a horizontal group stacks vertically; taller tap rows on tablet; larger lg on desktop. true = all breakpoints or a list like [\"m\", \"t\"]"
     },
     {
       "name": "children",
@@ -3271,11 +3657,66 @@
       "description": "Shows the numeric value next to it"
     },
     {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: on mobile stars one step larger, spaced apart with a 44px-tall tap area and a 16px value; larger lg stars on desktop. true = all breakpoints or a list like [\"m\", \"t\"]"
+    },
+    {
       "name": "className",
       "type": "string",
       "required": false,
       "default": "\"\"",
       "description": "Extra CSS classes"
+    }
+  ],
+  "ResponsiveProvider": [
+    {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": "true",
+      "description": "Default `responsive` for every component inside: true = all breakpoints, or a list like [\"m\", \"t\"]. A component's own prop wins"
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": true,
+      "default": null,
+      "description": "The part of the app the default applies to"
+    }
+  ],
+  "Show": [
+    {
+      "name": "on",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": true,
+      "default": null,
+      "description": "Breakpoints the content is visible on (hidden with CSS everywhere else)"
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Content"
+    }
+  ],
+  "Hide": [
+    {
+      "name": "on",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": true,
+      "default": null,
+      "description": "Breakpoints the content is hidden on"
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Content"
     }
   ],
   "Select": [
@@ -3362,6 +3803,13 @@
       "required": false,
       "default": null,
       "description": "Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass)"
+    },
+    {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: touch-sized trigger and options with 16px text on mobile, touch-sized on tablet, larger lg on desktop; a left label moves on top on mobile. true = all breakpoints or a list like [\"m\", \"t\"]"
     },
     {
       "name": "description",
@@ -3536,6 +3984,13 @@
       "description": "Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass)"
     },
     {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: full width with touch-sized items and no collapse button on mobile (place it in a drawer), starts as an icon rail on tablet (the toggle still expands it), wider (288px) on desktop. true = all breakpoints or a list like [\"m\", \"t\"]"
+    },
+    {
       "name": "children",
       "type": "ReactNode",
       "required": false,
@@ -3631,6 +4086,13 @@
       "required": false,
       "default": null,
       "description": "Content shown once loaded"
+    },
+    {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: the default radius gets one step smaller on mobile, matching a responsive Card. Sizes come from your className. true = all breakpoints or a list like [\"m\", \"t\"]"
     }
   ],
   "Spinner": [
@@ -3668,6 +4130,13 @@
       "required": false,
       "default": "\"muted\"",
       "description": "Label color"
+    },
+    {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: small labels grow a step on mobile for readability, lg grows to 40px on desktop. true = all breakpoints or a list like [\"m\", \"t\"]"
     },
     {
       "name": "className",
@@ -3826,6 +4295,13 @@
       "required": false,
       "default": "\"\"",
       "description": "Extra classes"
+    },
+    {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: smaller radius and value text on mobile, roomier padding and a larger value on desktop. true = all breakpoints or a list like [\"m\", \"t\"]"
     }
   ],
   "Stepper": [
@@ -3863,6 +4339,13 @@
       "required": false,
       "default": "\"accent\"",
       "description": "Color theme"
+    },
+    {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: a horizontal stepper shows only the current step's title on mobile (no descriptions), hides descriptions on tablet, larger titles on desktop. true = all breakpoints or a list like [\"m\", \"t\"]"
     },
     {
       "name": "className",
@@ -3970,6 +4453,13 @@
       "required": false,
       "default": null,
       "description": "Input name for forms"
+    },
+    {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: on mobile a 44px tap row, the track one size larger (md becomes the 48×28 phone size) and a 16px label; taller tap row on tablet; larger lg on desktop. true = all breakpoints or a list like [\"m\", \"t\"]"
     }
   ],
   "Table": [
@@ -4168,6 +4658,13 @@
       "required": false,
       "default": null,
       "description": "Table name for screen readers"
+    },
+    {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: on mobile cells stop wrapping and the table scrolls sideways with tighter padding and a smaller wrapper; on desktop cells get roomier. true = all breakpoints or a list like [\"m\", \"t\"]"
     }
   ],
   "Tabs": [
@@ -4268,6 +4765,13 @@
       "required": false,
       "default": null,
       "description": "Function that returns the panel content for the selected tab key"
+    },
+    {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: on mobile a horizontal tab list scrolls sideways instead of squeezing and tabs are touch-sized; touch-sized on tablet; larger lg on desktop. true = all breakpoints or a list like [\"m\", \"t\"]"
     }
   ],
   "Textarea": [
@@ -4382,6 +4886,13 @@
       "required": false,
       "default": "true",
       "description": "Fills the container width"
+    },
+    {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: 16px text and roomier padding on mobile (no zoom on focus), larger lg on desktop. true = all breakpoints or a list like [\"m\", \"t\"]"
     }
   ],
   "Timeline": [
@@ -4398,6 +4909,13 @@
       "required": false,
       "default": "\"\"",
       "description": "Extra classes"
+    },
+    {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: on mobile items sit tighter and the time moves under the title instead of squeezing it; on desktop items get more room. true = all breakpoints or a list like [\"m\", \"t\"]"
     }
   ],
   "ToastOptions": [
@@ -4500,6 +5018,13 @@
       "required": false,
       "default": null,
       "description": "Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass)"
+    },
+    {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: on mobile toasts span the full width at the bottom (any placement) with a touch-sized close button; wider toasts with roomier padding on desktop. true = all breakpoints or a list like [\"m\", \"t\"]"
     },
     {
       "name": "children",
@@ -4614,6 +5139,13 @@
       "required": false,
       "default": null,
       "description": "Called when the open state changes"
+    },
+    {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: text one step larger and width up to the screen edge on mobile, a step larger on tablet, wider on desktop. true = all breakpoints or a list like [\"m\", \"t\"]"
     },
     {
       "name": "className",

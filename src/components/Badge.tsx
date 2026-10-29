@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { cn } from "../lib/cn";
+import { rx, useResponsive, type BreakpointClasses, type ResponsiveProp } from "./breakpoints";
 
 type BadgeColor = "default" | "accent" | "success" | "warning" | "danger";
 type BadgeVariant = "primary" | "soft";
@@ -32,6 +33,8 @@ export interface BadgeProps {
   children?: ReactNode;
   /** Extra classes */
   className?: string;
+  /** Adapts to the screen: on mobile the two smallest sizes grow a little so the number stays legible. true = all breakpoints or a list like ["m", "t"] */
+  responsive?: ResponsiveProp;
 }
 
 const placementMap: Record<BadgeShape, Record<BadgePlacement, string>> = {
@@ -64,6 +67,20 @@ const sizeMap: Record<BadgeSize, { badge: string; oneChar: string; dot: string; 
   lg: { badge: "min-w-6 h-6 px-2", oneChar: "w-6 h-6", dot: "w-3.5 h-3.5", text: "text-sm" },
 };
 
+// Mobile: xs takes the sm box and sm gets 1px larger text, so counts stay readable on dense screens.
+type SizeParts = { badge: BreakpointClasses; oneChar: BreakpointClasses; dot: BreakpointClasses; text: BreakpointClasses };
+const sizeMapR: Record<BadgeSize, SizeParts> = {
+  xs: {
+    badge: { m: "mobile:min-w-4 mobile:h-4 mobile:px-1" },
+    oneChar: { m: "mobile:w-4 mobile:h-4" },
+    dot: { m: "mobile:w-2.5 mobile:h-2.5" },
+    text: { m: "mobile:text-[10px]" },
+  },
+  sm: { badge: {}, oneChar: {}, dot: {}, text: { m: "mobile:text-[11px]" } },
+  md: { badge: {}, oneChar: {}, dot: {}, text: {} },
+  lg: { badge: {}, oneChar: {}, dot: {}, text: {} },
+};
+
 export const Badge = ({
   content,
   color = "danger",
@@ -77,7 +94,9 @@ export const Badge = ({
   isOneChar,
   children,
   className = "",
+  responsive,
 }: BadgeProps) => {
+  const bps = useResponsive(responsive);
   const hasContent = content !== undefined && content !== null && content !== "";
   const dot = isDot ?? !hasContent;
   const oneChar = isOneChar ?? (typeof content === "string" || typeof content === "number" ? String(content).length === 1 : false);
@@ -92,8 +111,10 @@ export const Badge = ({
           placementMap[shape][placement],
           colorStyles[color][variant],
           sizeMap[size].text,
+          rx(bps, sizeMapR[size].text),
           showOutline && "ring-2 ring-background",
           dot ? sizeMap[size].dot : oneChar ? sizeMap[size].oneChar : sizeMap[size].badge,
+          rx(bps, sizeMapR[size][dot ? "dot" : oneChar ? "oneChar" : "badge"]),
           isInvisible ? "scale-0 opacity-0" : "scale-100 opacity-100"
         )}
       >

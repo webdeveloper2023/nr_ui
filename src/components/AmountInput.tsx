@@ -12,6 +12,7 @@ import {
 } from "react";
 import { cn } from "../lib/cn";
 import { useLocale, type NRLocale } from "./locale";
+import { rx, useResponsive, type BreakpointClasses, type ResponsiveProp } from "./breakpoints";
 import { Input, type InputProps } from "./Input";
 import {
   AMOUNT_CURRENCIES,
@@ -57,7 +58,14 @@ export interface AmountInputProps
   currencySymbol?: ReactNode;
   /** Maximum digits before the decimal separator */
   maxDigits?: number;
+  /** Adapts to the screen like Input (44px field with 16px text on mobile, touch-sized on tablet, larger lg on desktop); preset buttons grow to 40px on mobile and 36px on tablet, and the currency symbol to 16px on mobile. true = all breakpoints or a list like ["m", "t"] */
+  responsive?: ResponsiveProp;
 }
+
+// Preset chips: touch-sized on mobile / tablet
+const presetR: BreakpointClasses = { m: "mobile:h-10 mobile:px-4 mobile:text-sm", t: "tablet:h-9 tablet:px-3.5 tablet:text-sm" };
+const presetGroupR: BreakpointClasses = { m: "mobile:gap-2" };
+const symbolR: BreakpointClasses = { m: "mobile:text-base" };
 
 interface Parts {
   int: string;
@@ -135,11 +143,13 @@ export const AmountInput = forwardRef<HTMLInputElement, AmountInputProps>(
       onKeyDown,
       className = "",
       fullWidth = true,
+      responsive,
       ...props
     },
     ref
   ) => {
     const t = useLocale();
+    const bps = useResponsive(responsive);
     const locale = wordsLocale ?? t.locale;
     const info = currency ? AMOUNT_CURRENCIES[currency] : null;
     const decimals = Math.max(0, decimalsProp ?? info?.decimals ?? 0);
@@ -237,6 +247,7 @@ export const AmountInput = forwardRef<HTMLInputElement, AmountInputProps>(
           inputMode={decimals > 0 ? "decimal" : "numeric"}
           autoComplete="off"
           fullWidth={fullWidth}
+          responsive={responsive}
           isDisabled={isDisabled}
           isReadOnly={isReadOnly}
           value={render(parts, locale)}
@@ -258,13 +269,13 @@ export const AmountInput = forwardRef<HTMLInputElement, AmountInputProps>(
             symbol || endContent ? (
               <span className="flex items-center gap-2">
                 {endContent}
-                {symbol && <span className="text-sm font-medium text-muted select-none">{symbol}</span>}
+                {symbol && <span className={cn("text-sm font-medium text-muted select-none", rx(bps, symbolR))}>{symbol}</span>}
               </span>
             ) : undefined
           }
         />
         {presets && presets.length > 0 && (
-          <div role="group" aria-label={t.amountInput.presets} className="flex flex-wrap gap-1.5">
+          <div role="group" aria-label={t.amountInput.presets} className={cn("flex flex-wrap gap-1.5", rx(bps, presetGroupR))}>
             {presets.map((preset) => (
               <button
                 key={preset}
@@ -277,6 +288,7 @@ export const AmountInput = forwardRef<HTMLInputElement, AmountInputProps>(
                 }}
                 className={cn(
                   "h-7 rounded-full px-3 text-xs font-medium tabular-nums transition-colors cursor-pointer",
+                  rx(bps, presetR),
                   "outline-none focus-visible:ring-2 focus-visible:ring-focus disabled:opacity-50 disabled:pointer-events-none",
                   amount === preset ? "bg-accent text-accent-foreground" : "bg-default text-foreground hover:bg-default-hover"
                 )}

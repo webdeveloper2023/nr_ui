@@ -2,6 +2,7 @@ import { useCallback, useMemo, useState, type ReactNode } from "react";
 import { cn } from "../lib/cn";
 import { useLocale } from "./locale";
 import { Checkbox } from "./Checkbox";
+import { rx, useResponsive, type BreakpointClasses, type ResponsiveProp } from "./breakpoints";
 
 type TableColor = "default" | "accent" | "success" | "warning" | "danger";
 type TableLayout = "auto" | "fixed";
@@ -86,7 +87,15 @@ export interface TableProps<T = Record<string, unknown>> {
   emptyContent?: ReactNode;
   /** Table name for screen readers */
   "aria-label"?: string;
+  /** Adapts to the screen: on mobile cells stop wrapping and the table scrolls sideways with tighter padding and a smaller wrapper; on desktop cells get roomier. true = all breakpoints or a list like ["m", "t"] */
+  responsive?: ResponsiveProp;
 }
+
+// Mobile: tighter cells that don't wrap (the wrapper scrolls sideways). Desktop: roomier cells.
+const thR: BreakpointClasses = { m: "mobile:px-2.5", d: "desktop:h-11 desktop:px-4" };
+const tdR: BreakpointClasses = { m: "mobile:px-2.5 mobile:whitespace-nowrap", d: "desktop:px-4" };
+const tdHeightR: BreakpointClasses = { d: "desktop:h-14" };
+const wrapperR: BreakpointClasses = { m: "mobile:rounded-2xl mobile:p-1.5 mobile:overscroll-x-contain", d: "desktop:p-3" };
 
 const selectedRow: Record<TableColor, string> = {
   default: "[&>td]:bg-default",
@@ -159,8 +168,10 @@ export function Table<T extends Record<string, unknown>>({
   className = "",
   emptyContent,
   "aria-label": ariaLabel,
+  responsive,
 }: TableProps<T>) {
   const t = useLocale();
+  const bps = useResponsive(responsive);
   const [internalKeys, setInternalKeys] = useState<Set<string>>(new Set());
   const [internalSort, setInternalSort] = useState<SortDescriptor | undefined>();
   const selectedKeys = controlledKeys ?? internalKeys;
@@ -214,9 +225,10 @@ export function Table<T extends Record<string, unknown>>({
 
   const thBase = cn(
     "group/th h-10 px-3 text-xs font-medium text-muted whitespace-nowrap align-middle first:rounded-l-xl last:rounded-r-xl",
-    isBlurred ? "bg-default/60" : variant === "primary" ? "bg-surface-secondary" : "bg-default/70"
+    isBlurred ? "bg-default/60" : variant === "primary" ? "bg-surface-secondary" : "bg-default/70",
+    rx(bps, thR)
   );
-  const tdBase = cn(cellPad, "text-sm text-foreground align-middle whitespace-normal relative");
+  const tdBase = cn(cellPad, "text-sm text-foreground align-middle whitespace-normal relative", rx(bps, tdR), !isCompact && rx(bps, tdHeightR));
 
   const table = (
     <table
@@ -398,7 +410,7 @@ export function Table<T extends Record<string, unknown>>({
     return (
       <div className={cn("flex flex-col gap-4 w-full", className)}>
         {topContent}
-        <div className="overflow-auto" style={maxHeight ? { maxHeight } : undefined}>
+        <div className={cn("overflow-auto", rx(bps, { m: "mobile:overscroll-x-contain" }))} style={maxHeight ? { maxHeight } : undefined}>
           {table}
         </div>
         {bottomContent}
@@ -411,7 +423,7 @@ export function Table<T extends Record<string, unknown>>({
       {topContent}
       <div
         data-glass={material}
-        className={cn("relative w-full overflow-auto rounded-3xl", variant === "primary" ? cn(isBlurred ? "glass" : "bg-surface-gradient shadow-surface", "p-2") : "bg-transparent")}
+        className={cn("relative w-full overflow-auto rounded-3xl", variant === "primary" ? cn(isBlurred ? "glass" : "bg-surface-gradient shadow-surface", "p-2", rx(bps, wrapperR)) : "bg-transparent")}
         style={maxHeight ? { maxHeight } : undefined}
       >
         {table}

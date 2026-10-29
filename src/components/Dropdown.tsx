@@ -16,6 +16,7 @@ import React, {
 import { createPortal } from "react-dom";
 import { cn } from "../lib/cn";
 import { useFloating, usePresence, getSide, originClass, hiddenShift, setRef, type Placement } from "./floating";
+import { rx, useResponsive, type Breakpoint, type BreakpointClasses, type ResponsiveProp } from "./breakpoints";
 
 type DropdownColor = "default" | "accent" | "success" | "warning" | "danger";
 type SelectionMode = "none" | "single" | "multiple";
@@ -37,6 +38,8 @@ export interface DropdownProps {
   offset?: number;
   /** Close the menu when an item is selected */
   closeOnSelect?: boolean;
+  /** Adapts to the screen: on mobile the menu is never wider than the screen, scrolls within 60% of its height, has 44px items with 16px text and hides shortcuts; 44px items on tablet. true = all breakpoints or a list like ["m", "t"] */
+  responsive?: ResponsiveProp;
 }
 
 export interface DropdownTriggerProps {
@@ -105,6 +108,7 @@ interface DropdownContextValue {
   placement: Placement;
   offset: number;
   closeOnSelect: boolean;
+  bps: Breakpoint[];
 }
 
 interface MenuContextValue {
@@ -117,6 +121,14 @@ interface MenuContextValue {
 
 const DropdownContext = createContext<DropdownContextValue | null>(null);
 const MenuContext = createContext<MenuContextValue>({ selectionMode: "none", selectedKeys: new Set(), select: () => {} });
+
+// Mobile: fits the screen, touch-sized items, no keyboard shortcuts. Tablet: touch-sized items.
+const menuR: BreakpointClasses = {
+  m: "mobile:min-w-[min(240px,calc(100vw-1.5rem))] mobile:max-w-[calc(100vw-1.5rem)] mobile:max-h-[60dvh]",
+  t: "tablet:max-w-[calc(100vw-2rem)]",
+};
+const itemR: BreakpointClasses = { m: "mobile:min-h-11 mobile:text-base mobile:px-3", t: "tablet:min-h-11" };
+const shortcutR: BreakpointClasses = { m: "mobile:hidden" };
 
 const useDropdownContext = () => {
   const ctx = useContext(DropdownContext);
@@ -133,7 +145,9 @@ export const Dropdown: React.FC<DropdownProps> = ({
   placement = "bottom-start",
   offset = 6,
   closeOnSelect = true,
+  responsive,
 }) => {
+  const bps = useResponsive(responsive);
   const [openState, setOpenState] = useState(defaultOpen);
   const triggerRef = useRef<HTMLElement | null>(null);
   const menuId = useId();
@@ -149,7 +163,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
   );
 
   return (
-    <DropdownContext.Provider value={{ isOpen, setIsOpen, triggerRef, menuId, placement, offset, closeOnSelect }}>
+    <DropdownContext.Provider value={{ isOpen, setIsOpen, triggerRef, menuId, placement, offset, closeOnSelect, bps }}>
       <div className="relative inline-block">{children}</div>
     </DropdownContext.Provider>
   );
@@ -210,7 +224,7 @@ export const DropdownMenu = forwardRef<HTMLDivElement, DropdownMenuProps>(
     },
     ref
   ) => {
-    const { isOpen, setIsOpen, triggerRef, menuId, placement, offset } = useDropdownContext();
+    const { isOpen, setIsOpen, triggerRef, menuId, placement, offset, bps } = useDropdownContext();
     const menuRef = useRef<HTMLDivElement | null>(null);
     const { mounted, visible } = usePresence(isOpen, 150);
     const floating = useFloating(mounted, triggerRef, menuRef, placement, offset, true);
@@ -312,6 +326,7 @@ export const DropdownMenu = forwardRef<HTMLDivElement, DropdownMenuProps>(
             "transition-[opacity,transform] duration-150 ease-(--ease-out-soft)",
             originClass[side],
             visible ? "opacity-100 scale-100 translate-x-0 translate-y-0" : cn("opacity-0 scale-[0.96]", hiddenShift[side]),
+            rx(bps, menuR),
             className
           )}
           style={floating.style}
@@ -359,7 +374,7 @@ export const DropdownItem = forwardRef<HTMLButtonElement, DropdownItemProps>(
     },
     ref
   ) => {
-    const { setIsOpen, triggerRef, closeOnSelect } = useDropdownContext();
+    const { setIsOpen, triggerRef, closeOnSelect, bps } = useDropdownContext();
     const { selectionMode, selectedKeys, disabledKeys, select, onAction } = useContext(MenuContext);
     const fallbackKey = useId();
     const key = itemKey ?? fallbackKey;
@@ -392,6 +407,7 @@ export const DropdownItem = forwardRef<HTMLButtonElement, DropdownItemProps>(
             "group w-full flex items-center gap-2.5 px-2.5 py-1.5 min-h-9 text-sm text-left rounded-xl",
             "outline-none transition-colors duration-100 cursor-pointer select-none",
             itemColorStyles[color],
+            rx(bps, itemR),
             disabled && "opacity-40 pointer-events-none",
             className
           )}
@@ -407,7 +423,7 @@ export const DropdownItem = forwardRef<HTMLButtonElement, DropdownItemProps>(
             {description && <span className="block text-xs text-muted mt-0.5 truncate font-normal">{description}</span>}
           </span>
           {shortcut && (
-            <kbd className="flex-shrink-0 font-sans text-xs text-muted">
+            <kbd className={cn("flex-shrink-0 font-sans text-xs text-muted", rx(bps, shortcutR))}>
               {shortcut}
             </kbd>
           )}

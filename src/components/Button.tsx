@@ -11,6 +11,7 @@ import {
   type ReactNode,
 } from "react";
 import { cn } from "../lib/cn";
+import { rx, useResponsive, type BreakpointClasses, type ResponsiveProp } from "./breakpoints";
 
 type ButtonVariant = "primary" | "secondary" | "tertiary" | "outline" | "ghost" | "glass" | "danger" | "danger-soft";
 type ButtonSize = "xs" | "sm" | "md" | "lg";
@@ -41,6 +42,8 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   fullWidth?: boolean;
   /** Disables the press animation */
   disableAnimation?: boolean;
+  /** Adapts to the screen: touch-sized (44px for md) on mobile and tablet, larger lg on desktop. true = all breakpoints or a list like ["m", "t"] */
+  responsive?: ResponsiveProp;
   /** Inner content */
   children?: ReactNode;
 }
@@ -57,6 +60,21 @@ const iconOnlySizeStyles: Record<ButtonSize, string> = {
   sm: "h-8 w-8 min-w-8",
   md: "h-10 w-10 min-w-10",
   lg: "h-12 w-12 min-w-12",
+};
+
+// Mobile / tablet: touch targets (44px for md). Laptop: static sizes. Desktop: lg grows a step.
+const sizeStylesR: Record<ButtonSize, BreakpointClasses> = {
+  xs: { m: "mobile:h-8 mobile:px-3" },
+  sm: { m: "mobile:h-10 mobile:px-4", t: "tablet:h-9 tablet:px-3.5" },
+  md: { m: "mobile:h-11 mobile:px-5 mobile:text-base", t: "tablet:h-11 tablet:px-5" },
+  lg: { d: "desktop:h-14 desktop:px-7 desktop:text-lg" },
+};
+
+const iconOnlySizeStylesR: Record<ButtonSize, BreakpointClasses> = {
+  xs: { m: "mobile:h-8 mobile:w-8 mobile:min-w-8" },
+  sm: { m: "mobile:h-10 mobile:w-10 mobile:min-w-10", t: "tablet:h-9 tablet:w-9 tablet:min-w-9" },
+  md: { m: "mobile:h-11 mobile:w-11 mobile:min-w-11", t: "tablet:h-11 tablet:w-11 tablet:min-w-11" },
+  lg: { d: "desktop:h-14 desktop:w-14 desktop:min-w-14" },
 };
 
 const radiusStyles: Record<ButtonRadius, string> = {
@@ -92,6 +110,7 @@ interface ButtonGroupContextValue {
   variant?: ButtonVariant;
   size?: ButtonSize;
   isDisabled?: boolean;
+  responsive?: ResponsiveProp;
 }
 
 const ButtonGroupContext = createContext<ButtonGroupContextValue | null>(null);
@@ -111,11 +130,13 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) =>
     isIconOnly = false,
     fullWidth = false,
     disableAnimation = false,
+    responsive,
     children,
     className = "",
     type = "button",
     ...rest
   } = props;
+  const bps = useResponsive(responsive ?? group?.responsive);
 
   const disabled = isDisabled || isLoading;
 
@@ -133,6 +154,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) =>
         !disableAnimation &&
           "transition-[transform,background-color,color,border-color,opacity] duration-150 ease-out active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100",
         isIconOnly ? iconOnlySizeStyles[size] : sizeStyles[size],
+        rx(bps, (isIconOnly ? iconOnlySizeStylesR : sizeStylesR)[size]),
         radiusStyles[radius],
         variantStyles[variant],
         fullWidth && "w-full",
@@ -163,6 +185,8 @@ export interface ButtonGroupProps extends HTMLAttributes<HTMLDivElement> {
   isDisabled?: boolean;
   /** Fills the container width */
   fullWidth?: boolean;
+  /** Passed to every button; on mobile the group also fills the width and the buttons share it equally. true = all breakpoints or a list like ["m", "t"] */
+  responsive?: ResponsiveProp;
   /** Button elements */
   children?: ReactNode;
 }
@@ -176,14 +200,20 @@ const groupRadius: Record<ButtonRadius, { first: string; last: string }> = {
 };
 
 export const ButtonGroup = forwardRef<HTMLDivElement, ButtonGroupProps>(
-  ({ variant = "tertiary", size, radius = "full", isDisabled, fullWidth = false, children, className = "", ...props }, ref) => {
+  ({ variant = "tertiary", size, radius = "full", isDisabled, fullWidth = false, responsive, children, className = "", ...props }, ref) => {
+    const bps = useResponsive(responsive);
     const items = Children.toArray(children).filter(isValidElement) as ReactElement<ButtonProps>[];
     const last = items.length - 1;
     const isOutline = variant === "outline";
 
     return (
-      <ButtonGroupContext.Provider value={{ variant, size, isDisabled }}>
-        <div ref={ref} role="group" className={cn("inline-flex items-center", fullWidth && "w-full", className)} {...props}>
+      <ButtonGroupContext.Provider value={{ variant, size, isDisabled, responsive }}>
+        <div
+          ref={ref}
+          role="group"
+          className={cn("inline-flex items-center", fullWidth && "w-full", rx(bps, { m: "mobile:flex mobile:w-full" }), className)}
+          {...props}
+        >
           {items.map((child, i) =>
             cloneElement(child, {
               key: child.key ?? i,
@@ -191,6 +221,7 @@ export const ButtonGroup = forwardRef<HTMLDivElement, ButtonGroupProps>(
               fullWidth: fullWidth || child.props.fullWidth,
               className: cn(
                 "active:scale-100 focus-visible:z-10",
+                rx(bps, { m: "mobile:flex-1" }),
                 i === 0 && groupRadius[radius].first,
                 i === last && groupRadius[radius].last,
                 isOutline && i > 0 && "-ml-px",

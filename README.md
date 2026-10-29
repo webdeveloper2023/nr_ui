@@ -2,7 +2,7 @@
 
 Pro darajadagi React komponent kutubxonasi — **React 18/19**, **Tailwind CSS v4**, **TypeScript**, to'liq **dark mode**.
 
-37 ta komponent (ichki qismlari — `ModalHeader`, `CardBody`, `SidebarItem` va h.k. — bilan birga 69 ta): Button, Input, AmountInput (summa so'z bilan), Select, Table, Modal, Dropdown, Toast, Sidebar, Pricing, AI Chat va boshqalar.
+41 ta komponent (ichki qismlari — `ModalHeader`, `CardBody`, `SidebarItem` va h.k. — bilan birga 76 ta): Container, Stack, Grid, Button, Input, AmountInput (summa so'z bilan), Select, Table, Modal, Dropdown, Toast, Sidebar, Pricing, AI Chat va boshqalar.
 
 ## O'rnatish
 
@@ -65,6 +65,40 @@ export default function App() {
   );
 }
 ```
+
+## Responsive
+
+Har bir komponent `responsive` propini qabul qiladi:
+
+| Yozilishi | Natija |
+| --- | --- |
+| `responsive` | to'rtala breakpointga moslashadi |
+| `responsive={["m", "t"]}` | faqat mobile va tablet'ga; laptop / desktop'da oddiy ko'rinish |
+| `responsive="m"` | faqat mobile'ga |
+
+Breakpointlar: `m` mobile (< 768px), `t` tablet (768–1023px), `l` laptop (1024–1535px), `d` desktop (≥ 1536px).
+
+Mobile'da tugma va maydonlar 44px balandlikka chiqadi, matn 16px bo'ladi, shuning uchun kattalashmaydi. Modal pastdan chiqadigan sheet'ga, qatorlar ustunga aylanadi. Desktop'da padding kengayadi.
+
+```tsx
+import { ResponsiveProvider, Container, Grid, Stack, Card, Button, Show } from "nr-ui-kit";
+
+<ResponsiveProvider>              {/* hamma komponentga birdan yoqadi */}
+  <Container>                     {/* chetki bo'shliq: 16 → 20 → 24 → 28px */}
+    <Grid cols={3}>               {/* mobile 1, tablet 2, laptop/desktop 3 ustun */}
+      <Card>…</Card>
+    </Grid>
+    <Stack direction="row">       {/* mobile'da ustunga aylanadi */}
+      <Button responsive={false}>Doim oddiy</Button>
+      <Show on={["m"]}>Faqat mobile'da</Show>
+    </Stack>
+  </Container>
+</ResponsiveProvider>
+```
+
+Barcha gap va padding'lar bitta umumiy shkaladan olinadi (`xs … 2xl`), shuning uchun komponentlar bir-biriga mos turadi. Har bir breakpoint uchun aniq qiymat ham berish mumkin: `cols={{ m: 1, t: 2, l: 4 }}`. `useBreakpoint()` hozirgi breakpointni qaytaradi.
+
+Tailwind ishlatayotgan bo'lsangiz, `theme.css` sizga ham `mobile:`, `tablet:`, `laptop:`, `desktop:` variantlarini beradi.
 
 ## Dark mode
 

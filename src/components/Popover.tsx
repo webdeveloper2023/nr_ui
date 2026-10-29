@@ -26,6 +26,7 @@ import {
   setRef,
   type Placement,
 } from "./floating";
+import { rx, useResponsive, type Breakpoint, type BreakpointClasses, type ResponsiveProp } from "./breakpoints";
 
 type PopoverRadius = "none" | "sm" | "md" | "lg";
 type PopoverBackdrop = "transparent" | "opaque" | "blur";
@@ -55,6 +56,8 @@ export interface PopoverProps {
   shouldCloseOnBlur?: boolean;
   /** Closes on outside click */
   isDismissable?: boolean;
+  /** Adapts to the screen: on mobile the content opens as a bottom sheet (full width, dimmed backdrop, up to 80% height, scrolls); never wider than the screen on tablet. true = all breakpoints or a list like ["m", "t"] */
+  responsive?: ResponsiveProp;
   /** PopoverTrigger and PopoverContent */
   children: ReactNode;
 }
@@ -82,6 +85,7 @@ interface PopoverContextValue {
   material?: "frosted" | "liquid";
   backdrop: PopoverBackdrop;
   isDismissable: boolean;
+  bps: Breakpoint[];
 }
 
 const PopoverContext = createContext<PopoverContextValue | null>(null);
@@ -98,6 +102,15 @@ const radiusStyles: Record<PopoverRadius, string> = {
   md: "rounded-2xl",
   lg: "rounded-3xl",
 };
+
+// Mobile: a bottom sheet (the inline position from the trigger is overridden). Tablet: capped at the screen width.
+const contentR: BreakpointClasses = {
+  m: "mobile:!top-auto mobile:!bottom-[max(0.75rem,env(safe-area-inset-bottom))] mobile:!left-3 mobile:!right-3 mobile:!w-auto mobile:!min-w-0 mobile:!max-w-none mobile:max-h-[80dvh] mobile:overflow-y-auto mobile:origin-bottom",
+  t: "tablet:max-w-[calc(100vw-2rem)]",
+};
+const hiddenR: BreakpointClasses = { m: "mobile:translate-x-0 mobile:translate-y-6 mobile:scale-100" };
+const arrowR: BreakpointClasses = { m: "mobile:hidden" };
+const sheetBackdropR: BreakpointClasses = { m: "mobile:block" };
 
 const backdropStyles: Record<PopoverBackdrop, string> = {
   transparent: "",
@@ -117,8 +130,10 @@ export const Popover: React.FC<PopoverProps> = ({
   radius = "lg",
   backdrop = "transparent",
   isDismissable = true,
+  responsive,
   children,
 }) => {
+  const bps = useResponsive(responsive);
   const [openState, setOpenState] = useState(defaultOpen);
   const isOpen = openProp ?? openState;
   const triggerRef = useRef<HTMLElement | null>(null);
@@ -134,7 +149,7 @@ export const Popover: React.FC<PopoverProps> = ({
 
   return (
     <PopoverContext.Provider
-      value={{ isOpen, setIsOpen, triggerRef, contentId, placement, offset, showArrow, radius, isBlurred, material, backdrop, isDismissable }}
+      value={{ isOpen, setIsOpen, triggerRef, contentId, placement, offset, showArrow, radius, isBlurred, material, backdrop, isDismissable, bps }}
     >
       {children}
     </PopoverContext.Provider>
@@ -170,7 +185,7 @@ PopoverTrigger.displayName = "PopoverTrigger";
 
 export const PopoverContent = React.forwardRef<HTMLDivElement, PopoverContentProps>(
   ({ children, className = "", style, ...props }, ref) => {
-    const { isOpen, setIsOpen, triggerRef, contentId, placement, offset, showArrow, radius, isBlurred, material, backdrop, isDismissable } =
+    const { isOpen, setIsOpen, triggerRef, contentId, placement, offset, showArrow, radius, isBlurred, material, backdrop, isDismissable, bps } =
       usePopoverContext();
     const contentRef = useRef<HTMLDivElement | null>(null);
     const { mounted, visible } = usePresence(isOpen, 150);
@@ -202,6 +217,17 @@ export const PopoverContent = React.forwardRef<HTMLDivElement, PopoverContentPro
 
     return createPortal(
       <>
+        {/* The mobile sheet dims the page even when the popover itself has no backdrop */}
+        {backdrop === "transparent" && bps.includes("m") && (
+          <div
+            aria-hidden
+            className={cn(
+              "hidden fixed inset-0 z-40 bg-backdrop transition-opacity duration-150",
+              rx(bps, sheetBackdropR),
+              visible ? "opacity-100" : "opacity-0"
+            )}
+          />
+        )}
         {backdrop !== "transparent" && (
           <div
             aria-hidden
@@ -226,7 +252,8 @@ export const PopoverContent = React.forwardRef<HTMLDivElement, PopoverContentPro
             "transition-[opacity,transform] duration-150 ease-(--ease-out-soft)",
             radiusStyles[radius],
             originClass[side],
-            visible ? "opacity-100 scale-100 translate-x-0 translate-y-0" : cn("opacity-0 scale-[0.96]", hiddenShift[side]),
+            visible ? "opacity-100 scale-100 translate-x-0 translate-y-0" : cn("opacity-0 scale-[0.96]", hiddenShift[side], rx(bps, hiddenR)),
+            rx(bps, contentR),
             className
           )}
           style={{ ...floating.style, ...style }}
@@ -235,7 +262,7 @@ export const PopoverContent = React.forwardRef<HTMLDivElement, PopoverContentPro
           <div className="relative z-10">{typeof children === "function" ? children(close) : children}</div>
           {showArrow && (
             <span
-              className={cn("absolute w-2.5 h-2.5 rotate-45", !isBlurred && "bg-overlay", arrowPosition(floating.placement))}
+              className={cn("absolute w-2.5 h-2.5 rotate-45", !isBlurred && "bg-overlay", arrowPosition(floating.placement), rx(bps, arrowR))}
               style={isBlurred ? { backgroundColor: GLASS_THICK_BG, clipPath: arrowClipPath(floating.placement) } : undefined}
             />
           )}

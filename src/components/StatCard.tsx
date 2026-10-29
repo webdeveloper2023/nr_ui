@@ -1,6 +1,7 @@
 import { useId, type ReactNode } from "react";
 import { ArrowDown, ArrowUp } from "lucide-react";
 import { cn } from "../lib/cn";
+import { rx, useResponsive, type BreakpointClasses, type ResponsiveProp } from "./breakpoints";
 
 type StatColor = "default" | "accent" | "success" | "warning" | "danger";
 type StatVariant = "default" | "secondary" | "glass" | "gradient";
@@ -100,7 +101,16 @@ export interface StatCardProps {
   footer?: ReactNode;
   /** Extra classes */
   className?: string;
+  /** Adapts to the screen: smaller radius and value text on mobile, roomier padding and a larger value on desktop. true = all breakpoints or a list like ["m", "t"] */
+  responsive?: ResponsiveProp;
 }
+
+// Mobile: compact value and radius (cards sit edge to edge). Desktop: roomier padding, larger value.
+const rootR: BreakpointClasses = { m: "mobile:rounded-2xl" };
+const bodyR: BreakpointClasses = { d: "desktop:p-6" };
+const valueR: BreakpointClasses = { m: "mobile:text-2xl", d: "desktop:text-4xl" };
+const chartR: BreakpointClasses = { d: "desktop:px-6 desktop:pb-6" };
+const footerR: BreakpointClasses = { d: "desktop:px-6 desktop:py-4" };
 
 const iconStyles: Record<StatColor, string> = {
   default: "bg-default text-muted",
@@ -133,7 +143,9 @@ export function StatCard({
   chartData,
   footer,
   className = "",
+  responsive,
 }: StatCardProps) {
+  const bps = useResponsive(responsive);
   const trend = change === undefined ? null : change > 0 ? "up" : change < 0 ? "down" : "flat";
   const isGood = trend === "flat" ? null : (trend === "up") !== isInverted;
   const isGradient = variant === "gradient";
@@ -150,6 +162,7 @@ export function StatCard({
       data-glass={material}
       className={cn(
         "flex flex-col rounded-3xl overflow-hidden text-foreground",
+        rx(bps, rootR),
         variant === "secondary" && "bg-surface-secondary",
         variant === "default" && "bg-surface-gradient shadow-surface",
         variant === "glass" && "glass",
@@ -157,7 +170,7 @@ export function StatCard({
         className
       )}
     >
-      <div className="p-4">
+      <div className={cn("p-4", rx(bps, bodyR))}>
         <div className="flex items-center gap-2.5 min-h-8">
           {icon && <span className={cn("flex items-center justify-center w-8 h-8 shrink-0 rounded-lg [&_svg]:size-4", isGradient ? "bg-white/20 text-white" : iconStyles[color])}>{icon}</span>}
           <p className="flex-1 min-w-0 truncate text-sm text-muted">{title}</p>
@@ -165,7 +178,7 @@ export function StatCard({
         </div>
 
         <div className="mt-3 flex flex-wrap items-end justify-between gap-x-3 gap-y-2">
-          <p className="min-w-0 text-3xl font-semibold tracking-tight tabular-nums leading-none">{value}</p>
+          <p className={cn("min-w-0 text-3xl font-semibold tracking-tight tabular-nums leading-none", rx(bps, valueR))}>{value}</p>
           {trend && (
             <span className={cn("inline-flex items-center gap-0.5 h-6 rounded-full px-2 text-xs font-medium tabular-nums shrink-0", trendStyle)}>
               {trend === "up" && <ArrowUp size={12} strokeWidth={2.5} />}
@@ -185,12 +198,12 @@ export function StatCard({
       </div>
 
       {chartData && (
-        <div className="-mt-1 px-4 pb-4">
+        <div className={cn("-mt-1 px-4 pb-4", rx(bps, chartR))}>
           <Sparkline data={chartData} color={isGood === false ? "danger" : color} stroke={isGradient ? "#ffffff" : undefined} height={48} />
         </div>
       )}
 
-      {footer && <div className={cn("mt-auto border-t px-4 py-3 text-sm", isGradient ? "border-white/20" : "border-separator")}>{footer}</div>}
+      {footer && <div className={cn("mt-auto border-t px-4 py-3 text-sm", rx(bps, footerR), isGradient ? "border-white/20" : "border-separator")}>{footer}</div>}
     </div>
   );
 }

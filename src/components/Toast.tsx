@@ -10,6 +10,7 @@ import React, {
 import { createPortal } from "react-dom";
 import { cn } from "../lib/cn";
 import { useLocale } from "./locale";
+import { rx, useBreakpoint, useResponsive, type Breakpoint, type BreakpointClasses, type ResponsiveProp } from "./breakpoints";
 
 type ToastColor = "default" | "accent" | "success" | "warning" | "danger";
 type ToastPlacement = "top-left" | "top-center" | "top-right" | "bottom-left" | "bottom-center" | "bottom-right";
@@ -57,6 +58,8 @@ export interface ToastProviderProps {
   isBlurred?: boolean;
   /** Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass) */
   material?: "frosted" | "liquid";
+  /** Adapts to the screen: on mobile toasts span the full width at the bottom (any placement) with a touch-sized close button; wider toasts with roomier padding on desktop. true = all breakpoints or a list like ["m", "t"] */
+  responsive?: ResponsiveProp;
   /** App content */
   children?: ReactNode;
 }
@@ -86,26 +89,34 @@ const iconPath: Record<ToastColor, ReactNode> = {
 };
 
 const placementStyles: Record<ToastPlacement, string> = {
-  "top-left": "top-4 left-4 items-start",
-  "top-center": "top-4 left-1/2 -translate-x-1/2 items-center",
-  "top-right": "top-4 right-4 items-end",
+  "top-left": "top-4 left-4 items-start flex-col",
+  "top-center": "top-4 left-1/2 -translate-x-1/2 items-center flex-col",
+  "top-right": "top-4 right-4 items-end flex-col",
   "bottom-left": "bottom-4 left-4 items-start flex-col-reverse",
   "bottom-center": "bottom-4 left-1/2 -translate-x-1/2 items-center flex-col-reverse",
   "bottom-right": "bottom-4 right-4 items-end flex-col-reverse",
 };
 
+// Mobile: one full-width column at the bottom, above the home indicator. Desktop: wider, roomier cards.
+const regionR: BreakpointClasses = {
+  m: "mobile:top-auto mobile:bottom-[max(0.75rem,env(safe-area-inset-bottom))] mobile:left-3 mobile:right-3 mobile:translate-x-0 mobile:flex-col-reverse mobile:items-stretch",
+};
+const cardR: BreakpointClasses = { m: "mobile:w-full mobile:max-w-none mobile:pr-12", d: "desktop:w-[400px] desktop:p-4 desktop:pr-11" };
+const closeR: BreakpointClasses = { m: "mobile:top-2.5 mobile:right-2.5 mobile:h-9 mobile:w-9", t: "tablet:h-8 tablet:w-8" };
+
 const progressKeyframes = `@keyframes nr-toast-progress { from { transform: scaleX(1) } to { transform: scaleX(0) } }`;
 
 const EXIT_MS = 200;
 
-const ToastCard: React.FC<{ toast: ToastItem; isTop: boolean; fromTop: boolean; isBlurred: boolean; material?: "frosted" | "liquid"; onClose: (id: string) => void }> = ({
-  toast,
-  isTop,
-  fromTop,
-  isBlurred,
-  material,
-  onClose,
-}) => {
+const ToastCard: React.FC<{
+  toast: ToastItem;
+  isTop: boolean;
+  fromTop: boolean;
+  isBlurred: boolean;
+  material?: "frosted" | "liquid";
+  bps: Breakpoint[];
+  onClose: (id: string) => void;
+}> = ({ toast, isTop, fromTop, isBlurred, material, bps, onClose }) => {
   const t = useLocale();
   const { id, title, description, color = "default", icon, timeout = 5000, hideIcon, action, isClosing } = toast;
   const [entered, setEntered] = useState(false);
@@ -143,6 +154,7 @@ const ToastCard: React.FC<{ toast: ToastItem; isTop: boolean; fromTop: boolean; 
         (toast.isBlurred ?? isBlurred) ? "glass-thick" : "bg-overlay shadow-overlay",
         "transition-[opacity,transform] duration-200 ease-(--ease-out-soft)",
         shown ? "opacity-100 translate-y-0 scale-100" : cn("opacity-0 scale-95", fromTop ? "-translate-y-3" : "translate-y-3"),
+        rx(bps, cardR),
         !isTop && "max-sm:hidden"
       )}
     >
@@ -164,7 +176,10 @@ const ToastCard: React.FC<{ toast: ToastItem; isTop: boolean; fromTop: boolean; 
         type="button"
         onClick={() => onClose(id)}
         aria-label={t.common.close}
-        className="absolute top-3 right-3 flex items-center justify-center w-7 h-7 rounded-full text-muted hover:bg-default hover:text-foreground transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-focus"
+        className={cn(
+          "absolute top-3 right-3 flex items-center justify-center w-7 h-7 rounded-full text-muted hover:bg-default hover:text-foreground transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-focus",
+          rx(bps, closeR)
+        )}
       >
         <svg width="12" height="12" viewBox="0 0 18 18" fill="none">
           <path d="M4.5 4.5L13.5 13.5M4.5 13.5L13.5 4.5" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" />
@@ -185,7 +200,18 @@ const ToastCard: React.FC<{ toast: ToastItem; isTop: boolean; fromTop: boolean; 
 
 let toastCounter = 0;
 
-export const ToastProvider: React.FC<ToastProviderProps> = ({ placement = "bottom-right", maxVisible = 5, isBlurred = true, material, children }) => {
+export const ToastProvider: React.FC<ToastProviderProps> = ({
+  placement = "bottom-right",
+  maxVisible = 5,
+  isBlurred = true,
+  material,
+  responsive,
+  children,
+}) => {
+  const bps = useResponsive(responsive);
+  const bp = useBreakpoint();
+  // On a mobile screen with the mobile layout on, toasts always come from the bottom
+  const fromTop = placement.startsWith("top") && !(bp === "m" && bps.includes("m"));
   const [toasts, setToasts] = useState<ToastItem[]>([]);
   const toastsRef = useRef<ToastItem[]>([]);
   useEffect(() => {
@@ -226,16 +252,17 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({ placement = "botto
       {children}
       {typeof document !== "undefined" &&
         createPortal(
-          <div className={cn("pointer-events-none fixed z-[10000] flex gap-2", placementStyles[placement])}>
+          <div className={cn("pointer-events-none fixed z-[10000] flex gap-2", placementStyles[placement], rx(bps, regionR))}>
             <style>{progressKeyframes}</style>
             {toasts.map((t, i) => (
               <ToastCard
                 key={t.id}
                 toast={t}
                 isTop={i === toasts.length - 1}
-                fromTop={placement.startsWith("top")}
+                fromTop={fromTop}
                 isBlurred={isBlurred}
                 material={material}
+                bps={bps}
                 onClose={closeToast}
               />
             ))}

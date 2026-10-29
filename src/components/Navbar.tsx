@@ -11,6 +11,7 @@ import {
 } from "react";
 import { cn } from "../lib/cn";
 import { useLocale } from "./locale";
+import { rx, useResponsive, type Breakpoint, type BreakpointClasses, type ResponsiveProp } from "./breakpoints";
 
 type NavbarMaxWidth = "sm" | "md" | "lg" | "xl" | "2xl" | "full";
 
@@ -33,6 +34,8 @@ export interface NavbarProps extends HTMLAttributes<HTMLElement> {
   isMenuOpen?: boolean;
   /** Called when the mobile menu opens or closes */
   onMenuOpenChange?: (open: boolean) => void;
+  /** Adapts to the screen: narrower side padding and a touch-sized menu toggle on mobile; with "t" the links also fold into the menu on tablet (below 1024px instead of 768px); roomier padding on desktop. true = all breakpoints or a list like ["m", "t"] */
+  responsive?: ResponsiveProp;
   /** Inner content */
   children?: ReactNode;
 }
@@ -83,13 +86,23 @@ interface NavbarContextValue {
   isMenuOpen: boolean;
   setIsMenuOpen: (open: boolean) => void;
   height: string;
+  /** Active responsive breakpoints of the navbar */
+  bps: Breakpoint[];
 }
 
 const NavbarContext = createContext<NavbarContextValue>({
   isMenuOpen: false,
   setIsMenuOpen: () => {},
   height: "4rem",
+  bps: [],
 });
+
+// The links fold into the menu below md (768px); with "t" below lg (1024px), so tablets get the menu too
+const foldsOnTablet = (bps: Breakpoint[]) => bps.includes("t");
+
+const headerPaddingR: BreakpointClasses = { m: "mobile:px-4", d: "desktop:px-8" };
+const floatingR: BreakpointClasses = { m: "mobile:px-2 mobile:pt-2" };
+const toggleR: BreakpointClasses = { m: "mobile:w-11 mobile:h-11", t: "tablet:w-11 tablet:h-11" };
 
 const useNavbarContext = () => useContext(NavbarContext);
 
@@ -114,6 +127,7 @@ export const Navbar = forwardRef<HTMLElement, NavbarProps>(
       shouldHideOnScroll = false,
       isMenuOpen: menuProp,
       onMenuOpenChange,
+      responsive,
       children,
       className = "",
       style,
@@ -121,6 +135,7 @@ export const Navbar = forwardRef<HTMLElement, NavbarProps>(
     },
     ref
   ) => {
+    const bps = useResponsive(responsive);
     const [menuState, setMenuState] = useState(false);
     const isMenuOpen = menuProp ?? menuState;
     const [isHidden, setIsHidden] = useState(false);
@@ -159,7 +174,7 @@ export const Navbar = forwardRef<HTMLElement, NavbarProps>(
     const isFloating = position === "floating";
 
     return (
-      <NavbarContext.Provider value={{ isMenuOpen, setIsMenuOpen, height }}>
+      <NavbarContext.Provider value={{ isMenuOpen, setIsMenuOpen, height, bps }}>
         <nav
           ref={ref}
           data-glass={material}
@@ -167,7 +182,7 @@ export const Navbar = forwardRef<HTMLElement, NavbarProps>(
             "z-40 flex w-full items-center justify-center",
             "transition-transform duration-300 ease-(--ease-out-soft)",
             position !== "static" && "sticky top-0",
-            isFloating && "px-4 pt-3",
+            isFloating && cn("px-4 pt-3", rx(bps, floatingR)),
             isHidden && !isMenuOpen && "-translate-y-[calc(100%+1rem)]",
             !isFloating &&
               (isBlurred
@@ -184,6 +199,7 @@ export const Navbar = forwardRef<HTMLElement, NavbarProps>(
             className={cn(
               "flex w-full items-center justify-between gap-4 px-6",
               maxWidthMap[maxWidth],
+              !isFloating && rx(bps, headerPaddingR),
               isFloating &&
                 cn(
                   "rounded-full pl-5 pr-2",
@@ -220,20 +236,23 @@ const justifyMap = {
 };
 
 export const NavbarContent = forwardRef<HTMLDivElement, NavbarContentProps>(
-  ({ justify = "start", isAlwaysVisible = false, children, className = "", ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn(
-        isAlwaysVisible ? "flex" : "hidden md:flex",
-        "items-center gap-1 flex-1 h-full",
-        justifyMap[justify],
-        className
-      )}
-      {...props}
-    >
-      {children}
-    </div>
-  )
+  ({ justify = "start", isAlwaysVisible = false, children, className = "", ...props }, ref) => {
+    const { bps } = useNavbarContext();
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          isAlwaysVisible ? "flex" : foldsOnTablet(bps) ? "hidden lg:flex" : "hidden md:flex",
+          "items-center gap-1 flex-1 h-full",
+          justifyMap[justify],
+          className
+        )}
+        {...props}
+      >
+        {children}
+      </div>
+    );
+  }
 );
 
 NavbarContent.displayName = "NavbarContent";
@@ -291,7 +310,7 @@ NavbarItem.displayName = "NavbarItem";
 
 export const NavbarMenuToggle = forwardRef<HTMLButtonElement, NavbarMenuToggleProps>(
   ({ srOnlyText, className = "", ...props }, ref) => {
-    const { isMenuOpen, setIsMenuOpen } = useNavbarContext();
+    const { isMenuOpen, setIsMenuOpen, bps } = useNavbarContext();
     const t = useLocale();
     const bar = "absolute left-0 block h-[1.5px] w-full rounded-full bg-foreground transition-all duration-300 ease-(--ease-out-soft)";
 
@@ -303,7 +322,9 @@ export const NavbarMenuToggle = forwardRef<HTMLButtonElement, NavbarMenuTogglePr
         aria-expanded={isMenuOpen}
         onClick={() => setIsMenuOpen(!isMenuOpen)}
         className={cn(
-          "md:hidden relative w-10 h-10 flex items-center justify-center",
+          foldsOnTablet(bps) ? "lg:hidden" : "md:hidden",
+          "relative w-10 h-10 flex items-center justify-center",
+          rx(bps, toggleR),
           "rounded-full hover:bg-default active:scale-[0.95] transition-[background-color,transform] cursor-pointer",
           "outline-none focus-visible:ring-2 focus-visible:ring-focus",
           className
@@ -324,16 +345,18 @@ NavbarMenuToggle.displayName = "NavbarMenuToggle";
 
 export const NavbarMenu = forwardRef<HTMLDivElement, NavbarMenuProps>(
   ({ children, className = "", style, ...props }, ref) => {
-    const { isMenuOpen, height } = useNavbarContext();
+    const { isMenuOpen, height, bps } = useNavbarContext();
 
     return (
       <div
         ref={ref}
         aria-hidden={!isMenuOpen}
         className={cn(
-          "fixed left-0 right-0 bottom-0 z-40 md:hidden",
+          "fixed left-0 right-0 bottom-0 z-40",
+          foldsOnTablet(bps) ? "lg:hidden" : "md:hidden",
           "glass-thick",
           "flex flex-col gap-1 px-6 py-4 overflow-y-auto",
+          rx(bps, { m: "mobile:px-4" }),
           "transition-[opacity,transform] duration-300 ease-(--ease-out-soft)",
           isMenuOpen ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 -translate-y-3 pointer-events-none",
           className

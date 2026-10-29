@@ -1,5 +1,6 @@
 import { useCallback, useId, useLayoutEffect, useRef, useState, type HTMLAttributes, type KeyboardEvent, type ReactNode } from "react";
 import { cn } from "../lib/cn";
+import { rx, useResponsive, type BreakpointClasses, type ResponsiveProp } from "./breakpoints";
 
 type TabsVariant = "primary" | "secondary";
 type TabsSize = "xs" | "sm" | "md" | "lg";
@@ -45,6 +46,8 @@ export interface TabsProps extends Omit<HTMLAttributes<HTMLDivElement>, "onChang
   onSelectionChange?: (key: string) => void;
   /** Function that returns the panel content for the selected tab key */
   children?: (key: string) => ReactNode;
+  /** Adapts to the screen: on mobile a horizontal tab list scrolls sideways instead of squeezing and tabs are touch-sized; touch-sized on tablet; larger lg on desktop. true = all breakpoints or a list like ["m", "t"] */
+  responsive?: ResponsiveProp;
 }
 
 const sizeStyles: Record<TabsSize, { tab: string; underline: string }> = {
@@ -52,6 +55,14 @@ const sizeStyles: Record<TabsSize, { tab: string; underline: string }> = {
   sm: { tab: "h-7 px-3 text-xs gap-1.5", underline: "h-8 text-xs gap-1.5" },
   md: { tab: "h-8 px-3.5 text-sm gap-2", underline: "h-10 text-sm gap-2" },
   lg: { tab: "h-10 px-4 text-base gap-2", underline: "h-12 text-base gap-2" },
+};
+
+// Mobile / tablet: touch-sized tabs. Desktop: lg grows a step.
+const sizeStylesR: Record<TabsSize, { tab: BreakpointClasses; underline: BreakpointClasses }> = {
+  xs: { tab: { m: "mobile:h-8 mobile:px-3" }, underline: { m: "mobile:h-9" } },
+  sm: { tab: { m: "mobile:h-9 mobile:px-3.5 mobile:text-sm", t: "tablet:h-8" }, underline: { m: "mobile:h-10 mobile:text-sm", t: "tablet:h-9" } },
+  md: { tab: { m: "mobile:h-10 mobile:px-4", t: "tablet:h-10 tablet:px-4" }, underline: { m: "mobile:h-11", t: "tablet:h-11" } },
+  lg: { tab: { d: "desktop:h-12 desktop:px-5" }, underline: { d: "desktop:h-14" } },
 };
 
 interface CursorRect {
@@ -76,9 +87,11 @@ export const Tabs = ({
   defaultSelectedKey,
   onSelectionChange,
   children,
+  responsive,
   className = "",
   ...props
 }: TabsProps) => {
+  const bps = useResponsive(responsive);
   const isKeyDisabled = (tab: TabItem) => isDisabled || tab.isDisabled || disabledKeys.includes(tab.key);
   const [internalKey, setInternalKey] = useState(defaultSelectedKey ?? (tabs.find((t) => !isKeyDisabled(t)) ?? tabs[0])?.key ?? "");
   const selectedKey = controlledKey ?? internalKey;
@@ -92,6 +105,8 @@ export const Tabs = ({
   const resolvedPlacement: TabsPlacement = isVertical && (placement === "top" || placement === "bottom") ? "start" : placement;
   const vertical = resolvedPlacement === "start" || resolvedPlacement === "end";
   const underline = variant === "secondary";
+  // A horizontal list gets a sideways scroller on mobile instead of overflowing the screen
+  const scrollOnMobile = !vertical && bps.includes("m");
 
   const tabRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
   const [cursor, setCursor] = useState<CursorRect | null>(null);
@@ -101,8 +116,9 @@ export const Tabs = ({
     (key: string) => {
       if (controlledKey === undefined) setInternalKey(key);
       onSelectionChange?.(key);
+      if (scrollOnMobile) tabRefs.current.get(key)?.scrollIntoView?.({ block: "nearest", inline: "nearest" });
     },
-    [controlledKey, onSelectionChange]
+    [controlledKey, onSelectionChange, scrollOnMobile]
   );
 
   useLayoutEffect(() => {
@@ -168,7 +184,9 @@ export const Tabs = ({
         underline
           ? cn("gap-6", vertical ? "gap-1 border-r border-separator pr-4" : "border-b border-separator")
           : cn(isBlurred ? "glass-thin" : "bg-default", "p-1 gap-0.5", vertical ? "rounded-3xl" : "rounded-full"),
-        !underline && !vertical && "overflow-x-auto"
+        !underline && !vertical && "overflow-x-auto",
+        scrollOnMobile && "mobile:w-max mobile:min-w-full",
+        underline && !vertical && rx(bps, { m: "mobile:gap-4" })
       )}
     >
       <span
@@ -203,6 +221,7 @@ export const Tabs = ({
               "outline-none transition-colors duration-150",
               "focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-background",
               underline ? sizeStyles[size].underline : sizeStyles[size].tab,
+              rx(bps, underline ? sizeStylesR[size].underline : sizeStylesR[size].tab),
               vertical ? "justify-start" : "justify-center",
               underline && vertical && "px-2",
               fullWidth && !vertical && "flex-1",
@@ -242,7 +261,11 @@ export const Tabs = ({
       )}
       {...props}
     >
-      {list}
+      {scrollOnMobile ? (
+        <div className="mobile:overflow-x-auto mobile:overscroll-x-contain mobile:[scrollbar-width:none] mobile:[&::-webkit-scrollbar]:hidden">{list}</div>
+      ) : (
+        list
+      )}
       {panel}
     </div>
   );

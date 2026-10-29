@@ -13,6 +13,7 @@ import {
 } from "react";
 import { cn } from "../lib/cn";
 import { useLocale } from "./locale";
+import { rx, useResponsive, type BreakpointClasses, type ResponsiveProp } from "./breakpoints";
 import { Input, type InputProps } from "./Input";
 import {
   PHONE_COUNTRIES,
@@ -67,7 +68,13 @@ export interface PhoneInputProps
   incompleteMessage?: ReactNode;
   /** Extra leading content (before the flag and dial code) */
   startContent?: ReactNode;
+  /** Adapts to the screen like Input (44px field with 16px text on mobile, touch-sized on tablet, larger lg on desktop); the country picker's tap area grows to the full field height on mobile and tablet. true = all breakpoints or a list like ["m", "t"] */
+  responsive?: ResponsiveProp;
 }
+
+// The country picker is an invisible native select over flag + dial code; on touch screens its tap area
+// grows to the full 44px field height
+const pickerR: BreakpointClasses = { m: "mobile:-inset-y-3", t: "tablet:-inset-y-3" };
 
 const FALLBACK = getPhoneCountry("UZ") ?? PHONE_COUNTRIES[0];
 
@@ -95,11 +102,13 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
       onKeyDown,
       onPaste,
       placeholder,
+      responsive,
       ...props
     },
     ref
   ) => {
     const t = useLocale();
+    const bps = useResponsive(responsive);
     const inputRef = useRef<HTMLInputElement>(null);
     useImperativeHandle(ref, () => inputRef.current as HTMLInputElement);
 
@@ -240,7 +249,7 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
               disabled={isDisabled}
               onChange={(e) => selectCountry(e.target.value)}
               onClick={(e) => e.stopPropagation()}
-              className="absolute inset-0 w-full cursor-pointer opacity-0"
+              className={cn("absolute inset-0 w-full cursor-pointer opacity-0", rx(bps, pickerR))}
             >
               {options.map((c) => (
                 <option key={c.iso2} value={c.iso2}>
@@ -259,6 +268,7 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
         {...props}
         ref={inputRef}
         size={size}
+        responsive={responsive}
         type="tel"
         inputMode="tel"
         autoComplete="tel-national"

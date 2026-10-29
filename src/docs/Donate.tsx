@@ -31,7 +31,7 @@ export function Donate() {
   };
   return <>
     <button type="button" onClick={show} className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full bg-accent-soft px-3 text-sm font-medium text-accent-soft-foreground transition-colors hover:bg-accent-soft-hover">
-      <Heart size={16} /> {t({ en: "Donate", uz: "Donate", ru: "Поддержать" })}
+      <Heart size={16} /> <span className="max-sm:sr-only">{t({ en: "Donate", uz: "Donate", ru: "Поддержать" })}</span>
     </button>
     <Modal isOpen={open} onClose={() => setOpen(false)} size="md" backdrop="blur">
       <ModalHeader>{t({ en: "Support NR UI", uz: "NR UI’ni qo‘llab-quvvatlang", ru: "Поддержать NR UI" })}</ModalHeader>

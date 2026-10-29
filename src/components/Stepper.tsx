@@ -1,5 +1,6 @@
 import { Check } from "lucide-react";
 import { cn } from "../lib/cn";
+import { rx, useResponsive, type BreakpointClasses, type ResponsiveProp } from "./breakpoints";
 
 type StepperColor = "default" | "accent" | "success" | "warning" | "danger";
 
@@ -21,6 +22,8 @@ export interface StepperProps {
   orientation?: "horizontal" | "vertical";
   /** Color theme */
   color?: StepperColor;
+  /** Adapts to the screen: a horizontal stepper shows only the current step's title on mobile (no descriptions), hides descriptions on tablet, larger titles on desktop. true = all breakpoints or a list like ["m", "t"] */
+  responsive?: ResponsiveProp;
   /** Extra CSS classes */
   className?: string;
 }
@@ -33,7 +36,23 @@ const colorMap: Record<StepperColor, { solid: string; ring: string; line: string
   danger: { solid: "bg-danger text-danger-foreground", ring: "outline-danger text-danger", line: "bg-danger" },
 };
 
-export function Stepper({ steps, currentStep, onStepChange, orientation = "horizontal", color = "accent", className = "" }: StepperProps) {
+// Horizontal: a narrow screen has no room for every label under its circle
+const otherLabelR: BreakpointClasses = { m: "mobile:hidden" };
+const activeLabelR: BreakpointClasses = { m: "mobile:whitespace-nowrap" };
+const descriptionR: BreakpointClasses = { m: "mobile:hidden", t: "tablet:hidden" };
+const verticalDescriptionR: BreakpointClasses = { d: "desktop:text-sm" };
+const titleR: BreakpointClasses = { d: "desktop:text-base" };
+
+export function Stepper({
+  steps,
+  currentStep,
+  onStepChange,
+  orientation = "horizontal",
+  color = "accent",
+  responsive,
+  className = "",
+}: StepperProps) {
+  const bps = useResponsive(responsive);
   const isVertical = orientation === "vertical";
   const c = colorMap[color];
 
@@ -84,9 +103,18 @@ export function Stepper({ steps, currentStep, onStepChange, orientation = "horiz
             >
               {status === "complete" ? <Check size={15} strokeWidth={2.75} className="animate-scale-in" /> : i + 1}
             </button>
-            <div className={isVertical ? "pt-1" : "mt-2.5 px-2"}>
-              <p className={cn("text-sm font-medium transition-colors", status === "upcoming" ? "text-muted" : "text-foreground")}>{step.title}</p>
-              {step.description && <p className="mt-0.5 text-xs text-muted">{step.description}</p>}
+            <div
+              className={cn(
+                isVertical ? "pt-1" : "mt-2.5 px-2",
+                !isVertical && rx(bps, status === "active" ? activeLabelR : otherLabelR)
+              )}
+            >
+              <p className={cn("text-sm font-medium transition-colors", status === "upcoming" ? "text-muted" : "text-foreground", rx(bps, titleR))}>
+                {step.title}
+              </p>
+              {step.description && (
+                <p className={cn("mt-0.5 text-xs text-muted", rx(bps, isVertical ? verticalDescriptionR : descriptionR))}>{step.description}</p>
+              )}
             </div>
           </li>
         );

@@ -1,6 +1,7 @@
 import React from "react";
 import { cn } from "../lib/cn";
 import { useLocale } from "./locale";
+import { rx, useResponsive, type BreakpointClasses, type ResponsiveProp } from "./breakpoints";
 
 type SpinnerColor = "default" | "accent" | "success" | "warning" | "danger" | "current";
 type SpinnerSize = "xs" | "sm" | "md" | "lg";
@@ -18,6 +19,8 @@ export interface SpinnerProps {
   label?: string;
   /** Label color */
   labelColor?: SpinnerLabelColor;
+  /** Adapts to the screen: small labels grow a step on mobile for readability, lg grows to 40px on desktop. true = all breakpoints or a list like ["m", "t"] */
+  responsive?: ResponsiveProp;
   /** Extra CSS classes */
   className?: string;
 }
@@ -27,6 +30,15 @@ const sizeMap: Record<SpinnerSize, { box: string; stroke: number; dot: string; b
   sm: { box: "w-4 h-4", stroke: 2.5, dot: "w-1 h-1", bar: "w-0.5 h-2.5", label: "text-xs" },
   md: { box: "w-6 h-6", stroke: 2.5, dot: "w-1.5 h-1.5", bar: "w-[3px] h-4", label: "text-sm" },
   lg: { box: "w-8 h-8", stroke: 2.5, dot: "w-2 h-2", bar: "w-1 h-5", label: "text-sm" },
+};
+
+// Mobile: labels one step larger. Desktop: lg indicator 32 → 40px.
+const boxR: Record<SpinnerSize, BreakpointClasses> = { xs: {}, sm: {}, md: {}, lg: { d: "desktop:w-10 desktop:h-10" } };
+const labelR: Record<SpinnerSize, BreakpointClasses> = {
+  xs: { m: "mobile:text-xs" },
+  sm: { m: "mobile:text-sm" },
+  md: {},
+  lg: { d: "desktop:text-base" },
 };
 
 const textColor: Record<SpinnerColor, string> = {
@@ -55,16 +67,19 @@ export const Spinner: React.FC<SpinnerProps> = ({
   variant = "default",
   label,
   labelColor = "muted",
+  responsive,
   className = "",
 }) => {
   const t = useLocale();
+  const bps = useResponsive(responsive);
   const s = sizeMap[size];
+  const box = cn(s.box, rx(bps, boxR[size]));
 
   const renderIndicator = () => {
     switch (variant) {
       case "dots":
         return (
-          <span className={cn("flex items-center justify-center gap-1", s.box)}>
+          <span className={cn("flex items-center justify-center gap-1", box)}>
             {[0, 160, 320].map((d) => (
               <span
                 key={d}
@@ -76,7 +91,7 @@ export const Spinner: React.FC<SpinnerProps> = ({
         );
       case "wave":
         return (
-          <span className={cn("flex items-center justify-center gap-[3px]", s.box)}>
+          <span className={cn("flex items-center justify-center gap-[3px]", box)}>
             {[0, 100, 200, 300].map((d) => (
               <span
                 key={d}
@@ -88,7 +103,7 @@ export const Spinner: React.FC<SpinnerProps> = ({
         );
       case "spinner":
         return (
-          <span className={cn("relative", s.box)}>
+          <span className={cn("relative", box)}>
             {Array.from({ length: 8 }, (_, i) => (
               <span
                 key={i}
@@ -105,7 +120,7 @@ export const Spinner: React.FC<SpinnerProps> = ({
         );
       default:
         return (
-          <svg className={cn(s.box, "animate-spin")} style={{ animationDuration: "0.75s" }} viewBox="0 0 24 24" fill="none">
+          <svg className={cn(box, "animate-spin")} style={{ animationDuration: "0.75s" }} viewBox="0 0 24 24" fill="none">
             <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth={s.stroke} className="opacity-15" />
             <path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" strokeWidth={s.stroke} strokeLinecap="round" />
           </svg>
@@ -121,7 +136,7 @@ export const Spinner: React.FC<SpinnerProps> = ({
     >
       {variant !== "default" && <style>{keyframes}</style>}
       <span className={textColor[color]}>{renderIndicator()}</span>
-      {label && <span className={cn(s.label, labelColorMap[labelColor])}>{label}</span>}
+      {label && <span className={cn(s.label, rx(bps, labelR[size]), labelColorMap[labelColor])}>{label}</span>}
     </div>
   );
 };

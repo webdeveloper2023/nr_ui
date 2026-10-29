@@ -7,6 +7,7 @@ import { ExampleBlock } from "./ExampleBlock";
 import { PropsTable } from "./PropsTable";
 import { getExamples, loadSource } from "./modules";
 import { findEntry, registry } from "./registry";
+import { NewTag } from "./NewTag";
 import { useT } from "./i18n/lang";
 
 const L = {
@@ -110,7 +111,10 @@ export default function ComponentPage() {
   return (
     <div className="flex gap-12">
       <article className="min-w-0 flex-1 max-w-[860px]">
-        <h1 className="text-4xl font-semibold tracking-tight text-foreground">{entry.name}</h1>
+        <h1 className="flex items-center gap-3 text-4xl font-semibold tracking-tight text-foreground">
+          {entry.name}
+          {entry.isNew && <NewTag size="md" />}
+        </h1>
         <p className="mt-3 text-lg text-muted">{t(entry.description)}</p>
 
         <section id="usage" className="scroll-mt-28 mt-10">

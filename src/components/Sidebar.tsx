@@ -2,6 +2,7 @@ import { Children, createContext, isValidElement, useContext, useState, type Rea
 import { ChevronDown, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import { cn } from "../lib/cn";
 import { useLocale } from "./locale";
+import { rx, useBreakpoint, useResponsive, type Breakpoint, type BreakpointClasses, type ResponsiveProp } from "./breakpoints";
 
 type SidebarVariant = "default" | "surface";
 
@@ -10,9 +11,15 @@ interface SidebarContextValue {
   variant: SidebarVariant;
   selectedKey?: string;
   onSelect?: (key: string) => void;
+  bps: Breakpoint[];
 }
 
-const SidebarContext = createContext<SidebarContextValue>({ isCollapsed: false, variant: "default" });
+const SidebarContext = createContext<SidebarContextValue>({ isCollapsed: false, variant: "default", bps: [] });
+
+// Mobile: a full-width panel (for a drawer / sheet), never a rail. Tablet: starts as an icon rail.
+// Desktop: a wider panel. Items are touch-sized on mobile and tablet.
+const asideR: BreakpointClasses = { m: "mobile:w-full", d: "desktop:w-72" };
+const itemR: BreakpointClasses = { m: "mobile:h-11 mobile:text-base", t: "tablet:h-10" };
 
 export interface SidebarProps {
   /** Style: transparent on the canvas or a white surface panel */
@@ -39,6 +46,8 @@ export interface SidebarProps {
   isBlurred?: boolean;
   /** Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass) */
   material?: "frosted" | "liquid";
+  /** Adapts to the screen: full width with touch-sized items and no collapse button on mobile (place it in a drawer), starts as an icon rail on tablet (the toggle still expands it), wider (288px) on desktop. true = all breakpoints or a list like ["m", "t"] */
+  responsive?: ResponsiveProp;
   /** Child items */
   children?: ReactNode;
   /** Extra CSS classes */
@@ -60,13 +69,19 @@ export function Sidebar({
   hideToggle = false,
   isBlurred = false,
   material,
+  responsive,
   children,
   className = "",
 }: SidebarProps) {
   const t = useLocale();
-  const [collapsedState, setCollapsedState] = useState(defaultCollapsed);
+  const bps = useResponsive(responsive);
+  const bp = useBreakpoint();
+  const isAuto = bps.includes(bp);
+  // null = not toggled yet: follows defaultCollapsed, or the icon rail on tablet
+  const [collapsedState, setCollapsedState] = useState<boolean | null>(null);
   const [selectedState, setSelectedState] = useState(defaultSelectedKey);
-  const isCollapsed = collapsedProp ?? collapsedState;
+  const isMobilePanel = isAuto && bp === "m";
+  const isCollapsed = isMobilePanel ? false : (collapsedProp ?? collapsedState ?? (isAuto && bp === "t" ? true : defaultCollapsed));
   const selectedKey = selectedProp ?? selectedState;
 
   const toggle = () => {
@@ -80,20 +95,20 @@ export function Sidebar({
   };
 
   return (
-    <SidebarContext.Provider value={{ isCollapsed, variant, selectedKey, onSelect: select }}>
+    <SidebarContext.Provider value={{ isCollapsed, variant, selectedKey, onSelect: select, bps }}>
       <aside
         data-glass={material}
         className={cn(
           "flex flex-col h-full text-foreground",
           "transition-[width] duration-300 ease-(--ease-out-soft)",
           isBlurred ? "glass rounded-3xl" : variant === "surface" ? "bg-surface-gradient shadow-surface rounded-3xl" : "bg-transparent",
-          isCollapsed ? "w-16" : "w-64",
+          isCollapsed ? "w-16" : cn("w-64", rx(bps, asideR)),
           className
         )}
       >
         <div className={cn("flex items-center h-16 shrink-0 gap-2", isCollapsed ? "justify-center px-2" : "justify-between px-4")}>
           {!isCollapsed && <div className="min-w-0 flex-1 animate-fade-in">{header}</div>}
-          {!hideToggle && (
+          {!hideToggle && !isMobilePanel && (
             <button
               onClick={toggle}
               className={cn(
@@ -157,7 +172,7 @@ function containsKey(children: ReactNode, key?: string): boolean {
 }
 
 export function SidebarItem({ itemKey, icon, title, href, endContent, children }: SidebarItemProps) {
-  const { isCollapsed, variant, selectedKey, onSelect } = useContext(SidebarContext);
+  const { isCollapsed, variant, selectedKey, onSelect, bps } = useContext(SidebarContext);
   const hasChildren = Boolean(children);
   const hasSelectedChild = hasChildren && containsKey(children, selectedKey);
   const [isOpen, setIsOpen] = useState(hasSelectedChild);
@@ -172,6 +187,7 @@ export function SidebarItem({ itemKey, icon, title, href, endContent, children }
 
   const classes = cn(
     "relative flex items-center w-full h-9 rounded-xl text-sm cursor-pointer select-none",
+    rx(bps, itemR),
     "transition-colors duration-150",
     focusRing,
     isCollapsed ? "justify-center px-0" : "gap-2.5 px-3",

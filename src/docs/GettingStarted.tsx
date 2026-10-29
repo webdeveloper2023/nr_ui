@@ -163,6 +163,39 @@ export default function App() {
         />
       </Step>
 
+      <h2 id="responsive" className="scroll-mt-28 mt-20 mb-4 text-[28px] font-semibold tracking-tight text-foreground">
+        {t({ en: "Responsive design", uz: "Responsive dizayn", ru: "Адаптивный дизайн" })}
+      </h2>
+      <p className="mb-4 text-[15px] text-muted">
+        {t({
+          en: <>Every component takes {code("responsive")}: on its own it adapts on all four breakpoints — {code("m")} mobile (&lt;768px), {code("t")} tablet, {code("l")} laptop, {code("d")} desktop (≥1536px); a list such as {code('["m", "t"]')} adapts only there. Wrap the app in {code("ResponsiveProvider")} to turn it on everywhere, and lay pages out with {code("Container")}, {code("Stack")} and {code("Grid")}. Details: <Link to="/components/responsive" className="text-accent hover:underline">Responsive</Link>.</>,
+          uz: <>Har bir komponent {code("responsive")} qabul qiladi: o'zi yozilsa to'rtala breakpointga moslashadi — {code("m")} mobile (&lt;768px), {code("t")} tablet, {code("l")} laptop, {code("d")} desktop (≥1536px); {code('["m", "t"]')} kabi ro'yxat yozilsa faqat o'shalarga. Butun ilovaga yoqish uchun {code("ResponsiveProvider")} bilan o'rang, sahifani esa {code("Container")}, {code("Stack")} va {code("Grid")} bilan quring. Batafsil: <Link to="/components/responsive" className="text-accent hover:underline">Responsive</Link>.</>,
+          ru: <>Каждый компонент принимает {code("responsive")}: сам по себе он адаптирует под все четыре брейкпоинта — {code("m")} mobile (&lt;768px), {code("t")} tablet, {code("l")} laptop, {code("d")} desktop (≥1536px); список вроде {code('["m", "t"]')} — только под них. Оберните приложение в {code("ResponsiveProvider")}, чтобы включить везде, а страницы стройте из {code("Container")}, {code("Stack")} и {code("Grid")}. Подробнее: <Link to="/components/responsive" className="text-accent hover:underline">Responsive</Link>.</>,
+        })}
+      </p>
+      <CodeBlock
+        fileName="src/App.tsx"
+        code={`import { Button, Card, CardBody, Container, Grid, Input, ResponsiveProvider } from "nr-ui-kit";
+
+export default function App() {
+  return (
+    <ResponsiveProvider>
+      <Container>
+        {/* ${t({ en: "1 column on mobile, 2 on tablet, 3 from laptop up", uz: "mobile'da 1 ustun, tablet'da 2, laptop'dan boshlab 3", ru: "1 колонка на mobile, 2 на tablet, 3 начиная с laptop" })} */}
+        <Grid cols={3}>
+          <Card>
+            <CardBody>
+              <Input label="Email" />
+              <Button responsive={["m"]}>${t({ en: "Send", uz: "Yuborish", ru: "Отправить" })}</Button>
+            </CardBody>
+          </Card>
+        </Grid>
+      </Container>
+    </ResponsiveProvider>
+  );
+}`}
+      />
+
       <h2 id="theming" className="scroll-mt-28 mt-20 mb-4 text-[28px] font-semibold tracking-tight text-foreground">
         {t({ en: "Dark mode and theming", uz: "Dark mode va theme", ru: "Тёмная тема и оформление" })}
       </h2>

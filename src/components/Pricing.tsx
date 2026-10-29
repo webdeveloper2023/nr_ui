@@ -3,6 +3,7 @@ import { Check, X } from "lucide-react";
 import { Button } from "./Button";
 import { cn } from "../lib/cn";
 import { useLocale } from "./locale";
+import { rx, useResponsive, type BreakpointClasses, type ResponsiveProp } from "./breakpoints";
 
 export type BillingPeriod = "monthly" | "yearly";
 
@@ -15,16 +16,22 @@ export interface BillingToggleProps {
   yearlyBadge?: string;
   /** Button labels */
   labels?: { monthly: string; yearly: string };
+  /** Adapts to the screen: fills the width with two equal touch-sized (44px) options on mobile, touch-sized on tablet. true = all breakpoints or a list like ["m", "t"] */
+  responsive?: ResponsiveProp;
   /** Extra CSS classes */
   className?: string;
 }
 
-export function BillingToggle({ value, onChange, yearlyBadge = "-20%", labels: labelsProp, className = "" }: BillingToggleProps) {
+const toggleR: BreakpointClasses = { m: "mobile:flex mobile:w-full" };
+const toggleOptionR: BreakpointClasses = { m: "mobile:h-11 mobile:min-w-0 mobile:flex-1 mobile:text-base", t: "tablet:h-11" };
+
+export function BillingToggle({ value, onChange, yearlyBadge = "-20%", labels: labelsProp, responsive, className = "" }: BillingToggleProps) {
   const t = useLocale();
+  const bps = useResponsive(responsive);
   const labels = labelsProp ?? t.billing;
   const options: BillingPeriod[] = ["monthly", "yearly"];
   return (
-    <div role="radiogroup" className={cn("relative inline-flex p-1 rounded-full bg-default", className)}>
+    <div role="radiogroup" className={cn("relative inline-flex p-1 rounded-full bg-default", rx(bps, toggleR), className)}>
       <span
         className={cn(
           "absolute top-1 bottom-1 left-1 w-[calc(50%-4px)] rounded-full bg-segment shadow-field",
@@ -40,6 +47,7 @@ export function BillingToggle({ value, onChange, yearlyBadge = "-20%", labels: l
           onClick={() => onChange(key)}
           className={cn(
             "relative z-10 flex items-center justify-center gap-1.5 min-w-32 h-8 px-4 rounded-full text-sm font-medium cursor-pointer",
+            rx(bps, toggleOptionR),
             "transition-colors duration-150 outline-none focus-visible:ring-2 focus-visible:ring-focus",
             value === key ? "text-foreground" : "text-muted hover:text-foreground"
           )}
@@ -87,9 +95,14 @@ export interface PricingCardProps {
   material?: "frosted" | "liquid";
   /** Icon next to the title */
   icon?: ReactNode;
+  /** Adapts to the screen: full width with tighter padding and a smaller price on mobile, roomier padding and a larger price on desktop; the button becomes touch-sized. true = all breakpoints or a list like ["m", "t"] */
+  responsive?: ResponsiveProp;
   /** Extra CSS classes */
   className?: string;
 }
+
+const cardR: BreakpointClasses = { m: "mobile:w-full mobile:p-5 mobile:rounded-2xl", d: "desktop:p-8" };
+const priceR: BreakpointClasses = { m: "mobile:text-3xl", d: "desktop:text-5xl" };
 
 export function PricingCard({
   name,
@@ -107,9 +120,11 @@ export function PricingCard({
   isBlurred = false,
   material,
   icon,
+  responsive,
   className = "",
 }: PricingCardProps) {
   const t = useLocale();
+  const bps = useResponsive(responsive);
   const amount = typeof price === "string" ? price : price[period];
   const isInverse = variant === "inverse";
   const isGradient = variant === "gradient";
@@ -122,6 +137,7 @@ export function PricingCard({
       data-glass={material}
       className={cn(
         "relative flex flex-col rounded-3xl p-6",
+        rx(bps, cardR),
         tone(
           isBlurred ? "glass text-foreground" : "bg-surface-gradient text-foreground shadow-surface",
           "bg-foreground text-background",
@@ -160,14 +176,14 @@ export function PricingCard({
       <div className="mt-6 flex items-baseline gap-1">
         {typeof amount === "number" ? (
           <>
-            <span key={`${period}-${amount}`} className="text-4xl font-semibold tracking-tight tabular-nums animate-slide-up">
+            <span key={`${period}-${amount}`} className={cn("text-4xl font-semibold tracking-tight tabular-nums animate-slide-up", rx(bps, priceR))}>
               {currency}
               {amount}
             </span>
             <span className={cn("text-sm", muted)}>/{period === "monthly" ? "mo" : "yr"}</span>
           </>
         ) : (
-          <span className="text-4xl font-semibold tracking-tight">{amount}</span>
+          <span className={cn("text-4xl font-semibold tracking-tight", rx(bps, priceR))}>{amount}</span>
         )}
       </div>
 
@@ -175,6 +191,7 @@ export function PricingCard({
         className={cn("mt-6", isGradient && "!bg-white !text-accent hover:!bg-white/90")}
         variant={isPopular || isInverse || isGradient ? "primary" : "tertiary"}
         fullWidth
+        responsive={bps}
         onClick={onSelect}
       >
         {ctaLabel ?? t.pricing.cta}

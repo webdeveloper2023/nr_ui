@@ -1,5 +1,6 @@
 import React, { type ReactNode } from "react";
 import { cn } from "../lib/cn";
+import { rx, useBreakpoint, useResponsive, type Breakpoint, type BreakpointClasses, type ResponsiveProp } from "./breakpoints";
 
 type ProgressColor = "default" | "accent" | "success" | "warning" | "danger";
 type ProgressSize = "xs" | "sm" | "md" | "lg";
@@ -32,9 +33,20 @@ export interface ProgressProps {
   isStriped?: boolean;
   /** Disabled (inactive) state */
   isDisabled?: boolean;
+  /** Adapts to the screen: the thinnest bar thickens on mobile so it stays visible; md / lg bars and the labels grow on desktop. true = all breakpoints or a list like ["m", "t"] */
+  responsive?: ResponsiveProp;
   /** Extra CSS classes */
   className?: string;
 }
+
+// Mobile: xs bar 2 → 4px. Desktop: md / lg one step thicker, 16px labels.
+const trackSizeR: Record<ProgressSize, BreakpointClasses> = {
+  xs: { m: "mobile:h-1" },
+  sm: {},
+  md: { d: "desktop:h-2" },
+  lg: { d: "desktop:h-3" },
+};
+const labelRowR: BreakpointClasses = { d: "desktop:text-base" };
 
 const trackSize: Record<ProgressSize, string> = {
   xs: "h-0.5",
@@ -105,8 +117,10 @@ export const Progress: React.FC<ProgressProps> = ({
   isIndeterminate = false,
   isStriped = false,
   isDisabled = false,
+  responsive,
   className = "",
 }) => {
+  const bps = useResponsive(responsive);
   const percentage = toPercent(value, minValue, maxValue);
   const showTop = label || showValueLabel || valueLabel;
 
@@ -120,7 +134,7 @@ export const Progress: React.FC<ProgressProps> = ({
     >
       {(isIndeterminate || isStriped) && <style>{keyframes}</style>}
       {showTop && (
-        <div className="flex items-center justify-between gap-2 text-sm">
+        <div className={cn("flex items-center justify-between gap-2 text-sm", rx(bps, labelRowR))}>
           {label && <span className="font-medium text-foreground">{label}</span>}
           {(showValueLabel || valueLabel) && !isIndeterminate && (
             <span className="tabular-nums text-muted">{valueLabel ?? formatValue(percentage, value, formatOptions)}</span>
@@ -128,7 +142,7 @@ export const Progress: React.FC<ProgressProps> = ({
         </div>
       )}
 
-      <div className={cn("relative w-full overflow-hidden bg-default", trackSize[size], radiusMap[radius])}>
+      <div className={cn("relative w-full overflow-hidden bg-default", trackSize[size], rx(bps, trackSizeR[size]), radiusMap[radius])}>
         {isIndeterminate ? (
           <div
             className={cn("absolute inset-y-0 left-0 w-full origin-left", fillColor[color], radiusMap[radius])}
@@ -176,9 +190,18 @@ export interface CircularProgressProps {
   isIndeterminate?: boolean;
   /** Disabled (inactive) state */
   isDisabled?: boolean;
+  /** Adapts to the screen: xl shrinks to 80px on mobile; lg / xl grow to 72 / 112px on desktop; the label grows on mobile. true = all breakpoints or a list like ["m", "t"] */
+  responsive?: ResponsiveProp;
   /** Extra CSS classes */
   className?: string;
 }
+
+// The ring is drawn in px (SVG), so the size per breakpoint is picked in JS
+const circularPxR: Partial<Record<Breakpoint, Partial<Record<CircularSize, number>>>> = {
+  m: { xl: 80 },
+  d: { lg: 72, xl: 112 },
+};
+const circularLabelR: BreakpointClasses = { m: "mobile:text-sm" };
 
 const circularSizeMap: Record<CircularSize, { px: number; text: string }> = {
   xs: { px: 24, text: "text-[7px]" },
@@ -201,9 +224,13 @@ export const CircularProgress: React.FC<CircularProgressProps> = ({
   formatOptions,
   isIndeterminate = false,
   isDisabled = false,
+  responsive,
   className = "",
 }) => {
-  const { px, text } = circularSizeMap[size];
+  const bps = useResponsive(responsive);
+  const bp = useBreakpoint();
+  const { text } = circularSizeMap[size];
+  const px = (bps.includes(bp) && circularPxR[bp]?.[size]) || circularSizeMap[size].px;
   const stroke = strokeWidth ?? Math.max(3, Math.round(px / 14));
   const r = (px - stroke) / 2;
   const circumference = 2 * Math.PI * r;
@@ -246,7 +273,7 @@ export const CircularProgress: React.FC<CircularProgressProps> = ({
           </span>
         )}
       </div>
-      {label && <span className="text-xs text-muted">{label}</span>}
+      {label && <span className={cn("text-xs text-muted", rx(bps, circularLabelR))}>{label}</span>}
     </div>
   );
 };

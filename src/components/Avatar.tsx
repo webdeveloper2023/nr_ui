@@ -1,6 +1,7 @@
 import { Children, cloneElement, forwardRef, isValidElement, useState, type ImgHTMLAttributes, type ReactNode } from "react";
 import { cn } from "../lib/cn";
 import { useLocale } from "./locale";
+import { rx, useResponsive, type BreakpointClasses, type ResponsiveProp } from "./breakpoints";
 
 type AvatarColor = "default" | "accent" | "success" | "warning" | "danger";
 type AvatarSize = "xs" | "sm" | "md" | "lg" | "xl";
@@ -31,6 +32,8 @@ export interface AvatarProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, "
   className?: string;
   /** Icon shown when there is no image or name */
   icon?: ReactNode;
+  /** Adapts to the screen: lg and xl get one step smaller on mobile and one step larger on desktop. true = all breakpoints or a list like ["m", "t"] */
+  responsive?: ResponsiveProp;
 }
 
 const sizeMap: Record<AvatarSize, { container: string; text: string }> = {
@@ -39,6 +42,15 @@ const sizeMap: Record<AvatarSize, { container: string; text: string }> = {
   md: { container: "w-10 h-10", text: "text-sm" },
   lg: { container: "w-12 h-12", text: "text-base" },
   xl: { container: "w-14 h-14", text: "text-lg" },
+};
+
+// Large avatars shrink a step on mobile and grow a step on desktop; small ones stay aligned with text rows.
+const sizeMapR: Record<AvatarSize, { container: BreakpointClasses; text: BreakpointClasses }> = {
+  xs: { container: {}, text: {} },
+  sm: { container: {}, text: {} },
+  md: { container: {}, text: {} },
+  lg: { container: { m: "mobile:w-10 mobile:h-10", d: "desktop:w-14 desktop:h-14" }, text: { m: "mobile:text-sm", d: "desktop:text-lg" } },
+  xl: { container: { m: "mobile:w-12 mobile:h-12", d: "desktop:w-16 desktop:h-16" }, text: { m: "mobile:text-base", d: "desktop:text-xl" } },
 };
 
 const radiusMap: Record<AvatarRadius, string> = {
@@ -85,11 +97,13 @@ export const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
       className = "",
       icon,
       alt,
+      responsive,
       ...props
     },
     ref
   ) => {
     const t = useLocale();
+    const bps = useResponsive(responsive);
     const [imgError, setImgError] = useState(false);
     const [loaded, setLoaded] = useState(false);
     const hasImage = Boolean(src) && !imgError;
@@ -104,6 +118,7 @@ export const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
           "relative inline-flex items-center justify-center overflow-hidden shrink-0 align-middle box-border",
           "outline-none transition-transform duration-200 ease-(--ease-out-soft)",
           sizeMap[size].container,
+          rx(bps, sizeMapR[size].container),
           radiusMap[radius],
           colorMap[color].bg,
           isBordered && cn("ring-2 ring-offset-2 ring-offset-background", colorMap[color].ring),
@@ -125,7 +140,7 @@ export const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
           />
         )}
         {showFallbackContent && showFallback && (
-          <span className={cn("flex items-center justify-center w-full h-full font-medium select-none", sizeMap[size].text)}>
+          <span className={cn("flex items-center justify-center w-full h-full font-medium select-none", sizeMap[size].text, rx(bps, sizeMapR[size].text))}>
             {fallback ?? (name ? getInitials(name) : icon ?? <DefaultIcon />)}
           </span>
         )}
@@ -159,7 +174,12 @@ export interface AvatarGroupProps {
   renderCount?: (count: number) => ReactNode;
   /** Extra classes */
   className?: string;
+  /** Passed to every avatar; on mobile at most 3 avatars stay visible and the +N count grows to match. true = all breakpoints or a list like ["m", "t"] */
+  responsive?: ResponsiveProp;
 }
+
+/** Avatars shown on mobile when the group is responsive */
+const MOBILE_MAX = 3;
 
 export const AvatarGroup = ({
   max,
@@ -172,10 +192,41 @@ export const AvatarGroup = ({
   isGrid = false,
   renderCount,
   className = "",
+  responsive,
 }: AvatarGroupProps) => {
+  const bps = useResponsive(responsive);
   const childArray = Children.toArray(children);
   const visibleCount = max !== undefined ? Math.min(max, childArray.length) : childArray.length;
   const overflowCount = (total ?? childArray.length) - visibleCount;
+  // On mobile fewer avatars fit: hide the extra ones with CSS and show a second, larger +N
+  const mobileCount = bps.includes("m") && !isGrid ? Math.min(visibleCount, MOBILE_MAX) : visibleCount;
+  const mobileOverflow = (total ?? childArray.length) - mobileCount;
+  const trimsOnMobile = mobileCount < visibleCount;
+
+  // "all" | "not-mobile" | "mobile" — one display utility per breakpoint, never two at once
+  const countBadge = (count: number, on: "all" | "not-mobile" | "mobile" = "all") =>
+    renderCount ? (
+      <span key={on} className={on === "mobile" ? "hidden mobile:contents" : cn("contents", on === "not-mobile" && "mobile:hidden")}>
+        {renderCount(count)}
+      </span>
+    ) : (
+      <div
+        key={on}
+        className={cn(
+          "relative items-center justify-center shrink-0 font-medium",
+          on === "mobile" ? "hidden mobile:inline-flex" : cn("inline-flex", on === "not-mobile" && "mobile:hidden"),
+          "bg-default text-muted",
+          isBordered ? "ring-2 ring-offset-2 ring-offset-background ring-border" : "ring-2 ring-background",
+          radiusMap[radius ?? "full"],
+          sizeMap[size].container,
+          sizeMap[size].text,
+          rx(bps, sizeMapR[size].container),
+          rx(bps, sizeMapR[size].text)
+        )}
+      >
+        +{count}
+      </div>
+    );
 
   return (
     <div
@@ -193,29 +244,21 @@ export const AvatarGroup = ({
             color: child.props.color ?? color,
             radius: child.props.radius ?? radius,
             isBordered: child.props.isBordered ?? isBordered,
-            className: cn(!isBordered && !isGrid && "ring-2 ring-background", child.props.className),
+            responsive: child.props.responsive ?? responsive,
+            className: cn(!isBordered && !isGrid && "ring-2 ring-background", i >= mobileCount && "mobile:hidden", child.props.className),
           });
         }
         return child;
       })}
 
-      {overflowCount > 0 &&
-        (renderCount ? (
-          renderCount(overflowCount)
-        ) : (
-          <div
-            className={cn(
-              "relative inline-flex items-center justify-center shrink-0 font-medium",
-              "bg-default text-muted",
-              isBordered ? "ring-2 ring-offset-2 ring-offset-background ring-border" : "ring-2 ring-background",
-              radiusMap[radius ?? "full"],
-              sizeMap[size].container,
-              sizeMap[size].text
-            )}
-          >
-            +{overflowCount}
-          </div>
-        ))}
+      {trimsOnMobile ? (
+        <>
+          {overflowCount > 0 && countBadge(overflowCount, "not-mobile")}
+          {countBadge(mobileOverflow, "mobile")}
+        </>
+      ) : (
+        overflowCount > 0 && countBadge(overflowCount)
+      )}
     </div>
   );
 };

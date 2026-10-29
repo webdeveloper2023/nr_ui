@@ -12,12 +12,18 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import { cn } from "../lib/cn";
+import { rx, useResponsive, type ResponsiveProp } from "./breakpoints";
 import { useLocale } from "./locale";
 import {
   fieldBoxClasses,
   fieldDescriptionClasses,
   fieldErrorClasses,
   fieldHeight,
+  fieldHeightR,
+  fieldLeftLabelR,
+  fieldLeftLayoutR,
+  fieldPaddingR,
+  fieldTextR,
   fieldLabelClasses,
   fieldPadding,
   fieldRadius,
@@ -63,6 +69,8 @@ export interface SelectProps extends Omit<HTMLAttributes<HTMLDivElement>, "onCha
   isBlurred?: boolean;
   /** Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass) */
   material?: "frosted" | "liquid";
+  /** Adapts to the screen: touch-sized trigger and options with 16px text on mobile, touch-sized on tablet, larger lg on desktop; a left label moves on top on mobile. true = all breakpoints or a list like ["m", "t"] */
+  responsive?: ResponsiveProp;
   /** Helper text below the field */
   description?: ReactNode;
   /** Leading content (e.g. an icon) */
@@ -137,12 +145,14 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
       emptyContent,
       isBlurred = true,
       material,
+      responsive,
       className = "",
       ...props
     },
     ref
   ) => {
     const t = useLocale();
+    const bps = useResponsive(responsive);
     const id = useId();
     const listId = `${id}-listbox`;
     const [internalKey, setInternalKey] = useState(defaultSelectedKey ?? "");
@@ -313,13 +323,14 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
         className={cn(
           "flex w-full",
           isLeft && label ? "flex-row items-start gap-3" : "flex-col gap-1.5",
+          isLeft && label && rx(bps, fieldLeftLayoutR),
           isDisabled && "opacity-50 pointer-events-none",
           className
         )}
         {...props}
       >
         {label && (
-          <label htmlFor={id} className={cn(fieldLabelClasses, isLeft && cn("shrink-0 flex items-center", fieldHeight[size]))}>
+          <label htmlFor={id} className={cn(fieldLabelClasses, isLeft && cn("shrink-0 flex items-center", fieldHeight[size], rx(bps, fieldLeftLabelR)))}>
             {label}
             {isRequired && <span className="text-danger ml-0.5">*</span>}
           </label>
@@ -345,6 +356,9 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
               fieldPadding[size],
               fieldText[size],
               fieldHeight[size],
+              rx(bps, fieldPaddingR[size]),
+              rx(bps, fieldTextR[size]),
+              rx(bps, fieldHeightR[size]),
               fieldRadius[radius],
               fieldBoxClasses(variant, isInvalid, isOpen)
             )}
@@ -413,6 +427,8 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
                     onClick={() => !item.isDisabled && select(item.key)}
                     className={cn(
                       "flex items-center gap-2.5 px-2.5 min-h-9 py-1.5 rounded-xl text-sm text-foreground cursor-pointer select-none",
+                      // Touch-sized options on mobile / tablet
+                      rx(bps, { m: "mobile:min-h-11 mobile:text-base", t: "tablet:min-h-11" }),
                       "transition-colors duration-100",
                       isActive ? "bg-default" : "bg-transparent",
                       item.isDisabled && "opacity-50 pointer-events-none"

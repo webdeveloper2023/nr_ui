@@ -21,6 +21,7 @@ import {
   setRef,
   type Placement,
 } from "./floating";
+import { rx, useResponsive, type BreakpointClasses, type ResponsiveProp } from "./breakpoints";
 
 type TooltipPlacement = Placement;
 type TooltipColor = "default" | "foreground" | "accent" | "success" | "warning" | "danger";
@@ -58,6 +59,8 @@ export interface TooltipProps {
   defaultOpen?: boolean;
   /** Called when the open state changes */
   onOpenChange?: (open: boolean) => void;
+  /** Adapts to the screen: text one step larger and width up to the screen edge on mobile, a step larger on tablet, wider on desktop. true = all breakpoints or a list like ["m", "t"] */
+  responsive?: ResponsiveProp;
   /** Extra CSS classes */
   className?: string;
   /** Trigger element (a single React element) */
@@ -88,6 +91,15 @@ const sizeStyles: Record<TooltipSize, string> = {
   md: "px-2.5 py-1.5 text-xs",
   lg: "px-3 py-2 text-sm",
 };
+
+// Mobile / tablet: readable text (one step up), never wider than the screen. Desktop: wider bubbles.
+const sizeStylesR: Record<TooltipSize, BreakpointClasses> = {
+  xs: { m: "mobile:text-xs" },
+  sm: { m: "mobile:text-sm mobile:px-2.5 mobile:py-1.5", t: "tablet:text-sm" },
+  md: { m: "mobile:text-sm mobile:px-3 mobile:py-2", t: "tablet:text-sm" },
+  lg: { m: "mobile:text-base" },
+};
+const widthR: BreakpointClasses = { m: "mobile:max-w-[calc(100vw-1.5rem)]", d: "desktop:max-w-sm" };
 
 const radiusStyles: Record<TooltipRadius, string> = {
   sm: "rounded-lg",
@@ -120,9 +132,11 @@ export const Tooltip: React.FC<TooltipProps> = ({
   isOpen: openProp,
   defaultOpen = false,
   onOpenChange,
+  responsive,
   className = "",
   children,
 }) => {
+  const bps = useResponsive(responsive);
   const [openState, setOpenState] = useState(defaultOpen);
   const isOpen = (openProp ?? openState) && !isDisabled;
   const triggerRef = useRef<HTMLElement | null>(null);
@@ -200,6 +214,8 @@ export const Tooltip: React.FC<TooltipProps> = ({
               originClass[side],
               isGlass ? "glass-thick text-foreground" : colorStyles[color],
               sizeStyles[size],
+              rx(bps, sizeStylesR[size]),
+              rx(bps, widthR),
               radiusStyles[radius],
               visible ? "opacity-100 scale-100 translate-x-0 translate-y-0" : cn("opacity-0 scale-[0.96]", hiddenShift[side]),
               className

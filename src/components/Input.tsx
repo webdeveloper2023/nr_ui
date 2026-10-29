@@ -10,15 +10,21 @@ import {
 } from "react";
 import { cn } from "../lib/cn";
 import { useLocale } from "./locale";
+import { rx, useResponsive, type ResponsiveProp } from "./breakpoints";
 import {
   fieldBoxClasses,
   fieldDescriptionClasses,
   fieldErrorClasses,
   fieldHeight,
+  fieldHeightR,
   fieldLabelClasses,
+  fieldLeftLabelR,
+  fieldLeftLayoutR,
   fieldPadding,
+  fieldPaddingR,
   fieldRadius,
   fieldText,
+  fieldTextR,
   type FieldRadius,
   type FieldSize,
   type FieldVariant,
@@ -60,6 +66,8 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
   endContent?: ReactNode;
   /** Fills the container width */
   fullWidth?: boolean;
+  /** Adapts to the screen: touch-sized (44px) with 16px text on mobile, touch-sized on tablet, larger lg on desktop; a left label moves on top on mobile. true = all breakpoints or a list like ["m", "t"] */
+  responsive?: ResponsiveProp;
   /** Layer drawn behind the input text — e.g. a mask guide (used by PhoneInput) */
   inputOverlay?: ReactNode;
   /** Extra classes for inner slots */
@@ -92,6 +100,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       startContent,
       endContent,
       fullWidth = true,
+      responsive,
       className = "",
       classNames = {},
       inputOverlay,
@@ -105,6 +114,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     ref
   ) => {
     const t = useLocale();
+    const bps = useResponsive(responsive);
     const autoId = useId();
     const id = idProp ?? autoId;
     const inputRef = useRef<HTMLInputElement>(null);
@@ -156,6 +166,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           "relative w-full min-w-0 h-full bg-transparent outline-none text-foreground placeholder:text-field-placeholder",
           "file:mr-3 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground",
           fieldText[size],
+          rx(bps, fieldTextR[size]),
           classNames.input
         )}
         {...props}
@@ -168,14 +179,15 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         className={cn(
           "flex",
           isLeft && label ? "flex-row items-start gap-3" : "flex-col gap-1.5",
-          fullWidth ? "w-full" : "w-fit",
+          fullWidth ? "w-full" : cn("w-fit", rx(bps, { m: "mobile:w-full" })),
+          isLeft && label && rx(bps, fieldLeftLayoutR),
           isDisabled && "opacity-50 pointer-events-none",
           className,
           classNames.base
         )}
       >
         {label && (
-          <label htmlFor={id} className={cn(fieldLabelClasses, isLeft && cn("shrink-0", fieldHeight[size], "flex items-center"), classNames.label)}>
+          <label htmlFor={id} className={cn(fieldLabelClasses, isLeft && cn("shrink-0", fieldHeight[size], "flex items-center", rx(bps, fieldLeftLabelR)), classNames.label)}>
             {label}
             {isRequired && <span className="text-danger ml-0.5">*</span>}
           </label>
@@ -187,6 +199,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               "relative flex items-center w-full cursor-text",
               fieldPadding[size],
               fieldHeight[size],
+              rx(bps, fieldPaddingR[size]),
+              rx(bps, fieldHeightR[size]),
               fieldRadius[radius],
               fieldBoxClasses(variant, isInvalid),
               classNames.inputWrapper
@@ -195,7 +209,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             {startContent && <span className="flex items-center shrink-0 text-muted">{startContent}</span>}
             {inputOverlay !== undefined ? (
               <div className="relative flex flex-1 min-w-0 h-full items-center">
-                <span aria-hidden className={cn("pointer-events-none absolute inset-0 flex items-center whitespace-pre overflow-hidden", fieldText[size])}>
+                <span aria-hidden className={cn("pointer-events-none absolute inset-0 flex items-center whitespace-pre overflow-hidden", fieldText[size], rx(bps, fieldTextR[size]))}>
                   {inputOverlay}
                 </span>
                 {inputEl}

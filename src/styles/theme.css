@@ -14,6 +14,13 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Responsive breakpoints — exact ranges, used by the `responsive` prop and free to use in your app:
+   mobile: < 768px · tablet: 768–1023px · laptop: 1024–1535px · desktop: ≥ 1536px */
+@custom-variant mobile (@media (width < 48rem));
+@custom-variant tablet (@media (48rem <= width < 64rem));
+@custom-variant laptop (@media (64rem <= width < 96rem));
+@custom-variant desktop (@media (width >= 96rem));
+
 @theme {
   /* ── System colors ─────────────────── */
   --color-blue: #007aff;

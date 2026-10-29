@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState, type DragEvent } from "react";
 import { UploadCloud, FileText, X, CheckCircle2 } from "lucide-react";
 import { cn } from "../lib/cn";
 import { useLocale } from "./locale";
+import { rx, useResponsive, type BreakpointClasses, type ResponsiveProp } from "./breakpoints";
 
 type FileUploadVariant = "default" | "secondary";
 
@@ -28,9 +29,16 @@ export interface FileUploadProps {
   description?: string;
   /** Disables uploading */
   isDisabled?: boolean;
+  /** Adapts to the screen: compact drop zone with a 16px title and 44px remove buttons on mobile, 40px remove buttons on tablet, a taller drop zone on desktop. true = all breakpoints or a list like ["m", "t"] */
+  responsive?: ResponsiveProp;
   /** Extra CSS classes */
   className?: string;
 }
+
+// Mobile: less padding, smaller radius, 16px title, 44px remove buttons. Tablet: 40px remove buttons. Desktop: taller drop zone.
+const zoneR: BreakpointClasses = { m: "mobile:px-4 mobile:py-8 mobile:rounded-2xl", d: "desktop:py-14" };
+const titleR: BreakpointClasses = { m: "mobile:text-base" };
+const removeR: BreakpointClasses = { m: "mobile:w-11 mobile:h-11 mobile:-mr-1.5", t: "tablet:w-10 tablet:h-10 tablet:-mr-1" };
 
 const formatSize = (bytes: number) =>
   bytes < 1024 ? `${bytes} B` : bytes < 1024 ** 2 ? `${(bytes / 1024).toFixed(1)} KB` : `${(bytes / 1024 ** 2).toFixed(1)} MB`;
@@ -58,9 +66,11 @@ export function FileUpload({
   label,
   description,
   isDisabled = false,
+  responsive,
   className = "",
 }: FileUploadProps) {
   const t = useLocale();
+  const bps = useResponsive(responsive);
   const inputRef = useRef<HTMLInputElement>(null);
   const [filesState, setFilesState] = useState<File[]>([]);
   const [isDragging, setIsDragging] = useState(false);
@@ -111,6 +121,7 @@ export function FileUpload({
         className={cn(
           "group flex flex-col items-center justify-center gap-3 rounded-3xl border-2 border-dashed px-6 py-10 text-center",
           "transition-colors duration-150",
+          rx(bps, zoneR),
           "outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-background",
           isDragging
             ? "border-accent bg-accent-soft"
@@ -127,7 +138,7 @@ export function FileUpload({
           <UploadCloud size={20} />
         </div>
         <div>
-          <p className="text-sm font-medium text-foreground">{label ?? t.fileUpload.label}</p>
+          <p className={cn("text-sm font-medium text-foreground", rx(bps, titleR))}>{label ?? t.fileUpload.label}</p>
           <p className="mt-1 text-xs text-muted">{description ?? t.fileUpload.description(maxSizeMB)}</p>
         </div>
         <input
@@ -186,6 +197,7 @@ export function FileUpload({
                   className={cn(
                     "flex items-center justify-center w-8 h-8 rounded-full text-muted cursor-pointer shrink-0",
                     "hover:bg-danger-soft hover:text-danger transition-colors duration-150",
+                    rx(bps, removeR),
                     "outline-none focus-visible:ring-2 focus-visible:ring-focus"
                   )}
                   aria-label={t.fileUpload.remove(f.name)}
