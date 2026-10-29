@@ -1,12 +1,6 @@
-import { useDesignStyle } from "../designStyle";
-import SolidDashboard from "./dashboards/SolidDashboard";
-import FrostedDashboard from "./dashboards/FrostedDashboard";
-import LiquidDashboard from "./dashboards/LiquidDashboard";
+import StoreDashboard from "./StoreDashboard";
 
-// One dashboard per design style — switched from the style control in each dashboard's header.
+// One dashboard for every design style (solid, frosted, liquid) — switched from the style control in its header.
 export default function Dashboard() {
-  const [style] = useDesignStyle();
-  if (style === "liquid") return <LiquidDashboard />;
-  if (style === "frosted") return <FrostedDashboard />;
-  return <SolidDashboard />;
+  return <StoreDashboard />;
 }

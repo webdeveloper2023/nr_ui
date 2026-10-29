@@ -8,7 +8,7 @@ const columns = [
 ];
 
 const rows = [
-  { id: "1", name: "Ali Valiyev", role: "CEO", status: "Active", email: "ali@acme.uz" },
+  { id: "1", name: "Rafiqjon Nazirov", role: "CEO", status: "Active", email: "rafiqjon@acme.uz" },
   { id: "2", name: "Dilnoza Karimova", role: "CTO", status: "Active", email: "dilnoza@acme.uz" },
   { id: "3", name: "Jasur Rahimov", role: "Designer", status: "On leave", email: "jasur@acme.uz" },
   { id: "4", name: "Madina Usmonova", role: "QA", status: "Active", email: "madina@acme.uz" },

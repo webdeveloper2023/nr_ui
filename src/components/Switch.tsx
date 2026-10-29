@@ -1,5 +1,6 @@
 import { forwardRef, useId, useState, type ChangeEvent, type ReactNode } from "react";
 import { cn } from "../lib/cn";
+import { useFieldDefaults } from "./formContext";
 import { rx, useResponsive, type BreakpointClasses, type ResponsiveProp } from "./breakpoints";
 
 type SwitchColor = "default" | "accent" | "success" | "warning" | "danger";
@@ -94,7 +95,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
       size = "md",
       isSelected,
       defaultSelected = false,
-      isDisabled = false,
+      isDisabled: isDisabledProp,
       onChange,
       onValueChange,
       children,
@@ -108,6 +109,8 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
     },
     ref
   ) => {
+    const form = useFieldDefaults();
+    const isDisabled = isDisabledProp ?? form.isDisabled ?? false;
     const bps = useResponsive(responsive);
     const r = sizeMapR[size];
     const id = useId();

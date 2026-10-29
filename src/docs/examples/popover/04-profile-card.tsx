@@ -9,16 +9,16 @@ export default function PopoverProfileCard() {
       <Popover placement="bottom">
         <PopoverTrigger>
           <button className="cursor-pointer rounded-full outline-none focus-visible:ring-2 focus-visible:ring-focus">
-            <Avatar src="https://i.pravatar.cc/150?u=jasur" />
+            <Avatar name="Rafiqjon Nazirov" color="accent" />
           </button>
         </PopoverTrigger>
         <PopoverContent className="w-72 p-4">
           <div className="flex items-start justify-between gap-3">
             <div className="flex items-center gap-3">
-              <Avatar src="https://i.pravatar.cc/150?u=jasur" />
+              <Avatar name="Rafiqjon Nazirov" color="accent" />
               <div>
-                <p className="text-sm font-medium text-foreground">Jasur Rahimov</p>
-                <p className="text-xs text-muted">@jasur</p>
+                <p className="text-sm font-medium text-foreground">Rafiqjon Nazirov</p>
+                <p className="text-xs text-muted">@rafiqjon</p>
               </div>
             </div>
             <Button size="sm" variant={following ? "tertiary" : "primary"} onClick={() => setFollowing(!following)}>

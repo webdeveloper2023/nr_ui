@@ -13,18 +13,25 @@ import {
 import { createPortal } from "react-dom";
 import { cn } from "../lib/cn";
 import { rx, useResponsive, type ResponsiveProp } from "./breakpoints";
+import { useFieldDefaults, type NecessityIndicator } from "./formContext";
+import { FieldOutline, Label, NecessityMark } from "./Label";
 import { useLocale } from "./locale";
 import {
   fieldBoxClasses,
   fieldDescriptionClasses,
   fieldErrorClasses,
   fieldHeight,
+  fieldHeightInside,
   fieldHeightR,
+  fieldInsidePadding,
+  floatingLabel,
+  notchedBox,
+  notchedLabel,
+  notchedLeft,
   fieldLeftLabelR,
   fieldLeftLayoutR,
   fieldPaddingR,
   fieldTextR,
-  fieldLabelClasses,
   fieldPadding,
   fieldRadius,
   fieldText,
@@ -45,10 +52,20 @@ export interface SelectItemData {
 }
 
 export interface SelectProps extends Omit<HTMLAttributes<HTMLDivElement>, "onChange"> {
-  /** Field label, shown above the field */
+  /** Field label */
   label?: ReactNode;
-  /** Label placement: above or to the left */
+  /** Label placement: outside (above), outside-left (beside), inside (small, inside the box), floating (on the border once open / chosen) or floating-inside (moves to the top inside the box) */
   labelPlacement?: LabelPlacement;
+  /** Help shown from an info icon next to the label (outside placements) */
+  labelTooltip?: ReactNode;
+  /** Content at the far end of the label row (outside placement) */
+  labelEndContent?: ReactNode;
+  /** Marks the field as optional next to the label */
+  isOptional?: boolean;
+  /** How required / optional is shown: icon (*) or text ("Required" / "Optional") */
+  necessityIndicator?: NecessityIndicator;
+  /** Form field name: the selected key is submitted with the form */
+  name?: string;
   /** Text shown when nothing is selected */
   placeholder?: string;
   /** Style: primary — white field with a shadow, secondary — gray field (inside cards) */
@@ -123,16 +140,21 @@ interface PopoverPos {
   placement: "bottom" | "top";
 }
 
-export const Select = forwardRef<HTMLDivElement, SelectProps>(
-  (
-    {
+export const Select = forwardRef<HTMLDivElement, SelectProps>((selectProps, ref) => {
+    const form = useFieldDefaults();
+    const {
       label,
-      labelPlacement = "outside",
+      labelPlacement = form.labelPlacement ?? "outside",
+      labelTooltip,
+      labelEndContent,
+      isOptional,
+      necessityIndicator = form.necessityIndicator ?? "icon",
+      name,
       placeholder,
-      variant = "primary",
-      size = "md",
-      radius = "md",
-      isDisabled = false,
+      variant = form.variant ?? "primary",
+      size = form.size ?? "md",
+      radius = form.radius ?? "md",
+      isDisabled = form.isDisabled ?? false,
       isRequired = false,
       isInvalid = false,
       errorMessage,
@@ -148,9 +170,7 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
       responsive,
       className = "",
       ...props
-    },
-    ref
-  ) => {
+    } = selectProps;
     const t = useLocale();
     const bps = useResponsive(responsive);
     const id = useId();
@@ -315,6 +335,11 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
 
     const hasValue = Boolean(selectedItem);
     const isLeft = labelPlacement === "outside-left";
+    const isInside = Boolean(label) && (labelPlacement === "inside" || labelPlacement === "floating-inside");
+    const isFloating = isInside && labelPlacement === "floating-inside";
+    const isNotched = Boolean(label) && labelPlacement === "floating";
+    const raised = !(isFloating || isNotched) || hasValue || isOpen || Boolean(startContent);
+    const optional = isOptional ?? (Boolean(form.showOptional) && !isRequired);
     const showError = isInvalid && Boolean(errorMessage);
 
     return (
@@ -329,12 +354,21 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
         )}
         {...props}
       >
-        {label && (
-          <label htmlFor={id} className={cn(fieldLabelClasses, isLeft && cn("shrink-0 flex items-center", fieldHeight[size], rx(bps, fieldLeftLabelR)))}>
+        {label && !isInside && !isNotched && (
+          <Label
+            htmlFor={id}
+            isRequired={isRequired}
+            isOptional={optional}
+            necessityIndicator={necessityIndicator}
+            tooltip={labelTooltip}
+            endContent={isLeft ? undefined : labelEndContent}
+            style={isLeft && form.labelWidth !== undefined ? { width: form.labelWidth } : undefined}
+            className={cn(isLeft && cn("shrink-0 justify-center", fieldHeight[size], rx(bps, fieldLeftLabelR)))}
+          >
             {label}
-            {isRequired && <span className="text-danger ml-0.5">*</span>}
-          </label>
+          </Label>
         )}
+        {name && <input type="hidden" name={name} value={selectedKey ?? ""} disabled={isDisabled} />}
         <div className="flex flex-col gap-1.5 flex-1 min-w-0">
           <button
             ref={triggerRef}
@@ -355,17 +389,41 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
               "focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-background",
               fieldPadding[size],
               fieldText[size],
-              fieldHeight[size],
+              isInside ? fieldHeightInside[size] : cn(fieldHeight[size], rx(bps, fieldHeightR[size])),
               rx(bps, fieldPaddingR[size]),
               rx(bps, fieldTextR[size]),
-              rx(bps, fieldHeightR[size]),
               fieldRadius[radius],
-              fieldBoxClasses(variant, isInvalid, isOpen)
+              isNotched ? cn("group/field", notchedBox(variant), "mt-1.5") : fieldBoxClasses(variant, isInvalid, isOpen)
             )}
           >
+            {isNotched && (
+              <>
+                <FieldOutline label={<>{label}<NecessityMark isRequired={isRequired} isOptional={optional} indicator={necessityIndicator} /></>} size={size} radius={fieldRadius[radius]} raised={raised} isInvalid={isInvalid} isFocused={isOpen} />
+                <span
+                  aria-hidden
+                  className={cn(notchedLabel.base, notchedLeft[size], raised ? notchedLabel.raised : cn(notchedLabel.rest, floatingLabel.restText[size]), isOpen && "text-accent", isInvalid && "text-danger!")}
+                >
+                  {label}
+                  <NecessityMark isRequired={isRequired} isOptional={optional} indicator={necessityIndicator} />
+                </span>
+              </>
+            )}
             {startContent && <span className="flex items-center shrink-0 text-muted">{startContent}</span>}
-            <span className="flex-1 min-w-0 flex items-center">
-              {hasValue ? (
+            <span className={cn("relative flex-1 min-w-0 flex h-full items-center", isInside && fieldInsidePadding[size])}>
+              {isInside && (
+                <span
+                  aria-hidden
+                  className={cn(
+                    floatingLabel.base,
+                    raised ? cn(floatingLabel.raised, floatingLabel.raisedText[size]) : cn(floatingLabel.rest, floatingLabel.restText[size]),
+                    isInvalid && "text-danger"
+                  )}
+                >
+                  {label}
+                  <NecessityMark isRequired={isRequired} isOptional={optional} indicator={necessityIndicator} />
+                </span>
+              )}
+              {(isFloating || isNotched) && !raised ? null : hasValue ? (
                 <span className="flex items-center gap-2 truncate text-foreground">
                   {selectedItem?.startContent && <span className="inline-flex shrink-0">{selectedItem.startContent}</span>}
                   <span className="truncate">{selectedItem?.label}</span>

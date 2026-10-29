@@ -69,6 +69,22 @@ export interface NRMessages {
     max: (amount: string) => string;
     presets: string;
   };
+  label: {
+    required: string;
+    optional: string;
+    /** Accessible name of the info icon next to a label */
+    info: string;
+  };
+  chart: {
+    /** Accessible name of the range selector */
+    range: string;
+    rangeStart: string;
+    rangeEnd: string;
+    /** Legend button: "Hide Revenue" / "Show Revenue" */
+    toggle: (label: string, hidden: boolean) => string;
+    total: string;
+    empty: string;
+  };
 }
 
 const ruPlural = (n: number, one: string, few: string, many: string) => {
@@ -109,6 +125,8 @@ export const NR_MESSAGES: Record<NRLocale, NRMessages> = {
     pricing: { popular: "Most popular", cta: "Get started" },
     rating: { star: (n) => (n === 1 ? "1 star" : `${n} stars`) },
     amountInput: { min: (a) => `Minimum amount is ${a}`, max: (a) => `Maximum amount is ${a}`, presets: "Quick amounts" },
+    label: { required: "Required", optional: "Optional", info: "More info" },
+    chart: { range: "Visible range", rangeStart: "Range start", rangeEnd: "Range end", toggle: (l, h) => `${h ? "Show" : "Hide"} ${l}`, total: "Total", empty: "No data" },
   },
   uz: {
     common: { close: "Yopish", clear: "Tozalash", loading: "Yuklanmoqda", avatar: "Avatar" },
@@ -139,6 +157,8 @@ export const NR_MESSAGES: Record<NRLocale, NRMessages> = {
     pricing: { popular: "Eng mashhur", cta: "Boshlash" },
     rating: { star: (n) => `${n} yulduz` },
     amountInput: { min: (a) => `Eng kam summa: ${a}`, max: (a) => `Eng ko'p summa: ${a}`, presets: "Tezkor summalar" },
+    label: { required: "Majburiy", optional: "Ixtiyoriy", info: "Batafsil" },
+    chart: { range: "Ko'rinadigan oraliq", rangeStart: "Oraliq boshi", rangeEnd: "Oraliq oxiri", toggle: (l, h) => `${l}: ${h ? "ko'rsatish" : "yashirish"}`, total: "Jami", empty: "Ma'lumot yo'q" },
   },
   ru: {
     common: { close: "Закрыть", clear: "Очистить", loading: "Загрузка", avatar: "Аватар" },
@@ -169,6 +189,8 @@ export const NR_MESSAGES: Record<NRLocale, NRMessages> = {
     pricing: { popular: "Популярный", cta: "Начать" },
     rating: { star: (n) => `${n} ${ruPlural(n, "звезда", "звезды", "звёзд")}` },
     amountInput: { min: (a) => `Минимальная сумма: ${a}`, max: (a) => `Максимальная сумма: ${a}`, presets: "Быстрые суммы" },
+    label: { required: "Обязательно", optional: "Необязательно", info: "Подробнее" },
+    chart: { range: "Видимый диапазон", rangeStart: "Начало диапазона", rangeEnd: "Конец диапазона", toggle: (l, h) => `${h ? "Показать" : "Скрыть"} ${l}`, total: "Всего", empty: "Нет данных" },
   },
 };
 

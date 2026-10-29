@@ -22,7 +22,7 @@ export default function NavbarGlass() {
             <Button variant="ghost" isIconOnly size="sm" aria-label="Search"><Search size={16} /></Button>
           </NavbarItem>
           <NavbarItem>
-            <Avatar size="sm" name="Rafiqjon" />
+            <Avatar size="sm" name="Rafiqjon Nazirov" />
           </NavbarItem>
         </NavbarContent>
       </Navbar>

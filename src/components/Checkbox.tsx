@@ -11,6 +11,7 @@ import {
   type ReactNode,
 } from "react";
 import { cn } from "../lib/cn";
+import { useFieldDefaults } from "./formContext";
 import { rx, useResponsive, type BreakpointClasses, type ResponsiveProp } from "./breakpoints";
 
 type CheckboxColor = "default" | "accent" | "success" | "warning" | "danger";
@@ -120,6 +121,7 @@ interface CheckboxGroupContextValue {
 const CheckboxGroupContext = createContext<CheckboxGroupContextValue | null>(null);
 
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>((props, ref) => {
+  const form = useFieldDefaults();
   const group = useContext(CheckboxGroupContext);
   const {
     variant = group?.variant ?? "primary",
@@ -129,7 +131,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>((props, ref)
     isSelected,
     defaultSelected = false,
     isIndeterminate = false,
-    isDisabled = group?.isDisabled ?? false,
+    isDisabled = group?.isDisabled ?? form.isDisabled ?? false,
     isInvalid = group?.isInvalid ?? false,
     lineThrough = false,
     onChange,
@@ -306,7 +308,7 @@ export const CheckboxGroup = forwardRef<HTMLDivElement, CheckboxGroupProps>(
       color,
       size,
       radius,
-      isDisabled,
+      isDisabled: isDisabledProp,
       isInvalid = false,
       isRequired = false,
       name,
@@ -316,6 +318,8 @@ export const CheckboxGroup = forwardRef<HTMLDivElement, CheckboxGroupProps>(
     },
     ref
   ) => {
+    const form = useFieldDefaults();
+    const isDisabled = isDisabledProp ?? form.isDisabled;
     const bps = useResponsive(responsive);
     const labelId = useId();
     const [internal, setInternal] = useState<string[]>(defaultValue);

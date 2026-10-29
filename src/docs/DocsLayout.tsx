@@ -7,6 +7,7 @@ import { NewTag } from "./NewTag";
 import { useLang, useT } from "./i18n/lang";
 import { LanguageSwitch } from "./LanguageSwitch";
 import { Donate } from "./Donate";
+import { Contributor } from "./Contributor";
 
 type ThemeMode = "light" | "dark" | "system";
 
@@ -169,6 +170,7 @@ export default function DocsLayout() {
           </div>
           <NavLink to="/dashboard" className="hidden sm:inline-flex h-9 items-center rounded-full px-3.5 text-sm font-medium text-muted hover:text-foreground transition-colors">Dashboard</NavLink>
           <Donate />
+          <Contributor />
           <div className="ml-auto md:ml-0 flex items-center gap-2">
             <LanguageSwitch lang={lang} onChange={setLang} />
             <div className="max-sm:hidden">

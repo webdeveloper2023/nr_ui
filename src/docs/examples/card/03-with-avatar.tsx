@@ -5,10 +5,10 @@ export default function CardWithAvatar() {
   return (
     <Card className="mx-auto w-full max-w-sm">
       <CardHeader className="items-center">
-        <Avatar src="https://i.pravatar.cc/150?u=dilnoza" name="Dilnoza Karimova" />
+        <Avatar name="Rafiqjon Nazirov" color="accent" />
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-medium text-foreground">Dilnoza Karimova</p>
-          <p className="text-xs text-muted">@dilnoza · 2 hours ago</p>
+          <p className="text-sm font-medium text-foreground">Rafiqjon Nazirov</p>
+          <p className="text-xs text-muted">@rafiqjon · 2 hours ago</p>
         </div>
         <Button isIconOnly variant="ghost" size="sm" aria-label="More">
           <MoreHorizontal size={16} />

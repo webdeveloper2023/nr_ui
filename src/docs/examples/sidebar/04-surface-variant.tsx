@@ -12,7 +12,7 @@ export default function SidebarSurfaceVariant() {
           <div className="flex items-center gap-2.5 overflow-hidden">
             <Avatar name="Rafiqjon Nazirov" size="sm" />
             <div className="min-w-0">
-              <p className="truncate text-sm font-medium text-foreground">Rafiqjon</p>
+              <p className="truncate text-sm font-medium text-foreground">Rafiqjon Nazirov</p>
               <p className="truncate text-xs text-muted">Admin</p>
             </div>
           </div>

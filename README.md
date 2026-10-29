@@ -2,7 +2,7 @@
 
 Pro darajadagi React komponent kutubxonasi — **React 18/19**, **Tailwind CSS v4**, **TypeScript**, to'liq **dark mode**.
 
-41 ta komponent (ichki qismlari — `ModalHeader`, `CardBody`, `SidebarItem` va h.k. — bilan birga 76 ta): Container, Stack, Grid, Button, Input, AmountInput (summa so'z bilan), Select, Table, Modal, Dropdown, Toast, Sidebar, Pricing, AI Chat va boshqalar.
+47 ta komponent (ichki qismlari — `ModalHeader`, `CardBody`, `SidebarItem` va h.k. — bilan birga 82 ta): Container, Stack, Grid, LineChart, AreaChart, BarChart, PieChart, Button, Input, Label, Form, AmountInput (summa so'z bilan), Select, Table, Modal, Dropdown, Toast, Sidebar, Pricing, AI Chat va boshqalar.
 
 ## O'rnatish
 
@@ -99,6 +99,74 @@ import { ResponsiveProvider, Container, Grid, Stack, Card, Button, Show } from "
 Barcha gap va padding'lar bitta umumiy shkaladan olinadi (`xs … 2xl`), shuning uchun komponentlar bir-biriga mos turadi. Har bir breakpoint uchun aniq qiymat ham berish mumkin: `cols={{ m: 1, t: 2, l: 4 }}`. `useBreakpoint()` hozirgi breakpointni qaytaradi.
 
 Tailwind ishlatayotgan bo'lsangiz, `theme.css` sizga ham `mobile:`, `tablet:`, `laptop:`, `desktop:` variantlarini beradi.
+
+## Grafiklar (Charts)
+
+`LineChart`, `AreaChart`, `BarChart`, `PieChart` — tashqi kutubxonasiz, toza SVG.
+
+```tsx
+import { LineChart, BarChart, PieChart } from "nr-ui-kit";
+
+<LineChart
+  aria-label="Oylik daromad"
+  data={[{ oy: "Yan", web: 120, app: 80 }, { oy: "Fev", web: 150, app: 95 }]}
+  xKey="oy"
+  series={[{ key: "web", label: "Web" }, { key: "app", label: "Ilova" }]}
+  showRangeSelector   // pastda oraliqni tanlash uchun mini grafik
+  responsive          // mobile'da pastroq, kamroq belgi, teginishga qulay legend
+/>
+
+<BarChart data={data} xKey="oy" series={series} isStacked showValues />
+<PieChart variant="donut" data={[{ key: "a", label: "Karta", value: 52 }, { key: "b", label: "Naqd", value: 48 }]} />
+```
+
+- **Legend tugmalari** seriyani yashiradi yoki ko'rsatadi, o'q esa animatsiya bilan qayta hisoblanadi.
+- **Tooltip** kursor yoki teginish bilan ishlaydi. Klaviaturada ← → tugmalari bilan yuriladi.
+- **Ranglar** qat'iy tartibli 8 rangli palitradan olinadi (`--color-chart-1 … 8`, light va dark). Palitra rang ko'rlikka chidamlilik bo'yicha tekshirilgan.
+- **Ekran o'quvchilar** uchun har bir grafikda yashirin ma'lumot jadvali bor.
+- **PieChart turlari:** `pie`, `donut`, `semi` (yarim halqa), `polar` (teng burchaklar, qiymatni radius ko'rsatadi), `radial` (har element uchun alohida halqa).
+- **Yumaloq burchaklar:** pie bo'laklarida `cornerRadius` va `gap`, bar'larda `radius`. Yozuvlar `labels="inside" | "outside"` bilan chiqadi (tashqi yozuvlar chiziq bilan bog'lanadi).
+
+## Label va Form
+
+Har bir field (`Input`, `Textarea`, `Select`, `PhoneInput`, `AmountInput`) label'ni 5 xil joylashtiradi:
+
+| `labelPlacement` | Ko'rinishi |
+| --- | --- |
+| `outside` | field tepasida (standart) |
+| `outside-left` | field yonida |
+| `inside` | box ichida, kichik, doim tepada |
+| `floating` | placeholder o'rnida turadi, focus yoki qiymat kiritilganda chegara chizig'iga chiqadi va chiziq uning atrofida uziladi |
+| `floating-inside` | placeholder o'rnida turadi, focus yoki qiymatda box ichida tepaga ko'tariladi |
+
+Har bir label'ga quyidagilar qo'shiladi:
+
+- `isRequired` (`*`) yoki `isOptional` ("Ixtiyoriy");
+- `necessityIndicator="text"` bilan "Majburiy" / "Ixtiyoriy" so'zlari;
+- `labelTooltip` (info ikonka);
+- `labelEndContent` (masalan "Parolni unutdingizmi?" havolasi yoki hisoblagich).
+
+`Label` komponentini alohida, istalgan control uchun ham ishlatish mumkin.
+
+`Form` ichidagi barcha field'larni bitta joydan boshqaradi. Field'ning o'z propi baribir ustun turadi:
+
+```tsx
+import { Form, Input, Select, Button } from "nr-ui-kit";
+
+<Form
+  labelPlacement="floating"   // hamma field'da floating label
+  size="lg"
+  showOptional                // majburiy bo'lmaganlarga "Ixtiyoriy"
+  isDisabled={saving}         // hammasini birdan o'chiradi
+  onValues={(values) => save(values)}   // { email: "...", plan: "pro" }
+>
+  <Input name="email" label="Email" isRequired />
+  <Select name="plan" label="Tarif" items={plans} />
+  <Button type="submit">Saqlash</Button>
+</Form>
+```
+
+`labelPlacement="outside-left"` bilan birga `labelWidth={140}` bersangiz, barcha field'lar bitta ustunda tekis turadi. Mobile'da label'lar tepaga o'tadi.
 
 ## Dark mode
 

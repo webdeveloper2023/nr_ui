@@ -117,7 +117,7 @@ export function UserMenu() {
           <DropdownItem itemKey="me" description="admin@nr-ui.uz" startContent={<User size={16} />}>Rafiqjon Nazirov</DropdownItem>
         </DropdownSection>
         <DropdownSection showDivider>
-          <DropdownItem itemKey="settings" startContent={<Settings size={16} />} shortcut="⌘,">{t({ en: "Settings", uz: "Sozlamalar", ru: "Настройки" })}</DropdownItem>
+          <DropdownItem itemKey="settings" startContent={<Settings size={16} />} shortcut="Ctrl ,">{t({ en: "Settings", uz: "Sozlamalar", ru: "Настройки" })}</DropdownItem>
           <DropdownItem itemKey="billing" startContent={<CreditCard size={16} />}>{t({ en: "Billing", uz: "To'lovlar", ru: "Оплата" })}</DropdownItem>
           <DropdownItem itemKey="help" startContent={<HelpCircle size={16} />}>{t({ en: "Help", uz: "Yordam", ru: "Помощь" })}</DropdownItem>
         </DropdownSection>
@@ -186,8 +186,8 @@ export function NewOrderModal({ isOpen, onClose }: { isOpen: boolean; onClose: (
                   label={t({ en: "Product", uz: "Mahsulot", ru: "Товар" })}
                   variant="secondary"
                   items={[
-                    { key: "mbp", label: "Laptop Pro 14", description: "$1,999", startContent: <Box size={16} /> },
-                    { key: "iph", label: "Phone X Pro", description: "$1,199", startContent: <Box size={16} /> },
+                    { key: "laptop", label: "Laptop Pro 14", description: "$1,999", startContent: <Box size={16} /> },
+                    { key: "phone", label: "Phone X Pro", description: "$1,199", startContent: <Box size={16} /> },
                     { key: "tablet", label: "Tablet Air 11", description: "$599", startContent: <Box size={16} /> },
                   ]}
                 />

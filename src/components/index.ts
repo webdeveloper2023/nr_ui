@@ -1,6 +1,12 @@
 // Forms
 export { Button, ButtonGroup } from "./Button";
 export { Input } from "./Input";
+export { Label } from "./Label";
+export type { LabelProps } from "./Label";
+export { Form } from "./Form";
+export type { FormProps } from "./Form";
+export { readFormValues, useFieldDefaults } from "./formContext";
+export type { FormValues, NecessityIndicator, FieldDefaults } from "./formContext";
 export { PhoneInput } from "./PhoneInput";
 export type { PhoneInputProps, PhoneValueInfo } from "./PhoneInput";
 export { PHONE_COUNTRIES, formatPhone, getPhoneCountry, detectPhoneCountry, isPhoneComplete } from "./phoneMask";
@@ -34,6 +40,16 @@ export type { KbdKey } from "./Kbd";
 export { StatCard, Sparkline } from "./StatCard";
 export { Timeline } from "./Timeline";
 export type { TimelineItemData } from "./Timeline";
+
+// Charts
+export { LineChart, AreaChart } from "./LineChart";
+export type { LineChartProps, AreaChartProps } from "./LineChart";
+export { BarChart } from "./BarChart";
+export type { BarChartProps } from "./BarChart";
+export { PieChart } from "./PieChart";
+export type { PieChartProps, PieSlice } from "./PieChart";
+export { CHART_COLORS, formatCompact } from "./chartUtils";
+export type { ChartColor, ChartSeries, ChartDatum } from "./chartUtils";
 
 // Feedback
 export { Alert } from "./Alert";

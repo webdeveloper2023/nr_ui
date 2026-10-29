@@ -208,6 +208,206 @@
       "description": "Extra content (below the description)"
     }
   ],
+  "Tooltip": [
+    {
+      "name": "content",
+      "type": "ReactNode",
+      "required": true,
+      "default": null,
+      "description": "Tooltip content"
+    },
+    {
+      "name": "placement",
+      "type": "'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end' | 'left' | 'left-start' | 'left-end' | 'right' | 'right-start' | 'right-end'",
+      "required": false,
+      "default": "\"top\"",
+      "description": "Placement side"
+    },
+    {
+      "name": "color",
+      "type": "'default' | 'accent' | 'success' | 'warning' | 'danger' | 'foreground'",
+      "required": false,
+      "default": "\"default\"",
+      "description": "Color theme"
+    },
+    {
+      "name": "size",
+      "type": "'xs' | 'sm' | 'md' | 'lg'",
+      "required": false,
+      "default": "\"md\"",
+      "description": "Size"
+    },
+    {
+      "name": "radius",
+      "type": "'sm' | 'md' | 'lg' | 'full'",
+      "required": false,
+      "default": "\"md\"",
+      "description": "Corner radius"
+    },
+    {
+      "name": "delay",
+      "type": "number",
+      "required": false,
+      "default": "300",
+      "description": "Delay before opening (ms)"
+    },
+    {
+      "name": "closeDelay",
+      "type": "number",
+      "required": false,
+      "default": "150",
+      "description": "Delay before closing (ms)"
+    },
+    {
+      "name": "offset",
+      "type": "number",
+      "required": false,
+      "default": "8",
+      "description": "Distance from the trigger (px)"
+    },
+    {
+      "name": "showArrow",
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Shows the pointer arrow"
+    },
+    {
+      "name": "isBlurred",
+      "type": "boolean",
+      "required": false,
+      "default": "true",
+      "description": "Glass (blur) background — default color only; colored tooltips stay solid"
+    },
+    {
+      "name": "material",
+      "type": "\"frosted\" | \"liquid\"",
+      "required": false,
+      "default": null,
+      "description": "Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass)"
+    },
+    {
+      "name": "isDisabled",
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Disabled (inactive) state"
+    },
+    {
+      "name": "isOpen",
+      "type": "boolean",
+      "required": false,
+      "default": null,
+      "description": "Open state (controlled)"
+    },
+    {
+      "name": "defaultOpen",
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Initial open state (uncontrolled)"
+    },
+    {
+      "name": "onOpenChange",
+      "type": "(open: boolean) => void",
+      "required": false,
+      "default": null,
+      "description": "Called when the open state changes"
+    },
+    {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: text one step larger and width up to the screen edge on mobile, a step larger on tablet, wider on desktop. true = all breakpoints or a list like [\"m\", \"t\"]"
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false,
+      "default": "\"\"",
+      "description": "Extra CSS classes"
+    },
+    {
+      "name": "children",
+      "type": "ReactElement",
+      "required": true,
+      "default": null,
+      "description": "Trigger element (a single React element)"
+    }
+  ],
+  "Label": [
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Label text"
+    },
+    {
+      "name": "size",
+      "type": "'sm' | 'md' | 'lg'",
+      "required": false,
+      "default": "\"md\"",
+      "description": "Size of the text"
+    },
+    {
+      "name": "isRequired",
+      "type": "boolean",
+      "required": false,
+      "default": null,
+      "description": "Marks the field as required (asterisk or \"Required\", see necessityIndicator)"
+    },
+    {
+      "name": "isOptional",
+      "type": "boolean",
+      "required": false,
+      "default": null,
+      "description": "Marks the field as optional with a muted \"Optional\""
+    },
+    {
+      "name": "necessityIndicator",
+      "type": "'icon' | 'text'",
+      "required": false,
+      "default": null,
+      "description": "icon — an asterisk for required fields; text — the words \"Required\" / \"Optional\""
+    },
+    {
+      "name": "tooltip",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Help shown from an info icon next to the text"
+    },
+    {
+      "name": "description",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Smaller text under the label"
+    },
+    {
+      "name": "endContent",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Content at the far end of the label row (a link, a counter, a badge)"
+    },
+    {
+      "name": "isDisabled",
+      "type": "boolean",
+      "required": false,
+      "default": null,
+      "description": "Dimmed, for a disabled field"
+    },
+    {
+      "name": "isInvalid",
+      "type": "boolean",
+      "required": false,
+      "default": null,
+      "description": "Danger color, for an invalid field"
+    }
+  ],
   "Input": [
     {
       "name": "variant",
@@ -235,14 +435,42 @@
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Field label, shown above the field"
+      "description": "Field label"
     },
     {
       "name": "labelPlacement",
-      "type": "'outside' | 'outside-left'",
+      "type": "'outside' | 'outside-left' | 'inside' | 'floating' | 'floating-inside'",
       "required": false,
       "default": "\"outside\"",
-      "description": "Label placement: above or to the left"
+      "description": "Label placement: outside (above), outside-left (beside), inside (small, inside the box), floating (on the border once focused / filled) or floating-inside (moves to the top inside the box)"
+    },
+    {
+      "name": "labelTooltip",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Help shown from an info icon next to the label (outside placements)"
+    },
+    {
+      "name": "labelEndContent",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Content at the far end of the label row, e.g. a \"Forgot password?\" link (outside placement)"
+    },
+    {
+      "name": "isOptional",
+      "type": "boolean",
+      "required": false,
+      "default": null,
+      "description": "Marks the field as optional next to the label"
+    },
+    {
+      "name": "necessityIndicator",
+      "type": "'icon' | 'text'",
+      "required": false,
+      "default": "\"icon\"",
+      "description": "How required / optional is shown: icon (*) or text (\"Required\" / \"Optional\")"
     },
     {
       "name": "description",
@@ -484,7 +712,7 @@
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Field label, shown above the field"
+      "description": "Field label"
     },
     {
       "name": "description",
@@ -516,10 +744,38 @@
     },
     {
       "name": "labelPlacement",
-      "type": "'outside' | 'outside-left'",
+      "type": "'outside' | 'outside-left' | 'inside' | 'floating' | 'floating-inside'",
       "required": false,
       "default": null,
-      "description": "Label placement: above or to the left"
+      "description": "Label placement: outside (above), outside-left (beside), inside (small, inside the box), floating (on the border once focused / filled) or floating-inside (moves to the top inside the box)"
+    },
+    {
+      "name": "labelTooltip",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Help shown from an info icon next to the label (outside placements)"
+    },
+    {
+      "name": "labelEndContent",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Content at the far end of the label row, e.g. a \"Forgot password?\" link (outside placement)"
+    },
+    {
+      "name": "isOptional",
+      "type": "boolean",
+      "required": false,
+      "default": null,
+      "description": "Marks the field as optional next to the label"
+    },
+    {
+      "name": "necessityIndicator",
+      "type": "'icon' | 'text'",
+      "required": false,
+      "default": null,
+      "description": "How required / optional is shown: icon (*) or text (\"Required\" / \"Optional\")"
     },
     {
       "name": "isInvalid",
@@ -855,6 +1111,155 @@
       "required": false,
       "default": null,
       "description": "Adapts to the screen: on mobile the two smallest sizes grow a little so the number stays legible. true = all breakpoints or a list like [\"m\", \"t\"]"
+    }
+  ],
+  "BarChart": [
+    {
+      "name": "data",
+      "type": "ChartDatum[]",
+      "required": true,
+      "default": null,
+      "description": "Rows of data; each row has the category (`xKey`) and one field per series"
+    },
+    {
+      "name": "xKey",
+      "type": "string",
+      "required": true,
+      "default": null,
+      "description": "Field of each row holding the category"
+    },
+    {
+      "name": "series",
+      "type": "ChartSeries[]",
+      "required": true,
+      "default": null,
+      "description": "Plotted measures: { key, label, color? }; colors follow the fixed palette order"
+    },
+    {
+      "name": "layout",
+      "type": "\"vertical\" | \"horizontal\"",
+      "required": false,
+      "default": "\"vertical\"",
+      "description": "vertical — columns rising from the bottom; horizontal — bars growing to the right (good for long names)"
+    },
+    {
+      "name": "isStacked",
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Stacks the series in one bar per category instead of side by side"
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "required": false,
+      "default": null,
+      "description": "Chart height in px (horizontal charts grow with the number of rows when omitted)"
+    },
+    {
+      "name": "barSize",
+      "type": "number",
+      "required": false,
+      "default": "24",
+      "description": "Maximum bar thickness in px"
+    },
+    {
+      "name": "radius",
+      "type": "number",
+      "required": false,
+      "default": "6",
+      "description": "Corner radius of the bar ends in px (capped at half the bar thickness)"
+    },
+    {
+      "name": "showValues",
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Writes the value at the end of each bar (the total for stacked bars)"
+    },
+    {
+      "name": "showLegend",
+      "type": "boolean",
+      "required": false,
+      "default": "series.length > 1",
+      "description": "Legend under the chart: shown for two or more series by default"
+    },
+    {
+      "name": "isLegendInteractive",
+      "type": "boolean",
+      "required": false,
+      "default": "true",
+      "description": "Legend pills show / hide their series"
+    },
+    {
+      "name": "hiddenSeries",
+      "type": "string[]",
+      "required": false,
+      "default": null,
+      "description": "Hidden series keys (controlled)"
+    },
+    {
+      "name": "defaultHiddenSeries",
+      "type": "string[]",
+      "required": false,
+      "default": null,
+      "description": "Initially hidden series keys"
+    },
+    {
+      "name": "onHiddenSeriesChange",
+      "type": "(hidden: string[]) => void",
+      "required": false,
+      "default": null,
+      "description": "Called with the hidden series keys when a legend pill is pressed"
+    },
+    {
+      "name": "showGrid",
+      "type": "boolean",
+      "required": false,
+      "default": "true",
+      "description": "Grid lines along the value axis"
+    },
+    {
+      "name": "valueFormatter",
+      "type": "(value: number) => string",
+      "required": false,
+      "default": null,
+      "description": "Formats values on the axis, labels and tooltip"
+    },
+    {
+      "name": "xFormatter",
+      "type": "(value: unknown, index: number) => string",
+      "required": false,
+      "default": null,
+      "description": "Formats category names"
+    },
+    {
+      "name": "tooltipFooter",
+      "type": "(row: ChartDatum, index: number) => ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Extra content at the bottom of the tooltip"
+    },
+    {
+      "name": "animate",
+      "type": "boolean",
+      "required": false,
+      "default": "true",
+      "description": "Animates bars when series are toggled"
+    },
+    {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: shorter chart, fewer ticks, narrower name column and touch-sized legend on mobile; taller on desktop. true = all breakpoints or a list like [\"m\", \"t\"]"
+    },
+    {
+      "name": "aria-label",
+      "type": "string",
+      "required": false,
+      "default": null,
+      "description": "Accessible name of the chart (also the caption of its data table)"
     }
   ],
   "Button": [
@@ -2085,6 +2490,99 @@
       "description": "Extra CSS classes"
     }
   ],
+  "Form": [
+    {
+      "name": "labelPlacement",
+      "type": "'outside' | 'outside-left' | 'inside' | 'floating' | 'floating-inside'",
+      "required": false,
+      "default": null,
+      "description": "Label placement of every field inside: outside, outside-left, inside, floating or floating-inside"
+    },
+    {
+      "name": "size",
+      "type": "'xs' | 'sm' | 'md' | 'lg'",
+      "required": false,
+      "default": null,
+      "description": "Size of every field inside"
+    },
+    {
+      "name": "variant",
+      "type": "'primary' | 'secondary'",
+      "required": false,
+      "default": null,
+      "description": "Style of every field inside: primary or secondary"
+    },
+    {
+      "name": "radius",
+      "type": "'sm' | 'md' | 'lg' | 'full'",
+      "required": false,
+      "default": null,
+      "description": "Corner radius of every field inside"
+    },
+    {
+      "name": "isDisabled",
+      "type": "boolean",
+      "required": false,
+      "default": null,
+      "description": "Disables every field inside"
+    },
+    {
+      "name": "isReadOnly",
+      "type": "boolean",
+      "required": false,
+      "default": null,
+      "description": "Makes every field inside read-only"
+    },
+    {
+      "name": "necessityIndicator",
+      "type": "'icon' | 'text'",
+      "required": false,
+      "default": null,
+      "description": "How required / optional fields are marked: icon (*) or text (\"Required\" / \"Optional\")"
+    },
+    {
+      "name": "showOptional",
+      "type": "boolean",
+      "required": false,
+      "default": null,
+      "description": "Marks every field that is not required as \"Optional\""
+    },
+    {
+      "name": "labelWidth",
+      "type": "number | string",
+      "required": false,
+      "default": null,
+      "description": "Width of \"outside-left\" labels, so all fields line up in one column (e.g. 140 or \"10rem\")"
+    },
+    {
+      "name": "gap",
+      "type": "ResponsiveValue<Space>",
+      "required": false,
+      "default": "\"md\"",
+      "description": "Space between the fields (shared spacing scale)"
+    },
+    {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Turns on responsive behaviour for every field inside (see ResponsiveProvider). true = all breakpoints or a list like [\"m\", \"t\"]"
+    },
+    {
+      "name": "onValues",
+      "type": "(values: FormValues, event: SubmitEventOf) => void",
+      "required": false,
+      "default": null,
+      "description": "Called on submit with the field values by name (the page does not reload)"
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Fields and buttons"
+    }
+  ],
   "Kbd": [
     {
       "name": "keys",
@@ -2282,6 +2780,339 @@
       "required": false,
       "default": null,
       "description": "Content"
+    }
+  ],
+  "LineChart": [
+    {
+      "name": "data",
+      "type": "ChartDatum[]",
+      "required": true,
+      "default": null,
+      "description": "Rows of data; each row has the x value (`xKey`) and one field per series"
+    },
+    {
+      "name": "xKey",
+      "type": "string",
+      "required": true,
+      "default": null,
+      "description": "Field of each row used for the x axis (string, number or Date)"
+    },
+    {
+      "name": "series",
+      "type": "ChartSeries[]",
+      "required": true,
+      "default": null,
+      "description": "Plotted measures: { key, label, color? }; colors follow the fixed palette order"
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "required": false,
+      "default": "280",
+      "description": "Plot height in px (the range selector and legend come on top of it)"
+    },
+    {
+      "name": "curve",
+      "type": "\"smooth\" | \"linear\"",
+      "required": false,
+      "default": "\"smooth\"",
+      "description": "Line shape: smooth (never overshoots the data) or straight"
+    },
+    {
+      "name": "showArea",
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Fills the area under each line with a soft wash"
+    },
+    {
+      "name": "isStacked",
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Stacks the series on top of each other (an area chart of parts of a whole)"
+    },
+    {
+      "name": "showDots",
+      "type": "\"none\" | \"end\" | \"all\"",
+      "required": false,
+      "default": "\"none\"",
+      "description": "Markers: none, the last point of each line, or every point"
+    },
+    {
+      "name": "baseline",
+      "type": "\"zero\" | \"auto\"",
+      "required": false,
+      "default": "isStacked || showArea ? \"zero\" : \"auto\"",
+      "description": "Y axis starts at zero, or fits the visible data (auto)"
+    },
+    {
+      "name": "showRangeSelector",
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Shows a mini chart under the plot with a draggable window to zoom into a range"
+    },
+    {
+      "name": "defaultRange",
+      "type": "[number, number]",
+      "required": false,
+      "default": null,
+      "description": "Initial visible range as [first, last] row index (with the range selector)"
+    },
+    {
+      "name": "onRangeChange",
+      "type": "(range: [number, number]) => void",
+      "required": false,
+      "default": null,
+      "description": "Called with the visible [first, last] row index while the range changes"
+    },
+    {
+      "name": "showLegend",
+      "type": "boolean",
+      "required": false,
+      "default": "series.length > 1",
+      "description": "Legend under the chart: shown for two or more series by default"
+    },
+    {
+      "name": "isLegendInteractive",
+      "type": "boolean",
+      "required": false,
+      "default": "true",
+      "description": "Legend pills show / hide their series"
+    },
+    {
+      "name": "hiddenSeries",
+      "type": "string[]",
+      "required": false,
+      "default": null,
+      "description": "Hidden series keys (controlled)"
+    },
+    {
+      "name": "defaultHiddenSeries",
+      "type": "string[]",
+      "required": false,
+      "default": null,
+      "description": "Initially hidden series keys"
+    },
+    {
+      "name": "onHiddenSeriesChange",
+      "type": "(hidden: string[]) => void",
+      "required": false,
+      "default": null,
+      "description": "Called with the hidden series keys when a legend pill is pressed"
+    },
+    {
+      "name": "showGrid",
+      "type": "boolean",
+      "required": false,
+      "default": "true",
+      "description": "Horizontal grid lines"
+    },
+    {
+      "name": "valueFormatter",
+      "type": "(value: number) => string",
+      "required": false,
+      "default": null,
+      "description": "Formats values on the axis and in the tooltip"
+    },
+    {
+      "name": "xFormatter",
+      "type": "(value: unknown, index: number) => string",
+      "required": false,
+      "default": null,
+      "description": "Formats x values on the axis and in the tooltip"
+    },
+    {
+      "name": "tooltipFooter",
+      "type": "(row: ChartDatum, index: number) => ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Extra content at the bottom of the tooltip, e.g. a total"
+    },
+    {
+      "name": "animate",
+      "type": "boolean",
+      "required": false,
+      "default": "true",
+      "description": "Animates the axis when series are toggled or the range moves"
+    },
+    {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: shorter plot, fewer ticks and touch-sized legend on mobile; a bit shorter on tablet; taller on desktop. true = all breakpoints or a list like [\"m\", \"t\"]"
+    },
+    {
+      "name": "aria-label",
+      "type": "string",
+      "required": false,
+      "default": null,
+      "description": "Accessible name of the chart (also the caption of its data table)"
+    }
+  ],
+  "AreaChart": [
+    {
+      "name": "aria-label",
+      "type": "string",
+      "required": false,
+      "default": null,
+      "description": "Accessible name of the chart (also the caption of its data table)"
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "required": false,
+      "default": null,
+      "description": "Plot height in px (the range selector and legend come on top of it)"
+    },
+    {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: shorter plot, fewer ticks and touch-sized legend on mobile; a bit shorter on tablet; taller on desktop. true = all breakpoints or a list like [\"m\", \"t\"]"
+    },
+    {
+      "name": "baseline",
+      "type": "\"zero\" | \"auto\"",
+      "required": false,
+      "default": null,
+      "description": "Y axis starts at zero, or fits the visible data (auto)"
+    },
+    {
+      "name": "data",
+      "type": "ChartDatum[]",
+      "required": true,
+      "default": null,
+      "description": "Rows of data; each row has the x value (`xKey`) and one field per series"
+    },
+    {
+      "name": "xKey",
+      "type": "string",
+      "required": true,
+      "default": null,
+      "description": "Field of each row used for the x axis (string, number or Date)"
+    },
+    {
+      "name": "series",
+      "type": "ChartSeries[]",
+      "required": true,
+      "default": null,
+      "description": "Plotted measures: { key, label, color? }; colors follow the fixed palette order"
+    },
+    {
+      "name": "curve",
+      "type": "\"smooth\" | \"linear\"",
+      "required": false,
+      "default": null,
+      "description": "Line shape: smooth (never overshoots the data) or straight"
+    },
+    {
+      "name": "isStacked",
+      "type": "boolean",
+      "required": false,
+      "default": null,
+      "description": "Stacks the series on top of each other (an area chart of parts of a whole)"
+    },
+    {
+      "name": "showDots",
+      "type": "\"none\" | \"end\" | \"all\"",
+      "required": false,
+      "default": null,
+      "description": "Markers: none, the last point of each line, or every point"
+    },
+    {
+      "name": "showRangeSelector",
+      "type": "boolean",
+      "required": false,
+      "default": null,
+      "description": "Shows a mini chart under the plot with a draggable window to zoom into a range"
+    },
+    {
+      "name": "defaultRange",
+      "type": "[number, number]",
+      "required": false,
+      "default": null,
+      "description": "Initial visible range as [first, last] row index (with the range selector)"
+    },
+    {
+      "name": "onRangeChange",
+      "type": "(range: [number, number]) => void",
+      "required": false,
+      "default": null,
+      "description": "Called with the visible [first, last] row index while the range changes"
+    },
+    {
+      "name": "showLegend",
+      "type": "boolean",
+      "required": false,
+      "default": null,
+      "description": "Legend under the chart: shown for two or more series by default"
+    },
+    {
+      "name": "isLegendInteractive",
+      "type": "boolean",
+      "required": false,
+      "default": null,
+      "description": "Legend pills show / hide their series"
+    },
+    {
+      "name": "hiddenSeries",
+      "type": "string[]",
+      "required": false,
+      "default": null,
+      "description": "Hidden series keys (controlled)"
+    },
+    {
+      "name": "defaultHiddenSeries",
+      "type": "string[]",
+      "required": false,
+      "default": null,
+      "description": "Initially hidden series keys"
+    },
+    {
+      "name": "onHiddenSeriesChange",
+      "type": "(hidden: string[]) => void",
+      "required": false,
+      "default": null,
+      "description": "Called with the hidden series keys when a legend pill is pressed"
+    },
+    {
+      "name": "showGrid",
+      "type": "boolean",
+      "required": false,
+      "default": null,
+      "description": "Horizontal grid lines"
+    },
+    {
+      "name": "valueFormatter",
+      "type": "(value: number) => string",
+      "required": false,
+      "default": null,
+      "description": "Formats values on the axis and in the tooltip"
+    },
+    {
+      "name": "xFormatter",
+      "type": "(value: unknown, index: number) => string",
+      "required": false,
+      "default": null,
+      "description": "Formats x values on the axis and in the tooltip"
+    },
+    {
+      "name": "tooltipFooter",
+      "type": "(row: ChartDatum, index: number) => ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Extra content at the bottom of the tooltip, e.g. a total"
+    },
+    {
+      "name": "animate",
+      "type": "boolean",
+      "required": false,
+      "default": null,
+      "description": "Animates the axis when series are toggled or the range moves"
     }
   ],
   "LocaleProvider": [
@@ -2843,7 +3674,7 @@
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Field label, shown above the field"
+      "description": "Field label"
     },
     {
       "name": "description",
@@ -2875,10 +3706,38 @@
     },
     {
       "name": "labelPlacement",
-      "type": "'outside' | 'outside-left'",
+      "type": "'outside' | 'outside-left' | 'inside' | 'floating' | 'floating-inside'",
       "required": false,
       "default": null,
-      "description": "Label placement: above or to the left"
+      "description": "Label placement: outside (above), outside-left (beside), inside (small, inside the box), floating (on the border once focused / filled) or floating-inside (moves to the top inside the box)"
+    },
+    {
+      "name": "labelTooltip",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Help shown from an info icon next to the label (outside placements)"
+    },
+    {
+      "name": "labelEndContent",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Content at the far end of the label row, e.g. a \"Forgot password?\" link (outside placement)"
+    },
+    {
+      "name": "isOptional",
+      "type": "boolean",
+      "required": false,
+      "default": null,
+      "description": "Marks the field as optional next to the label"
+    },
+    {
+      "name": "necessityIndicator",
+      "type": "'icon' | 'text'",
+      "required": false,
+      "default": null,
+      "description": "How required / optional is shown: icon (*) or text (\"Required\" / \"Optional\")"
     },
     {
       "name": "isInvalid",
@@ -2942,6 +3801,148 @@
       "required": false,
       "default": null,
       "description": "Extra classes for inner slots"
+    }
+  ],
+  "PieChart": [
+    {
+      "name": "data",
+      "type": "PieSlice[]",
+      "required": true,
+      "default": null,
+      "description": "Slices: { key, label, value, color? }"
+    },
+    {
+      "name": "variant",
+      "type": "'pie' | 'donut' | 'semi' | 'polar' | 'radial'",
+      "required": false,
+      "default": "\"pie\"",
+      "description": "pie — full slices; donut — a ring with the total in the middle; semi — a half ring (gauge-like);\npolar — equal angles, the radius shows the value; radial — one ring per item, the arc length shows the value"
+    },
+    {
+      "name": "size",
+      "type": "number",
+      "required": false,
+      "default": "240",
+      "description": "Diameter in px (shrinks to fit the container)"
+    },
+    {
+      "name": "thickness",
+      "type": "number",
+      "required": false,
+      "default": "0.32",
+      "description": "Ring thickness of donut / semi as a share of the radius (0.1–0.6)"
+    },
+    {
+      "name": "cornerRadius",
+      "type": "number",
+      "required": false,
+      "default": "variant === \"pie\" ? 4 : 6",
+      "description": "Rounds the corners of every slice, in px"
+    },
+    {
+      "name": "gap",
+      "type": "number",
+      "required": false,
+      "default": "2",
+      "description": "Space between slices (and between rings of the radial variant), in px"
+    },
+    {
+      "name": "labels",
+      "type": "\"none\" | \"inside\" | \"outside\"",
+      "required": false,
+      "default": "\"none\"",
+      "description": "Labels on the chart: none, the share inside each slice, or names with leader lines outside"
+    },
+    {
+      "name": "maxValue",
+      "type": "number",
+      "required": false,
+      "default": null,
+      "description": "Value that fills a whole ring in the radial variant (defaults to the largest value)"
+    },
+    {
+      "name": "centerLabel",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Text under the number in the center (defaults to \"Total\")"
+    },
+    {
+      "name": "centerValue",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Replaces the number in the center"
+    },
+    {
+      "name": "showLegend",
+      "type": "boolean",
+      "required": false,
+      "default": "true",
+      "description": "Legend beside the chart (below it when there is no room)"
+    },
+    {
+      "name": "showPercent",
+      "type": "boolean",
+      "required": false,
+      "default": "variant !== \"radial\"",
+      "description": "Shows each slice's share in the legend (the value for the radial variant)"
+    },
+    {
+      "name": "isLegendInteractive",
+      "type": "boolean",
+      "required": false,
+      "default": "true",
+      "description": "Legend items show / hide their slice"
+    },
+    {
+      "name": "hiddenSeries",
+      "type": "string[]",
+      "required": false,
+      "default": null,
+      "description": "Hidden slice keys (controlled)"
+    },
+    {
+      "name": "defaultHiddenSeries",
+      "type": "string[]",
+      "required": false,
+      "default": null,
+      "description": "Initially hidden slice keys"
+    },
+    {
+      "name": "onHiddenSeriesChange",
+      "type": "(hidden: string[]) => void",
+      "required": false,
+      "default": null,
+      "description": "Called with the hidden slice keys when a legend item is pressed"
+    },
+    {
+      "name": "valueFormatter",
+      "type": "(value: number) => string",
+      "required": false,
+      "default": null,
+      "description": "Formats values in the legend, center and tooltip"
+    },
+    {
+      "name": "animate",
+      "type": "boolean",
+      "required": false,
+      "default": "true",
+      "description": "Animates the slices when they are toggled"
+    },
+    {
+      "name": "responsive",
+      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
+      "required": false,
+      "default": null,
+      "description": "Adapts to the screen: smaller chart with the legend below on mobile, larger on desktop. true = all breakpoints or a list like [\"m\", \"t\"]"
+    },
+    {
+      "name": "aria-label",
+      "type": "string",
+      "required": false,
+      "default": null,
+      "description": "Accessible name of the chart (also the caption of its data table)"
     }
   ],
   "Popover": [
@@ -3509,7 +4510,7 @@
       "name": "isDisabled",
       "type": "boolean",
       "required": false,
-      "default": "false",
+      "default": null,
       "description": "Disabled state"
     },
     {
@@ -3725,14 +4726,49 @@
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Field label, shown above the field"
+      "description": "Field label"
     },
     {
       "name": "labelPlacement",
-      "type": "'outside' | 'outside-left'",
+      "type": "'outside' | 'outside-left' | 'inside' | 'floating' | 'floating-inside'",
       "required": false,
       "default": "\"outside\"",
-      "description": "Label placement: above or to the left"
+      "description": "Label placement: outside (above), outside-left (beside), inside (small, inside the box), floating (on the border once open / chosen) or floating-inside (moves to the top inside the box)"
+    },
+    {
+      "name": "labelTooltip",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Help shown from an info icon next to the label (outside placements)"
+    },
+    {
+      "name": "labelEndContent",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Content at the far end of the label row (outside placement)"
+    },
+    {
+      "name": "isOptional",
+      "type": "boolean",
+      "required": false,
+      "default": null,
+      "description": "Marks the field as optional next to the label"
+    },
+    {
+      "name": "necessityIndicator",
+      "type": "'icon' | 'text'",
+      "required": false,
+      "default": "\"icon\"",
+      "description": "How required / optional is shown: icon (*) or text (\"Required\" / \"Optional\")"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "required": false,
+      "default": null,
+      "description": "Form field name: the selected key is submitted with the form"
     },
     {
       "name": "placeholder",
@@ -4388,7 +5424,7 @@
       "name": "isDisabled",
       "type": "boolean",
       "required": false,
-      "default": "false",
+      "default": null,
       "description": "Disabled state"
     },
     {
@@ -4801,7 +5837,42 @@
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Field label, shown above the field"
+      "description": "Field label"
+    },
+    {
+      "name": "labelPlacement",
+      "type": "'outside' | 'outside-left' | 'inside' | 'floating' | 'floating-inside'",
+      "required": false,
+      "default": "\"outside\"",
+      "description": "Label placement: outside (above), outside-left (beside), inside (small, inside the box), floating (on the border once focused / filled) or floating-inside (moves to the top inside the box)"
+    },
+    {
+      "name": "labelTooltip",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Help shown from an info icon next to the label (outside placements)"
+    },
+    {
+      "name": "labelEndContent",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Content at the far end of the label row (outside placement)"
+    },
+    {
+      "name": "isOptional",
+      "type": "boolean",
+      "required": false,
+      "default": null,
+      "description": "Marks the field as optional next to the label"
+    },
+    {
+      "name": "necessityIndicator",
+      "type": "'icon' | 'text'",
+      "required": false,
+      "default": "\"icon\"",
+      "description": "How required / optional is shown: icon (*) or text (\"Required\" / \"Optional\")"
     },
     {
       "name": "description",
@@ -5032,134 +6103,6 @@
       "required": false,
       "default": null,
       "description": "App content"
-    }
-  ],
-  "Tooltip": [
-    {
-      "name": "content",
-      "type": "ReactNode",
-      "required": true,
-      "default": null,
-      "description": "Tooltip content"
-    },
-    {
-      "name": "placement",
-      "type": "'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end' | 'left' | 'left-start' | 'left-end' | 'right' | 'right-start' | 'right-end'",
-      "required": false,
-      "default": "\"top\"",
-      "description": "Placement side"
-    },
-    {
-      "name": "color",
-      "type": "'default' | 'accent' | 'success' | 'warning' | 'danger' | 'foreground'",
-      "required": false,
-      "default": "\"default\"",
-      "description": "Color theme"
-    },
-    {
-      "name": "size",
-      "type": "'xs' | 'sm' | 'md' | 'lg'",
-      "required": false,
-      "default": "\"md\"",
-      "description": "Size"
-    },
-    {
-      "name": "radius",
-      "type": "'sm' | 'md' | 'lg' | 'full'",
-      "required": false,
-      "default": "\"md\"",
-      "description": "Corner radius"
-    },
-    {
-      "name": "delay",
-      "type": "number",
-      "required": false,
-      "default": "300",
-      "description": "Delay before opening (ms)"
-    },
-    {
-      "name": "closeDelay",
-      "type": "number",
-      "required": false,
-      "default": "150",
-      "description": "Delay before closing (ms)"
-    },
-    {
-      "name": "offset",
-      "type": "number",
-      "required": false,
-      "default": "8",
-      "description": "Distance from the trigger (px)"
-    },
-    {
-      "name": "showArrow",
-      "type": "boolean",
-      "required": false,
-      "default": "false",
-      "description": "Shows the pointer arrow"
-    },
-    {
-      "name": "isBlurred",
-      "type": "boolean",
-      "required": false,
-      "default": "true",
-      "description": "Glass (blur) background — default color only; colored tooltips stay solid"
-    },
-    {
-      "name": "material",
-      "type": "\"frosted\" | \"liquid\"",
-      "required": false,
-      "default": null,
-      "description": "Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass)"
-    },
-    {
-      "name": "isDisabled",
-      "type": "boolean",
-      "required": false,
-      "default": "false",
-      "description": "Disabled (inactive) state"
-    },
-    {
-      "name": "isOpen",
-      "type": "boolean",
-      "required": false,
-      "default": null,
-      "description": "Open state (controlled)"
-    },
-    {
-      "name": "defaultOpen",
-      "type": "boolean",
-      "required": false,
-      "default": "false",
-      "description": "Initial open state (uncontrolled)"
-    },
-    {
-      "name": "onOpenChange",
-      "type": "(open: boolean) => void",
-      "required": false,
-      "default": null,
-      "description": "Called when the open state changes"
-    },
-    {
-      "name": "responsive",
-      "type": "boolean | 'm' | 't' | 'l' | 'd' | readonly Breakpoint[]",
-      "required": false,
-      "default": null,
-      "description": "Adapts to the screen: text one step larger and width up to the screen edge on mobile, a step larger on tablet, wider on desktop. true = all breakpoints or a list like [\"m\", \"t\"]"
-    },
-    {
-      "name": "className",
-      "type": "string",
-      "required": false,
-      "default": "\"\"",
-      "description": "Extra CSS classes"
-    },
-    {
-      "name": "children",
-      "type": "ReactElement",
-      "required": true,
-      "default": null,
-      "description": "Trigger element (a single React element)"
     }
   ]
 }

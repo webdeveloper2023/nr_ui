@@ -41,7 +41,7 @@ export const ORDERS: Order[] = [
   { id: "#3207", customer: "Madina Usmonova", email: "madina@acme.uz", product: "Tablet Air 11", amount: 599, status: "paid", date: "2026-10-26" },
   { id: "#3206", customer: "Bekzod Tursunov", email: "bekzod@acme.uz", product: "Smartwatch S", amount: 399, status: "cancelled", date: "2026-10-25" },
   { id: "#3205", customer: "Nigora Aliyeva", email: "nigora@acme.uz", product: "Wireless keyboard", amount: 299, status: "paid", date: "2026-10-25" },
-  { id: "#3204", customer: "Sardor Qodirov", email: "sardor@acme.uz", product: "5K display", amount: 1599, status: "shipped", date: "2026-10-24" },
+  { id: "#3204", customer: "Sardor Qodirov", email: "sardor@acme.uz", product: '27" 5K display', amount: 1599, status: "shipped", date: "2026-10-24" },
   { id: "#3203", customer: "Kamola Ergasheva", email: "kamola@acme.uz", product: "Mini PC", amount: 599, status: "pending", date: "2026-10-24" },
 ];
 
@@ -52,7 +52,7 @@ export const REVENUE: Record<string, { data: number[]; total: string; change: st
 };
 
 export const TEAM = [
-  { name: "Ali Valiyev", role: { en: "CEO", uz: "CEO", ru: "CEO" }, online: true },
+  { name: "Rafiqjon Nazirov", role: { en: "Founder · you", uz: "Asoschi · siz", ru: "Основатель · вы" }, online: true },
   { name: "Dilnoza Karimova", role: { en: "Tech Lead", uz: "Tech Lead", ru: "Техлид" }, online: true },
   { name: "Jasur Rahimov", role: { en: "Designer", uz: "Dizayner", ru: "Дизайнер" }, online: false },
   { name: "Madina Usmonova", role: { en: "QA", uz: "QA", ru: "Тестировщик" }, online: true },
@@ -60,3 +60,55 @@ export const TEAM = [
 
 export const PAGE_SIZE = 5;
 export const avatarUrl = (seed: string) => `https://i.pravatar.cc/150?u=${encodeURIComponent(seed)}`;
+
+// ─── Charts ─────────────────────────────────
+const DAY0 = new Date("2026-07-30T12:00:00");
+/** 90 days of revenue (this period and the one before), deterministic so every render matches */
+export const DAILY = Array.from({ length: 90 }, (_, i) => {
+  const date = new Date(DAY0.getFullYear(), DAY0.getMonth(), DAY0.getDate() + i);
+  const weekend = date.getDay() === 0 || date.getDay() === 6;
+  const base = 1180 + i * 7 + Math.sin(i / 4.2) * 170 + Math.sin(i / 13) * 220 - (weekend ? 210 : 0);
+  return { date, revenue: Math.round(base), previous: Math.round(base * 0.84 + Math.cos(i / 5) * 120) };
+});
+
+/** Visible window of the revenue chart per range tab: [first, last] row */
+export const RANGES: Record<string, [number, number]> = { week: [83, 89], month: [60, 89], quarter: [0, 89] };
+
+export const CHANNELS = [
+  { key: "online", label: { en: "Online", uz: "Onlayn", ru: "Онлайн" }, value: 31420 },
+  { key: "store", label: { en: "In-store", uz: "Do'kon", ru: "Магазин" }, value: 12610 },
+  { key: "wholesale", label: { en: "Wholesale", uz: "Ulgurji", ru: "Опт" }, value: 4200 },
+] as const;
+
+export const WEEKDAYS: Tr[] = [
+  { en: "Mon", uz: "Du", ru: "Пн" },
+  { en: "Tue", uz: "Se", ru: "Вт" },
+  { en: "Wed", uz: "Ch", ru: "Ср" },
+  { en: "Thu", uz: "Pa", ru: "Чт" },
+  { en: "Fri", uz: "Ju", ru: "Пт" },
+  { en: "Sat", uz: "Sh", ru: "Сб" },
+  { en: "Sun", uz: "Ya", ru: "Вс" },
+];
+export const WEEK_ORDERS = [
+  { paid: 142, shipped: 38, cancelled: 6 },
+  { paid: 156, shipped: 41, cancelled: 4 },
+  { paid: 149, shipped: 46, cancelled: 7 },
+  { paid: 171, shipped: 52, cancelled: 5 },
+  { paid: 188, shipped: 57, cancelled: 9 },
+  { paid: 121, shipped: 30, cancelled: 3 },
+  { paid: 98, shipped: 22, cancelled: 2 },
+];
+
+export const CATEGORIES = [
+  { key: "laptops", label: { en: "Laptops", uz: "Noutbuklar", ru: "Ноутбуки" }, value: 18400 },
+  { key: "phones", label: { en: "Phones", uz: "Telefonlar", ru: "Телефоны" }, value: 14900 },
+  { key: "audio", label: { en: "Audio", uz: "Audio", ru: "Аудио" }, value: 6200 },
+  { key: "tablets", label: { en: "Tablets", uz: "Planshetlar", ru: "Планшеты" }, value: 5300 },
+  { key: "accessories", label: { en: "Accessories", uz: "Aksessuarlar", ru: "Аксессуары" }, value: 3430 },
+] as const;
+
+export const GOALS = [
+  { key: "sales", label: { en: "Sales plan", uz: "Sotuv rejasi", ru: "План продаж" }, value: 78 },
+  { key: "customers", label: { en: "New customers", uz: "Yangi mijozlar", ru: "Новые клиенты" }, value: 68 },
+  { key: "stock", label: { en: "Restocking", uz: "Ombor", ru: "Склад" }, value: 55 },
+] as const;

@@ -34,6 +34,7 @@
   --color-mint: #00c7be;
   --color-cyan: #32ade6;
   --color-yellow: #ffcc00;
+
   --color-brown: #a2845e;
 
   /* Gray scale, darkest to lightest */
@@ -131,6 +132,19 @@
   }
 }
 
+/* Always emitted: charts read these from inline SVG styles, not utility classes */
+@theme static {
+  /* Chart series (fixed order; checked for color-vision deficiency) */
+  --color-chart-1: #007aff;
+  --color-chart-2: #16a06a;
+  --color-chart-3: #a347d6;
+  --color-chart-4: #f27c00;
+  --color-chart-5: #1c9cc4;
+  --color-chart-6: #c99400;
+  --color-chart-7: #5856d6;
+  --color-chart-8: #e0306a;
+}
+
 /* ── Elevation, glass & gradient tokens (light) ─ */
 :root {
   --nr-shadow-surface: 0 0 0 0.5px rgb(0 0 0 / 0.05), 0 1px 2px 0 rgb(0 0 0 / 0.04), 0 4px 16px -2px rgb(0 0 0 / 0.05);
@@ -168,6 +182,15 @@
   --color-mint: #63e6e2;
   --color-cyan: #64d2ff;
   --color-yellow: #ffd60a;
+
+  --color-chart-1: #2f8cff;
+  --color-chart-2: #22a25c;
+  --color-chart-3: #b264ea;
+  --color-chart-4: #dc7210;
+  --color-chart-5: #1f97c2;
+  --color-chart-6: #b8860a;
+  --color-chart-7: #6e6bf0;
+  --color-chart-8: #f04d7c;
   --color-brown: #ac8e68;
 
   --color-gray: #8e8e93;

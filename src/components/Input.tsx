@@ -16,8 +16,9 @@ import {
   fieldDescriptionClasses,
   fieldErrorClasses,
   fieldHeight,
+  fieldHeightInside,
   fieldHeightR,
-  fieldLabelClasses,
+  fieldInsidePadding,
   fieldLeftLabelR,
   fieldLeftLayoutR,
   fieldPadding,
@@ -25,11 +26,17 @@ import {
   fieldRadius,
   fieldText,
   fieldTextR,
+  floatingLabel,
+  notchedBox,
+  notchedLabel,
+  notchedLeft,
   type FieldRadius,
   type FieldSize,
   type FieldVariant,
   type LabelPlacement,
 } from "./fieldStyles";
+import { useFieldDefaults, type NecessityIndicator } from "./formContext";
+import { FieldOutline, Label, NecessityMark } from "./Label";
 
 export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "size"> {
   /** Style: primary — white field with a shadow (on the gray canvas), secondary — gray field (inside white cards) */
@@ -38,10 +45,18 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
   size?: FieldSize;
   /** Corner radius */
   radius?: FieldRadius;
-  /** Field label, shown above the field */
+  /** Field label */
   label?: ReactNode;
-  /** Label placement: above or to the left */
+  /** Label placement: outside (above), outside-left (beside), inside (small, inside the box), floating (on the border once focused / filled) or floating-inside (moves to the top inside the box) */
   labelPlacement?: LabelPlacement;
+  /** Help shown from an info icon next to the label (outside placements) */
+  labelTooltip?: ReactNode;
+  /** Content at the far end of the label row, e.g. a "Forgot password?" link (outside placement) */
+  labelEndContent?: ReactNode;
+  /** Marks the field as optional next to the label */
+  isOptional?: boolean;
+  /** How required / optional is shown: icon (*) or text ("Required" / "Optional") */
+  necessityIndicator?: NecessityIndicator;
   /** Helper text below the field */
   description?: ReactNode;
   /** Text shown in the invalid state */
@@ -80,175 +95,240 @@ const ClearIcon = () => (
   </svg>
 );
 
-export const Input = forwardRef<HTMLInputElement, InputProps>(
-  (
-    {
-      variant = "primary",
-      size = "md",
-      radius = "md",
-      label,
-      labelPlacement = "outside",
-      description,
-      errorMessage,
-      isInvalid = false,
-      isDisabled = false,
-      isReadOnly = false,
-      isRequired = false,
-      isClearable = false,
-      onClear,
-      onValueChange,
-      startContent,
-      endContent,
-      fullWidth = true,
-      responsive,
-      className = "",
-      classNames = {},
-      inputOverlay,
-      value,
-      defaultValue,
-      onChange,
-      type = "text",
-      id: idProp,
-      ...props
-    },
-    ref
-  ) => {
-    const t = useLocale();
-    const bps = useResponsive(responsive);
-    const autoId = useId();
-    const id = idProp ?? autoId;
-    const inputRef = useRef<HTMLInputElement>(null);
-    useImperativeHandle(ref, () => inputRef.current as HTMLInputElement);
+export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
+  const form = useFieldDefaults();
+  const {
+    variant = form.variant ?? "primary",
+    size = form.size ?? "md",
+    radius = form.radius ?? "md",
+    label,
+    labelPlacement = form.labelPlacement ?? "outside",
+    labelTooltip,
+    labelEndContent,
+    isOptional,
+    necessityIndicator = form.necessityIndicator ?? "icon",
+    description,
+    errorMessage,
+    isInvalid = false,
+    isDisabled = form.isDisabled ?? false,
+    isReadOnly = form.isReadOnly ?? false,
+    isRequired = false,
+    isClearable = false,
+    onClear,
+    onValueChange,
+    startContent,
+    endContent,
+    fullWidth = true,
+    responsive,
+    className = "",
+    classNames = {},
+    inputOverlay,
+    value,
+    defaultValue,
+    onChange,
+    type = "text",
+    id: idProp,
+    ...rest
+  } = props;
 
-    const [internalValue, setInternalValue] = useState(String(defaultValue ?? ""));
-    const isControlled = value !== undefined;
-    const currentValue = isControlled ? String(value ?? "") : internalValue;
-    const hasValue = currentValue.length > 0;
+  const t = useLocale();
+  const bps = useResponsive(responsive);
+  const autoId = useId();
+  const id = idProp ?? autoId;
+  const inputRef = useRef<HTMLInputElement>(null);
+  useImperativeHandle(ref, () => inputRef.current as HTMLInputElement);
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-      if (!isControlled) setInternalValue(e.target.value);
-      onChange?.(e);
-      onValueChange?.(e.target.value);
-    };
-    // Clear through a native input event so it flows through handleChange like typing does:
-    // onChange and onValueChange both fire, and value + onChange inputs update too.
-    const handleClear = () => {
-      const el = inputRef.current;
-      if (el) {
-        Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")?.set?.call(el, "");
-        el.dispatchEvent(new Event("input", { bubbles: true }));
-        el.focus();
-      } else {
-        if (!isControlled) setInternalValue("");
-        onValueChange?.("");
-      }
-      onClear?.();
-    };
+  const [internalValue, setInternalValue] = useState(String(defaultValue ?? ""));
+  const isControlled = value !== undefined;
+  const currentValue = isControlled ? String(value ?? "") : internalValue;
+  const hasValue = currentValue.length > 0;
 
-    const showError = isInvalid && Boolean(errorMessage);
-    const descId = `${id}-desc`;
-    const errId = `${id}-err`;
-    const isLeft = labelPlacement === "outside-left";
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (!isControlled) setInternalValue(e.target.value);
+    onChange?.(e);
+    onValueChange?.(e.target.value);
+  };
+  // Clear through a native input event so it flows through handleChange like typing does:
+  // onChange and onValueChange both fire, and value + onChange inputs update too.
+  const handleClear = () => {
+    const el = inputRef.current;
+    if (el) {
+      Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")?.set?.call(el, "");
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+      el.focus();
+    } else {
+      if (!isControlled) setInternalValue("");
+      onValueChange?.("");
+    }
+    onClear?.();
+  };
 
-    const inputEl = (
-      <input
-        ref={inputRef}
-        id={id}
-        type={type}
-        value={currentValue}
-        disabled={isDisabled}
-        readOnly={isReadOnly}
-        required={isRequired}
-        onChange={handleChange}
-        aria-invalid={isInvalid || undefined}
-        aria-describedby={showError ? errId : description ? descId : undefined}
-        className={cn(
-          "relative w-full min-w-0 h-full bg-transparent outline-none text-foreground placeholder:text-field-placeholder",
-          "file:mr-3 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground",
-          fieldText[size],
-          rx(bps, fieldTextR[size]),
-          classNames.input
-        )}
-        {...props}
-      />
-    );
+  const showError = isInvalid && Boolean(errorMessage);
+  const descId = `${id}-desc`;
+  const errId = `${id}-err`;
+  const isLeft = labelPlacement === "outside-left";
+  const isInside = Boolean(label) && (labelPlacement === "inside" || labelPlacement === "floating-inside");
+  const isFloating = isInside && labelPlacement === "floating-inside";
+  const isNotched = Boolean(label) && labelPlacement === "floating";
+  // Leading content (an icon, a country code) takes the resting spot, so the label stays on the border
+  const notchRaised = startContent != null || inputOverlay !== undefined ? true : ("auto" as const);
+  const optional = isOptional ?? (Boolean(form.showOptional) && !isRequired);
 
-    return (
-      <div
-        data-disabled={isDisabled || undefined}
-        className={cn(
-          "flex",
-          isLeft && label ? "flex-row items-start gap-3" : "flex-col gap-1.5",
-          fullWidth ? "w-full" : cn("w-fit", rx(bps, { m: "mobile:w-full" })),
-          isLeft && label && rx(bps, fieldLeftLayoutR),
-          isDisabled && "opacity-50 pointer-events-none",
-          className,
-          classNames.base
-        )}
-      >
-        {label && (
-          <label htmlFor={id} className={cn(fieldLabelClasses, isLeft && cn("shrink-0", fieldHeight[size], "flex items-center", rx(bps, fieldLeftLabelR)), classNames.label)}>
-            {label}
-            {isRequired && <span className="text-danger ml-0.5">*</span>}
-          </label>
-        )}
-        <div className="flex flex-col gap-1.5 flex-1 min-w-0">
-          <div
-            onClick={() => inputRef.current?.focus()}
-            className={cn(
-              "relative flex items-center w-full cursor-text",
-              fieldPadding[size],
-              fieldHeight[size],
-              rx(bps, fieldPaddingR[size]),
-              rx(bps, fieldHeightR[size]),
-              fieldRadius[radius],
-              fieldBoxClasses(variant, isInvalid),
-              classNames.inputWrapper
-            )}
-          >
-            {startContent && <span className="flex items-center shrink-0 text-muted">{startContent}</span>}
-            {inputOverlay !== undefined ? (
-              <div className="relative flex flex-1 min-w-0 h-full items-center">
-                <span aria-hidden className={cn("pointer-events-none absolute inset-0 flex items-center whitespace-pre overflow-hidden", fieldText[size], rx(bps, fieldTextR[size]))}>
+  const inputEl = (
+    <input
+      ref={inputRef}
+      id={id}
+      type={type}
+      value={currentValue}
+      disabled={isDisabled}
+      readOnly={isReadOnly}
+      required={isRequired}
+      onChange={handleChange}
+      aria-invalid={isInvalid || undefined}
+      aria-describedby={showError ? errId : description ? descId : undefined}
+      className={cn(
+        "relative w-full min-w-0 h-full bg-transparent outline-none text-foreground placeholder:text-field-placeholder",
+        "file:mr-3 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground",
+        fieldText[size],
+        rx(bps, fieldTextR[size]),
+        isInside && fieldInsidePadding[size],
+        // A floating label stands in for the placeholder until the field is focused
+        (isFloating || (isNotched && notchRaised === "auto")) && "placeholder:opacity-0 focus:placeholder:opacity-100",
+        classNames.input
+      )}
+      {...rest}
+    />
+  );
+
+  return (
+    <div
+      data-disabled={isDisabled || undefined}
+      className={cn(
+        "flex",
+        isLeft && label ? "flex-row items-start gap-3" : "flex-col gap-1.5",
+        fullWidth ? "w-full" : cn("w-fit", rx(bps, { m: "mobile:w-full" })),
+        isLeft && label && rx(bps, fieldLeftLayoutR),
+        isDisabled && "opacity-50 pointer-events-none",
+        className,
+        classNames.base
+      )}
+    >
+      {label && !isInside && !isNotched && (
+        <Label
+          htmlFor={id}
+          isRequired={isRequired}
+          isOptional={optional}
+          necessityIndicator={necessityIndicator}
+          tooltip={labelTooltip}
+          endContent={isLeft ? undefined : labelEndContent}
+          style={isLeft && form.labelWidth !== undefined ? { width: form.labelWidth } : undefined}
+          className={cn(isLeft && cn("shrink-0 justify-center", fieldHeight[size], rx(bps, fieldLeftLabelR)), classNames.label)}
+        >
+          {label}
+        </Label>
+      )}
+      <div className="flex flex-col gap-1.5 flex-1 min-w-0">
+        <div
+          onClick={() => inputRef.current?.focus()}
+          data-filled={hasValue || undefined}
+          className={cn(
+            "group/field relative flex items-center w-full cursor-text",
+            fieldPadding[size],
+            isInside ? fieldHeightInside[size] : cn(fieldHeight[size], rx(bps, fieldHeightR[size])),
+            rx(bps, fieldPaddingR[size]),
+            fieldRadius[radius],
+            isNotched ? cn(notchedBox(variant), "mt-1.5") : fieldBoxClasses(variant, isInvalid),
+            classNames.inputWrapper
+          )}
+        >
+          {isNotched && (
+            <>
+              <FieldOutline label={<>{label}<NecessityMark isRequired={isRequired} isOptional={optional} indicator={necessityIndicator} /></>} size={size} radius={fieldRadius[radius]} raised={notchRaised} isInvalid={isInvalid} />
+              <label
+                htmlFor={id}
+                className={cn(
+                  notchedLabel.base,
+                  notchedLeft[size],
+                  notchRaised === true ? notchedLabel.raised : cn(notchedLabel.rest, floatingLabel.restText[size], notchedLabel.whenActive),
+                  isInvalid && "text-danger!",
+                  classNames.label
+                )}
+              >
+                {label}
+                <NecessityMark isRequired={isRequired} isOptional={optional} indicator={necessityIndicator} />
+              </label>
+            </>
+          )}
+          {startContent && <span className="flex items-center shrink-0 text-muted">{startContent}</span>}
+          {inputOverlay !== undefined || isInside ? (
+            <div className="relative flex flex-1 min-w-0 h-full items-center">
+              {inputOverlay !== undefined && (
+                <span
+                  aria-hidden
+                  className={cn(
+                    "pointer-events-none absolute inset-0 flex items-center whitespace-pre overflow-hidden",
+                    fieldText[size],
+                    rx(bps, fieldTextR[size]),
+                    isInside && fieldInsidePadding[size],
+                    // A mask guide appears once the floating label has moved out of the way
+                    isFloating && "opacity-0 transition-opacity group-focus-within/field:opacity-100 group-data-filled/field:opacity-100"
+                  )}
+                >
                   {inputOverlay}
                 </span>
-                {inputEl}
-              </div>
-            ) : (
-              inputEl
-            )}
-            {isClearable && hasValue && !isReadOnly && (
-              <button
-                type="button"
-                tabIndex={-1}
-                aria-label={t.common.clear}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleClear();
-                }}
-                className="flex items-center shrink-0 text-muted/70 hover:text-foreground transition-colors cursor-pointer animate-fade-in"
-              >
-                <ClearIcon />
-              </button>
-            )}
-            {endContent && <span className="flex items-center shrink-0 text-muted">{endContent}</span>}
-          </div>
-          {showError ? (
-            <p id={errId} className={cn(fieldErrorClasses, classNames.errorMessage)}>
-              {errorMessage}
-            </p>
+              )}
+              {isInside && (
+                <label
+                  htmlFor={id}
+                  className={cn(
+                    floatingLabel.base,
+                    isFloating
+                      ? cn(floatingLabel.rest, floatingLabel.restText[size], floatingLabel.raisedWhenActive[size])
+                      : cn(floatingLabel.raised, floatingLabel.raisedText[size]),
+                    showError && "!text-danger",
+                    classNames.label
+                  )}
+                >
+                  {label}
+                  <NecessityMark isRequired={isRequired} isOptional={optional} indicator={necessityIndicator} />
+                </label>
+              )}
+              {inputEl}
+            </div>
           ) : (
-            description && (
-              <p id={descId} className={cn(fieldDescriptionClasses, classNames.description)}>
-                {description}
-              </p>
-            )
+            inputEl
           )}
+          {isClearable && hasValue && !isReadOnly && (
+            <button
+              type="button"
+              tabIndex={-1}
+              aria-label={t.common.clear}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleClear();
+              }}
+              className="flex items-center shrink-0 text-muted/70 hover:text-foreground transition-colors cursor-pointer animate-fade-in"
+            >
+              <ClearIcon />
+            </button>
+          )}
+          {endContent && <span className="flex items-center shrink-0 text-muted">{endContent}</span>}
         </div>
+        {showError ? (
+          <p id={errId} className={cn(fieldErrorClasses, classNames.errorMessage)}>
+            {errorMessage}
+          </p>
+        ) : (
+          description && (
+            <p id={descId} className={cn(fieldDescriptionClasses, classNames.description)}>
+              {description}
+            </p>
+          )
+        )}
       </div>
-    );
-  }
-);
+    </div>
+  );
+});
 
 Input.displayName = "Input";
 export default Input;

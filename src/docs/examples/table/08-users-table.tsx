@@ -5,7 +5,7 @@ import { Avatar, Button, Chip, Input, Pagination, Table, type TableColumn } from
 type Member = { id: string; name: string; email: string; role: string; status: "active" | "invited" | "inactive" };
 
 const members: Member[] = [
-  { id: "1", name: "Ali Valiyev", email: "ali@acme.uz", role: "Owner", status: "active" },
+  { id: "1", name: "Rafiqjon Nazirov", email: "rafiqjon@acme.uz", role: "Owner", status: "active" },
   { id: "2", name: "Dilnoza Karimova", email: "dilnoza@acme.uz", role: "Admin", status: "active" },
   { id: "3", name: "Jasur Rahimov", email: "jasur@acme.uz", role: "Editor", status: "invited" },
   { id: "4", name: "Madina Usmonova", email: "madina@acme.uz", role: "Viewer", status: "active" },

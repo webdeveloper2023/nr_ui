@@ -1,5 +1,6 @@
 import { createContext, forwardRef, useContext, useId, useState, type ReactNode } from "react";
 import { cn } from "../lib/cn";
+import { useFieldDefaults } from "./formContext";
 import { rx, useResponsive, type Breakpoint, type BreakpointClasses, type ResponsiveProp } from "./breakpoints";
 
 type RadioColor = "default" | "accent" | "success" | "warning" | "danger";
@@ -109,7 +110,7 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
       variant = "primary",
       color = "accent",
       size = "md",
-      isDisabled = false,
+      isDisabled: isDisabledProp,
       isInvalid = false,
       isRequired = false,
       name: nameProp,
@@ -119,6 +120,8 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
     },
     ref
   ) => {
+    const form = useFieldDefaults();
+    const isDisabled = isDisabledProp ?? form.isDisabled ?? false;
     const bps = useResponsive(responsive);
     const autoName = useId();
     const labelId = useId();
