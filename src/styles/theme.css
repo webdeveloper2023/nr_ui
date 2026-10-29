@@ -516,6 +516,13 @@
   width: fit-content;
   max-width: 100%;
 }
+/* Bars follow the text alignment of their block */
+[data-skeleton] :is(.text-center, [class*=" text-center"]) :is(p, h1, h2, h3, h4, h5, h6, div, label, legend, li, dt, dd, blockquote, figcaption):not(:has(*)):not(:empty) {
+  margin-inline: auto;
+}
+[data-skeleton] :is(.text-right, [class*=" text-right"], .text-end, [class*=" text-end"]) :is(p, h1, h2, h3, h4, h5, h6, div, label, legend, li, dt, dd, blockquote, figcaption):not(:has(*)):not(:empty) {
+  margin-inline-start: auto;
+}
 [data-skeleton]:is(p, span, a, label, small, strong, h1, h2, h3, h4, h5, h6):not(:has(*)):not(:empty) {
   background-color: var(--nr-skeleton);
   border-radius: 0.375rem;

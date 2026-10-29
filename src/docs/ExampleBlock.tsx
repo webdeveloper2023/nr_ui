@@ -1,21 +1,43 @@
 import { useState } from "react";
+import { Tabs } from "../components";
+import { SkeletonScope, skeletonAttrs } from "../components/skeletonState";
 import { CodeBlock } from "./CodeBlock";
 import type { Example } from "./modules";
 import { useT } from "./i18n/lang";
 
-export function ExampleBlock({ example }: { example: Example }) {
+/**
+ * One live example with its code. The control in the corner shows the same example in the
+ * skeleton state; `skeleton` from the page switches every example at once.
+ */
+export function ExampleBlock({ example, skeleton = false }: { example: Example; skeleton?: boolean }) {
   const [expanded, setExpanded] = useState(false);
+  const [view, setView] = useState(skeleton ? "skeleton" : "preview");
   const t = useT();
   const { Component } = example;
   const long = example.code.split("\n").length > 6;
+  const isSkeleton = view === "skeleton";
 
   return (
     <div id={example.id} className="scroll-mt-28">
       <h3 className="mb-4 text-xl font-semibold tracking-tight text-foreground">{example.title}</h3>
       <div className="overflow-hidden rounded-3xl border border-border bg-background">
-        <div className="flex min-h-[260px] items-center justify-center px-6 py-12 sm:px-10">
-          <div className="w-full max-w-full">
-            <Component />
+        <div className="relative flex min-h-[260px] items-center justify-center px-6 pt-16 pb-12 sm:px-10">
+          <div className="absolute right-3 top-3">
+            <Tabs
+              size="xs"
+              aria-label={t({ en: "Example view", uz: "Misol ko'rinishi", ru: "Вид примера" })}
+              selectedKey={view}
+              onSelectionChange={setView}
+              tabs={[
+                { key: "preview", title: t({ en: "Preview", uz: "Ko'rinish", ru: "Просмотр" }) },
+                { key: "skeleton", title: "Skeleton" },
+              ]}
+            />
+          </div>
+          <div className="w-full max-w-full" {...skeletonAttrs(isSkeleton)}>
+            <SkeletonScope on={isSkeleton}>
+              <Component />
+            </SkeletonScope>
           </div>
         </div>
         <div className="relative border-t border-border" style={{ ["--nr-code-bg" as string]: "var(--color-background)" }}>

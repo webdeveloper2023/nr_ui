@@ -9,6 +9,7 @@ import { getExamples, loadSource } from "./modules";
 import { findEntry, registry } from "./registry";
 import { NewTag } from "./NewTag";
 import { useT } from "./i18n/lang";
+import { Switch } from "../components";
 
 const L = {
   usage: { en: "Usage", uz: "Ishlatish", ru: "Использование" },
@@ -79,6 +80,8 @@ export default function ComponentPage() {
   const { slug = "" } = useParams();
   const entry = findEntry(slug);
   const t = useT();
+  // Tied to the page, so the switch turns off when another component opens
+  const [skeletonSlug, setSkeletonSlug] = useState<string | null>(null);
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
@@ -94,6 +97,8 @@ export default function ComponentPage() {
   }
 
   const examples = getExamples(entry.slug);
+  const allSkeleton = skeletonSlug === entry.slug;
+  const setAllSkeleton = (on: boolean) => setSkeletonSlug(on ? entry.slug : null);
   const index = registry.indexOf(entry);
   const prev = registry[index - 1];
   const next = registry[index + 1];
@@ -123,10 +128,25 @@ export default function ComponentPage() {
         </section>
 
         <section id="examples" className="scroll-mt-28 mt-14">
-          <H2>{t(L.examples)}</H2>
+          <div className="flex flex-wrap items-end justify-between gap-3">
+            <H2>{t(L.examples)}</H2>
+            {examples.length > 0 && (
+              <Switch size="sm" isSelected={allSkeleton} onChange={setAllSkeleton}>
+                {t({ en: "Show all as skeleton", uz: "Hammasini skeletonda ko'rsatish", ru: "Показать все как скелетон" })}
+              </Switch>
+            )}
+          </div>
+          <p className="mt-2 text-[15px] text-muted">
+            {t({
+              en: "Every example has a Skeleton view: the same component with skeleton={true}, as it looks while its data loads.",
+              uz: "Har bir misolda Skeleton ko'rinishi bor: o'sha komponentning skeleton={true} holati — ma'lumot yuklanayotganda shunday ko'rinadi.",
+              ru: "У каждого примера есть вид Skeleton: тот же компонент с skeleton={true} — так он выглядит, пока загружаются данные.",
+            })}
+          </p>
           <div className="mt-6 space-y-12">
             {examples.length ? (
-              examples.map((ex) => <ExampleBlock key={ex.id} example={ex} />)
+              // Remounting on the page switch lets every example follow it
+              examples.map((ex) => <ExampleBlock key={`${ex.id}-${allSkeleton}`} example={ex} skeleton={allSkeleton} />)
             ) : (
               <p className="text-sm text-muted">{t({ en: "No examples yet.", uz: "Misollar hali qo'shilmagan.", ru: "Примеров пока нет." })}</p>
             )}
