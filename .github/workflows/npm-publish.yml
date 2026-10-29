@@ -1,0 +1,41 @@
+name: Publish npm package
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: npm-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          registry-url: 'https://registry.npmjs.org'
+          package-manager-cache: false
+      - run: npm ci
+      - run: npm run check
+      - name: Choose the next patch version
+        shell: bash
+        run: |
+          set -euo pipefail
+          latest=$(npm view nr-ui-kit version --registry=https://registry.npmjs.org/)
+          if [[ ! "$latest" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Unexpected npm version: $latest" >&2
+            exit 1
+          fi
+          IFS=. read -r major minor patch <<< "$latest"
+          next="$major.$minor.$((10#$patch + 1))"
+          npm version "$next" --no-git-tag-version --ignore-scripts
+      - name: Publish to npm using trusted publishing
+        run: npm publish --access public
