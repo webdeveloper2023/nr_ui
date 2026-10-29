@@ -19,6 +19,8 @@ type CheckboxSize = "xs" | "sm" | "md" | "lg";
 type CheckboxRadius = "none" | "sm" | "md" | "full";
 
 export interface CheckboxProps {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Style: primary — white box with a shadow, secondary — gray (inside cards) */
   variant?: "primary" | "secondary";
   /** Color of the selected state */
@@ -256,6 +258,8 @@ Checkbox.displayName = "Checkbox";
 
 // ─── CheckboxGroup ──────────────────────────
 export interface CheckboxGroupProps {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Group label */
   label?: ReactNode;
   /** Helper text below the field */

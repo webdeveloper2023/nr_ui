@@ -2,7 +2,7 @@
 
 Pro darajadagi React komponent kutubxonasi — **React 18/19**, **Tailwind CSS v4**, **TypeScript**, to'liq **dark mode**.
 
-47 ta komponent (ichki qismlari — `ModalHeader`, `CardBody`, `SidebarItem` va h.k. — bilan birga 83 ta): Container, Stack, Grid, LineChart, AreaChart, BarChart, PieChart, Button, Input, Label, Form, AmountInput (summa so'z bilan), Select, Table, Modal, Dropdown, Toast, Sidebar, Pricing, AI Chat va boshqalar.
+47 ta komponent (ichki qismlari — `ModalHeader`, `CardBody`, `SidebarItem` va h.k. — bilan birga 84 ta): Container, Stack, Grid, LineChart, AreaChart, BarChart, PieChart, Button, Input, Label, Form, AmountInput (summa so'z bilan), Select, Table, Modal, Dropdown, Toast, Sidebar, Pricing, AI Chat va boshqalar.
 
 ## O'rnatish
 
@@ -168,6 +168,25 @@ import { Form, Input, Select, Button } from "nr-ui-kit";
 ```
 
 `labelPlacement="outside-left"` bilan birga `labelWidth={140}` bersangiz, barcha field'lar bitta ustunda tekis turadi. Mobile'da label'lar tepaga o'tadi.
+
+## Skeleton holati
+
+Har bir komponentda `skeleton` prop bor. `true` bo'lsa komponent o'z joylashuvi va shaklini saqlaydi: matnlar yumshoq chiziqlarga, tugma, ikonka, rasm, chip va maydonlar kulrang bloklarga aylanadi va hammasi birga sekin "nafas oladi". Ota komponentga berilsa, ichidagi hamma komponent ham skeleton bo'ladi. Skeleton paytida bosish va fokus o'chadi, screen reader uchun `aria-busy` qo'yiladi.
+
+```tsx
+const { data, isLoading } = useOrders();
+
+<Card skeleton={isLoading}>
+  <CardHeader title="So'nggi buyurtmalar" />
+  <CardBody>
+    {/* qatorlar hali yo'q bo'lsa Table namuna qatorlar chizadi */}
+    <Table rows={data ?? []} columns={columns} keyField="id" />
+  </CardBody>
+</Card>
+
+<Button skeleton={isLoading}>Eksport</Button>
+<StatCard skeleton={isLoading} title="Daromad" value="$48,230" />
+```
 
 ## Dark mode
 

@@ -8,6 +8,8 @@ type ChipColor = "default" | "accent" | "success" | "warning" | "danger";
 type ChipSize = "xs" | "sm" | "md" | "lg";
 
 export interface ChipProps {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Style: primary (solid color), secondary (gray), tertiary (no background), soft (tinted) or glass */
   variant?: ChipVariant;
   /** Glass material: frosted (classic) or liquid (clearer, with shining edges). Falls back to the global setting (html data-glass) */

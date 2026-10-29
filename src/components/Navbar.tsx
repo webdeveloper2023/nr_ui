@@ -16,6 +16,8 @@ import { rx, useResponsive, type Breakpoint, type BreakpointClasses, type Respon
 type NavbarMaxWidth = "sm" | "md" | "lg" | "xl" | "2xl" | "full";
 
 export interface NavbarProps extends HTMLAttributes<HTMLElement> {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Maximum width of the inner content */
   maxWidth?: NavbarMaxWidth;
   /** Navbar height (CSS value) */

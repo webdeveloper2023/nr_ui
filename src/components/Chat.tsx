@@ -25,6 +25,8 @@ const composerR: BreakpointClasses = { m: "mobile:p-2.5 mobile:rounded-[22px]" }
 const ChatResponsiveContext = createContext<ResponsiveProp | undefined>(undefined);
 
 export interface ChatContainerProps {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Adapts to the screen: tighter list padding on mobile, roomier on desktop; messages inside inherit it. true = all breakpoints or a list like ["m", "t"] */
   responsive?: ResponsiveProp;
   /** Chat messages */
@@ -53,6 +55,8 @@ export function ChatContainer({ responsive, children, className = "" }: ChatCont
 }
 
 export interface ChatMessageProps {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Message author: user or assistant */
   role: "user" | "assistant";
   /** Author name (used as initials on the assistant avatar) */
@@ -171,6 +175,8 @@ export function ChatMessage({
 }
 
 export interface PromptInputProps {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Input value (controlled) */
   value?: string;
   /** Called with the new value when it changes */

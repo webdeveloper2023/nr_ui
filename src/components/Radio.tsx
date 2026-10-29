@@ -61,6 +61,8 @@ const uncheckedMap: Record<RadioVariant, string> = {
 
 // ─── RadioGroup ─────────────────────────────
 export interface RadioGroupProps {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Group label */
   label?: ReactNode;
   /** Helper text below the field */
@@ -174,6 +176,8 @@ RadioGroup.displayName = "RadioGroup";
 
 // ─── Radio ──────────────────────────────────
 export interface RadioProps {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Option value */
   value: string;
   /** Description below the option */

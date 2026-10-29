@@ -8,6 +8,8 @@ import { rx, useResponsive, type BreakpointClasses, type ResponsiveProp } from "
 export type BillingPeriod = "monthly" | "yearly";
 
 export interface BillingToggleProps {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Selected period */
   value: BillingPeriod;
   /** Called when the billing period changes */
@@ -65,6 +67,8 @@ export function BillingToggle({ value, onChange, yearlyBadge = "-20%", labels: l
 export type PricingFeature = string | { label: string; included: boolean };
 
 export interface PricingCardProps {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Plan name */
   name: string;
   /** Plan description */

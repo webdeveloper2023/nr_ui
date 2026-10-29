@@ -9,6 +9,8 @@ type CardOrientation = "vertical" | "horizontal";
 type CardMediaAspect = "video" | "square" | "wide" | "portrait" | "auto";
 
 export interface CardProps extends HTMLAttributes<HTMLDivElement> {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Style: default (soft gradient), flat (no gradient), bordered (thin border, no shadow), elevated (deep shadow), accent (tinted), dashed (placeholder / empty state), glass, secondary, tertiary or transparent */
   variant?: CardVariant;
   /** Size: padding and text of the header, body, footer and media follow it */
@@ -40,6 +42,8 @@ export interface CardProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export interface CardHeaderProps extends Omit<HTMLAttributes<HTMLDivElement>, "title"> {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Left-side slot (avatar, icon) */
   startContent?: ReactNode;
   /** Title text */
@@ -53,11 +57,15 @@ export interface CardHeaderProps extends Omit<HTMLAttributes<HTMLDivElement>, "t
 }
 
 export interface CardBodyProps extends HTMLAttributes<HTMLDivElement> {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Main content */
   children?: ReactNode;
 }
 
 export interface CardMediaProps extends HTMLAttributes<HTMLDivElement> {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Image URL */
   src?: string;
   /** Image description for screen readers */
@@ -71,6 +79,8 @@ export interface CardMediaProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export interface CardFooterProps extends HTMLAttributes<HTMLDivElement> {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Makes the footer background frosted glass (backdrop blur) */
   isBlurred?: boolean;
   /** Adds a divider above the footer */

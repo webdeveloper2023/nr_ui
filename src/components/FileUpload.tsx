@@ -10,6 +10,8 @@ type FileUploadSize = "sm" | "md" | "lg" | "xl";
 type FileUploadLayout = "dropzone" | "inline" | "button" | "avatar" | "gallery";
 
 export interface FileUploadProps {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Look of the picker: dropzone (large drop area), inline (one row with a Browse button), button (a plain button), avatar (one round image), gallery (grid of tiles) */
   layout?: FileUploadLayout;
   /** Size: sm, md, lg, xl */

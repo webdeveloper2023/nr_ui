@@ -20,6 +20,8 @@ type LayoutElement = "div" | "section" | "main" | "header" | "footer" | "article
 type ContainerSize = "sm" | "md" | "lg" | "xl" | "2xl" | "full";
 
 export interface ContainerProps extends HTMLAttributes<HTMLElement> {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Maximum width: sm 640, md 768, lg 1024, xl 1280, 2xl 1536 px or full */
   size?: ContainerSize;
   /** Side gutters (shared spacing scale); an object sets them per breakpoint: { m: "md", l: "xl" } */
@@ -67,6 +69,8 @@ type StackAlign = "start" | "center" | "end" | "stretch" | "baseline";
 type StackJustify = "start" | "center" | "end" | "between" | "around" | "evenly";
 
 export interface StackProps extends HTMLAttributes<HTMLElement> {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Direction; an object sets it per breakpoint: { m: "column", t: "row" } */
   direction?: ResponsiveValue<StackDirection>;
   /** Space between items (shared spacing scale) */
@@ -144,6 +148,8 @@ type ColsKey = keyof (typeof LAYOUT_CLASSES)["cols"]["base"];
 const GridContext = createContext<Record<Breakpoint, number> | null>(null);
 
 export interface GridProps extends HTMLAttributes<HTMLElement> {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Number of columns (1–12); an object sets it per breakpoint: { m: 1, t: 2, l: 4 } */
   cols?: ResponsiveValue<GridCols>;
   /** Fits as many columns as there is room for, each at least this wide (e.g. 240 or "16rem"); overrides cols */
@@ -199,6 +205,8 @@ Grid.displayName = "Grid";
 type SpanKey = keyof (typeof LAYOUT_CLASSES)["span"]["base"];
 
 export interface GridItemProps extends HTMLAttributes<HTMLElement> {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Columns the cell spans (1–12 or "full"); an object sets it per breakpoint. Never wider than the grid's columns on that breakpoint */
   span?: ResponsiveValue<GridCols | "full">;
   /** HTML element to render */

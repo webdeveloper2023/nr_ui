@@ -7,6 +7,8 @@ type ProgressSize = "xs" | "sm" | "md" | "lg";
 type ProgressRadius = "none" | "sm" | "md" | "full";
 
 export interface ProgressProps {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Current value */
   value?: number;
   /** Minimum value */
@@ -166,6 +168,8 @@ Progress.displayName = "Progress";
 type CircularSize = "xs" | "sm" | "md" | "lg" | "xl";
 
 export interface CircularProgressProps {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Current value */
   value?: number;
   /** Minimum value */

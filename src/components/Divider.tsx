@@ -5,6 +5,8 @@ import { rx, useResponsive, type ResponsiveProp } from "./breakpoints";
 type DividerOrientation = "horizontal" | "vertical";
 
 export interface DividerProps {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Orientation: horizontal or vertical */
   orientation?: DividerOrientation;
   /** Centered label (horizontal only) */

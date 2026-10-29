@@ -7,6 +7,8 @@ type SwitchColor = "default" | "accent" | "success" | "warning" | "danger";
 type SwitchSize = "xs" | "sm" | "md" | "lg";
 
 export interface SwitchProps {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Color of the on state */
   color?: SwitchColor;
   /** Size */

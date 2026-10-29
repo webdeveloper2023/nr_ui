@@ -9,6 +9,8 @@ type SpinnerVariant = "default" | "dots" | "wave" | "spinner";
 type SpinnerLabelColor = "foreground" | "muted";
 
 export interface SpinnerProps {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Size */
   size?: SpinnerSize;
   /** Color */

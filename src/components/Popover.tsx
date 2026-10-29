@@ -32,6 +32,8 @@ type PopoverRadius = "none" | "sm" | "md" | "lg";
 type PopoverBackdrop = "transparent" | "opaque" | "blur";
 
 export interface PopoverProps {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Open state (controlled) */
   isOpen?: boolean;
   /** Initial open state (uncontrolled) */

@@ -21,6 +21,8 @@ import {
 import { useLocale } from "./locale";
 
 export interface BarChartProps extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Rows of data; each row has the category (`xKey`) and one field per series */
   data: ChartDatum[];
   /** Field of each row holding the category */

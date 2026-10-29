@@ -24,6 +24,8 @@ import {
 import { useLocale } from "./locale";
 
 export interface LineChartProps extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Rows of data; each row has the x value (`xKey`) and one field per series */
   data: ChartDatum[];
   /** Field of each row used for the x axis (string, number or Date) */

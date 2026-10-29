@@ -33,6 +33,8 @@ const kbdKeySymbols: Record<KbdKey, string> = {
 };
 
 export interface KbdProps extends HTMLAttributes<HTMLElement> {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Modifier key(s): command, shift, ctrl, etc. */
   keys?: KbdKey | KbdKey[];
   /** Primary button text */

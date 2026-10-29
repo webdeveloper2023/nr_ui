@@ -39,6 +39,8 @@ import { useFieldDefaults, type NecessityIndicator } from "./formContext";
 import { FieldOutline, Label, NecessityMark } from "./Label";
 
 export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "size"> {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Style: primary — white field with a shadow (on the gray canvas), secondary — gray field (inside white cards) */
   variant?: FieldVariant;
   /** Size */

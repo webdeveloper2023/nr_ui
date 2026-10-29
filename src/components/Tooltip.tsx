@@ -29,6 +29,8 @@ type TooltipSize = "xs" | "sm" | "md" | "lg";
 type TooltipRadius = "sm" | "md" | "lg" | "full";
 
 export interface TooltipProps {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Tooltip content */
   content: ReactNode;
   /** Placement side */

@@ -8,6 +8,8 @@ type PaginationSize = "xs" | "sm" | "md" | "lg";
 type PaginationVariant = "ghost" | "tertiary" | "surface";
 
 export interface PaginationProps {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Total number of pages */
   total: number;
   /** Current page */

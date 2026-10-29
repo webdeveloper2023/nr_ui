@@ -22,6 +22,8 @@ export interface TimelineItemData {
 }
 
 export interface TimelineProps {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** List of events */
   items: TimelineItemData[];
   /** Extra classes */

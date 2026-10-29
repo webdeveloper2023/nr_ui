@@ -22,6 +22,8 @@ type DropdownColor = "default" | "accent" | "success" | "warning" | "danger";
 type SelectionMode = "none" | "single" | "multiple";
 
 export interface DropdownProps {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** DropdownTrigger and DropdownMenu */
   children: ReactNode;
   /** Disabled (inactive) state */

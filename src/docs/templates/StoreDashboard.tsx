@@ -9,7 +9,7 @@ import {
   CardHeader, ChatContainer, ChatMessage, Checkbox, CheckboxGroup, Chip, Container, Divider, Form,
   Grid, GridItem, Hide, Input, Kbd, LineChart, Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenu,
   NavbarMenuItem, NavbarMenuToggle, Pagination, PhoneInput, PieChart, PromptInput, Rating, ResponsiveProvider,
-  Select, Show, Sidebar, SidebarItem, SidebarSection, Skeleton, Spinner, Stack, StatCard, Stepper, Switch, Table,
+  Select, Show, Sidebar, SidebarItem, SidebarSection, Spinner, Stack, StatCard, Stepper, Switch, Table,
   Tabs, Textarea, Timeline, Tooltip, useToast,
 } from "nr-ui-kit";
 
@@ -277,8 +277,9 @@ export default function StoreDashboard() {
                   { title: t({ en: "New customers", uz: "Yangi mijozlar", ru: "Новые клиенты" }), value: "342", change: -3.1, color: "warning" as const, icon: <Users size={16} />, chart: [30, 28, 31, 27, 26, 25, 27, 24] },
                   { title: t({ en: "Conversion", uz: "Konversiya", ru: "Конверсия" }), value: "3.8%", change: 1.7, color: "danger" as const, icon: <TrendingUp size={16} />, progress: 64 },
                 ].map((k) => (
-                  <Skeleton key={k.title} isLoaded={!loading} className={density === "sm" ? "rounded-2xl" : "rounded-3xl"}>
                     <StatCard
+                      key={k.title}
+                      skeleton={loading}
                       size={z.stat}
                       title={k.title}
                       value={k.value}
@@ -290,14 +291,13 @@ export default function StoreDashboard() {
                       actions={<CardMenu />}
                       className="h-full"
                     />
-                  </Skeleton>
                 ))}
               </Grid>
 
               {/* Revenue trend + sales channels */}
               <Grid cols={3} gap={z.gap}>
                 <GridItem span={2}>
-                  <Card size={z.card} className="h-full">
+                  <Card size={z.card} skeleton={loading} className="h-full">
                     <CardHeader
                       title={t({ en: "Revenue trend", uz: "Daromad dinamikasi", ru: "Динамика выручки" })}
                       description={
@@ -320,7 +320,6 @@ export default function StoreDashboard() {
                       }
                     />
                     <CardBody className="pb-4">
-                      <Skeleton isLoaded={!loading} className="rounded-2xl">
                         <LineChart
                           key={range}
                           aria-label={t({ en: "Revenue per day, this period and the previous one", uz: "Kunlik daromad: joriy va oldingi davr", ru: "Выручка по дням: текущий и предыдущий период" })}
@@ -337,12 +336,11 @@ export default function StoreDashboard() {
                           valueFormatter={money}
                           xFormatter={(d) => formatDay(isoDay(d as Date), lang)}
                         />
-                      </Skeleton>
                     </CardBody>
                   </Card>
                 </GridItem>
 
-                <Card size={z.card}>
+                <Card size={z.card} skeleton={loading}>
                   <CardHeader title={t({ en: "Sales channels", uz: "Savdo kanallari", ru: "Каналы продаж" })} description={t({ en: "Last 30 days", uz: "So'nggi 30 kun", ru: "За 30 дней" })} endContent={<CardMenu />} />
                   <CardBody className="pb-5">
                     <PieChart
@@ -359,7 +357,7 @@ export default function StoreDashboard() {
 
               {/* Orders by weekday · categories · monthly goals */}
               <Grid cols={3} gap={z.gap}>
-                <Card size={z.card}>
+                <Card size={z.card} skeleton={loading}>
                   <CardHeader title={t({ en: "Orders by weekday", uz: "Hafta kunlari bo'yicha", ru: "Заказы по дням недели" })} description={t({ en: "This week", uz: "Shu hafta", ru: "Эта неделя" })} />
                   <CardBody className="pb-4">
                     <BarChart
@@ -377,7 +375,7 @@ export default function StoreDashboard() {
                   </CardBody>
                 </Card>
 
-                <Card size={z.card}>
+                <Card size={z.card} skeleton={loading}>
                   <CardHeader title={t({ en: "Top categories", uz: "Eng yaxshi kategoriyalar", ru: "Лучшие категории" })} description={t({ en: "Revenue, last 30 days", uz: "Daromad, so'nggi 30 kun", ru: "Выручка за 30 дней" })} />
                   <CardBody className="pb-4">
                     <BarChart
@@ -393,7 +391,7 @@ export default function StoreDashboard() {
                   </CardBody>
                 </Card>
 
-                <Card size={z.card}>
+                <Card size={z.card} skeleton={loading}>
                   <CardHeader title={t({ en: "Monthly goals", uz: "Oylik maqsadlar", ru: "Цели на месяц" })} description={t({ en: "October 2026", uz: "Oktyabr, 2026", ru: "Октябрь 2026" })} endContent={<CardMenu />} />
                   <CardBody className="pb-5">
                     <PieChart
@@ -432,7 +430,7 @@ export default function StoreDashboard() {
                     selectionMode="multiple"
                     selectedKeys={selected}
                     onSelectionChange={setSelected}
-                    isLoading={loading}
+                    skeleton={loading}
                     topContent={
                       <Stack direction="row" gap="sm" align="center">
                         <Input
@@ -508,7 +506,7 @@ export default function StoreDashboard() {
 
               {/* Activity · Team · AI */}
               <Grid cols={3} gap={z.gap}>
-                <Card size={z.card}>
+                <Card size={z.card} skeleton={loading}>
                   <CardHeader title={t({ en: "Activity", uz: "Faollik", ru: "Активность" })} description={t({ en: "Last 24 hours", uz: "So'nggi 24 soat", ru: "За последние 24 часа" })} endContent={<Activity size={16} className="text-muted" />} />
                   <CardBody>
                     <Timeline
@@ -522,7 +520,7 @@ export default function StoreDashboard() {
                   </CardBody>
                 </Card>
 
-                <Card size={z.card}>
+                <Card size={z.card} skeleton={loading}>
                   <CardHeader
                     title={t({ en: "Team", uz: "Jamoa", ru: "Команда" })}
                     description={t({ en: "4 members · 3 online", uz: "4 a'zo · 3 onlayn", ru: "4 участника · 3 онлайн" })}

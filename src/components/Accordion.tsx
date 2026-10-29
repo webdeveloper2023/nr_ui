@@ -6,6 +6,8 @@ type AccordionVariant = "default" | "surface" | "bordered" | "splitted";
 type AccordionSelectionMode = "single" | "multiple";
 
 export interface AccordionProps extends Omit<HTMLAttributes<HTMLDivElement>, "onChange"> {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Visual variant */
   variant?: AccordionVariant;
   /** Whether one or several items can be open at once */

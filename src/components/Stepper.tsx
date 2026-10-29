@@ -12,6 +12,8 @@ export interface StepItem {
 }
 
 export interface StepperProps {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** List of steps */
   steps: StepItem[];
   /** Current step index (0-based) */

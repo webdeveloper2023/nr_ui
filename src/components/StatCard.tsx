@@ -16,6 +16,8 @@ const strokeColors: Record<StatColor, string> = {
 };
 
 export interface SparklineProps {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Chart data points */
   data: number[];
   /** Line color */
@@ -74,6 +76,8 @@ export function Sparkline({
 }
 
 export interface StatCardProps {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Metric name */
   title: string;
   /** Main value */

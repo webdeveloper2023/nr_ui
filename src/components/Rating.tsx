@@ -8,6 +8,8 @@ type RatingSize = "xs" | "sm" | "md" | "lg";
 type RatingColor = "warning" | "accent" | "danger" | "success" | "default";
 
 export interface RatingProps {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Rating value (controlled) */
   value?: number;
   /** Initial rating */

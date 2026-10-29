@@ -22,6 +22,8 @@ const asideR: BreakpointClasses = { m: "mobile:w-full", d: "desktop:w-72" };
 const itemR: BreakpointClasses = { m: "mobile:h-11 mobile:text-base", t: "tablet:h-10" };
 
 export interface SidebarProps {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Style: transparent on the canvas or a white surface panel */
   variant?: SidebarVariant;
   /** Collapsed state (controlled) */

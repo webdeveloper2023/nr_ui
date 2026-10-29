@@ -18,6 +18,8 @@ type ButtonSize = "xs" | "sm" | "md" | "lg";
 type ButtonRadius = "none" | "sm" | "md" | "lg" | "full";
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Visual variant: primary, secondary, tertiary, outline, ghost, glass, danger, danger-soft */
   variant?: ButtonVariant;
   /** Glass material: frosted (classic) or liquid (clearer, with shining edges). Falls back to the global setting (html data-glass) */
@@ -175,6 +177,8 @@ Button.displayName = "Button";
 
 // ─── ButtonGroup ────────────────────────────
 export interface ButtonGroupProps extends HTMLAttributes<HTMLDivElement> {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Variant of every button in the group */
   variant?: ButtonVariant;
   /** Size of every button in the group */

@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState, type ReactNode } from "react";
 import { cn } from "../lib/cn";
 import { useLocale } from "./locale";
+import { skeletonAttrs, useSkeleton } from "./skeletonState";
 import { Checkbox } from "./Checkbox";
 import { rx, useResponsive, type BreakpointClasses, type ResponsiveProp } from "./breakpoints";
 
@@ -31,6 +32,8 @@ export interface SortDescriptor {
 }
 
 export interface TableProps<T = Record<string, unknown>> {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Column definitions */
   columns: TableColumn<T>[];
   /** Table rows (data) */
@@ -169,8 +172,12 @@ export function Table<T extends Record<string, unknown>>({
   emptyContent,
   "aria-label": ariaLabel,
   responsive,
+  skeleton,
 }: TableProps<T>) {
   const t = useLocale();
+  const sk = useSkeleton(skeleton);
+  // Skeleton without data: placeholder rows, like the loading state
+  const showPlaceholders = isLoading || (sk && rows.length === 0);
   const bps = useResponsive(responsive);
   const [internalKeys, setInternalKeys] = useState<Set<string>>(new Set());
   const [internalSort, setInternalSort] = useState<SortDescriptor | undefined>();
@@ -292,7 +299,7 @@ export function Table<T extends Record<string, unknown>>({
         </thead>
       )}
       <tbody>
-        {isLoading &&
+        {showPlaceholders &&
           Array.from({ length: loadingRows }, (_, i) => (
             <tr key={`skeleton-${i}`}>
               {hasSelection && (
@@ -311,7 +318,7 @@ export function Table<T extends Record<string, unknown>>({
             </tr>
           ))}
 
-        {!isLoading && displayRows.length === 0 && (
+        {!showPlaceholders && displayRows.length === 0 && (
           <tr>
             <td colSpan={colSpan} className="h-40 text-center text-sm text-muted">
               {emptyContent ?? t.table.empty}
@@ -319,7 +326,7 @@ export function Table<T extends Record<string, unknown>>({
           </tr>
         )}
 
-        {!isLoading &&
+        {!showPlaceholders &&
           displayRows.map((row, index) => {
             const rowKey = getRowKey(row);
             const isSelected = selectedKeys.has(rowKey);
@@ -396,7 +403,7 @@ export function Table<T extends Record<string, unknown>>({
                 )}
                 {columns.map((col) => (
                   <td key={col.key} className={cn(tdBase, alignClasses[col.align ?? "start"])}>
-                    {col.render ? col.render(row[col.key], row, index) : (row[col.key] as ReactNode)}
+                    {col.render ? col.render(row[col.key], row, index) : sk ? <span>{row[col.key] as ReactNode}</span> : (row[col.key] as ReactNode)}
                   </td>
                 ))}
               </tr>
@@ -408,7 +415,7 @@ export function Table<T extends Record<string, unknown>>({
 
   if (removeWrapper) {
     return (
-      <div className={cn("flex flex-col gap-4 w-full", className)}>
+      <div className={cn("flex flex-col gap-4 w-full", className)} {...skeletonAttrs(sk)}>
         {topContent}
         <div className={cn("overflow-auto", rx(bps, { m: "mobile:overscroll-x-contain" }))} style={maxHeight ? { maxHeight } : undefined}>
           {table}
@@ -419,7 +426,7 @@ export function Table<T extends Record<string, unknown>>({
   }
 
   return (
-    <div className={cn("flex flex-col gap-4 w-full", className)}>
+    <div className={cn("flex flex-col gap-4 w-full", className)} {...skeletonAttrs(sk)}>
       {topContent}
       <div
         data-glass={material}

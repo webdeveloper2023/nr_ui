@@ -14,6 +14,7 @@ import { useLocale } from "./locale";
 import { usePresence } from "./floating";
 import { getTabbable } from "../lib/focus";
 import { rx, useResponsive, type Breakpoint, type BreakpointClasses, type ResponsiveProp } from "./breakpoints";
+import { SkeletonScope, skeletonAttrs, useSkeleton } from "./skeletonState";
 
 type ModalSize = "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl" | "full";
 type ModalBackdrop = "opaque" | "blur" | "transparent";
@@ -22,6 +23,8 @@ type ModalRadius = "none" | "sm" | "md" | "lg";
 type ScrollBehavior = "inside" | "outside" | "normal";
 
 export interface ModalProps {
+  /** Shows the modal's content as a loading skeleton (same layout and shape); the modal can still be closed */
+  skeleton?: boolean;
   /** Whether the modal is open */
   isOpen: boolean;
   /** Called when closed */
@@ -61,6 +64,8 @@ export interface ModalProps {
 }
 
 export interface ModalContentProps extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Content, or a (onClose) => content function */
   children?: ReactNode | ((onClose: () => void) => ReactNode);
 }
@@ -170,6 +175,7 @@ export const Modal: React.FC<ModalProps> = ({
   hideCloseButton = false,
   scrollBehavior = "inside",
   responsive,
+  skeleton = false,
   className = "",
   children,
   "aria-label": ariaLabel,
@@ -328,7 +334,10 @@ export const Modal: React.FC<ModalProps> = ({
               </svg>
             </button>
           )}
-          {typeof children === "function" ? children(onClose) : children}
+          {/* The close button stays usable; only the content shows the skeleton */}
+          <div className="contents" {...skeletonAttrs(skeleton)}>
+            <SkeletonScope on={skeleton}>{typeof children === "function" ? children(onClose) : children}</SkeletonScope>
+          </div>
         </div>
       </div>
     </ModalContext.Provider>,
@@ -339,11 +348,12 @@ export const Modal: React.FC<ModalProps> = ({
 Modal.displayName = "Modal";
 
 export const ModalContent = forwardRef<HTMLDivElement, ModalContentProps>(
-  ({ children, className = "", ...props }, ref) => {
+  ({ children, className = "", skeleton, ...props }, ref) => {
     const { onClose } = useModalContext();
+    const sk = useSkeleton(skeleton);
     return (
-      <div ref={ref} className={cn("flex flex-col flex-1 min-h-0", className)} {...props}>
-        {typeof children === "function" ? children(onClose) : children}
+      <div ref={ref} className={cn("flex flex-col flex-1 min-h-0", className)} {...skeletonAttrs(sk)} {...props}>
+        <SkeletonScope on={sk}>{typeof children === "function" ? children(onClose) : children}</SkeletonScope>
       </div>
     );
   }

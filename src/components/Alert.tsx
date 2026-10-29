@@ -7,6 +7,8 @@ type AlertColor = "default" | "accent" | "success" | "warning" | "danger";
 type AlertVariant = "default" | "soft" | "flat" | "glass";
 
 export interface AlertProps extends Omit<HTMLAttributes<HTMLDivElement>, "title" | "color"> {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Status color (icon and background tint) */
   color?: AlertColor;
   /** Style: default — surface (soft gradient), soft — light color tint, flat — solid color, glass */

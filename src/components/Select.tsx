@@ -52,6 +52,8 @@ export interface SelectItemData {
 }
 
 export interface SelectProps extends Omit<HTMLAttributes<HTMLDivElement>, "onChange"> {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Field label */
   label?: ReactNode;
   /** Label placement: outside (above), outside-left (beside), inside (small, inside the box), floating (on the border once open / chosen) or floating-inside (moves to the top inside the box) */

@@ -18,6 +18,8 @@ export interface TabItem {
 }
 
 export interface TabsProps extends Omit<HTMLAttributes<HTMLDivElement>, "onChange" | "children"> {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Style: primary (gray track + white segment) or secondary (underline) */
   variant?: TabsVariant;
   /** Size */

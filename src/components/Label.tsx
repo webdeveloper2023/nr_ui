@@ -9,6 +9,8 @@ import { Tooltip } from "./Tooltip";
 type LabelSize = "sm" | "md" | "lg";
 
 export interface LabelProps extends Omit<LabelHTMLAttributes<HTMLLabelElement>, "children"> {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Label text */
   children?: ReactNode;
   /** Size of the text */

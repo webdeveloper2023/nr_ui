@@ -21,6 +21,8 @@ type PieSize = "xs" | "sm" | "md" | "lg" | "xl";
 type LegendPosition = "auto" | "right" | "bottom";
 
 export interface PieChartProps extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Slices: { key, label, value, color? } */
   data: PieSlice[];
   /**
@@ -308,6 +310,7 @@ export function PieChart(props: PieChartProps) {
         <div className="relative shrink-0" style={{ width: svgW, height: svgH }}>
           {ready && (
             <svg
+              data-skeleton-shape={outside ? undefined : semi ? "half" : "circle"}
               width={svgW}
               height={svgH}
               className="block overflow-visible rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-focus"

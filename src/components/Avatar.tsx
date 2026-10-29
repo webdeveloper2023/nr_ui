@@ -8,6 +8,8 @@ type AvatarSize = "xs" | "sm" | "md" | "lg" | "xl";
 type AvatarRadius = "none" | "sm" | "md" | "lg" | "full";
 
 export interface AvatarProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, "color" | "size"> {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Image URL */
   src?: string;
   /** Name — initials are derived from it when there is no image */
@@ -154,6 +156,8 @@ Avatar.displayName = "Avatar";
 // --- AvatarGroup ---
 
 export interface AvatarGroupProps {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Maximum number of avatars shown */
   max?: number;
   /** Total count (used to compute +N) */

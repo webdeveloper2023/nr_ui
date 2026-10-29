@@ -7,6 +7,8 @@ import { FormContext, readFormValues, type FieldDefaults, type FormValues, type 
 type SubmitEventOf = Parameters<NonNullable<FormHTMLAttributes<HTMLFormElement>["onSubmit"]>>[0];
 
 export interface FormProps extends Omit<FormHTMLAttributes<HTMLFormElement>, "children"> {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Label placement of every field inside: outside, outside-left, inside, floating or floating-inside */
   labelPlacement?: LabelPlacement;
   /** Size of every field inside */

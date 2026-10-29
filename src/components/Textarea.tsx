@@ -30,6 +30,8 @@ import { useFieldDefaults, type NecessityIndicator } from "./formContext";
 import { FieldOutline, Label, NecessityMark } from "./Label";
 
 export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Style: primary — white field with a shadow, secondary — gray field (inside cards) */
   variant?: FieldVariant;
   /** Size */

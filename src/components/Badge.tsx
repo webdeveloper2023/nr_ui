@@ -9,6 +9,8 @@ type BadgePlacement = "top-right" | "top-left" | "bottom-right" | "bottom-left";
 type BadgeShape = "circle" | "rectangle";
 
 export interface BadgeProps {
+  /** Shows this component's own loading skeleton (same layout and shape) — set it while data is loading */
+  skeleton?: boolean;
   /** Text or number inside the badge */
   content?: ReactNode;
   /** Color */
