@@ -34,7 +34,7 @@ export interface ToastOptions {
   onClose?: () => void;
   /** Glass (blur) background for this toast; defaults to the ToastProvider value */
   isBlurred?: boolean;
-  /** Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass) */
+  /** Glass material: frosted (classic) or liquid (clearer, with shining edges). Falls back to the global setting (html data-glass) */
   material?: "frosted" | "liquid";
 }
 
@@ -56,7 +56,7 @@ export interface ToastProviderProps {
   maxVisible?: number;
   /** Glass (blur) background for all toasts (default true) */
   isBlurred?: boolean;
-  /** Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass) */
+  /** Glass material: frosted (classic) or liquid (clearer, with shining edges). Falls back to the global setting (html data-glass) */
   material?: "frosted" | "liquid";
   /** Adapts to the screen: on mobile toasts span the full width at the bottom (any placement) with a touch-sized close button; wider toasts with roomier padding on desktop. true = all breakpoints or a list like ["m", "t"] */
   responsive?: ResponsiveProp;

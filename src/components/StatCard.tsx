@@ -5,6 +5,7 @@ import { rx, useResponsive, type BreakpointClasses, type ResponsiveProp } from "
 
 type StatColor = "default" | "accent" | "success" | "warning" | "danger";
 type StatVariant = "default" | "secondary" | "glass" | "gradient";
+type StatSize = "sm" | "md" | "lg";
 
 const strokeColors: Record<StatColor, string> = {
   default: "var(--color-muted)",
@@ -87,9 +88,11 @@ export interface StatCardProps {
   icon?: ReactNode;
   /** Color of the icon, progress and chart */
   color?: StatColor;
+  /** Size: padding, value text and the sparkline height follow it */
+  size?: StatSize;
   /** Style: default (soft gradient), secondary (gray), glass or gradient (accent → indigo) */
   variant?: StatVariant;
-  /** Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass) */
+  /** Glass material: frosted (classic) or liquid (clearer, with shining edges). Falls back to the global setting (html data-glass) */
   material?: "frosted" | "liquid";
   /** Top-right actions (menu button, etc.) */
   actions?: ReactNode;
@@ -111,6 +114,13 @@ const bodyR: BreakpointClasses = { d: "desktop:p-6" };
 const valueR: BreakpointClasses = { m: "mobile:text-2xl", d: "desktop:text-4xl" };
 const chartR: BreakpointClasses = { d: "desktop:px-6 desktop:pb-6" };
 const footerR: BreakpointClasses = { d: "desktop:px-6 desktop:py-4" };
+
+// md keeps the original spacing; the desktop bump only applies to it
+const sizeStyles: Record<StatSize, { root: string; body: string; icon: string; title: string; value: string; gap: string; chart: string; chartH: number; footer: string }> = {
+  sm: { root: "rounded-2xl", body: "p-3", icon: "w-7 h-7 [&_svg]:size-3.5", title: "text-xs", value: "text-2xl", gap: "mt-2", chart: "px-3 pb-3", chartH: 32, footer: "px-3 py-2 text-xs" },
+  md: { root: "rounded-3xl", body: "p-4", icon: "w-8 h-8 [&_svg]:size-4", title: "text-sm", value: "text-3xl", gap: "mt-3", chart: "px-4 pb-4", chartH: 48, footer: "px-4 py-3 text-sm" },
+  lg: { root: "rounded-3xl", body: "p-6", icon: "w-10 h-10 [&_svg]:size-5", title: "text-base", value: "text-4xl", gap: "mt-4", chart: "px-6 pb-6", chartH: 64, footer: "px-6 py-4 text-sm" },
+};
 
 const iconStyles: Record<StatColor, string> = {
   default: "bg-default text-muted",
@@ -136,6 +146,7 @@ export function StatCard({
   isInverted = false,
   icon,
   color = "accent",
+  size = "md",
   variant = "default",
   material,
   actions,
@@ -146,6 +157,8 @@ export function StatCard({
   responsive,
 }: StatCardProps) {
   const bps = useResponsive(responsive);
+  const z = sizeStyles[size];
+  const isMd = size === "md";
   const trend = change === undefined ? null : change > 0 ? "up" : change < 0 ? "down" : "flat";
   const isGood = trend === "flat" ? null : (trend === "up") !== isInverted;
   const isGradient = variant === "gradient";
@@ -161,7 +174,8 @@ export function StatCard({
     <div
       data-glass={material}
       className={cn(
-        "flex flex-col rounded-3xl overflow-hidden text-foreground",
+        "flex flex-col overflow-hidden text-foreground",
+        z.root,
         rx(bps, rootR),
         variant === "secondary" && "bg-surface-secondary",
         variant === "default" && "bg-surface-gradient shadow-surface",
@@ -170,15 +184,15 @@ export function StatCard({
         className
       )}
     >
-      <div className={cn("p-4", rx(bps, bodyR))}>
-        <div className="flex items-center gap-2.5 min-h-8">
-          {icon && <span className={cn("flex items-center justify-center w-8 h-8 shrink-0 rounded-lg [&_svg]:size-4", isGradient ? "bg-white/20 text-white" : iconStyles[color])}>{icon}</span>}
-          <p className="flex-1 min-w-0 truncate text-sm text-muted">{title}</p>
+      <div className={cn(z.body, isMd && rx(bps, bodyR))}>
+        <div className={cn("flex items-center gap-2.5", size === "sm" ? "min-h-7" : "min-h-8")}>
+          {icon && <span className={cn("flex items-center justify-center shrink-0 rounded-lg", z.icon, isGradient ? "bg-white/20 text-white" : iconStyles[color])}>{icon}</span>}
+          <p className={cn("flex-1 min-w-0 truncate text-muted", z.title)}>{title}</p>
           {actions && <div className="shrink-0 -mr-1.5 text-muted">{actions}</div>}
         </div>
 
-        <div className="mt-3 flex flex-wrap items-end justify-between gap-x-3 gap-y-2">
-          <p className={cn("min-w-0 text-3xl font-semibold tracking-tight tabular-nums leading-none", rx(bps, valueR))}>{value}</p>
+        <div className={cn("flex flex-wrap items-end justify-between gap-x-3 gap-y-2", z.gap)}>
+          <p className={cn("min-w-0 font-semibold tracking-tight tabular-nums leading-none", z.value, isMd && rx(bps, valueR))}>{value}</p>
           {trend && (
             <span className={cn("inline-flex items-center gap-0.5 h-6 rounded-full px-2 text-xs font-medium tabular-nums shrink-0", trendStyle)}>
               {trend === "up" && <ArrowUp size={12} strokeWidth={2.5} />}
@@ -191,19 +205,19 @@ export function StatCard({
         {changeLabel && <p className="mt-2 text-xs text-muted">{changeLabel}</p>}
 
         {progress !== undefined && (
-          <div className={cn("mt-4 h-1.5 w-full rounded-full overflow-hidden", isGradient ? "bg-white/25" : "bg-default")} role="progressbar" aria-valuenow={progress} aria-valuemin={0} aria-valuemax={100}>
+          <div className={cn(size === "sm" ? "mt-3" : "mt-4", "h-1.5 w-full rounded-full overflow-hidden", isGradient ? "bg-white/25" : "bg-default")} role="progressbar" aria-valuenow={progress} aria-valuemin={0} aria-valuemax={100}>
             <div className={cn("h-full rounded-full transition-[width] duration-500 ease-(--ease-out-soft)", isGradient ? "bg-white" : fillStyles[color])} style={{ width: `${Math.min(100, Math.max(0, progress))}%` }} />
           </div>
         )}
       </div>
 
       {chartData && (
-        <div className={cn("-mt-1 px-4 pb-4", rx(bps, chartR))}>
-          <Sparkline data={chartData} color={isGood === false ? "danger" : color} stroke={isGradient ? "#ffffff" : undefined} height={48} />
+        <div className={cn("-mt-1", z.chart, isMd && rx(bps, chartR))}>
+          <Sparkline data={chartData} color={isGood === false ? "danger" : color} stroke={isGradient ? "#ffffff" : undefined} height={z.chartH} />
         </div>
       )}
 
-      {footer && <div className={cn("mt-auto border-t px-4 py-3 text-sm", rx(bps, footerR), isGradient ? "border-white/20" : "border-separator")}>{footer}</div>}
+      {footer && <div className={cn("mt-auto border-t", z.footer, isMd && rx(bps, footerR), isGradient ? "border-white/20" : "border-separator")}>{footer}</div>}
     </div>
   );
 }

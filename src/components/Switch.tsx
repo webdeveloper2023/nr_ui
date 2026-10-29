@@ -150,7 +150,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
           aria-hidden
           className={cn(
             "relative inline-flex items-center shrink-0 rounded-full overflow-hidden",
-            "transition-colors duration-150 ease-out",
+            "transition-colors duration-300 ease-out",
             "peer-focus-visible:ring-2 peer-focus-visible:ring-focus peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-background",
             s.track,
             rx(bps, r.track),
@@ -160,7 +160,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
           {startContent && (
             <span
               className={cn(
-                "absolute left-1.5 flex transition-[opacity,transform] duration-150",
+                "absolute left-1.5 flex transition-[opacity,translate] duration-200 ease-out",
                 colorMap[color].onText,
                 s.icon,
                 selected ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2"
@@ -172,7 +172,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
           {endContent && (
             <span
               className={cn(
-                "absolute right-1.5 flex text-muted transition-[opacity,transform] duration-150",
+                "absolute right-1.5 flex text-muted transition-[opacity,translate] duration-200 ease-out",
                 s.icon,
                 selected ? "opacity-0 translate-x-2" : "opacity-100 translate-x-0"
               )}
@@ -183,14 +183,15 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
           <span
             className={cn(
               "relative z-10 flex items-center justify-center rounded-full bg-accent-foreground shadow-[0_1px_3px_0_rgb(0_0_0/0.18),0_0_1px_0_rgb(0_0_0/0.2)]",
-              "transition-[transform,width] duration-200 ease-(--ease-out-soft) motion-reduce:transition-none",
+              // translate-x-* sets the CSS translate property, so it is listed here for the thumb to glide
+              "transition-[translate,width] duration-300 ease-(--ease-spring) motion-reduce:transition-none",
               s.thumb,
               s.press,
               rx(bps, r.thumb),
               selected ? cn(s.on, s.onPressed, rx(bps, r.on)) : "translate-x-0"
             )}
           >
-            {icon && <span className={cn("flex", s.icon, selected ? colorMap[color].icon : "text-muted")}>{icon}</span>}
+            {icon && <span className={cn("flex transition-colors duration-300", s.icon, selected ? colorMap[color].icon : "text-muted")}>{icon}</span>}
           </span>
         </span>
 

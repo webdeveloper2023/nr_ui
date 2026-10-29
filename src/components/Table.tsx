@@ -57,7 +57,7 @@ export interface TableProps<T = Record<string, unknown>> {
   removeWrapper?: boolean;
   /** Makes the wrapper glass — for colorful backgrounds */
   isBlurred?: boolean;
-  /** Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass) */
+  /** Glass material: frosted (classic) or liquid (clearer, with shining edges). Falls back to the global setting (html data-glass) */
   material?: "frosted" | "liquid";
   /** Hides the header row */
   hideHeader?: boolean;

@@ -85,7 +85,6 @@ function Blobs() {
 export default function ColorsPage() {
   const { copied, copy } = useCopy();
   const t = useT();
-  const dashboardLink = (label: string) => <a href="/dashboard" className="text-accent hover:underline">{label}</a>;
 
   const Swatch = ({ name, label, light, dark }: { name: string; label?: string; light: string; dark: string }) => {
     const cls = BG[name];
@@ -117,7 +116,7 @@ export default function ColorsPage() {
       <p className="mt-3 max-w-2xl text-[17px] text-muted">
         {t({
           en: "NR UI uses its own vivid system palette. Every color has its own light and dark value and switches automatically. Glass materials and soft gradients add depth to cards and layouts.",
-          uz: "NR UI o'zining yorqin tizim ranglarini ishlatadi. Har bir rang light va dark rejim uchun o'z qiymatiga ega va avtomatik almashadi. Shisha (glass) materiallar va yengil gradientlar kartalar va layoutlarga chuqurlik beradi.",
+          uz: "NR UI o'zining yorqin tizim ranglaridan foydalanadi. Har bir rang light va dark rejim uchun o'z qiymatiga ega va avtomatik almashadi. Shisha (glass) materiallar va yengil gradientlar kartalar va layoutlarga chuqurlik beradi.",
           ru: "NR UI использует собственную яркую системную палитру. У каждого цвета есть своё значение для светлой и тёмной темы, переключение автоматическое. Стеклянные материалы и мягкие градиенты придают глубину карточкам и макетам.",
         })}
       </p>
@@ -215,13 +214,13 @@ export default function ColorsPage() {
         />
       </div>
 
-      {/* Liquid */}
-      <H2 id="liquid">Liquid (clear glass)</H2>
+      {/* Liquid material */}
+      <H2 id="liquid">{t({ en: "Liquid material", uz: "Liquid material", ru: "Материал liquid" })}</H2>
       <p className="mb-6 text-[15px] text-muted">
         {t({
-          en: <>A clearer glass material: clearer, with a bright specular rim, an inner glow and a sheen on top — it looks like a glass lens. For the whole app use {C('<html data-glass="liquid">')}, for one component {C('material="liquid"')}. To see all three styles (Solid / Frosted / Liquid) in a full app, open the {dashboardLink("Dashboard template")}.</>,
-          uz: <>Shaffofroq shisha materiali: shaffofroq, yorqin chekka (specular rim), ichki nur va yuqoridagi yaltiroq qatlam — shisha linzadek ko'rinadi. Butun ilova uchun {C('<html data-glass="liquid">')}, bitta komponent uchun {C('material="liquid"')}. Uchala uslubni (Solid / Frosted / Liquid) to'liq ilovada ko'rish uchun {dashboardLink("Dashboard namunasi")}ni oching.</>,
-          ru: <>Более прозрачный материал: прозрачнее, с яркой бликовой кромкой, внутренним свечением и бликом сверху — выглядит как стеклянная линза. Для всего приложения — {C('<html data-glass="liquid">')}, для одного компонента — {C('material="liquid"')}. Чтобы увидеть все три стиля (Solid / Frosted / Liquid) в полном приложении, откройте {dashboardLink("шаблон дашборда")}.</>,
+          en: <>A clearer glass with a bright specular rim, an inner glow and a sheen on top — it looks like a glass lens. For the whole app use {C('<html data-glass="liquid">')}, for one component {C('material="liquid"')}. </>,
+          uz: <>Shaffofroq shisha: yorqin chekka (specular rim), ichki nur va yuqoridagi yaltiroq qatlam — shisha linzadek ko'rinadi. Butun ilova uchun {C('<html data-glass="liquid">')}, bitta komponent uchun {C('material="liquid"')}. </>,
+          ru: <>Более прозрачное стекло с яркой бликовой кромкой, внутренним свечением и бликом сверху — выглядит как стеклянная линза. Для всего приложения — {C('<html data-glass="liquid">')}, для одного компонента — {C('material="liquid"')}. </>,
         })}
       </p>
       <div className="relative overflow-hidden rounded-3xl bg-surface p-6 sm:p-10 shadow-surface">
@@ -246,7 +245,7 @@ export default function ColorsPage() {
       </div>
       <div className="mt-4">
         <CodeBlock
-          code={`// ${t({ en: "Whole app — Liquid", uz: "Butun ilova — Liquid", ru: "Всё приложение — Liquid" })}
+          code={`// ${t({ en: "Whole app — liquid material", uz: "Butun ilova — liquid material", ru: "Всё приложение — материал liquid" })}
 document.documentElement.dataset.glass = "liquid";
 
 // ${t({ en: "One component", uz: "Bitta komponent", ru: "Один компонент" })}

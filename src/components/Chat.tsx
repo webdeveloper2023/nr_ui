@@ -199,7 +199,7 @@ export interface PromptInputProps {
   footer?: ReactNode;
   /** Makes the composer glass — floating over the content */
   isBlurred?: boolean;
-  /** Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass) */
+  /** Glass material: frosted (classic) or liquid (clearer, with shining edges). Falls back to the global setting (html data-glass) */
   material?: "frosted" | "liquid";
   /** Adapts to the screen: 16px text (no zoom on focus), touch-sized send / attach buttons and suggestions on mobile, touch-sized on tablet, 16px text on desktop. true = all breakpoints or a list like ["m", "t"] */
   responsive?: ResponsiveProp;

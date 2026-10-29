@@ -90,7 +90,7 @@ export const fieldPadding: Record<FieldSize, string> = {
 };
 
 // ── Responsive (`responsive` prop) ──────────
-// Mobile / tablet: touch-sized fields (44px for md) and 16px text on mobile so mobile does not zoom in.
+// Mobile / tablet: touch-sized fields (44px for md) and 16px text on mobile so the browser does not zoom in on focus.
 // Laptop: the static sizes. Desktop: lg grows a step.
 export const fieldHeightR: Record<FieldSize, BreakpointClasses> = {
   xs: { m: "mobile:h-8 mobile:min-h-8" },

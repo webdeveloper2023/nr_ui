@@ -91,7 +91,7 @@ export interface PricingCardProps {
   variant?: "default" | "inverse" | "gradient";
   /** Makes the card glass — for colorful backgrounds */
   isBlurred?: boolean;
-  /** Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass) */
+  /** Glass material: frosted (classic) or liquid (clearer, with shining edges). Falls back to the global setting (html data-glass) */
   material?: "frosted" | "liquid";
   /** Icon next to the title */
   icon?: ReactNode;

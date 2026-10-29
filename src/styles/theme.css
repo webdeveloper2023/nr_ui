@@ -3,7 +3,7 @@
    "glass" materials and very soft surface/canvas gradients.
    Dark mode: <html class="dark">
 
-   Materials: frosted glass (default), Liquid (clear glass) or solid (no glass):
+   Materials: frosted glass (default), liquid (clearer glass with shining edges) or solid (no glass):
      <html data-glass="liquid">              whole app ("frosted" | "liquid" | "solid")
      <Card variant="glass" material="liquid"> one component (sets data-glass on it)
 
@@ -22,7 +22,7 @@
 @custom-variant desktop (@media (width >= 96rem));
 
 @theme {
-  /* ── System colors ─────────────────── */
+  /* ── System colors ───────────────────────── */
   --color-blue: #007aff;
   --color-green: #34c759;
   --color-indigo: #5856d6;
@@ -104,11 +104,12 @@
   --color-focus: #007aff;
   --color-backdrop: rgb(0 0 0 / 0.25);
 
-  --font-sans: "Inter", "Segoe UI", system-ui, sans-serif;
+  --font-sans: "Inter", system-ui, "Segoe UI", Roboto, sans-serif;
   --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
   /* ── Motion ──────────────────────────────── */
   --ease-out-soft: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-spring: cubic-bezier(0.34, 1.36, 0.64, 1);
   --animate-fade-in: fade-in 0.15s ease-out both;
   --animate-scale-in: scale-in 0.18s var(--ease-out-soft) both;
   --animate-slide-up: slide-up 0.25s var(--ease-out-soft) both;
@@ -158,7 +159,7 @@
   --nr-glass-saturate: 180%;
   --nr-glass-edge: inset 0 1px 0 0 rgb(255 255 255 / 0.75), inset 0 0 0 0.5px rgb(255 255 255 / 0.45);
   --nr-glass-shadow: 0 0 0 0.5px rgb(0 0 0 / 0.06), 0 8px 32px -4px rgb(0 0 0 / 0.1);
-  --nr-glass-image: none; /* specular sheen layer (Liquid) */
+  --nr-glass-image: none; /* specular sheen layer (liquid material) */
   --nr-glass-filter: brightness(1);
 
   /* Soft gradients */
@@ -265,7 +266,7 @@
   color-scheme: dark;
 }
 
-/* ── Liquid (clear glass) ───── */
+/* ── Liquid material ─────────────────────── */
 /* Clearer tint, lighter blur, bright specular rim, inner glow and a top sheen —
    the material reads like a lens over the content instead of frosted paper. */
 [data-glass="liquid"] {

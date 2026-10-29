@@ -35,6 +35,12 @@ export interface NRMessages {
     description: (maxSizeMB: number) => string;
     tooLarge: (fileNames: string, maxSizeMB: number) => string;
     remove: (fileName: string) => string;
+    tooMany: (max: number) => string;
+    browse: string;
+    choose: string;
+    change: string;
+    add: string;
+    selected: (count: number) => string;
   };
   pagination: {
     label: string;
@@ -116,6 +122,12 @@ export const NR_MESSAGES: Record<NRLocale, NRMessages> = {
       description: (mb) => `Max size: ${mb} MB`,
       tooLarge: (names, mb) => `${names} — larger than ${mb} MB`,
       remove: (name) => `Remove ${name}`,
+      tooMany: (max) => `You can add up to ${max} files`,
+      browse: "Browse",
+      choose: "Choose file",
+      change: "Change",
+      add: "Add",
+      selected: (n) => (n === 1 ? "1 file selected" : `${n} files selected`),
     },
     pagination: { label: "Pagination", previous: "Previous page", next: "Next page" },
     table: { empty: "No rows to display.", selectAll: "Select all rows", selectRow: "Select row" },
@@ -148,6 +160,12 @@ export const NR_MESSAGES: Record<NRLocale, NRMessages> = {
       description: (mb) => `Maksimal hajm: ${mb} MB`,
       tooLarge: (names, mb) => `${names} — ${mb} MB dan katta`,
       remove: (name) => `${name} faylini o'chirish`,
+      tooMany: (max) => `Ko'pi bilan ${max} ta fayl qo'shish mumkin`,
+      browse: "Tanlash",
+      choose: "Fayl tanlash",
+      change: "Almashtirish",
+      add: "Qo'shish",
+      selected: (n) => `${n} ta fayl tanlandi`,
     },
     pagination: { label: "Sahifalar", previous: "Oldingi sahifa", next: "Keyingi sahifa" },
     table: { empty: "Ko'rsatish uchun ma'lumot yo'q.", selectAll: "Barcha qatorlarni tanlash", selectRow: "Qatorni tanlash" },
@@ -180,6 +198,12 @@ export const NR_MESSAGES: Record<NRLocale, NRMessages> = {
       description: (mb) => `Максимальный размер: ${mb} МБ`,
       tooLarge: (names, mb) => `${names} — больше ${mb} МБ`,
       remove: (name) => `Удалить ${name}`,
+      tooMany: (max) => `Можно добавить не больше ${max} файлов`,
+      browse: "Выбрать",
+      choose: "Выбрать файл",
+      change: "Заменить",
+      add: "Добавить",
+      selected: (n) => `Выбрано файлов: ${n}`,
     },
     pagination: { label: "Пагинация", previous: "Предыдущая страница", next: "Следующая страница" },
     table: { empty: "Нет данных для отображения.", selectAll: "Выбрать все строки", selectRow: "Выбрать строку" },

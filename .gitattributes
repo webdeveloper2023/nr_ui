@@ -1,4 +1,4 @@
-# Normalize line endings across every operating system (CI)
+# Normalize line endings on every operating system (CI)
 * text=auto eol=lf
 *.png binary
 *.jpg binary

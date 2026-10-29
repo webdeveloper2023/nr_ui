@@ -2,7 +2,7 @@
 
 Pro darajadagi React komponent kutubxonasi — **React 18/19**, **Tailwind CSS v4**, **TypeScript**, to'liq **dark mode**.
 
-47 ta komponent (ichki qismlari — `ModalHeader`, `CardBody`, `SidebarItem` va h.k. — bilan birga 82 ta): Container, Stack, Grid, LineChart, AreaChart, BarChart, PieChart, Button, Input, Label, Form, AmountInput (summa so'z bilan), Select, Table, Modal, Dropdown, Toast, Sidebar, Pricing, AI Chat va boshqalar.
+47 ta komponent (ichki qismlari — `ModalHeader`, `CardBody`, `SidebarItem` va h.k. — bilan birga 83 ta): Container, Stack, Grid, LineChart, AreaChart, BarChart, PieChart, Button, Input, Label, Form, AmountInput (summa so'z bilan), Select, Table, Modal, Dropdown, Toast, Sidebar, Pricing, AI Chat va boshqalar.
 
 ## O'rnatish
 
@@ -78,7 +78,7 @@ Har bir komponent `responsive` propini qabul qiladi:
 
 Breakpointlar: `m` mobile (< 768px), `t` tablet (768–1023px), `l` laptop (1024–1535px), `d` desktop (≥ 1536px).
 
-Mobile'da tugma va maydonlar 44px balandlikka chiqadi, matn 16px bo'ladi, shuning uchun kattalashmaydi. Modal pastdan chiqadigan sheet'ga, qatorlar ustunga aylanadi. Desktop'da padding kengayadi.
+Mobile'da tugma va maydonlar 44px balandlikka chiqadi, matn 16px bo'ladi, shuning uchun telefon brauzeri maydonga bosilganda kattalashtirmaydi. Modal pastdan chiqadigan sheet'ga, qatorlar ustunga aylanadi. Desktop'da padding kengayadi.
 
 ```tsx
 import { ResponsiveProvider, Container, Grid, Stack, Card, Button, Show } from "nr-ui-kit";
@@ -124,7 +124,8 @@ import { LineChart, BarChart, PieChart } from "nr-ui-kit";
 - **Tooltip** kursor yoki teginish bilan ishlaydi. Klaviaturada ← → tugmalari bilan yuriladi.
 - **Ranglar** qat'iy tartibli 8 rangli palitradan olinadi (`--color-chart-1 … 8`, light va dark). Palitra rang ko'rlikka chidamlilik bo'yicha tekshirilgan.
 - **Ekran o'quvchilar** uchun har bir grafikda yashirin ma'lumot jadvali bor.
-- **PieChart turlari:** `pie`, `donut`, `semi` (yarim halqa), `polar` (teng burchaklar, qiymatni radius ko'rsatadi), `radial` (har element uchun alohida halqa).
+- **PieChart turlari:** `pie`, `donut`, `semi` (yarim halqa), `polar` (teng burchaklar, qiymatni radius ko'rsatadi), `radial` (har element uchun alohida halqa), `ring` (maqsadgacha to'ladigan halqa), `gauge` (yarim halqa o'lchagich).
+- **PieChart o'lchamlari:** `size="xs" | "sm" | "md" | "lg" | "xl"` (96–400px) yoki px'dagi raqam. Markazdagi raqam, yozuvlar va legend o'lchamga moslashadi. Legend joyi `legendPosition="auto" | "right" | "bottom"`.
 - **Yumaloq burchaklar:** pie bo'laklarida `cornerRadius` va `gap`, bar'larda `radius`. Yozuvlar `labels="inside" | "outside"` bilan chiqadi (tashqi yozuvlar chiziq bilan bog'lanadi).
 
 ## Label va Form

@@ -24,7 +24,7 @@ export interface NavbarProps extends HTMLAttributes<HTMLElement> {
   isBordered?: boolean;
   /** Translucent blur background */
   isBlurred?: boolean;
-  /** Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass) */
+  /** Glass material: frosted (classic) or liquid (clearer, with shining edges). Falls back to the global setting (html data-glass) */
   material?: "frosted" | "liquid";
   /** Positioning mode */
   position?: "static" | "sticky" | "floating";

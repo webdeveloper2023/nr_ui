@@ -28,7 +28,7 @@ export default function ModalGlassAndSolid() {
                 <p className="text-sm text-muted">
                   {mode === "solid"
                     ? "isBlurred={false} — a plain solid background."
-                    : "The page behind the dialog is blurred — sheet style."}
+                    : "The page behind the dialog is blurred, like a sheet."}
                 </p>
               </ModalBody>
               <ModalFooter>

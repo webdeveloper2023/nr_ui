@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Activity, AlertTriangle, ArrowUpRight, BarChart3, BookOpen, CreditCard, DollarSign, Download, Eye, FolderOpen,
   LayoutDashboard, MessageSquare, Package, Pencil, Plus, RefreshCw, Search, Settings, ShoppingBag, Sparkles,
@@ -20,47 +20,56 @@ import {
 } from "./dashboards/data";
 import { useLang, useT, type Tr } from "../i18n/lang";
 import { LanguageSwitch } from "../LanguageSwitch";
-import { useDesignStyle, type DesignStyle } from "../designStyle";
-import { DesignStyleSwitch } from "../DesignStyleSwitch";
 
 const money = (v: number) => (v >= 1000 ? `$${(v / 1000).toFixed(v >= 10000 ? 1 : 2).replace(/\.?0+$/, "")}K` : `$${v}`);
 const isoDay = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 
-/** Soft color fields behind the glass styles, so the blur has something to show */
-function Backdrop({ vivid }: { vivid: boolean }) {
-  return (
-    <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-background">
-      <div className={`absolute -left-[10%] -top-[15%] h-[65vh] w-[55vw] rounded-full bg-blue blur-[110px] ${vivid ? "opacity-70 dark:opacity-50" : "opacity-25 dark:opacity-20"}`} />
-      <div className={`absolute right-[-8%] top-[-6%] h-[55vh] w-[45vw] rounded-full bg-purple blur-[120px] ${vivid ? "opacity-60 dark:opacity-45" : "opacity-20 dark:opacity-15"}`} />
-      <div className={`absolute bottom-[-18%] left-[20%] h-[55vh] w-[50vw] rounded-full bg-mint blur-[120px] ${vivid ? "opacity-55 dark:opacity-35" : "opacity-20 dark:opacity-15"}`} />
-      <div className={`absolute bottom-[-15%] right-[0%] h-[50vh] w-[40vw] rounded-full bg-orange blur-[120px] ${vivid ? "opacity-45 dark:opacity-30" : "opacity-15 dark:opacity-10"}`} />
-    </div>
-  );
-}
+type Density = "sm" | "md" | "lg";
 
-/** Surface props for the chosen design style: solid cards, frosted glass or the liquid material */
-function useSurfaces(style: DesignStyle) {
-  const glass = style !== "solid";
-  const material = style === "liquid" ? ("liquid" as const) : ("frosted" as const);
-  return {
-    glass,
-    material: glass ? material : undefined,
-    card: glass ? { variant: "glass" as const, material } : { variant: "default" as const },
-    chip: glass ? { variant: "glass" as const, material } : {},
-    soft: glass ? ({ variant: "glass", material } as const) : ({ variant: "tertiary" } as const),
+/** Sizes the whole page follows, from the density control in the header */
+const DENSITY = {
+  sm: { card: "sm", stat: "sm", field: "sm", button: "sm", small: "xs", chip: "xs", tabs: "xs", gap: "md", lineH: 200, barH: 180, pie: 170, radial: 170, chat: "h-52", avatar: "xs" },
+  md: { card: "md", stat: "md", field: "md", button: "md", small: "sm", chip: "sm", tabs: "sm", gap: "lg", lineH: 240, barH: 220, pie: 200, radial: 210, chat: "h-64", avatar: "sm" },
+  lg: { card: "lg", stat: "lg", field: "lg", button: "lg", small: "md", chip: "md", tabs: "md", gap: "xl", lineH: 300, barH: 260, pie: 240, radial: 240, chat: "h-80", avatar: "md" },
+} as const;
+
+const DENSITY_KEY = "nr-dashboard-density";
+
+function useDensity(): [Density, (d: Density) => void] {
+  const [density, setDensity] = useState<Density>(() => {
+    try {
+      const saved = localStorage.getItem(DENSITY_KEY);
+      if (saved === "sm" || saved === "md" || saved === "lg") return saved;
+    } catch { /* storage unavailable */ }
+    return "sm";
+  });
+  const change = (d: Density) => {
+    setDensity(d);
+    try { localStorage.setItem(DENSITY_KEY, d); } catch { /* storage unavailable */ }
   };
-}
-
-function Section({ children }: { children: ReactNode }) {
-  return <Stack gap="lg">{children}</Stack>;
+  return [density, change];
 }
 
 export default function StoreDashboard() {
-  const [designStyle, setDesignStyle] = useDesignStyle();
   const [lang, setLang] = useLang();
   const t = useT();
-  const s = useSurfaces(designStyle);
   const { addToast } = useToast();
+  const [density, setDensity] = useDensity();
+  const z = DENSITY[density];
+  const densityLabel = t({ en: "Size", uz: "O'lcham", ru: "Размер" });
+  const densitySwitch = (
+    <Tabs
+      size="xs"
+      aria-label={densityLabel}
+      selectedKey={density}
+      onSelectionChange={(k) => setDensity(k as Density)}
+      tabs={[
+        { key: "sm", title: "S" },
+        { key: "md", title: "M" },
+        { key: "lg", title: "L" },
+      ]}
+    />
+  );
 
   const [nav, setNav] = useState("dashboard");
   const [range, setRange] = useState("month");
@@ -131,14 +140,11 @@ export default function StoreDashboard() {
 
   return (
     <ResponsiveProvider>
-      <div data-glass={s.material} className={`relative flex h-screen ${s.glass ? "" : "bg-background"}`}>
-        {s.glass && <Backdrop vivid={designStyle === "liquid"} />}
+      <div className="relative flex h-screen bg-background">
 
         {/* ━━━ Sidebar (laptop and desktop; phones and tablets use the navbar menu) ━━━ */}
         <Show on={["l", "d"]}>
           <Sidebar
-            isBlurred={s.glass}
-            material={s.material}
             selectedKey={nav}
             onSelect={setNav}
             responsive={false}
@@ -149,7 +155,7 @@ export default function StoreDashboard() {
               </div>
             }
             footer={
-              <Card {...s.card} className="p-3">
+              <Card className="p-3">
                 <p className="text-sm font-medium text-foreground">{t({ en: "Go Pro", uz: "Pro'ga o'ting", ru: "Перейти на Pro" })}</p>
                 <p className="mt-0.5 text-xs text-muted">{t({ en: "AI assistant and unlimited orders", uz: "AI yordamchi va cheksiz buyurtmalar", ru: "AI-ассистент и безлимитные заказы" })}</p>
                 <Button size="sm" fullWidth className="mt-3" onClick={() => setUpgradeOpen(true)}>{t({ en: "Upgrade", uz: "Yangilash", ru: "Обновить" })}</Button>
@@ -163,7 +169,7 @@ export default function StoreDashboard() {
                   itemKey={n.key}
                   icon={n.icon}
                   title={n.title}
-                  endContent={n.key === "orders" ? <Chip size="sm" color="accent" {...s.chip}>8</Chip> : undefined}
+                  endContent={n.key === "orders" ? <Chip size="sm" color="accent">8</Chip> : undefined}
                 />
               ))}
             </SidebarSection>
@@ -178,7 +184,7 @@ export default function StoreDashboard() {
 
         {/* ━━━ Main ━━━ */}
         <div className="min-w-0 flex-1 overflow-y-auto">
-          <Navbar position="sticky" isBlurred isBordered maxWidth="full" material={s.material} responsive={["m", "t"]}>
+          <Navbar position="sticky" isBlurred isBordered maxWidth="full" responsive={["m", "t"]}>
             <NavbarContent justify="start" isAlwaysVisible className="gap-2">
               <NavbarMenuToggle srOnlyText={t({ en: "Menu", uz: "Menyu", ru: "Меню" })} />
               <NavbarBrand>
@@ -204,8 +210,14 @@ export default function StoreDashboard() {
                   />
                 </NavbarItem>
               </Show>
+              <Hide on="m">
+                <NavbarItem>
+                  <Tooltip content={densityLabel}>
+                    <div>{densitySwitch}</div>
+                  </Tooltip>
+                </NavbarItem>
+              </Hide>
               <NavbarItem><Notifications /></NavbarItem>
-              <NavbarItem><DesignStyleSwitch style={designStyle} onChange={setDesignStyle} /></NavbarItem>
               <Hide on="m">
                 <NavbarItem><LanguageSwitch lang={lang} onChange={setLang} /></NavbarItem>
               </Hide>
@@ -219,27 +231,30 @@ export default function StoreDashboard() {
                 </NavbarMenuItem>
               ))}
               <Show on="m">
-                <div className="pt-3"><LanguageSwitch lang={lang} onChange={setLang} /></div>
+                <div className="flex items-center gap-3 pt-3">
+                  <LanguageSwitch lang={lang} onChange={setLang} />
+                  {densitySwitch}
+                </div>
               </Show>
             </NavbarMenu>
           </Navbar>
 
-          <Container as="main" size="2xl" paddingY="lg">
-            <Section>
+          <Container as="main" size="2xl" paddingY={density === "sm" ? "md" : "lg"}>
+            <Stack gap={z.gap}>
               {/* Header row: stacks on phones */}
               <Stack direction="row" justify="between" align="end" gap="md" wrap className="mobile:items-start">
                 <div>
-                  <h1 className="text-2xl font-semibold tracking-tight text-foreground">{t({ en: "Welcome back, Rafiqjon 👋", uz: "Xush kelibsiz, Rafiqjon 👋", ru: "С возвращением, Рафикжон 👋" })}</h1>
+                  <h1 className={`${density === "sm" ? "text-xl" : density === "lg" ? "text-3xl" : "text-2xl"} font-semibold tracking-tight text-foreground`}>{t({ en: "Welcome back, Rafiqjon 👋", uz: "Xush kelibsiz, Rafiqjon 👋", ru: "С возвращением, Рафикжон 👋" })}</h1>
                   <p className="mt-1 text-sm text-muted">{t({ en: "Here's how your store is doing today", uz: "Do'koningizning bugungi holati", ru: "Состояние вашего магазина сегодня" })}</p>
                 </div>
                 <Stack direction="row" gap="sm" responsive={false}>
                   <Tooltip content={t({ en: "Refresh", uz: "Yangilash", ru: "Обновить" })}>
-                    <Button isIconOnly {...s.soft} onClick={refresh} aria-label={t({ en: "Refresh", uz: "Yangilash", ru: "Обновить" })}>
+                    <Button isIconOnly size={z.button} variant="tertiary" onClick={refresh} aria-label={t({ en: "Refresh", uz: "Yangilash", ru: "Обновить" })}>
                       {loading ? <Spinner size="sm" color="current" /> : <RefreshCw size={16} />}
                     </Button>
                   </Tooltip>
-                  <Button {...s.soft} startContent={<Download size={16} />}>{t({ en: "Export", uz: "Eksport", ru: "Экспорт" })}</Button>
-                  <Button startContent={<Plus size={16} />} onClick={() => setOrderOpen(true)}>{t({ en: "New order", uz: "Yangi buyurtma", ru: "Новый заказ" })}</Button>
+                  <Button size={z.button} variant="tertiary" startContent={<Download size={16} />}>{t({ en: "Export", uz: "Eksport", ru: "Экспорт" })}</Button>
+                  <Button size={z.button} startContent={<Plus size={16} />} onClick={() => setOrderOpen(true)}>{t({ en: "New order", uz: "Yangi buyurtma", ru: "Новый заказ" })}</Button>
                 </Stack>
               </Stack>
 
@@ -249,23 +264,22 @@ export default function StoreDashboard() {
                   variant="soft"
                   title={t({ en: "14-day free Pro trial", uz: "Pro tarifning 14 kunlik bepul sinovi", ru: "14 дней Pro бесплатно" })}
                   description={t({ en: "Try the AI assistant, advanced analytics and unlimited orders.", uz: "AI yordamchi, kengaytirilgan analitika va cheksiz buyurtmalarni sinab ko'ring.", ru: "Попробуйте AI-ассистента, расширенную аналитику и безлимитные заказы." })}
-                  action={<Button size="sm" onClick={() => setUpgradeOpen(true)}>{t({ en: "Try it", uz: "Sinab ko'rish", ru: "Попробовать" })}</Button>}
+                  action={<Button size={z.small} onClick={() => setUpgradeOpen(true)}>{t({ en: "Try it", uz: "Sinab ko'rish", ru: "Попробовать" })}</Button>}
                   onClose={() => setShowAlert(false)}
                 />
               )}
 
               {/* KPI: 1 column on phones, 2 on tablets, 4 from laptop up */}
-              <Grid cols={4}>
+              <Grid cols={4} gap={z.gap}>
                 {[
                   { title: t({ en: "Revenue", uz: "Daromad", ru: "Выручка" }), value: "$48,230", change: 12.5, color: "accent" as const, icon: <DollarSign size={16} />, chart: [22, 28, 25, 31, 36, 33, 40, 44] },
                   { title: t({ en: "Orders", uz: "Buyurtmalar", ru: "Заказы" }), value: "1,284", change: 8.2, color: "success" as const, icon: <ShoppingBag size={16} />, chart: [12, 15, 14, 18, 17, 21, 24, 23] },
                   { title: t({ en: "New customers", uz: "Yangi mijozlar", ru: "Новые клиенты" }), value: "342", change: -3.1, color: "warning" as const, icon: <Users size={16} />, chart: [30, 28, 31, 27, 26, 25, 27, 24] },
                   { title: t({ en: "Conversion", uz: "Konversiya", ru: "Конверсия" }), value: "3.8%", change: 1.7, color: "danger" as const, icon: <TrendingUp size={16} />, progress: 64 },
                 ].map((k) => (
-                  <Skeleton key={k.title} isLoaded={!loading} className="rounded-3xl">
+                  <Skeleton key={k.title} isLoaded={!loading} className={density === "sm" ? "rounded-2xl" : "rounded-3xl"}>
                     <StatCard
-                      variant={s.glass ? "glass" : "default"}
-                      material={s.material}
+                      size={z.stat}
                       title={k.title}
                       value={k.value}
                       change={k.change}
@@ -274,29 +288,29 @@ export default function StoreDashboard() {
                       chartData={k.chart}
                       progress={k.progress}
                       actions={<CardMenu />}
+                      className="h-full"
                     />
                   </Skeleton>
                 ))}
               </Grid>
 
               {/* Revenue trend + sales channels */}
-              <Grid cols={3}>
+              <Grid cols={3} gap={z.gap}>
                 <GridItem span={2}>
-                  <Card {...s.card} className="h-full">
+                  <Card size={z.card} className="h-full">
                     <CardHeader
                       title={t({ en: "Revenue trend", uz: "Daromad dinamikasi", ru: "Динамика выручки" })}
                       description={
                         <span className="flex items-center gap-2">
                           {money(windowTotal)}
-                          <Chip size="sm" color="success" startContent={<ArrowUpRight size={12} />} {...s.chip}>+{growth}%</Chip>
+                          <Chip size={z.chip} color="success" startContent={<ArrowUpRight size={12} />}>+{growth}%</Chip>
                         </span>
                       }
                       endContent={
                         <Tabs
-                          size="sm"
+                          size={z.tabs}
                           selectedKey={range}
                           onSelectionChange={setRange}
-                          material={s.material}
                           tabs={[
                             { key: "week", title: t({ en: "7 days", uz: "7 kun", ru: "7 дней" }) },
                             { key: "month", title: t({ en: "30 days", uz: "30 kun", ru: "30 дней" }) },
@@ -319,7 +333,7 @@ export default function StoreDashboard() {
                           showArea
                           showRangeSelector
                           defaultRange={RANGES[range]}
-                          height={240}
+                          height={z.lineH}
                           valueFormatter={money}
                           xFormatter={(d) => formatDay(isoDay(d as Date), lang)}
                         />
@@ -328,13 +342,13 @@ export default function StoreDashboard() {
                   </Card>
                 </GridItem>
 
-                <Card {...s.card}>
+                <Card size={z.card}>
                   <CardHeader title={t({ en: "Sales channels", uz: "Savdo kanallari", ru: "Каналы продаж" })} description={t({ en: "Last 30 days", uz: "So'nggi 30 kun", ru: "За 30 дней" })} endContent={<CardMenu />} />
                   <CardBody className="pb-5">
                     <PieChart
                       aria-label={t({ en: "Revenue by sales channel", uz: "Savdo kanallari bo'yicha daromad", ru: "Выручка по каналам продаж" })}
                       variant="donut"
-                      size={200}
+                      size={z.pie}
                       data={CHANNELS.map((c, i) => ({ key: c.key, label: t(c.label), value: c.value, color: (["blue", "green", "orange"] as const)[i] }))}
                       valueFormatter={money}
                       centerLabel={t({ en: "revenue", uz: "daromad", ru: "выручка" })}
@@ -344,8 +358,8 @@ export default function StoreDashboard() {
               </Grid>
 
               {/* Orders by weekday · categories · monthly goals */}
-              <Grid cols={3}>
-                <Card {...s.card}>
+              <Grid cols={3} gap={z.gap}>
+                <Card size={z.card}>
                   <CardHeader title={t({ en: "Orders by weekday", uz: "Hafta kunlari bo'yicha", ru: "Заказы по дням недели" })} description={t({ en: "This week", uz: "Shu hafta", ru: "Эта неделя" })} />
                   <CardBody className="pb-4">
                     <BarChart
@@ -353,7 +367,7 @@ export default function StoreDashboard() {
                       data={WEEK_ORDERS.map((w, i) => ({ day: t(WEEKDAYS[i]), ...w }))}
                       xKey="day"
                       isStacked
-                      height={220}
+                      height={z.barH}
                       series={[
                         { key: "paid", label: t(STATUS.paid.label), color: "green" },
                         { key: "shipped", label: t(STATUS.shipped.label), color: "blue" },
@@ -363,7 +377,7 @@ export default function StoreDashboard() {
                   </CardBody>
                 </Card>
 
-                <Card {...s.card}>
+                <Card size={z.card}>
                   <CardHeader title={t({ en: "Top categories", uz: "Eng yaxshi kategoriyalar", ru: "Лучшие категории" })} description={t({ en: "Revenue, last 30 days", uz: "Daromad, so'nggi 30 kun", ru: "Выручка за 30 дней" })} />
                   <CardBody className="pb-4">
                     <BarChart
@@ -379,13 +393,13 @@ export default function StoreDashboard() {
                   </CardBody>
                 </Card>
 
-                <Card {...s.card}>
+                <Card size={z.card}>
                   <CardHeader title={t({ en: "Monthly goals", uz: "Oylik maqsadlar", ru: "Цели на месяц" })} description={t({ en: "October 2026", uz: "Oktyabr, 2026", ru: "Октябрь 2026" })} endContent={<CardMenu />} />
                   <CardBody className="pb-5">
                     <PieChart
                       aria-label={t({ en: "Monthly goals, percent done", uz: "Oylik maqsadlar, bajarilgan foiz", ru: "Цели на месяц, процент выполнения" })}
                       variant="radial"
-                      size={210}
+                      size={z.radial}
                       maxValue={100}
                       data={GOALS.map((g, i) => ({ key: g.key, label: t(g.label), value: g.value, color: (["blue", "green", "amber"] as const)[i] }))}
                       valueFormatter={(v) => `${v}%`}
@@ -397,12 +411,12 @@ export default function StoreDashboard() {
               </Grid>
 
               {/* Orders table */}
-              <Card {...s.card}>
+              <Card size={z.card}>
                 <CardHeader
                   title={t({ en: "Recent orders", uz: "So'nggi buyurtmalar", ru: "Последние заказы" })}
                   description={t({ en: `${filtered.length} orders${selected.size ? ` · ${selected.size} selected` : ""}`, uz: `${filtered.length} ta buyurtma${selected.size ? ` · ${selected.size} ta tanlangan` : ""}`, ru: `Заказов: ${filtered.length}${selected.size ? ` · выбрано ${selected.size}` : ""}` })}
                   endContent={
-                    <ButtonGroup size="sm" variant="tertiary" responsive={false}>
+                    <ButtonGroup size={z.small} variant="tertiary" responsive={false}>
                       <Button startContent={<Download size={14} />}>CSV</Button>
                       <Button isDisabled={!selected.size} startContent={<Trash2 size={14} />} onClick={() => { addToast({ title: t({ en: `${selected.size} orders deleted`, uz: `${selected.size} ta buyurtma o'chirildi`, ru: `Удалено заказов: ${selected.size}` }), color: "danger" }); setSelected(new Set()); }}>{t({ en: "Delete", uz: "O'chirish", ru: "Удалить" })}</Button>
                     </ButtonGroup>
@@ -412,7 +426,7 @@ export default function StoreDashboard() {
                   <Table<Order>
                     aria-label={t({ en: "Orders", uz: "Buyurtmalar", ru: "Заказы" })}
                     variant="secondary"
-                    material={s.material}
+                    isCompact={density === "sm"}
                     keyField="id"
                     rows={rows}
                     selectionMode="multiple"
@@ -422,7 +436,7 @@ export default function StoreDashboard() {
                     topContent={
                       <Stack direction="row" gap="sm" align="center">
                         <Input
-                          size="sm"
+                          size={z.field === "lg" ? "md" : "sm"}
                           variant="secondary"
                           placeholder={t({ en: "Customer, ID or product...", uz: "Mijoz, ID yoki mahsulot...", ru: "Клиент, ID или товар..." })}
                           startContent={<Search size={14} />}
@@ -435,7 +449,7 @@ export default function StoreDashboard() {
                         />
                         <div className="w-full sm:w-48">
                           <Select
-                            size="sm"
+                            size={z.field === "lg" ? "md" : "sm"}
                             variant="secondary"
                             aria-label={t({ en: "Status", uz: "Holat", ru: "Статус" })}
                             selectedKey={status}
@@ -452,7 +466,7 @@ export default function StoreDashboard() {
                     bottomContent={
                       <div className="flex items-center justify-between">
                         <p className="text-xs text-muted">{t({ en: "Page", uz: "Sahifa", ru: "Страница" })} {page} / {pages}</p>
-                        <Pagination total={pages} page={page} onChange={setPage} size="sm" />
+                        <Pagination total={pages} page={page} onChange={setPage} size={z.small} />
                       </div>
                     }
                     columns={[
@@ -463,7 +477,7 @@ export default function StoreDashboard() {
                         sortable: true,
                         render: (_v, r) => (
                           <div className="flex items-center gap-3">
-                            <Avatar src={avatarUrl(r.email)} name={r.customer} size="sm" />
+                            <Avatar src={avatarUrl(r.email)} name={r.customer} size={z.avatar} />
                             <div className="min-w-0">
                               <p className="truncate text-sm font-medium text-foreground">{r.customer}</p>
                               <p className="truncate text-xs text-muted">{r.email}</p>
@@ -473,7 +487,7 @@ export default function StoreDashboard() {
                       },
                       { key: "product", label: t({ en: "Product", uz: "Mahsulot", ru: "Товар" }) },
                       { key: "amount", label: t({ en: "Amount", uz: "Summa", ru: "Сумма" }), sortable: true, align: "end", render: (v) => <span className="tabular-nums">${Number(v).toLocaleString("en-US")}</span> },
-                      { key: "status", label: t({ en: "Status", uz: "Holat", ru: "Статус" }), render: (v) => <Chip size="sm" dot color={STATUS[v as Status].color} {...s.chip}>{t(STATUS[v as Status].label)}</Chip> },
+                      { key: "status", label: t({ en: "Status", uz: "Holat", ru: "Статус" }), render: (v) => <Chip size={z.chip} dot color={STATUS[v as Status].color}>{t(STATUS[v as Status].label)}</Chip> },
                       { key: "date", label: t({ en: "Date", uz: "Sana", ru: "Дата" }), render: (v) => <span className="text-muted">{formatDay(String(v), lang)}</span> },
                       {
                         key: "actions",
@@ -493,8 +507,8 @@ export default function StoreDashboard() {
               </Card>
 
               {/* Activity · Team · AI */}
-              <Grid cols={3}>
-                <Card {...s.card}>
+              <Grid cols={3} gap={z.gap}>
+                <Card size={z.card}>
                   <CardHeader title={t({ en: "Activity", uz: "Faollik", ru: "Активность" })} description={t({ en: "Last 24 hours", uz: "So'nggi 24 soat", ru: "За последние 24 часа" })} endContent={<Activity size={16} className="text-muted" />} />
                   <CardBody>
                     <Timeline
@@ -508,12 +522,12 @@ export default function StoreDashboard() {
                   </CardBody>
                 </Card>
 
-                <Card {...s.card}>
+                <Card size={z.card}>
                   <CardHeader
                     title={t({ en: "Team", uz: "Jamoa", ru: "Команда" })}
                     description={t({ en: "4 members · 3 online", uz: "4 a'zo · 3 onlayn", ru: "4 участника · 3 онлайн" })}
                     endContent={
-                      <AvatarGroup max={3} size="sm">
+                      <AvatarGroup max={3} size={z.avatar}>
                         {TEAM.map((m, i) => <Avatar key={m.name} src={i === 0 ? avatarUrl("rafiqjon") : avatarUrl(m.name)} name={m.name} />)}
                       </AvatarGroup>
                     }
@@ -522,7 +536,7 @@ export default function StoreDashboard() {
                     {TEAM.map((m, i) => (
                       <div key={m.name} className="flex items-center gap-3 rounded-2xl px-2 py-2 transition-colors hover:bg-surface-secondary">
                         <Badge isDot color={m.online ? "success" : "default"} placement="bottom-right">
-                          <Avatar src={i === 0 ? avatarUrl("rafiqjon") : avatarUrl(m.name)} name={m.name} size="sm" />
+                          <Avatar src={i === 0 ? avatarUrl("rafiqjon") : avatarUrl(m.name)} name={m.name} size={z.avatar} />
                         </Badge>
                         <div className="min-w-0 flex-1">
                           <p className="truncate text-sm font-medium text-foreground">{m.name}</p>
@@ -537,34 +551,34 @@ export default function StoreDashboard() {
                         <p className="text-sm font-medium text-foreground">{t({ en: "Customer rating", uz: "Mijozlar bahosi", ru: "Оценка клиентов" })}</p>
                         <p className="text-xs text-muted">{t({ en: "1,240 reviews", uz: "1,240 ta sharh", ru: "1 240 отзывов" })}</p>
                       </div>
-                      <Rating value={4.6} isReadOnly size="sm" showValue responsive={false} />
+                      <Rating value={4.6} isReadOnly size={z.small} showValue responsive={false} />
                     </div>
                   </CardBody>
                 </Card>
 
-                <Card {...s.card} className="flex flex-col">
+                <Card size={z.card} className="flex flex-col">
                   <CardHeader
                     title={<span className="flex items-center gap-2"><Sparkles size={16} className="text-accent" /> {t({ en: "AI assistant", uz: "AI yordamchi", ru: "AI-ассистент" })}</span>}
                     description={t({ en: "Ask about your sales", uz: "Savdo bo'yicha savol bering", ru: "Спросите о продажах" })}
-                    endContent={<Chip size="sm" color="success" dot {...s.chip}>{t({ en: "Online", uz: "Onlayn", ru: "Онлайн" })}</Chip>}
+                    endContent={<Chip size={z.chip} color="success" dot>{t({ en: "Online", uz: "Onlayn", ru: "Онлайн" })}</Chip>}
                   />
-                  <ChatContainer className="h-64 flex-1 space-y-4 overflow-y-auto px-4">
+                  <ChatContainer className={`${z.chat} flex-1 space-y-4 overflow-y-auto px-4`}>
                     {messages.map((m, i) => (
                       <ChatMessage key={i} role={m.role} showActions={m.role === "assistant"}>{typeof m.text === "string" ? m.text : t(m.text)}</ChatMessage>
                     ))}
                     {chatLoading && <ChatMessage role="assistant" isTyping />}
                   </ChatContainer>
                   <div className="p-3">
-                    <PromptInput isBlurred={s.glass} material={s.material} onSubmit={sendChat} isLoading={chatLoading} onStop={() => setChatLoading(false)} minRows={1} suggestions={[t({ en: "Weekly report", uz: "Haftalik hisobot", ru: "Недельный отчёт" }), t({ en: "Top customers", uz: "Eng yaxshi mijozlar", ru: "Лучшие клиенты" })]} />
+                    <PromptInput onSubmit={sendChat} isLoading={chatLoading} onStop={() => setChatLoading(false)} minRows={1} suggestions={[t({ en: "Weekly report", uz: "Haftalik hisobot", ru: "Недельный отчёт" }), t({ en: "Top customers", uz: "Eng yaxshi mijozlar", ru: "Лучшие клиенты" })]} />
                   </div>
                 </Card>
               </Grid>
 
               {/* Setup · Store profile (floating labels from the Form) · Notifications */}
-              <Grid cols={3}>
-                <Card {...s.card}>
+              <Grid cols={3} gap={z.gap}>
+                <Card size={z.card}>
                   <CardHeader title={t({ en: "Store setup", uz: "Do'konni sozlash", ru: "Настройка магазина" })} description={t({ en: `${step} / 4 steps done`, uz: `${step} / 4 bosqich bajarildi`, ru: `Выполнено шагов: ${step} / 4` })} />
-                  <CardBody className="gap-6">
+                  <CardBody className={density === "sm" ? "gap-4" : "gap-6"}>
                     <Stepper
                       currentStep={step}
                       onStepChange={setStep}
@@ -578,7 +592,7 @@ export default function StoreDashboard() {
                     <Accordion variant="splitted" defaultExpandedKeys={new Set(["pay"])}>
                       <AccordionItem itemKey="pay" title={t({ en: "Connect payments", uz: "To'lov tizimini ulash", ru: "Подключить оплату" })} subtitle={t({ en: "Next step", uz: "Keyingi qadam", ru: "Следующий шаг" })} startContent={<CreditCard size={18} className="text-accent" />}>
                         <p className="text-sm text-muted">{t({ en: "Enter your Click or Payme keys so customers can pay by card.", uz: "Click yoki Payme kalitlarini kiriting — mijozlar karta orqali to'lay oladi.", ru: "Введите ключи Click или Payme — клиенты смогут платить картой." })}</p>
-                        <Button size="sm" className="mt-3" onClick={() => setStep(Math.min(4, step + 1))}>{t({ en: "Connect", uz: "Ulash", ru: "Подключить" })}</Button>
+                        <Button size={z.small} className="mt-3" onClick={() => setStep(Math.min(4, step + 1))}>{t({ en: "Connect", uz: "Ulash", ru: "Подключить" })}</Button>
                       </AccordionItem>
                       <AccordionItem itemKey="ship" title={t({ en: "Delivery zones", uz: "Yetkazib berish zonalari", ru: "Зоны доставки" })} startContent={<Truck size={18} className="text-success" />}>
                         <p className="text-sm text-muted">{t({ en: "Free across Tashkent, from 25,000 UZS to the regions.", uz: "Toshkent bo'ylab bepul, viloyatlarga 25 000 so'mdan.", ru: "Бесплатно по Ташкенту, в регионы — от 25 000 сумов." })}</p>
@@ -590,12 +604,13 @@ export default function StoreDashboard() {
                   </CardBody>
                 </Card>
 
-                <Card {...s.card}>
+                <Card size={z.card}>
                   <CardHeader title={t({ en: "Store profile", uz: "Do'kon profili", ru: "Профиль магазина" })} description={t({ en: "Shown on receipts and invoices", uz: "Cheklar va invoyslarda ko'rinadi", ru: "Показывается в чеках и счетах" })} />
                   <CardBody>
                     <Form
                       labelPlacement="floating"
-                      variant={s.glass ? "secondary" : "primary"}
+                      variant="primary"
+                      size={z.field}
                       isDisabled={saving}
                       onValues={() => {
                         setSaving(true);
@@ -618,30 +633,30 @@ export default function StoreDashboard() {
                         ]}
                       />
                       <Textarea name="address" label={t({ en: "Address", uz: "Manzil", ru: "Адрес" })} defaultValue={t({ en: "Tashkent, Olmazor district", uz: "Toshkent, Olmazor tumani", ru: "Ташкент, Алмазарский район" })} minRows={2} />
-                      <Button type="submit" isLoading={saving} className="self-end">{t({ en: "Save", uz: "Saqlash", ru: "Сохранить" })}</Button>
+                      <Button type="submit" size={z.button} isLoading={saving} className="self-end">{t({ en: "Save", uz: "Saqlash", ru: "Сохранить" })}</Button>
                     </Form>
                   </CardBody>
                 </Card>
 
-                <Card {...s.card}>
+                <Card size={z.card}>
                   <CardHeader title={t({ en: "Notifications", uz: "Bildirishnomalar", ru: "Уведомления" })} description={t({ en: "Choose what you want to receive", uz: "Qaysi xabarlarni olishni tanlang", ru: "Выберите, какие уведомления получать" })} />
-                  <CardBody className="gap-5">
+                  <CardBody className={density === "sm" ? "gap-3" : "gap-5"}>
                     <div className="divide-y divide-separator rounded-2xl bg-surface-secondary px-4">
                       {[
                         { label: t({ en: "New orders", uz: "Yangi buyurtmalar", ru: "Новые заказы" }), desc: t({ en: "Instantly for every order", uz: "Har bir buyurtma haqida darhol", ru: "Сразу о каждом заказе" }), on: true },
                         { label: t({ en: "Daily report", uz: "Kunlik hisobot", ru: "Ежедневный отчёт" }), desc: t({ en: "Email every day at 09:00", uz: "Har kuni 09:00 da email", ru: "Email каждый день в 09:00" }), on: true },
                         { label: t({ en: "Marketing", uz: "Marketing xabarlari", ru: "Маркетинг" }), desc: t({ en: "News and offers", uz: "Yangiliklar va takliflar", ru: "Новости и предложения" }), on: false },
                       ].map((n) => (
-                        <div key={n.label} className="flex items-center justify-between gap-4 py-3.5">
+                        <div key={n.label} className={`flex items-center justify-between gap-4 ${density === "sm" ? "py-2.5" : "py-3.5"}`}>
                           <div>
                             <p className="text-sm font-medium text-foreground">{n.label}</p>
                             <p className="text-xs text-muted">{n.desc}</p>
                           </div>
-                          <Switch defaultSelected={n.on} aria-label={n.label} />
+                          <Switch size={z.small} defaultSelected={n.on} aria-label={n.label} />
                         </div>
                       ))}
                     </div>
-                    <CheckboxGroup label={t({ en: "Channels", uz: "Kanallar", ru: "Каналы" })} orientation="horizontal" defaultValue={["email", "bot"]} variant="secondary">
+                    <CheckboxGroup label={t({ en: "Channels", uz: "Kanallar", ru: "Каналы" })} orientation="horizontal" defaultValue={["email", "bot"]} variant="secondary" size={z.small}>
                       <Checkbox value="email">Email</Checkbox>
                       <Checkbox value="sms">SMS</Checkbox>
                       <Checkbox value="bot">{t({ en: "Chat bot", uz: "Chat-bot", ru: "Чат-бот" })}</Checkbox>
@@ -654,7 +669,7 @@ export default function StoreDashboard() {
               <p className="pb-4 text-center text-xs text-muted">
                 {t({ en: "This page is built entirely with", uz: "Bu sahifa to'liq", ru: "Эта страница целиком собрана из" })} <code className="font-mono">nr-ui-kit</code> {t({ en: "components", uz: "komponentlari bilan qurilgan", ru: "компонентов" })} · <a href="/" className="text-accent hover:underline">{t({ en: "Docs", uz: "Hujjatlar", ru: "Документация" })}</a>
               </p>
-            </Section>
+            </Stack>
           </Container>
         </div>
 

@@ -31,7 +31,7 @@ export default function ModalLiquidGlass() {
               <ModalBody>
                 <p className="text-sm text-foreground/75">
                   {material === "liquid"
-                    ? "clear glass sheet: clear, with light reflecting off the edges."
+                    ? "A clear sheet with light reflecting off the edges."
                     : "Classic frosted glass — strong blur, white tint."}
                 </p>
               </ModalBody>

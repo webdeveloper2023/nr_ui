@@ -149,7 +149,7 @@
       "type": "\"frosted\" | \"liquid\"",
       "required": false,
       "default": null,
-      "description": "Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass)"
+      "description": "Glass material: frosted (classic) or liquid (clearer, with shining edges). Falls back to the global setting (html data-glass)"
     },
     {
       "name": "title",
@@ -284,7 +284,7 @@
       "type": "\"frosted\" | \"liquid\"",
       "required": false,
       "default": null,
-      "description": "Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass)"
+      "description": "Glass material: frosted (classic) or liquid (clearer, with shining edges). Falls back to the global setting (html data-glass)"
     },
     {
       "name": "isDisabled",
@@ -1275,7 +1275,7 @@
       "type": "\"frosted\" | \"liquid\"",
       "required": false,
       "default": null,
-      "description": "Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass)"
+      "description": "Glass material: frosted (classic) or liquid (clearer, with shining edges). Falls back to the global setting (html data-glass)"
     },
     {
       "name": "size",
@@ -1416,24 +1416,38 @@
   "Card": [
     {
       "name": "variant",
-      "type": "'default' | 'flat' | 'glass' | 'secondary' | 'tertiary' | 'transparent'",
+      "type": "'default' | 'bordered' | 'accent' | 'flat' | 'glass' | 'secondary' | 'tertiary' | 'elevated' | 'dashed' | 'transparent'",
       "required": false,
       "default": "\"default\"",
-      "description": "Style: default (soft gradient), flat (no gradient), glass, secondary, tertiary or transparent"
+      "description": "Style: default (soft gradient), flat (no gradient), bordered (thin border, no shadow), elevated (deep shadow), accent (tinted), dashed (placeholder / empty state), glass, secondary, tertiary or transparent"
+    },
+    {
+      "name": "size",
+      "type": "'sm' | 'md' | 'lg' | 'xl'",
+      "required": false,
+      "default": "\"md\"",
+      "description": "Size: padding and text of the header, body, footer and media follow it"
+    },
+    {
+      "name": "orientation",
+      "type": "'vertical' | 'horizontal'",
+      "required": false,
+      "default": "\"vertical\"",
+      "description": "vertical (default) stacks the parts; horizontal puts CardMedia beside the content, stacking again on mobile when responsive"
     },
     {
       "name": "material",
       "type": "\"frosted\" | \"liquid\"",
       "required": false,
       "default": null,
-      "description": "Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass)"
+      "description": "Glass material: frosted (classic) or liquid (clearer, with shining edges). Falls back to the global setting (html data-glass)"
     },
     {
       "name": "radius",
-      "type": "'md' | 'lg' | 'xl' | 'none'",
+      "type": "'md' | 'lg' | 'xl' | 'none' | '2xl'",
       "required": false,
-      "default": "\"xl\"",
-      "description": "Corner radius"
+      "default": null,
+      "description": "Corner radius (default: lg for sm, xl for md and lg, 2xl for xl)"
     },
     {
       "name": "isHoverable",
@@ -1448,6 +1462,13 @@
       "required": false,
       "default": "false",
       "description": "Pressable card (acts like a button, keyboard accessible)"
+    },
+    {
+      "name": "isSelected",
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Marks the card as chosen with an accent ring (choice cards)"
     },
     {
       "name": "isDisabled",
@@ -1494,6 +1515,13 @@
   ],
   "CardHeader": [
     {
+      "name": "startContent",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Left-side slot (avatar, icon)"
+    },
+    {
       "name": "title",
       "type": "ReactNode",
       "required": false,
@@ -1529,6 +1557,43 @@
       "required": false,
       "default": null,
       "description": "Main content"
+    }
+  ],
+  "CardMedia": [
+    {
+      "name": "src",
+      "type": "string",
+      "required": false,
+      "default": null,
+      "description": "Image URL"
+    },
+    {
+      "name": "alt",
+      "type": "string",
+      "required": false,
+      "default": "\"\"",
+      "description": "Image description for screen readers"
+    },
+    {
+      "name": "aspect",
+      "type": "'video' | 'square' | 'wide' | 'portrait' | 'auto'",
+      "required": false,
+      "default": null,
+      "description": "Shape: video (16:9), square, wide (21:9), portrait (3:4) or auto (image height; fills the side in a horizontal card)"
+    },
+    {
+      "name": "isInset",
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Keeps the card padding around the media and rounds its corners"
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Content laid over the media (badge, title on a gradient)"
     }
   ],
   "CardFooter": [
@@ -1760,7 +1825,7 @@
       "type": "\"frosted\" | \"liquid\"",
       "required": false,
       "default": null,
-      "description": "Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass)"
+      "description": "Glass material: frosted (classic) or liquid (clearer, with shining edges). Falls back to the global setting (html data-glass)"
     },
     {
       "name": "responsive",
@@ -2053,7 +2118,7 @@
       "type": "\"frosted\" | \"liquid\"",
       "required": false,
       "default": null,
-      "description": "Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass)"
+      "description": "Glass material: frosted (classic) or liquid (clearer, with shining edges). Falls back to the global setting (html data-glass)"
     },
     {
       "name": "color",
@@ -2257,7 +2322,7 @@
       "type": "\"frosted\" | \"liquid\"",
       "required": false,
       "default": null,
-      "description": "Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass)"
+      "description": "Glass material: frosted (classic) or liquid (clearer, with shining edges). Falls back to the global setting (html data-glass)"
     },
     {
       "name": "aria-label",
@@ -2399,25 +2464,39 @@
   ],
   "FileUpload": [
     {
+      "name": "layout",
+      "type": "'dropzone' | 'inline' | 'button' | 'avatar' | 'gallery'",
+      "required": false,
+      "default": "\"dropzone\"",
+      "description": "Look of the picker: dropzone (large drop area), inline (one row with a Browse button), button (a plain button), avatar (one round image), gallery (grid of tiles)"
+    },
+    {
+      "name": "size",
+      "type": "'sm' | 'md' | 'lg' | 'xl'",
+      "required": false,
+      "default": "\"md\"",
+      "description": "Size: sm, md, lg, xl"
+    },
+    {
       "name": "variant",
-      "type": "'default' | 'secondary'",
+      "type": "'default' | 'flat' | 'secondary'",
       "required": false,
       "default": "\"default\"",
-      "description": "Style: white surface or gray (inside a surface)"
+      "description": "Style: white surface, gray (inside a surface) or flat (soft fill, no dashed border)"
     },
     {
       "name": "accept",
       "type": "string",
       "required": false,
       "default": null,
-      "description": "Accepted file types (e.g. image/*)"
+      "description": "Accepted file types (e.g. image/*). The avatar layout defaults to image/*"
     },
     {
       "name": "multiple",
       "type": "boolean",
       "required": false,
       "default": "true",
-      "description": "Allows selecting multiple files"
+      "description": "Allows selecting multiple files (always off for the avatar layout)"
     },
     {
       "name": "maxSizeMB",
@@ -2425,6 +2504,13 @@
       "required": false,
       "default": "10",
       "description": "Maximum file size (MB)"
+    },
+    {
+      "name": "maxFiles",
+      "type": "number",
+      "required": false,
+      "default": null,
+      "description": "Maximum number of files; extra files are rejected with a message"
     },
     {
       "name": "files",
@@ -2459,14 +2545,21 @@
       "type": "string",
       "required": false,
       "default": null,
-      "description": "Drop zone title"
+      "description": "Title (drop zone title, button text or avatar caption)"
     },
     {
       "name": "description",
       "type": "string",
       "required": false,
       "default": null,
-      "description": "Hint below the drop zone"
+      "description": "Hint below the title"
+    },
+    {
+      "name": "icon",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "Custom icon instead of the default one"
     },
     {
       "name": "isDisabled",
@@ -3186,11 +3279,11 @@
       "type": "\"frosted\" | \"liquid\"",
       "required": false,
       "default": null,
-      "description": "Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass)"
+      "description": "Glass material: frosted (classic) or liquid (clearer, with shining edges). Falls back to the global setting (html data-glass)"
     },
     {
       "name": "placement",
-      "type": "'top' | 'bottom' | 'center' | 'auto'",
+      "type": "'top' | 'bottom' | 'auto' | 'center'",
       "required": false,
       "default": "\"auto\"",
       "description": "Position on screen (auto: bottom sheet on mobile)"
@@ -3336,7 +3429,7 @@
       "type": "\"frosted\" | \"liquid\"",
       "required": false,
       "default": null,
-      "description": "Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass)"
+      "description": "Glass material: frosted (classic) or liquid (clearer, with shining edges). Falls back to the global setting (html data-glass)"
     },
     {
       "name": "position",
@@ -3813,17 +3906,24 @@
     },
     {
       "name": "variant",
-      "type": "'pie' | 'donut' | 'semi' | 'polar' | 'radial'",
+      "type": "'pie' | 'donut' | 'semi' | 'polar' | 'radial' | 'ring' | 'gauge'",
       "required": false,
       "default": "\"pie\"",
-      "description": "pie — full slices; donut — a ring with the total in the middle; semi — a half ring (gauge-like);\npolar — equal angles, the radius shows the value; radial — one ring per item, the arc length shows the value"
+      "description": "pie — full slices; donut — a ring with the total in the middle; semi — a half ring (gauge-like);\npolar — equal angles, the radius shows the value; radial — one ring per item, the arc length shows the value;\nring — a full ring filled up to maxValue (progress / goal); gauge — a half ring filled up to maxValue (meter)"
     },
     {
       "name": "size",
-      "type": "number",
+      "type": "PieSize | number",
       "required": false,
-      "default": "240",
-      "description": "Diameter in px (shrinks to fit the container)"
+      "default": "\"md\"",
+      "description": "Diameter: xs (96), sm (160), md (240), lg (320), xl (400) or a number in px. Text and the legend scale with it; it shrinks to fit the container"
+    },
+    {
+      "name": "legendPosition",
+      "type": "'bottom' | 'right' | 'auto'",
+      "required": false,
+      "default": "\"auto\"",
+      "description": "Legend placement: auto (beside the chart when there is room), right (beside it unless the container is narrower than 380px) or bottom"
     },
     {
       "name": "thickness",
@@ -3858,7 +3958,7 @@
       "type": "number",
       "required": false,
       "default": null,
-      "description": "Value that fills a whole ring in the radial variant (defaults to the largest value)"
+      "description": "Value that fills a whole ring: radial (defaults to the largest value), ring and gauge (defaults to 100)"
     },
     {
       "name": "centerLabel",
@@ -3872,7 +3972,7 @@
       "type": "ReactNode",
       "required": false,
       "default": null,
-      "description": "Replaces the number in the center"
+      "description": "Replaces the number in the center (null hides it)"
     },
     {
       "name": "showLegend",
@@ -4007,7 +4107,7 @@
       "type": "\"frosted\" | \"liquid\"",
       "required": false,
       "default": null,
-      "description": "Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass)"
+      "description": "Glass material: frosted (classic) or liquid (clearer, with shining edges). Falls back to the global setting (html data-glass)"
     },
     {
       "name": "backdrop",
@@ -4204,7 +4304,7 @@
       "type": "\"frosted\" | \"liquid\"",
       "required": false,
       "default": null,
-      "description": "Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass)"
+      "description": "Glass material: frosted (classic) or liquid (clearer, with shining edges). Falls back to the global setting (html data-glass)"
     },
     {
       "name": "icon",
@@ -4838,7 +4938,7 @@
       "type": "\"frosted\" | \"liquid\"",
       "required": false,
       "default": null,
-      "description": "Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass)"
+      "description": "Glass material: frosted (classic) or liquid (clearer, with shining edges). Falls back to the global setting (html data-glass)"
     },
     {
       "name": "responsive",
@@ -5017,7 +5117,7 @@
       "type": "\"frosted\" | \"liquid\"",
       "required": false,
       "default": null,
-      "description": "Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass)"
+      "description": "Glass material: frosted (classic) or liquid (clearer, with shining edges). Falls back to the global setting (html data-glass)"
     },
     {
       "name": "responsive",
@@ -5284,6 +5384,13 @@
       "description": "Color of the icon, progress and chart"
     },
     {
+      "name": "size",
+      "type": "'sm' | 'md' | 'lg'",
+      "required": false,
+      "default": "\"md\"",
+      "description": "Size: padding, value text and the sparkline height follow it"
+    },
+    {
       "name": "variant",
       "type": "'default' | 'glass' | 'secondary' | 'gradient'",
       "required": false,
@@ -5295,7 +5402,7 @@
       "type": "\"frosted\" | \"liquid\"",
       "required": false,
       "default": null,
-      "description": "Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass)"
+      "description": "Glass material: frosted (classic) or liquid (clearer, with shining edges). Falls back to the global setting (html data-glass)"
     },
     {
       "name": "actions",
@@ -5595,7 +5702,7 @@
       "type": "\"frosted\" | \"liquid\"",
       "required": false,
       "default": null,
-      "description": "Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass)"
+      "description": "Glass material: frosted (classic) or liquid (clearer, with shining edges). Falls back to the global setting (html data-glass)"
     },
     {
       "name": "hideHeader",
@@ -5751,7 +5858,7 @@
       "type": "\"frosted\" | \"liquid\"",
       "required": false,
       "default": null,
-      "description": "Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass)"
+      "description": "Glass material: frosted (classic) or liquid (clearer, with shining edges). Falls back to the global setting (html data-glass)"
     },
     {
       "name": "isDisabled",
@@ -6058,7 +6165,7 @@
       "type": "\"frosted\" | \"liquid\"",
       "required": false,
       "default": null,
-      "description": "Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass)"
+      "description": "Glass material: frosted (classic) or liquid (clearer, with shining edges). Falls back to the global setting (html data-glass)"
     }
   ],
   "ToastProvider": [
@@ -6088,7 +6195,7 @@
       "type": "\"frosted\" | \"liquid\"",
       "required": false,
       "default": null,
-      "description": "Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass)"
+      "description": "Glass material: frosted (classic) or liquid (clearer, with shining edges). Falls back to the global setting (html data-glass)"
     },
     {
       "name": "responsive",

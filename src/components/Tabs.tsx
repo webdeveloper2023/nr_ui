@@ -30,7 +30,7 @@ export interface TabsProps extends Omit<HTMLAttributes<HTMLDivElement>, "onChang
   isVertical?: boolean;
   /** Makes the track glass — looks best over colorful backgrounds or images */
   isBlurred?: boolean;
-  /** Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass) */
+  /** Glass material: frosted (classic) or liquid (clearer, with shining edges). Falls back to the global setting (html data-glass) */
   material?: "frosted" | "liquid";
   /** Disables all tabs */
   isDisabled?: boolean;

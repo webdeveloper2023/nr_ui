@@ -20,7 +20,7 @@ type ButtonRadius = "none" | "sm" | "md" | "lg" | "full";
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /** Visual variant: primary, secondary, tertiary, outline, ghost, glass, danger, danger-soft */
   variant?: ButtonVariant;
-  /** Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass) */
+  /** Glass material: frosted (classic) or liquid (clearer, with shining edges). Falls back to the global setting (html data-glass) */
   material?: "frosted" | "liquid";
   /** Size */
   size?: ButtonSize;

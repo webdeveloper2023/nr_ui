@@ -11,7 +11,7 @@ export interface AlertProps extends Omit<HTMLAttributes<HTMLDivElement>, "title"
   color?: AlertColor;
   /** Style: default — surface (soft gradient), soft — light color tint, flat — solid color, glass */
   variant?: AlertVariant;
-  /** Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass) */
+  /** Glass material: frosted (classic) or liquid (clearer, with shining edges). Falls back to the global setting (html data-glass) */
   material?: "frosted" | "liquid";
   /** Title */
   title?: ReactNode;

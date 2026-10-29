@@ -8,9 +8,9 @@ const columns = [
 ];
 
 const rows = [
-  { id: "mbp", product: "Laptop Pro 14", category: "Laptop", price: "$1,999" },
-  { id: "iph", product: "Phone X", category: "Phone", price: "$999" },
-  { id: "ipd", product: "Tablet Air 11", category: "Tablet", price: "$599" },
+  { id: "lap", product: "Laptop Pro 14", category: "Laptop", price: "$1,999" },
+  { id: "pho", product: "Phone X", category: "Phone", price: "$999" },
+  { id: "tab", product: "Tablet Air 11", category: "Tablet", price: "$599" },
   { id: "aw", product: "Smartwatch S", category: "Watch", price: "$399" },
 ];
 

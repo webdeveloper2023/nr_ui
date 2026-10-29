@@ -10,7 +10,7 @@ type ChipSize = "xs" | "sm" | "md" | "lg";
 export interface ChipProps {
   /** Style: primary (solid color), secondary (gray), tertiary (no background), soft (tinted) or glass */
   variant?: ChipVariant;
-  /** Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass) */
+  /** Glass material: frosted (classic) or liquid (clearer, with shining edges). Falls back to the global setting (html data-glass) */
   material?: "frosted" | "liquid";
   /** Color */
   color?: ChipColor;

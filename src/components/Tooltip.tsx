@@ -49,7 +49,7 @@ export interface TooltipProps {
   showArrow?: boolean;
   /** Glass (blur) background — default color only; colored tooltips stay solid */
   isBlurred?: boolean;
-  /** Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass) */
+  /** Glass material: frosted (classic) or liquid (clearer, with shining edges). Falls back to the global setting (html data-glass) */
   material?: "frosted" | "liquid";
   /** Disabled (inactive) state */
   isDisabled?: boolean;

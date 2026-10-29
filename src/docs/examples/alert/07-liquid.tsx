@@ -9,7 +9,7 @@ export default function AlertLiquidGlass() {
       <div aria-hidden className="absolute -bottom-16 left-1/3 size-56 rounded-full bg-orange opacity-60 blur-2xl" />
       <div aria-hidden className="absolute bottom-6 right-1/4 size-32 rounded-full bg-mint opacity-70 blur-xl" />
       <Alert className="relative" variant="glass" material="frosted" title="Frosted" description="A classic frosted glass notification." />
-      <Alert className="relative" variant="glass" material="liquid" color="success" title="Liquid" description="Modern style: clear, with glossy edges." />
+      <Alert className="relative" variant="glass" material="liquid" color="success" title="Liquid" description="Clear glass with glossy edges." />
     </div>
   );
 }

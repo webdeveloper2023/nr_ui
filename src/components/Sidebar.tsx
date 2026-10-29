@@ -44,7 +44,7 @@ export interface SidebarProps {
   hideToggle?: boolean;
   /** Makes the panel glass — for colorful backgrounds or images */
   isBlurred?: boolean;
-  /** Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass) */
+  /** Glass material: frosted (classic) or liquid (clearer, with shining edges). Falls back to the global setting (html data-glass) */
   material?: "frosted" | "liquid";
   /** Adapts to the screen: full width with touch-sized items and no collapse button on mobile (place it in a drawer), starts as an icon rail on tablet (the toggle still expands it), wider (288px) on desktop. true = all breakpoints or a list like ["m", "t"] */
   responsive?: ResponsiveProp;

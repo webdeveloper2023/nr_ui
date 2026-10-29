@@ -16,18 +16,23 @@ export interface PieSlice {
   color?: ChartColor | string;
 }
 
-type PieVariant = "pie" | "donut" | "semi" | "polar" | "radial";
+type PieVariant = "pie" | "donut" | "semi" | "polar" | "radial" | "ring" | "gauge";
+type PieSize = "xs" | "sm" | "md" | "lg" | "xl";
+type LegendPosition = "auto" | "right" | "bottom";
 
 export interface PieChartProps extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
   /** Slices: { key, label, value, color? } */
   data: PieSlice[];
   /**
    * pie — full slices; donut — a ring with the total in the middle; semi — a half ring (gauge-like);
-   * polar — equal angles, the radius shows the value; radial — one ring per item, the arc length shows the value
+   * polar — equal angles, the radius shows the value; radial — one ring per item, the arc length shows the value;
+   * ring — a full ring filled up to maxValue (progress / goal); gauge — a half ring filled up to maxValue (meter)
    */
   variant?: PieVariant;
-  /** Diameter in px (shrinks to fit the container) */
-  size?: number;
+  /** Diameter: xs (96), sm (160), md (240), lg (320), xl (400) or a number in px. Text and the legend scale with it; it shrinks to fit the container */
+  size?: PieSize | number;
+  /** Legend placement: auto (beside the chart when there is room), right (beside it unless the container is narrower than 380px) or bottom */
+  legendPosition?: LegendPosition;
   /** Ring thickness of donut / semi as a share of the radius (0.1–0.6) */
   thickness?: number;
   /** Rounds the corners of every slice, in px */
@@ -36,11 +41,11 @@ export interface PieChartProps extends Omit<HTMLAttributes<HTMLDivElement>, "chi
   gap?: number;
   /** Labels on the chart: none, the share inside each slice, or names with leader lines outside */
   labels?: "none" | "inside" | "outside";
-  /** Value that fills a whole ring in the radial variant (defaults to the largest value) */
+  /** Value that fills a whole ring: radial (defaults to the largest value), ring and gauge (defaults to 100) */
   maxValue?: number;
   /** Text under the number in the center (defaults to "Total") */
   centerLabel?: ReactNode;
-  /** Replaces the number in the center */
+  /** Replaces the number in the center (null hides it) */
   centerValue?: ReactNode;
   /** Legend beside the chart (below it when there is no room) */
   showLegend?: boolean;
@@ -65,6 +70,17 @@ export interface PieChartProps extends Omit<HTMLAttributes<HTMLDivElement>, "chi
 }
 
 const TAU = Math.PI * 2;
+
+const SIZE_PX: Record<PieSize, number> = { xs: 96, sm: 160, md: 240, lg: 320, xl: 400 };
+
+/** Text steps that follow the drawn diameter: center number, center caption, labels on the chart */
+function textScale(d: number) {
+  if (d < 130) return { value: "text-sm", caption: "text-[10px]", label: 9 };
+  if (d < 200) return { value: "text-lg", caption: "text-[11px]", label: 10 };
+  if (d < 290) return { value: "text-2xl", caption: "text-xs", label: 11 };
+  if (d < 370) return { value: "text-3xl", caption: "text-sm", label: 12 };
+  return { value: "text-4xl", caption: "text-sm", label: 13 };
+}
 const pt = (cx: number, cy: number, rad: number, a: number) => `${(cx + rad * Math.sin(a)).toFixed(2)},${(cy - rad * Math.cos(a)).toFixed(2)}`;
 
 /**
@@ -117,12 +133,13 @@ function insideInk(i: number, color?: string) {
   return [0, 2, 6, 7].includes(slot) ? "#ffffff" : "#1d1d1f";
 }
 
-/** Parts of a whole as a pie, donut, half ring, polar area or radial rings, with a hover readout and legend toggles. */
+/** Parts of a whole as a pie, donut, half ring, polar area, radial rings, a goal ring or a gauge, with a hover readout and legend toggles. */
 export function PieChart(props: PieChartProps) {
   const {
     data,
     variant = "pie",
-    size = 240,
+    size = "md",
+    legendPosition = "auto",
     thickness = 0.32,
     cornerRadius = variant === "pie" ? 4 : 6,
     gap = 2,
@@ -146,7 +163,7 @@ export function PieChart(props: PieChartProps) {
 
   const t = useLocale();
   const bps = useResponsive(responsive);
-  const layout = useChartLayout(size, bps);
+  const layout = useChartLayout(typeof size === "number" ? size : SIZE_PX[size], bps);
   const [boxRef, width] = useElementWidth<HTMLDivElement>();
   const fmt = valueFormatter ?? ((v: number) => formatCompact(v, t.locale));
   const fmtFull = valueFormatter ?? ((v: number) => formatNumber(v, t.locale));
@@ -158,22 +175,29 @@ export function PieChart(props: PieChartProps) {
   const total = shown.reduce((a, v) => a + v, 0);
   const visibleTotal = values.reduce((a, v, i) => a + (hidden.has(data[i].key) ? 0 : v), 0);
   const visibleMax = Math.max(1e-9, ...values.filter((_, i) => !hidden.has(data[i].key)));
-  const pct = (v: number) => (visibleTotal > 0 ? `${Math.round((v / visibleTotal) * 1000) / 10}%` : "0%");
+  const metered = variant === "ring" || variant === "gauge";
+  const meterMax = Math.max(maxValue ?? 100, visibleTotal, 1e-9);
+  const base = metered ? meterMax : visibleTotal;
+  const pct = (v: number) => (base > 0 ? `${Math.round((v / base) * 1000) / 10}%` : "0%");
 
   // ── Size: legend beside the chart when there is room, outside labels need side room ──
   const outside = labels === "outside" && variant !== "radial";
   const labelRoom = outside ? (layout.compact ? 64 : 92) : 0;
-  const side = showLegend && !layout.compact && width >= layout.height + labelRoom * 2 + 220;
-  const avail = Math.max(80, (side ? width - 220 : width || layout.height) - labelRoom * 2);
-  const diameter = Math.max(80, Math.min(layout.height, avail));
-  const semi = variant === "semi";
+  const side =
+    showLegend && legendPosition !== "bottom" && (legendPosition === "right" ? width >= 380 : !layout.compact && width >= layout.height + labelRoom * 2 + 220);
+  const avail = Math.max(40, (side ? width - 220 : width || layout.height) - labelRoom * 2);
+  const diameter = Math.max(40, Math.min(layout.height, avail));
+  const ts = textScale(diameter);
+  const semi = variant === "semi" || variant === "gauge";
+  const gauge = variant === "gauge";
   const svgW = diameter + labelRoom * 2;
   const vPad = outside ? 24 : 0; // room above and below for outside labels
-  const svgH = semi ? diameter / 2 + 10 + vPad : diameter + vPad * 2;
+  const svgH = semi ? diameter / 2 + 10 + vPad + (gauge ? 16 : 0) : diameter + vPad * 2;
   const cx = svgW / 2;
   const cy = diameter / 2 + vPad;
-  const r = diameter / 2 - 6; // room for the hovered slice to pop out
-  const ringed = variant === "donut" || semi;
+  const popRoom = diameter < 120 ? 3 : 6;
+  const r = diameter / 2 - popRoom; // room for the hovered slice to pop out
+  const ringed = variant === "donut" || semi || variant === "ring";
   const inner = ringed ? r * (1 - Math.min(0.6, Math.max(0.1, thickness))) : variant === "polar" ? r * 0.12 : 0;
   const [start, sweepAll] = semi ? [-Math.PI / 2, Math.PI] : [0, TAU];
 
@@ -214,9 +238,11 @@ export function PieChart(props: PieChartProps) {
       angle += sweep;
     });
   } else {
+    // ring / gauge fill up to maxValue, the rest stays as the track
     let angle = start;
+    const denom = metered ? meterMax : total;
     data.forEach((_, i) => {
-      const sweep = total > 0 ? (shown[i] / total) * sweepAll : 0;
+      const sweep = denom > 0 ? (shown[i] / denom) * sweepAll : 0;
       const s = roundedSlice(cx, cy, r, inner, angle, angle + sweep, gap, cornerRadius);
       shapes.push({ i, ...s, mid: angle + sweep / 2, labelR: inner > 0 ? (r + inner) / 2 : r * 0.64, outerR: r });
       angle += sweep;
@@ -253,6 +279,7 @@ export function PieChart(props: PieChartProps) {
     } else if (e.key === "Escape") setActive(null);
   };
 
+  const track = metered ? roundedSlice(cx, cy, r, inner, start, start + sweepAll, 0, cornerRadius) : null;
   const activeSlice = active != null && !hidden.has(data[active].key) ? data[active] : null;
   const share = (v: number) => (variant === "radial" ? fmt(v) : pct(v));
   const centered = ringed || variant === "radial";
@@ -261,7 +288,7 @@ export function PieChart(props: PieChartProps) {
   const legend = showLegend && (
     <div className={cn(side ? "min-w-0 max-w-xs flex-1" : "w-full")}>
       <ChartLegend
-        compact={layout.compact}
+        compact={layout.compact || diameter < 130}
         vertical={side}
         onToggle={isLegendInteractive ? toggle : undefined}
         items={data.map((d, i) => ({
@@ -292,7 +319,9 @@ export function PieChart(props: PieChartProps) {
               onBlur={() => setActive(null)}
             >
               {/* Empty state and radial tracks */}
-              {total === 0 && variant !== "radial" && <circle cx={cx} cy={cy} r={r} fill="var(--color-default)" />}
+              {total === 0 && variant !== "radial" && !metered && <circle cx={cx} cy={cy} r={r} fill="var(--color-default)" />}
+              {track && !semi && <circle cx={cx} cy={cy} r={(r + inner) / 2} fill="none" stroke="var(--color-default)" strokeWidth={r - inner} />}
+              {track && semi && <path d={track.d} fill="var(--color-default)" stroke={track.stroke ? "var(--color-default)" : undefined} strokeWidth={track.stroke || undefined} strokeLinejoin="round" fillRule="evenodd" />}
               {variant === "radial" &&
                 shapes.map((s) => (
                   <path
@@ -308,7 +337,7 @@ export function PieChart(props: PieChartProps) {
               {shapes.map((s) => {
                 const d = data[s.i];
                 const color = seriesColor(s.i, d.color);
-                const pop = active === s.i && variant !== "radial" ? 5 : 0;
+                const pop = active === s.i && variant !== "radial" && !metered ? popRoom - 1 : 0;
                 const radial = variant === "radial";
                 return (
                   <path
@@ -334,7 +363,7 @@ export function PieChart(props: PieChartProps) {
                 diameter >= 160 &&
                 shapes.map((s) =>
                   s.stroke >= 10 ? (
-                    <text key={`n${s.i}`} x={cx - s.stroke / 2 - 6} y={cy - s.labelR} textAnchor="end" dominantBaseline="middle" className="fill-muted text-[11px]">
+                    <text key={`n${s.i}`} x={cx - s.stroke / 2 - 6} y={cy - s.labelR} textAnchor="end" dominantBaseline="middle" className="fill-muted" style={{ fontSize: ts.label }}>
                       {data[s.i].label}
                     </text>
                   ) : null
@@ -345,7 +374,7 @@ export function PieChart(props: PieChartProps) {
                 variant !== "radial" &&
                 shapes.map((s) => {
                   const a = variant === "polar" ? sweepAll / Math.max(1, visibleIdx.length) : total > 0 ? (shown[s.i] / total) * sweepAll : 0;
-                  if (weights[s.i] < 0.5 || a * s.labelR < 30 || (variant === "polar" && s.outerR - inner < 26)) return null;
+                  if (weights[s.i] < 0.5 || a * s.labelR < ts.label * 2.8 || (variant === "polar" && s.outerR - inner < 26)) return null;
                   return (
                     <text
                       key={`v${s.i}`}
@@ -354,7 +383,8 @@ export function PieChart(props: PieChartProps) {
                       textAnchor="middle"
                       dominantBaseline="middle"
                       fill={insideInk(s.i, data[s.i].color)}
-                      className="pointer-events-none text-[11px] font-semibold tabular-nums"
+                      className="pointer-events-none font-semibold tabular-nums"
+                      style={{ fontSize: ts.label }}
                     >
                       {variant === "polar" ? fmt(values[s.i]) : pct(values[s.i])}
                     </text>
@@ -367,13 +397,19 @@ export function PieChart(props: PieChartProps) {
                 return (
                   <g key={`o${s.i}`} className="pointer-events-none">
                     <path d={`M${ex},${ey}L${x2},${y}L${x3},${y}`} fill="none" stroke="var(--color-border)" strokeWidth={1} />
-                    <text x={x3 + (right ? 4 : -4)} y={y} textAnchor={right ? "start" : "end"} dominantBaseline="middle" className="text-[11px]">
+                    <text x={x3 + (right ? 4 : -4)} y={y} textAnchor={right ? "start" : "end"} dominantBaseline="middle" style={{ fontSize: ts.label }}>
                       <tspan className="fill-foreground">{data[s.i].label}</tspan>
                       <tspan className="fill-muted"> {share(values[s.i])}</tspan>
                     </text>
                   </g>
                 );
               })}
+              {gauge && diameter >= 120 && (
+                <g className="fill-muted" style={{ fontSize: ts.label }}>
+                  <text x={cx - (r + inner) / 2} y={cy + 14} textAnchor="middle">{fmt(0)}</text>
+                  <text x={cx + (r + inner) / 2} y={cy + 14} textAnchor="middle">{fmt(meterMax)}</text>
+                </g>
+              )}
             </svg>
           )}
 
@@ -388,12 +424,18 @@ export function PieChart(props: PieChartProps) {
                   : { left: cx - (variant === "radial" ? r * 0.36 : inner) + 6, width: ((variant === "radial" ? r * 0.36 : inner) - 6) * 2, top: cy - (variant === "radial" ? r * 0.36 : inner), height: (variant === "radial" ? r * 0.36 : inner) * 2 }
               }
             >
-              <span className={cn("font-semibold tracking-tight text-foreground tabular-nums", diameter < 180 || variant === "radial" ? "text-base" : "text-2xl")}>
-                {activeSlice ? fmt(activeSlice.value) : (centerValue ?? fmt(visibleTotal))}
+              <span className={cn("font-semibold leading-tight tracking-tight text-foreground tabular-nums", variant === "radial" ? textScale(diameter * 0.6).value : ts.value)}>
+                {activeSlice ? fmt(activeSlice.value) : (centerValue !== undefined ? centerValue : metered ? pct(visibleTotal) : fmt(visibleTotal))}
               </span>
-              <span className="mt-0.5 max-w-full truncate text-xs text-muted">
-                {activeSlice ? (variant === "radial" ? activeSlice.label : `${activeSlice.label} · ${pct(activeSlice.value)}`) : (centerLabel ?? t.chart.total)}
-              </span>
+              {diameter >= 110 && (
+                <span className={cn("mt-0.5 max-w-full truncate text-muted", ts.caption)}>
+                  {activeSlice
+                    ? variant === "radial"
+                      ? activeSlice.label
+                      : `${activeSlice.label} · ${pct(activeSlice.value)}`
+                    : (centerLabel ?? (metered ? `${fmt(visibleTotal)} / ${fmt(meterMax)}` : t.chart.total))}
+                </span>
+              )}
             </div>
           )}
           {ready && !centered && activeSlice && (

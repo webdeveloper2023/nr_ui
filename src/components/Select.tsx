@@ -84,7 +84,7 @@ export interface SelectProps extends Omit<HTMLAttributes<HTMLDivElement>, "onCha
   errorMessage?: ReactNode;
   /** Glass (blur) listbox material; false gives a solid background */
   isBlurred?: boolean;
-  /** Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass) */
+  /** Glass material: frosted (classic) or liquid (clearer, with shining edges). Falls back to the global setting (html data-glass) */
   material?: "frosted" | "liquid";
   /** Adapts to the screen: touch-sized trigger and options with 16px text on mobile, touch-sized on tablet, larger lg on desktop; a left label moves on top on mobile. true = all breakpoints or a list like ["m", "t"] */
   responsive?: ResponsiveProp;

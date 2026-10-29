@@ -25,7 +25,7 @@ export { FileUpload } from "./FileUpload";
 export { Rating } from "./Rating";
 
 // Data display
-export { Card, CardHeader, CardBody, CardFooter } from "./Card";
+export { Card, CardHeader, CardBody, CardFooter, CardMedia } from "./Card";
 export { Table } from "./Table";
 export type { TableColumn, SortDescriptor } from "./Table";
 export { Tabs } from "./Tabs";

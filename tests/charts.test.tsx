@@ -124,6 +124,34 @@ describe("PieChart", () => {
     expect(screen.getByRole("button", { name: "Hide Y" })).toHaveTextContent("75%");
     expect(screen.getByText("40")).toBeInTheDocument();
   });
+
+  it("takes named sizes", () => {
+    const { container, rerender } = render(<PieChart data={slices} size="xs" showLegend={false} animate={false} />);
+    expect(container.querySelector("svg")).toHaveAttribute("width", "96");
+    rerender(<PieChart data={slices} size="xl" showLegend={false} animate={false} />);
+    expect(container.querySelector("svg")).toHaveAttribute("width", "400");
+    rerender(<PieChart data={slices} size={120} showLegend={false} animate={false} />);
+    expect(container.querySelector("svg")).toHaveAttribute("width", "120");
+  });
+
+  it("fills a ring up to maxValue and shows the share of the goal", () => {
+    const { container } = render(<PieChart data={[{ key: "a", label: "A", value: 30 }]} variant="ring" maxValue={120} showLegend={false} animate={false} />);
+    expect(screen.getAllByText("25%").length).toBeGreaterThan(0);
+    expect(screen.getByText("30 / 120")).toBeInTheDocument();
+    expect(container.querySelector("circle")).toHaveAttribute("stroke", "var(--color-default)");
+  });
+
+  it("draws a gauge with the scale ends", () => {
+    render(<PieChart data={[{ key: "a", label: "A", value: 40 }]} variant="gauge" size="md" showLegend={false} animate={false} />);
+    expect(screen.getAllByText("40%").length).toBeGreaterThan(0);
+    expect(screen.getByText("0")).toBeInTheDocument();
+    expect(screen.getByText("100")).toBeInTheDocument();
+  });
+
+  it("hides the center number with centerValue={null}", () => {
+    render(<PieChart data={slices} variant="donut" centerValue={null} showLegend={false} animate={false} />);
+    expect(screen.queryByText("100")).toBeNull();
+  });
 });
 
 describe("responsive charts", () => {

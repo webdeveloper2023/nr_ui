@@ -48,7 +48,7 @@ export interface PopoverProps {
   radius?: PopoverRadius;
   /** Glass (blur) panel material; false gives a solid background */
   isBlurred?: boolean;
-  /** Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass) */
+  /** Glass material: frosted (classic) or liquid (clearer, with shining edges). Falls back to the global setting (html data-glass) */
   material?: "frosted" | "liquid";
   /** Backdrop style */
   backdrop?: PopoverBackdrop;

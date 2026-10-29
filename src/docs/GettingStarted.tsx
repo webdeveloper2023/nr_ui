@@ -215,7 +215,7 @@ export default function App() {
 @import "nr-ui-kit/theme.css";
 
 @theme {
-  /* ${t({ en: "Example: make the accent indigo", uz: "Masalan: accent'ni indigo qilish", ru: "Например: сделать акцент indigo" })} */
+  /* ${t({ en: "Example: make the accent indigo", uz: "Masalan: accent'ni indigo qilish", ru: "Например: сделать акцент индиго" })} */
   --color-accent: #5856d6;
   --color-accent-hover: #6e6cdf;
   --color-accent-soft-foreground: #3634a3;

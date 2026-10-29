@@ -23,7 +23,7 @@ export default function ToastLiquidGlass() {
         <Button
           variant="glass"
           material="liquid"
-          onClick={() => addToast({ title: "Liquid", description: "A notification in the Modern style.", color: "accent", material: "liquid" })}
+          onClick={() => addToast({ title: "Liquid", description: "A notification on clear, shining glass.", color: "accent", material: "liquid" })}
         >
           Liquid
         </Button>

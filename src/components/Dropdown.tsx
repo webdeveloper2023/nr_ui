@@ -52,7 +52,7 @@ export interface DropdownMenuProps extends Omit<HTMLAttributes<HTMLDivElement>, 
   children?: ReactNode;
   /** Glass (blur) menu material; false gives a solid background */
   isBlurred?: boolean;
-  /** Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass) */
+  /** Glass material: frosted (classic) or liquid (clearer, with shining edges). Falls back to the global setting (html data-glass) */
   material?: "frosted" | "liquid";
   /** Name for screen readers */
   "aria-label"?: string;

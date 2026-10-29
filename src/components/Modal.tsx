@@ -34,7 +34,7 @@ export interface ModalProps {
   backdrop?: ModalBackdrop;
   /** Glass (blur) dialog material; false gives a solid background */
   isBlurred?: boolean;
-  /** Glass material: frosted (classic) or liquid (clear glass Liquid). Falls back to the global setting (html data-glass) */
+  /** Glass material: frosted (classic) or liquid (clearer, with shining edges). Falls back to the global setting (html data-glass) */
   material?: "frosted" | "liquid";
   /** Position on screen (auto: bottom sheet on mobile) */
   placement?: ModalPlacement;
